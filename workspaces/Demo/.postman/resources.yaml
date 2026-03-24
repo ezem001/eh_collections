@@ -5,7 +5,7 @@ workspace:
 # Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
 cloudResources:
   collections:
-    ../postman/collections/export collection: 15381251-7b92b473-2523-4651-ac10-3e5bcfa858d6
+    ../postman/collections/export collection: 15381251-1aad849a-039b-4086-b78c-75f4044946ce
     ../postman/collections/Specimens UAT: 15381251-0e9972d3-4b9d-44cc-8d8a-78be42f6bf8d
     ../postman/collections/Patient Information System: 15381251-10e5e6dd-d256-466d-ba93-d1b7ebd90944
     ../postman/collections/Regression Testing: 15381251-1e1fe5c4-857a-45c4-a9d9-d5648356faef
