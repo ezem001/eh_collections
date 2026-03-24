@@ -1,0 +1,133 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/employee_requests/89c5eefe-5e0b-493e-831e-feba8c6b9ab6/approve
+  method: POST
+  headers:
+    - key: api-key
+      value: ef7d48ecfc233d6af088
+    - key: Authorization
+      value: Bearer {{employee_approve_token}}
+    - key: Content-Type
+      value: application/json
+    - key: X-Custom-PSK
+      value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    - key: x-consumer-id
+      value: 8b797c23-ba47-45f2-bc0f-521013e01074
+      disabled: true
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Thu, 23 Nov 2023 13:25:06 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Access-Control-Allow-Origin: "*"
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Referrer-Policy: strict-origin-when-cross-origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "69"
+    X-Kong-Upstream-Latency: "860"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: 3263604c-aa6b-471a-bca0-df420d1ba9bc#81
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a9bc762c1f77b6-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "division_id": "882457bb-64f8-4fde-a439-e5b2c0986cf9",
+              "doctor": {
+                  "educations": [
+                      {
+                          "city": "Київ",
+                          "country": "UA",
+                          "degree": "MASTER",
+                          "diploma_number": "DD123545",
+                          "institution_name": "Академія Богомольця",
+                          "issued_date": "2017-08-05",
+                          "speciality": "Педіатр"
+                      }
+                  ],
+                  "qualifications": [
+                      {
+                          "certificate_number": "2017-08-05",
+                          "institution_name": "Академія Богомольця",
+                          "issued_date": "2017-08-05",
+                          "speciality": "Педіатр",
+                          "type": "STAZHUVANNYA"
+                      }
+                  ],
+                  "science_degree": {
+                      "city": "Київ",
+                      "country": "UA",
+                      "degree": "CANDIDATE_OF_SCIENCE",
+                      "diploma_number": "DD123544",
+                      "institution_name": "Академія Богомольця",
+                      "issued_date": "2017-08-05",
+                      "speciality": "THERAPIST"
+                  },
+                  "specialities": [
+                      {
+                          "attestation_date": "2017-08-05",
+                          "attestation_name": "Академія Богомольця",
+                          "certificate_number": "AB/21334",
+                          "level": "FIRST",
+                          "qualification_type": "AWARDING",
+                          "speciality": "FAMILY_DOCTOR",
+                          "speciality_officio": true,
+                          "valid_to_date": "2017-08-05"
+                      }
+                  ]
+              },
+              "employee_id": "735e7b1b-a755-45fe-96b8-b98575364d7c",
+              "employee_type": "DOCTOR",
+              "id": "89c5eefe-5e0b-493e-831e-feba8c6b9ab6",
+              "inserted_at": "2023-11-23T13:23:30.677000Z",
+              "legal_entity_id": "68c4e556-5a61-4994-a788-4949dbd76688",
+              "party": {
+                  "birth_date": "1982-08-07",
+                  "documents": [
+                      {
+                          "issued_at": "1998-06-11",
+                          "issued_by": "123аа4567",
+                          "number": "110619",
+                          "type": "PASSPORT"
+                      }
+                  ],
+                  "email": "doc1_uat@ukr.net",
+                  "first_name": "Богдан",
+                  "gender": "MALE",
+                  "last_name": "Татаренко",
+                  "phones": [
+                      {
+                          "number": "+380503210874",
+                          "type": "MOBILE"
+                      }
+                  ],
+                  "second_name": "Васильович",
+                  "tax_id": "3140112011"
+              },
+              "position": "P7",
+              "start_date": "2015-03-03",
+              "status": "APPROVED",
+              "updated_at": "2023-11-23T13:25:05.862485Z"
+          },
+          "meta": {
+              "code": 200,
+              "request_id": "3263604c-aa6b-471a-bca0-df420d1ba9bc#81",
+              "type": "object",
+              "url": "http://api-svc.il/api/employee_requests/89c5eefe-5e0b-493e-831e-feba8c6b9ab6/approve"
+          }
+      }
+order: 1000

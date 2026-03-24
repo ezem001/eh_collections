@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/service_requests/{{JobSeric\
+  eRequestID}}"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  x-custom-psk: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: >-
+      pm.test("Get service request Details - PASS. Status code is 200", function
+      () {
+          pm.response.to.have.status(200);
+      });
+    language: text/javascript
+order: 35000

@@ -1,0 +1,31 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/1a0a8aa2-87a4-41ca-a61c-ba0923214910/actions/reject
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{laborant_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+      "status_reason": {
+        "coding": [
+          {
+            "system": "specimen_reject_reasons",
+            "code": "container_error"
+          }
+        ]
+      }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 11000

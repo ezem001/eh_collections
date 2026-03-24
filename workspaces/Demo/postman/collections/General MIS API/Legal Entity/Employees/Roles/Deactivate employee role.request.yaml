@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/employee_roles/852e3cf3-048a-4630-a84b-66947f7d5700/actions/\
+  deactivate"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 2000

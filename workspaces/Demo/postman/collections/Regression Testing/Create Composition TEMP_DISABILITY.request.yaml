@@ -1,0 +1,260 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_CATEGORIES\",\r
+
+    \                \"code\": \"SICKNESS\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_TYPES\",\r
+
+    \                \"code\": \"TEMP_DISABILITY\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"event\": [\r
+
+    \        {\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_EVENTS\",\r
+
+    \                        \"code\": \"COMPOSITION_VALIDITY_PERIOD\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"period\": {\r
+
+    \                \"start\": \"{{compositionTempDisabilityStart}}\",\r
+
+    \                \"end\": \"{{compositionTempDisabilityEnd}}\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"subject\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"person\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{patient_for_regress}}\"\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"encounter\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{jobEncounterID}}\"\r
+
+    \    },\r
+
+    \    \"author\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"employee\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{user_id}}\"\r
+
+    \    },\r
+
+    \    \"section\": {\r
+
+    \        \"focus\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"person\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{patient_for_regress}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"extension\": []\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      pm.test(\"Create Compisition Temp Disability - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      \r
+
+      \    const resId = resData.data?.id;\r
+
+      \    pm.globals.set('creatCompositionJobId', resId)\r
+
+      \r
+
+      });"
+    language: text/javascript
+  - type: beforeRequest
+    code: "// Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      // Отримуємо поточну дату\r
+
+      const today = new Date();\r
+
+      \r
+
+      // Обчислюємо start (сьогодні)\r
+
+      const compositionTempDisabilityStart = new Date(today);\r
+
+      \r
+
+      // Обчислюємо end (сьогодні + 3 дні)\r
+
+      const compositionTempDisabilityEnd = new Date(today);\r
+
+      compositionTempDisabilityEnd.setDate(compositionTempDisabilityEnd.getDate\
+      () + 3);\r
+
+      \r
+
+      // Функція для форматування дати у форматі ISO 8601 (з T00:00:00.000Z)\r
+
+      const formatISODate = (date) => date.toISOString().split('T')[0] +
+      \"T00:00:00.000Z\";\r
+
+      \r
+
+      // Зберігаємо у глобальні змінні\r
+
+      pm.globals.set('compositionTempDisabilityStart',
+      formatISODate(compositionTempDisabilityStart));\r
+
+      pm.globals.set('compositionTempDisabilityEnd',
+      formatISODate(compositionTempDisabilityEnd));\r
+
+      \r
+
+      // Виводимо у консоль для перевірки\r
+
+      console.log(\"Composition Temp Disability Start:\",
+      formatISODate(compositionTempDisabilityStart));\r
+
+      console.log(\"Composition Temp Disability End:\",
+      formatISODate(compositionTempDisabilityEnd));\r
+
+      \r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+order: 84000

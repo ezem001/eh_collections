@@ -1,0 +1,742 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/care_plans/{{jobCarePla\
+  nID}}/activities/{{jobActivityID}}"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: ""
+scripts:
+  - type: afterResponse
+    code: "// const resData = pm.response.json().data;\r
+
+      \r
+
+      // // Копія з оновленим статус різоном всередині detail\r
+
+      // const finalJson = {\r
+
+      //   ...resData,\r
+
+      //   detail: {\r
+
+      //     ...resData.detail,\r
+
+      //     status_reason: {\r
+
+      //       coding: [\r
+
+      //         {\r
+
+      //           system: \"eHealth/care_plan_activity_cancel_reasons\",\r
+
+      //           code: \"entered_in_error\"\r
+
+      //         }\r
+
+      //       ]\r
+
+      //     }\r
+
+      //   }\r
+
+      // };\r
+
+      \r
+
+      // pm.visualizer.set(`\r
+
+      //   <style>\r
+
+      //     pre {\r
+
+      //       background-color: #f6f8fa;\r
+
+      //       padding: 16px;\r
+
+      //       border-radius: 5px;\r
+
+      //       font-family: monospace;\r
+
+      //       white-space: pre-wrap;\r
+
+      //       max-height: 500px;\r
+
+      //       overflow: auto;\r
+
+      //     }\r
+
+      //     button {\r
+
+      //       margin-bottom: 10px;\r
+
+      //       padding: 5px 10px;\r
+
+      //       border-radius: 4px;\r
+
+      //       border: 1px solid #ccc;\r
+
+      //       background-color: #e0e0e0;\r
+
+      //       cursor: pointer;\r
+
+      //     }\r
+
+      //     button:hover {\r
+
+      //       background-color: #d0d0d0;\r
+
+      //     }\r
+
+      //   </style>\r
+
+      //   <h3>Згенерований JSON для скасування активності плану
+      лікування</h3>\r
+
+      //   <button onclick=\"copyToClipboard()\">Скопіювати JSON</button>\r
+
+      //   <pre id=\"jsonOutput\">{{json}}</pre>\r
+
+      //   <script>\r
+
+      //     function copyToClipboard() {\r
+
+      //       const text = document.getElementById('jsonOutput').innerText;\r
+
+      //       const textArea = document.createElement('textarea');\r
+
+      //       textArea.value = text;\r
+
+      //       document.body.appendChild(textArea);\r
+
+      //       textArea.select();\r
+
+      //       try {\r
+
+      //         document.execCommand('copy');\r
+
+      //         alert('JSON скопійовано!');\r
+
+      //       } catch (err) {\r
+
+      //         alert('Помилка копіювання: ' + err);\r
+
+      //       }\r
+
+      //       document.body.removeChild(textArea);\r
+
+      //     }\r
+
+      //   </script>\r
+
+      // `, {\r
+
+      //   json: JSON.stringify(finalJson, null, 2)\r
+
+      // });\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      /***********************\r
+
+      \ * Visualizer: Notebook Log + Generated JSON (one page)\r
+
+      \ * Copy -> copies ONLY Request+Response\r
+
+      \ ***********************/\r
+
+      \r
+
+      // --------------------- Config ---------------------\r
+
+      const MASK_SENSITIVE = true;\r
+
+      const SENSITIVE_HEADERS = new Set(['authorization', 'api-key',
+      'x-custom-psk', 'cookie']);\r
+
+      \r
+
+      const DROP_REQUEST_HEADERS = new Set([\r
+
+      \  'accept',\r
+
+      \  'accept-encoding',\r
+
+      \  'connection',\r
+
+      \  'content-type',\r
+
+      \  'postman-token',\r
+
+      \  'user-agent',\r
+
+      \  'content-length',\r
+
+      \  'host' // keep only \"Host:\" line\r
+
+      ]);\r
+
+      \r
+
+      // --------------------- Helpers ---------------------\r
+
+      function esc(s) {\r
+
+      \  return String(s ?? '')\r
+
+      \    .replaceAll('&', '&amp;')\r
+
+      \    .replaceAll('<', '&lt;')\r
+
+      \    .replaceAll('>', '&gt;');\r
+
+      }\r
+
+      \r
+
+      function safeJsonParse(text) {\r
+
+      \  try { return JSON.parse(text); } catch { return null; }\r
+
+      }\r
+
+      \r
+
+      function normalizeHeaders(headersObjOrArr) {\r
+
+      \  if (!headersObjOrArr) return {};\r
+
+      \  if (typeof headersObjOrArr?.toObject === 'function') return
+      headersObjOrArr.toObject();\r
+
+      \r
+
+      \  const out = {};\r
+
+      \  if (Array.isArray(headersObjOrArr)) {\r
+
+      \    headersObjOrArr.forEach(h => {\r
+
+      \      if (!h) return;\r
+
+      \      const k = (h.key || h.name || '').toString();\r
+
+      \      const v = (h.value ?? '').toString();\r
+
+      \      if (k) out[k] = v;\r
+
+      \    });\r
+
+      \    return out;\r
+
+      \  }\r
+
+      \r
+
+      \  if (typeof headersObjOrArr === 'object') {\r
+
+      \    Object.keys(headersObjOrArr).forEach(k => out[k] =
+      String(headersObjOrArr[k]));\r
+
+      \  }\r
+
+      \  return out;\r
+
+      }\r
+
+      \r
+
+      function shouldDropHeader(k) {\r
+
+      \  const key = String(k || '').toLowerCase().trim();\r
+
+      \  if (!key) return true;\r
+
+      \  return DROP_REQUEST_HEADERS.has(key);\r
+
+      }\r
+
+      \r
+
+      function maskHeaderValue(key, value) {\r
+
+      \  if (!MASK_SENSITIVE) return value;\r
+
+      \r
+
+      \  const k = String(key || '').toLowerCase().trim();\r
+
+      \  if (!SENSITIVE_HEADERS.has(k)) return value;\r
+
+      \r
+
+      \  if (k === 'authorization') return 'Bearer ***';\r
+
+      \  if (!value) return '***';\r
+
+      \r
+
+      \  const tail = value.length > 6 ? value.slice(-6) : value;\r
+
+      \  return `***…${tail}`;\r
+
+      }\r
+
+      \r
+
+      function formatRequestHeaders(headers) {\r
+
+      \  const obj = normalizeHeaders(headers);\r
+
+      \  const keys = Object.keys(obj)\r
+
+      \    .filter(k => !shouldDropHeader(k))\r
+
+      \    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));\r
+
+      \r
+
+      \  if (!keys.length) return '';\r
+
+      \  return keys.map(k => `${k}: ${maskHeaderValue(k,
+      obj[k])}`).join('\\n');\r
+
+      }\r
+
+      \r
+
+      function getHost(url) {\r
+
+      \  if (!url) return '';\r
+
+      \  if (typeof url === 'string') {\r
+
+      \    try { return new URL(url).host; } catch { return ''; }\r
+
+      \  }\r
+
+      \  if (url.host) {\r
+
+      \    if (Array.isArray(url.host)) return url.host.join('.');\r
+
+      \    return String(url.host);\r
+
+      \  }\r
+
+      \  if (url.toString) {\r
+
+      \    try { return new URL(url.toString()).host; } catch { return ''; }\r
+
+      \  }\r
+
+      \  return '';\r
+
+      }\r
+
+      \r
+
+      function getPathWithQuery(url) {\r
+
+      \  if (!url) return '/';\r
+
+      \r
+
+      \  if (typeof url === 'string') {\r
+
+      \    try {\r
+
+      \      const u = new URL(url);\r
+
+      \      return u.pathname + (u.search || '');\r
+
+      \    } catch {\r
+
+      \      return url;\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  const path = Array.isArray(url.path) ? '/' + url.path.join('/') :
+      (url.pathname || '/');\r
+
+      \r
+
+      \  if (Array.isArray(url.query) && url.query.length) {\r
+
+      \    const qs = url.query\r
+
+      \      .filter(q => q && q.key)\r
+
+      \      .map(q =>
+      `${encodeURIComponent(q.key)}=${encodeURIComponent(q.value ?? '')}`)\r
+
+      \      .join('&');\r
+
+      \    return `${path}?${qs}`;\r
+
+      \  }\r
+
+      \r
+
+      \  return path || '/';\r
+
+      }\r
+
+      \r
+
+      function getPmRequestBody(pmReq) {\r
+
+      \  try {\r
+
+      \    const body = pmReq?.body;\r
+
+      \    if (!body) return '';\r
+
+      \    if (body.mode === 'raw') return body.raw || '';\r
+
+      \    return '';\r
+
+      \  } catch {\r
+
+      \    return '';\r
+
+      \  }\r
+
+      }\r
+
+      \r
+
+      function stringifyMaybeJson(text) {\r
+
+      \  if (!text) return '';\r
+
+      \  const j = safeJsonParse(text);\r
+
+      \  return j ? JSON.stringify(j, null, 2) : text;\r
+
+      }\r
+
+      \r
+
+      // Response: show {data, error, meta} only\r
+
+      function responseDataErrorMetaOnly(text) {\r
+
+      \  const j = safeJsonParse(text);\r
+
+      \  if (!j) return text;\r
+
+      \r
+
+      \  const out = {\r
+
+      \    data: Object.prototype.hasOwnProperty.call(j, 'data') ? j.data :
+      undefined,\r
+
+      \    error: Object.prototype.hasOwnProperty.call(j, 'error') ? j.error :
+      undefined,\r
+
+      \    meta: Object.prototype.hasOwnProperty.call(j, 'meta') ? j.meta :
+      undefined\r
+
+      \  };\r
+
+      \  Object.keys(out).forEach(k => out[k] === undefined && delete out[k]);\r
+
+      \r
+
+      \  return JSON.stringify(out, null, 2);\r
+
+      }\r
+
+      \r
+
+      function buildRawRequest({ method, url, headers, body }) {\r
+
+      \  const host = getHost(url);\r
+
+      \  const path = getPathWithQuery(url);\r
+
+      \r
+
+      \  const headerText = formatRequestHeaders(headers);\r
+
+      \  const bodyText = body ? stringifyMaybeJson(body) : '';\r
+
+      \r
+
+      \  return [\r
+
+      \    `${(method || 'GET').toUpperCase()} ${path || '/'} HTTP/1.1`,\r
+
+      \    host ? `Host: ${host}` : null,\r
+
+      \    headerText || null,\r
+
+      \    bodyText ? `\\n${bodyText}` : null\r
+
+      \  ].filter(Boolean).join('\\n');\r
+
+      }\r
+
+      \r
+
+      // --------------------- Notebook Log ---------------------\r
+
+      function buildNotebookLog() {\r
+
+      \  const title = pm.info.requestName || 'Main request';\r
+
+      \r
+
+      \  const reqRaw = buildRawRequest({\r
+
+      \    method: pm.request.method,\r
+
+      \    url: pm.request.url,\r
+
+      \    headers: pm.request.headers,\r
+
+      \    body: getPmRequestBody(pm.request)\r
+
+      \  });\r
+
+      \r
+
+      \  const resRaw = responseDataErrorMetaOnly(pm.response.text());\r
+
+      \r
+
+      \  return [\r
+
+      \    `${title}\\n`,\r
+
+      \    `[Request]\\n\\n${reqRaw}\\n`,\r
+
+      \    `\\n[Response]\\n\\n${resRaw}\\n`\r
+
+      \  ].join('\\n');\r
+
+      }\r
+
+      \r
+
+      // --------------------- Generated JSON ---------------------\r
+
+      function buildGeneratedJsonBlock() {\r
+
+      \  let parsed = null;\r
+
+      \  try { parsed = pm.response.json(); } catch { parsed = null; }\r
+
+      \r
+
+      \  if (!parsed || typeof parsed !== 'object') {\r
+
+      \    return { title: 'Згенерований JSON', text: 'Response is not valid
+      JSON — cannot generate finalJson.' };\r
+
+      \  }\r
+
+      \r
+
+      \  const resData = parsed.data;\r
+
+      \  if (!resData || typeof resData !== 'object') {\r
+
+      \    return { title: 'Згенерований JSON', text: 'Response JSON has no
+      \"data\" object — cannot generate finalJson.' };\r
+
+      \  }\r
+
+      \r
+
+      \  const finalJson = {\r
+
+      \  ...resData,\r
+
+      \  detail: {\r
+
+      \    ...resData.detail,\r
+
+      \    status_reason: {\r
+
+      \      coding: [\r
+
+      \        {\r
+
+      \          system: \"eHealth/care_plan_activity_cancel_reasons\",\r
+
+      \          code: \"entered_in_error\"\r
+
+      \        }\r
+
+      \      ]\r
+
+      \    }\r
+
+      \  }\r
+
+      };\r
+
+      \r
+
+      \  return { title: 'Згенерований JSON', text: JSON.stringify(finalJson,
+      null, 2) };\r
+
+      }\r
+
+      \r
+
+      // --------------------- Render ---------------------\r
+
+      (function renderAll() {\r
+
+      \  const notebookLog = buildNotebookLog();\r
+
+      \  const gen = buildGeneratedJsonBlock();\r
+
+      \r
+
+      \  const html = `\r
+
+      <div style=\"display:flex; gap:8px; align-items:center;
+      margin-bottom:8px;\">\r
+
+      \  <button id=\"copyLogBtn\">Copy</button>\r
+
+      \  <button id=\"copyGenBtn\">Copy entered_in_error JSON</button>\r
+
+      \  <span id=\"copyMsg\" style=\"font-family: ui-monospace, SFMono-Regular,
+      Menlo, Monaco, Consolas, monospace; font-size:12px;\"></span>\r
+
+      </div>\r
+
+      \r
+
+      <textarea id=\"logText\" style=\"position:absolute; left:-9999px;
+      top:-9999px;\">${esc(notebookLog)}</textarea>\r
+
+      <textarea id=\"genText\" style=\"position:absolute; left:-9999px;
+      top:-9999px;\">${esc(gen.text)}</textarea>\r
+
+      \r
+
+      <pre style=\"margin:0; white-space:pre; font-family: ui-monospace,
+      SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px;
+      line-height: 1.35;\">\r
+
+      ${esc(notebookLog)}\r
+
+      </pre>\r
+
+      \r
+
+      <pre style=\"margin-top:10px; white-space:pre; font-family: ui-monospace,
+      SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px;
+      line-height: 1.35;\">\r
+
+      ${esc(gen.title + '\\\\n\\\\n' + gen.text)}\r
+
+      </pre>\r
+
+      \r
+
+      <script>\r
+
+      (function () {\r
+
+      \  const msg = document.getElementById('copyMsg');\r
+
+      \  const logTa = document.getElementById('logText');\r
+
+      \  const genTa = document.getElementById('genText');\r
+
+      \r
+
+      \  function setMsg(t) {\r
+
+      \    msg.textContent = t || '';\r
+
+      \    if (t) setTimeout(() => { msg.textContent = ''; }, 1200);\r
+
+      \  }\r
+
+      \r
+
+      \  async function copyFrom(ta) {\r
+
+      \    const text = ta.value || '';\r
+
+      \    if (!text) return setMsg('Nothing to copy');\r
+
+      \    try {\r
+
+      \      if (navigator.clipboard && navigator.clipboard.writeText) {\r
+
+      \        await navigator.clipboard.writeText(text);\r
+
+      \        return setMsg('Copied ✅');\r
+
+      \      }\r
+
+      \      ta.focus(); ta.select();\r
+
+      \      const ok = document.execCommand('copy');\r
+
+      \      return setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \    } catch (e) {\r
+
+      \      try {\r
+
+      \        ta.focus(); ta.select();\r
+
+      \        const ok = document.execCommand('copy');\r
+
+      \        return setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \      } catch {\r
+
+      \        return setMsg('Copy failed ❌');\r
+
+      \      }\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  document.getElementById('copyLogBtn').addEventListener('click', () =>
+      copyFrom(logTa));\r
+
+      \  document.getElementById('copyGenBtn').addEventListener('click', () =>
+      copyFrom(genTa));\r
+
+      })();\r
+
+      </script>\r
+
+      \  `;\r
+
+      \r
+
+      \  pm.visualizer.set(html);\r
+
+      })();\r\n"
+    language: text/javascript
+order: 8000

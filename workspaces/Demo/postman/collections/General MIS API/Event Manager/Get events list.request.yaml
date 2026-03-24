@@ -1,0 +1,40 @@
+$kind: http-request
+url: "{{host}}/api/events/"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: date_to
+    value: 2025-08-18T08:40:01Z
+    disabled: true
+  - key: event_type
+    value: StatusChangeEvent
+    disabled: true
+  - key: entity_type
+    value: Party
+    disabled: true
+  - key: entity_type
+    value: Person
+    disabled: true
+  - key: attribute_name
+    value: status
+    disabled: true
+  - key: new_value
+    value: VERIFIED
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "5000"
+    disabled: true
+  - key: date
+    value: 2025-08-14T01:01:11Z
+    disabled: true
+  - key: date
+    value: 2025-09-01T00:00:25Z
+    disabled: true
+order: 2000

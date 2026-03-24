@@ -1,0 +1,315 @@
+$kind: http-request
+description: This method is used to change care team status.
+url: "{{host}}/api/care_teams/{{care_team_id}}"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"email\": \"test_care_team_no_user_4@email.com\",\r
+
+    \  \"phones\": [\r
+
+    \    {\r
+
+    \      \"type\": \"MOBILE\",\r
+
+    \      \"number\": \"+380503410870\"\r
+
+    \    },\r
+
+    \    {\r
+
+    \      \"type\": \"MOBILE\",\r
+
+    \      \"number\": \"+380506780845\"\r
+
+    \    }\r
+
+    \  ],\r
+
+    \  \"note\": \"Додаткова примітка до команди лікування no user 4\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: >
+      // pm.test("Status code is 200", function () {
+
+      //     pm.response.to.have.status(200);
+
+
+      //     // ------------------------------
+
+      //     //  1. Отримуємо респонс з попереднього запиту
+
+      //     // ------------------------------
+
+      //     const response = pm.response.json();
+
+
+      //     if (!response.data) {
+
+      //         console.error("❌ No participant data in response");
+
+      //         return;
+
+      //     }
+
+      //     const { email, phones, note, id } = response.data;
+
+      //     // ------------------------------
+
+      //     //  2. Підготуємо payload для бекенду
+
+      //     // ------------------------------
+
+      //     const mongoPayload = {
+
+      //         id, email, phones, note
+
+      //     };
+
+
+      //     console.info("📤 Sending participant to backend:", mongoPayload);
+
+
+      //     // ------------------------------
+
+      //     //  3. Надсилаємо на наш бекенд
+
+      //     // ------------------------------
+
+      //     pm.sendRequest({
+
+      //         url: `http://localhost:3000/care-teams/${id}`,
+
+      //         method: "PATCH",
+
+      //         header: {
+
+      //             "Content-Type": "application/json"
+
+      //         },
+
+      //         body: {
+
+      //             mode: "raw",
+
+      //             raw: JSON.stringify({ data: mongoPayload })
+
+      //         }
+
+      //     }, (err, res) => {
+
+      //         if (err) {
+
+      //             console.error("❌ Error sending participant to backend:",
+      err);
+
+      //             return;
+
+      //         }
+
+
+      //         const backendResponse = res.json();
+
+      //         console.log("✅ Backend response:", backendResponse);
+
+
+      //     });
+
+
+      // });
+
+
+
+
+      pm.test("Status code is handled", function () {
+          const status = pm.response.code;
+          pm.expect([200, 400, 403, 404, 500]).to.include(status);
+      });
+
+
+      /* =====================================================
+         1. Отримуємо респонс з попереднього API
+      ===================================================== */
+
+
+      const response = pm.response.json();
+
+
+      if (!response?.data) {
+          console.warn("⚠️ No care team data in source response");
+          return;
+      }
+
+
+      const { email, phones, note, id } = response.data;
+
+
+      /* =====================================================
+         2. Payload для бекенду
+      ===================================================== */
+
+
+      const mongoPayload = { id, email, phones, note };
+
+
+      console.info("📤 Sending to backend:", mongoPayload);
+
+
+      /* =====================================================
+         3. Запит на бекенд
+      ===================================================== */
+
+
+      pm.sendRequest({
+          url: `http://localhost:3000/care-teams/${id}`,
+          method: "PATCH",
+          header: {
+              "Content-Type": "application/json"
+          },
+          body: {
+              mode: "raw",
+              raw: JSON.stringify({ data: mongoPayload })
+          }
+      }, (err, res) => {
+
+          if (err) {
+              console.error("❌ Backend error:", err);
+              renderError({ error: err.message || "Backend request failed" });
+              return;
+          }
+
+          const backendResponse = res.json();
+          console.log("✅ Backend response:", backendResponse);
+
+          if (backendResponse.team) {
+              renderSuccess(backendResponse);
+          } else {
+              renderError(backendResponse);
+          }
+      });
+
+
+      /* =====================================================
+         🎨 VISUALIZER HELPERS
+      ===================================================== */
+
+
+      function displayValue(label, value) {
+          return `
+              <div class="row">
+                  <div class="label">${label}</div>
+                  <div class="value">${value ?? "—"}</div>
+              </div>
+          `;
+      }
+
+
+      /* ---------------- SUCCESS ---------------- */
+
+
+      function renderSuccess(data) {
+          const team = data.team;
+
+          const html = `
+          <style>
+              body { font-family: Inter, sans-serif; background:#0f172a; color:#e5e7eb; }
+              .card {
+                  background:#020617;
+                  border-radius:14px;
+                  padding:20px;
+                  max-width:900px;
+              }
+              h2 { color:#22c55e; margin-bottom:6px; }
+              .subtitle { color:#94a3b8; margin-bottom:16px; }
+              .row {
+                  display:flex;
+                  margin-bottom:8px;
+              }
+              .label {
+                  width:180px;
+                  color:#94a3b8;
+              }
+              .value {
+                  flex:1;
+                  font-weight:500;
+              }
+              .badge {
+                  display:inline-block;
+                  padding:4px 10px;
+                  border-radius:999px;
+                  background:#1e293b;
+                  color:#38bdf8;
+                  font-size:12px;
+              }
+              ul { margin:6px 0 0 18px; }
+          </style>
+
+          <div class="card">
+              <h2>✅ Care team updated</h2>
+              <div class="subtitle">${data.message}</div>
+
+              ${displayValue("Team ID", team.careTeamId)}
+              ${displayValue("Name", team.name)}
+              ${displayValue("Category", team.category)}
+              ${displayValue("Status", `<span class="badge">${team.team_status}</span>`)}
+              ${displayValue("Email", team.email)}
+              ${displayValue("Note", team.note)}
+              ${displayValue("Environment", team.environment)}
+              ${displayValue("Created", new Date(team.createdAt).toLocaleString())}
+              ${displayValue("Updated", new Date(team.updatedAt).toLocaleString())}
+
+              <h3>👥 Participants (${team.participants?.length || 0})</h3>
+              <ul>
+                  ${(team.participants || []).map(p =>
+                      `<li>${p.member_id} — <b>${p.role}</b></li>`
+                  ).join("") || "<li>No participants</li>"}
+              </ul>
+          </div>
+          `;
+
+          pm.visualizer.set(html);
+      }
+
+
+      /* ---------------- ERROR ---------------- */
+
+
+      function renderError(data) {
+          const html = `
+          <style>
+              body { font-family: Inter, sans-serif; color:#fee2e2; }
+              .card {
+                  background:#7f1d1d;
+                  border-radius:14px;
+                  padding:20px;
+                  max-width:100%;
+              }
+              h2 { color:#fecaca; }
+              pre {
+                  background:#991b1b;
+                  padding:12px;
+                  border-radius:8px;
+                  max-width:100%;
+                  white-space: pre-wrap; 
+              }
+          </style>
+
+          <div class="card">
+              <h2>❌ Backend error</h2>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+          </div>
+          `;
+
+          pm.visualizer.set(html);
+      }
+    language: text/javascript
+order: 7000

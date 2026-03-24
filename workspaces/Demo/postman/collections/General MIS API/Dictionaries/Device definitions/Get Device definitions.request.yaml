@@ -1,0 +1,40 @@
+$kind: http-request
+url: "{{host}}/api/device_definitions?medical_program_id=0cefbce3-6dd2-45bd-b1e\
+  6-983fc055d5e0"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: classification_type
+    value: W0101060101
+    disabled: true
+  - key: model_number
+    value: H00P53
+    disabled: true
+  - key: name
+    value: Some%20name
+    disabled: true
+  - key: name_type
+    value: registered
+    disabled: true
+  - key: medical_program_id
+    value: d1f8be15-f9db-4c09-abf7-aa78a5a09b24
+    disabled: true
+  - key: medical_program_id
+    value: 0cefbce3-6dd2-45bd-b1e6-983fc055d5e0
+  - key: is_active
+    value: "true"
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: medical_program_id
+    value: c41ae6c1-67db-4ee0-99f8-92d3faf19cf6
+    disabled: true
+order: 1000

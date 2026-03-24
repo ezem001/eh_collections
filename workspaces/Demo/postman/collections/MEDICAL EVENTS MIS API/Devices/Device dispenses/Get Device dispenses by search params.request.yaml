@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/device_requests?status=active&code=\
+  30222&code_reference=7075e0e2-6b57-47fd-aff7-324806efa7e5&requester_legal_ent\
+  ity=7075e0e2-6b57-47fd-aff7-324806efa7e5&requester=7075e0e2-6b57-47fd-aff7-32\
+  4806efa7e5&encounter=7075e0e2-6b57-47fd-aff7-324806efa7e5&program=7075e0e2-6b\
+  57-47fd-aff7-324806efa7e5&context_episode_id=ef30f210-5328-4f48-bfe6-c7150d47\
+  37a6&based_on=7075e0e2-6b57-47fd-aff7-324806efa7e5&priority=low&performer=707\
+  5e0e2-6b57-47fd-aff7-324806efa7e5&authored_on_from=2020-01-01T00%3A00%3A00.00\
+  0Z&authored_on_to=2021-01-01T00%3A00%3A00.000Z"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  status: active
+  code: "30222"
+  code_reference: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+  requester_legal_entity: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+  requester: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+  encounter: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+  program: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+  context_episode_id: ef30f210-5328-4f48-bfe6-c7150d4737a6
+  based_on: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+  priority: low
+  performer: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+  authored_on_from: 2020-01-01T00%3A00%3A00.000Z
+  authored_on_to: 2021-01-01T00%3A00%3A00.000Z
+body:
+  type: text
+  content: ""
+order: 9000

@@ -1,0 +1,67 @@
+$kind: http-request
+url: "{{host}}/api/equipment"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"inventory_number\": \"013655gg\",\r
+
+    \    \"serial_number\": \"S/N234554\",\r
+
+    \    \"names\": [\r
+
+    \        {\r
+
+    \            \"name\": \"Інжектор ангіографічний для комп’ютерної
+    томографії\",\r
+
+    \            \"type\": \"registered\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"status\": \"active\",\r
+
+    \    \"availability_status\": \"available\",\r
+
+    \    \"manufacturer\": \"GlobalMed, Inc\",\r
+
+    \    \"manufacture_date\": \"2023-01-01\",\r
+
+    \    \"model_number\": \"NSPX30\",\r
+
+    \    \"type\": \"Z11039013\",\r
+
+    \    \"properties\": [\r
+
+    \        {\r
+
+    \            \"type\": \"default\",\r
+
+    \            \"value_integer\": 10\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"division_id\": \"{{user_division_id}}\",\r
+
+    \    \"note\": \"Технічний огляд раз на рік\",\r
+
+    \    \"parent_id\": \"8e122d2a-e216-4a21-a18a-936eac9ef408\",\r
+
+    \    \"lot_number\": \"RZ12345678\",\r
+
+    \    \"expiration_date\": \"2027-01-01\",\r
+
+    \    \"recorder\": \"{{user_id}}\"\r
+
+    }"
+order: 1000

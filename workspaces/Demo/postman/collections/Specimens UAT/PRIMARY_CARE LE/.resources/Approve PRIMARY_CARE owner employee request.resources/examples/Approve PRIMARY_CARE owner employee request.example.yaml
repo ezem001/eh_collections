@@ -1,0 +1,82 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/employee_requests/f3194666-0db4-4a25-8443-81fbe6ae975d/approve
+  method: POST
+  headers:
+    api-key: ef7d48ecfc233d6af088
+    Authorization: Bearer {{le_outp_v2_owner_approve_token}}
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Thu, 23 Nov 2023 12:50:41 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Access-Control-Allow-Origin: "*"
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Referrer-Policy: strict-origin-when-cross-origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "51"
+    X-Kong-Upstream-Latency: "852"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: f3176006-faf2-4306-9eb7-28b3242c585b#392
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a98a096edb22f5-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "employee_id": "9bbe224a-bb0d-4fa0-b52b-d3d804400308",
+              "employee_type": "OWNER",
+              "id": "f3194666-0db4-4a25-8443-81fbe6ae975d",
+              "inserted_at": "2023-11-23T12:46:06.470863Z",
+              "legal_entity_id": "68c4e556-5a61-4994-a788-4949dbd76688",
+              "party": {
+                  "birth_date": "1982-08-07",
+                  "documents": [
+                      {
+                          "issued_at": "1996-02-22",
+                          "issued_by": "Рокитнянським РВ ГУ МВС Київської області",
+                          "number": "АА110320",
+                          "type": "PASSPORT"
+                      }
+                  ],
+                  "email": "test_uat+25@ukr.net",
+                  "first_name": "Андрей",
+                  "gender": "MALE",
+                  "last_name": "Татаренко",
+                  "phones": [
+                      {
+                          "number": "+380503311862",
+                          "type": "MOBILE"
+                      }
+                  ],
+                  "second_name": "Васильович",
+                  "tax_id": "3140112011"
+              },
+              "position": "P1",
+              "start_date": "2023-11-23",
+              "status": "APPROVED",
+              "updated_at": "2023-11-23T12:50:40.447616Z"
+          },
+          "meta": {
+              "code": 200,
+              "request_id": "f3176006-faf2-4306-9eb7-28b3242c585b#392",
+              "type": "object",
+              "url": "http://api-svc.il/api/employee_requests/f3194666-0db4-4a25-8443-81fbe6ae975d/approve"
+          }
+      }
+order: 1000

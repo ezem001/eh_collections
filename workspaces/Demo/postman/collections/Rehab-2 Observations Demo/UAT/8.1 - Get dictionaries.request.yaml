@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host_demo}}/api/v2/dictionaries?name=eHealth/LOINC/observation_components"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{doctor_token}}
+  api-key: "{{mis_client_secret_demo}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value_demo}}"
+queryParams:
+  name: eHealth/LOINC/observation_components
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: tests["Job created"] = responseCode.code === 200;
+    language: text/javascript
+order: 1000

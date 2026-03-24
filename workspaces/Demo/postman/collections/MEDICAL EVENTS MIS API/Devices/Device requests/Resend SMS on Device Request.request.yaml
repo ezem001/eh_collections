@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/7f68ca7b-0015-4248-938e-8527b23caf23/device_re\
+  quests/809fba89-3b32-42db-8ecf-9ab04c396476/actions/resend"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+body:
+  type: text
+  content: ""
+order: 10000

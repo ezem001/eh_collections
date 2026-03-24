@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/equipment/c8bdeea3-9379-40b2-83fd-06937b869957"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 3000

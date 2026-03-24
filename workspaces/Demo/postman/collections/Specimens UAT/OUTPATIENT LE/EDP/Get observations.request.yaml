@@ -1,0 +1,16 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/observations?managing_organization_id=ac81d69f-e712-4b18-b9d5-83c2a87018e1
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{spec2_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: managing_organization_id
+    value: ac81d69f-e712-4b18-b9d5-83c2a87018e1
+  - key: specimen_id
+    value: 23e40a3c-a358-4d45-9e55-9021e1f90880
+    disabled: true
+examples: ./.resources/Get observations.resources/examples
+order: 13000

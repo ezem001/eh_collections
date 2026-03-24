@@ -1,0 +1,391 @@
+$kind: http-request
+url: ""
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"id\": \"b075f148-7f93-4fc2-b2ec-2d81b19a9b7b\",\r
+
+    \  \"based_on\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"device_request\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"b4a6d991-0bf7-476f-b3cf-bec83f044b1b\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"null\"\r
+
+    \  },\r
+
+    \  \"status\": \"completed\",\r
+
+    \  \"subject\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"patient\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"9183a36b-4d45-4244-9339-63d81cd08d9c\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"null\"\r
+
+    \  },\r
+
+    \  \"primary_source\": false,\r
+
+    \  \"performer\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"employee\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"b4a6d991-0bf7-476f-b3cf-bec83f044b1b\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"Мельник Микола Микитович\"\r
+
+    \  },\r
+
+    \  \"external_performer\": \"03562649\",\r
+
+    \  \"external_provider\": {\r
+
+    \    \"provider_legal_entity_name\": \"Assistive Devices Provider\",\r
+
+    \    \"provider_legal_entity_edrpou\": \"03562649\"\r
+
+    \  },\r
+
+    \  \"location\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"division\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"b4a6d991-0bf7-476f-b3cf-bec83f044b1b\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"Перше відділення\"\r
+
+    \  },\r
+
+    \  \"when_handed_over\": \"2018-08-02T10:45:16.000Z\",\r
+
+    \  \"note\": \"Some notes\",\r
+
+    \  \"performer_legal_entity\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"legal_entity\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"c5a6d991-0bf7-476f-b3cf-bec83f044b2a\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"Комунальне підприємство Медлаб\"\r
+
+    \  },\r
+
+    \  \"program\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"medical_program\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"c5a6d991-0bf7-476f-b3cf-bec83f044b2a\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"Доступні медичні вироби\"\r
+
+    \  },\r
+
+    \  \"details\": [\r
+
+    \    {\r
+
+    \      \"device\": {\r
+
+    \        \"identifier\": {\r
+
+    \          \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \              {\r
+
+    \                \"system\": \"eHealth/resources\",\r
+
+    \                \"code\": \"device_definition\"\r
+
+    \              }\r
+
+    \            ]\r
+
+    \          },\r
+
+    \          \"value\": \"b4a6d991-0bf7-476f-b3cf-bec83f044b1b\"\r
+
+    \        }\r
+
+    \      },\r
+
+    \      \"program_device\": {\r
+
+    \        \"identifier\": {\r
+
+    \          \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \              {\r
+
+    \                \"system\": \"eHealth/resources\",\r
+
+    \                \"code\": \"program_device\"\r
+
+    \              }\r
+
+    \            ]\r
+
+    \          },\r
+
+    \          \"value\": \"b4a6d991-0bf7-476f-b3cf-bec83f044b1b\"\r
+
+    \        },\r
+
+    \        \"display_value\": \"null\"\r
+
+    \      },\r
+
+    \      \"quantity\": {\r
+
+    \        \"value\": 10,\r
+
+    \        \"system\": \"device_unit\",\r
+
+    \        \"code\": \"piece\",\r
+
+    \        \"unit\": \"шт\"\r
+
+    \      },\r
+
+    \      \"sell_price\": 18.65,\r
+
+    \      \"discount_amount\": 150,\r
+
+    \      \"reimbursement_amount\": 450\r
+
+    \    }\r
+
+    \  ],\r
+
+    \  \"payment_id\": \"1239804\",\r
+
+    \  \"payment_amount\": 50,\r
+
+    \  \"inserted_at\": \"2017-04-20T19:14:13Z\",\r
+
+    \  \"inserted_by\": \"e1453f4c-1077-4e85-8c98-c13ffca0063e\",\r
+
+    \  \"updated_at\": \"2017-04-20T19:14:13Z\",\r
+
+    \  \"updated_by\": \"2922a240-63db-404e-b730-09222bfeb2dd\",\r
+
+    \  \"part_of\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"procedure\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"c5a6d991-0bf7-476f-b3cf-bec83f044b2a\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"null\"\r
+
+    \  },\r
+
+    \  \"encounter\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"encounter\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"c5a6d991-0bf7-476f-b3cf-bec83f044b2a\"\r
+
+    \    },\r
+
+    \    \"display_value\": \"null\"\r
+
+    \  },\r
+
+    \  \"supporting_info\": [\r
+
+    \    {\r
+
+    \      \"identifier\": {\r
+
+    \        \"type\": {\r
+
+    \          \"coding\": [\r
+
+    \            {\r
+
+    \              \"system\": \"eHealth/resources\",\r
+
+    \              \"code\": \"condition\"\r
+
+    \            }\r
+
+    \          ]\r
+
+    \        },\r
+
+    \        \"value\": \"9183a36b-4d45-4244-9339-63d81cd08d9c\"\r
+
+    \      }\r
+
+    \    }\r
+
+    \  ],\r
+
+    \  \"status_reason\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"device_dispense_mark_in_error_reasons\",\r
+
+    \        \"code\": \"incorrect_patient\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  }\r
+
+    }"
+order: 6000

@@ -1,0 +1,55 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/jobs/{{job_id}}
+  method: GET
+  headers:
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 303
+  statusText: See Other
+  headers:
+    Date: Wed, 29 Nov 2023 11:13:03 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "666"
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "11"
+    X-Kong-Upstream-Latency: "5"
+    X-Request-Id: dce4cb9c-5ac2-45eb-b659-4173e5715703#821
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82da6b4f2f72c30a-VIE
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "eta": "2023-11-29T11:22:58.677Z",
+              "links": [
+                  {
+                      "entity": "encounter",
+                      "href": "/api/patients/3bd56046-488c-47c7-83df-785acb4139b8/encounters/1a0a8aa2-87a4-41ca-a61c-ba0923292714"
+                  },
+                  {
+                      "entity": "procedure",
+                      "href": "/api/patients/3bd56046-488c-47c7-83df-785acb4139b8/procedures/1a0a8aa2-87a4-41ca-a61c-ba0923292714"
+                  },
+                  {
+                      "entity": "condition",
+                      "href": "/api/patients/3bd56046-488c-47c7-83df-785acb4139b8/conditions/52d3b2c2-5a44-4d33-b7a0-c56fb3335599"
+                  }
+              ],
+              "status": "processed",
+              "status_code": 200
+          },
+          "meta": {
+              "code": 303,
+              "request_id": "dce4cb9c-5ac2-45eb-b659-4173e5715703#821",
+              "type": "object",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/jobs/65671cbafac6410042e39a48"
+          }
+      }
+order: 1000

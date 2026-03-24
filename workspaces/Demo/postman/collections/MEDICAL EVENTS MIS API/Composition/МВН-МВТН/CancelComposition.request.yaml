@@ -1,0 +1,296 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/1cc8690b-0a50-4fef-b254-4fb0702c4cdb/cancel"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"data\": \"{{composition_enter_in_error_signed_content}}\"\r
+
+    }\r\n"
+scripts:
+  - type: afterResponse
+    code: "const jsonData = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    let html = `<h3>${title}</h3>`;\r
+
+      \r
+
+      \    if (Array.isArray(data)) {\r
+
+      \        html += \"<ul>\";\r
+
+      \        data.forEach(item => {\r
+
+      \            html += `<li>${item}</li>`;\r
+
+      \        });\r
+
+      \        html += \"</ul>\";\r
+
+      \    } else if (typeof data === 'object') {\r
+
+      \        html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    } else {\r
+
+      \        html += `<p>${data}</p>`;\r
+
+      \    }\r
+
+      \r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      // --- Основна перевірка відповіді ---\r
+
+      pm.test(\"Check composition code be 200\", function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \r
+
+      \    const compositionCheckJobID = jsonData?.data?.id;\r
+
+      \    if (compositionCheckJobID) {\r
+
+      \        pm.globals.set('composition_check_job_id',
+      compositionCheckJobID);\r
+
+      \        console.log('composition_check_job_id:',
+      compositionCheckJobID);\r
+
+      \    } else {\r
+
+      \        console.warn(\"composition_check_job_id not found in
+      response\");\r
+
+      \        return displayResponse(\"❌ composition_check_job_id not found\",
+      jsonData);\r
+
+      \    }\r
+
+      \r
+
+      \    const url =
+      `${pm.globals.get('host')}/api/patients/composition/job/${compositionChec\
+      kJobID}`;\r
+
+      \r
+
+      \    pm.sendRequest({\r
+
+      \        method: 'GET',\r
+
+      \        url: url,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \            'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('GET error:', err);\r
+
+      \            return displayResponse('❌ Request Error', err.message ||
+      err);\r
+
+      \        }\r
+
+      \r
+
+      \        const responseBody = res.json();\r
+
+      \        const status = responseBody?.data?.status;\r
+
+      \r
+
+      \        if (status === \"FAILED\") {\r
+
+      \            const errorMessages = responseBody.data.links.map(link => {\r
+
+      \                return link.error || JSON.stringify(link);\r
+
+      \            });\r
+
+      \r
+
+      \            displayResponse('❌ Job Failed — Reasons:', errorMessages);\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        if (responseBody?.data?.links &&
+      Array.isArray(responseBody.data.links)) {\r
+
+      \            const hrefs = responseBody.data.links\r
+
+      \                .map(link => link.href)\r
+
+      \                .filter(Boolean);\r
+
+      \r
+
+      \            displayResponse('✅ Job Links', hrefs);\r
+
+      \r
+
+      \            responseBody.data.links.forEach(link => {\r
+
+      \                if (link?.href?.includes('composition/')) {\r
+
+      \                    const compositionId =
+      link.href.split('composition/').pop();\r
+
+      \                    pm.globals.set('compositionId', compositionId);\r
+
+      \                    console.log('✅ Saved compositionId:',
+      compositionId);\r
+
+      \                }\r
+
+      \            });\r
+
+      \        } else {\r
+
+      \            displayResponse('⚠️ Unexpected Response Structure',
+      responseBody);\r
+
+      \        }\r
+
+      \    });\r
+
+      });\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const requestBody = {\r
+
+      \    identifier: {\r
+
+      \        type: {\r
+
+      \            coding: [\r
+
+      \                {\r
+
+      \                    code: \"composition\",\r
+
+      \                    system: \"eHealth/composition\"\r
+
+      \                }\r
+
+      \            ]\r
+
+      \        },\r
+
+      \        value: `${pm.globals.get(\"JobCompositionID\")}`\r
+
+      \    },\r
+
+      \    reason: {\r
+
+      \        coding: [\r
+
+      \            {\r
+
+      \                system:
+      \"COMPOSITION_CANCELLATION_REASONS_TEMP_DISABILITY\",\r
+
+      \                code: \"INCORRECT_CATEGORY\"\r
+
+      \            }\r
+
+      \        ],\r
+
+      \        text: \"Відміна мвтн\"\r
+
+      \    }\r
+
+      };\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url:
+      'http://localhost:3000/enter-in-error-composition-signed-content',\r
+
+      \    method: 'POST',\r
+
+      \    header: {\r
+
+      \        'Content-Type': 'application/json'\r
+
+      \    },\r
+
+      \    body: {\r
+
+      \        mode: 'raw',\r
+
+      \        raw: JSON.stringify(requestBody)\r
+
+      \    }\r
+
+      }, function (err, res) {\r
+
+      \    if (err) {\r
+
+      \        console.error('POST error:', err);\r
+
+      \    } else {\r
+
+      \        try {\r
+
+      \            const response = res.json();\r
+
+      \            if (response.signed_content) {\r
+
+      \                pm.globals.set(\"composition_enter_in_error_signed_conte\
+      nt\", response.signed_content);\r
+
+      \                console.log(\"signed_content saved to
+      enterInErrorResponse\");\r
+
+      \            } else {\r
+
+      \                console.warn(\"signed_content not found in response\");\r
+
+      \            }\r
+
+      \        } catch (e) {\r
+
+      \            console.error(\"Failed to parse JSON:\", e);\r
+
+      \        }\r
+
+      \    }\r
+
+      });\r\n"
+    language: text/javascript
+order: 7000

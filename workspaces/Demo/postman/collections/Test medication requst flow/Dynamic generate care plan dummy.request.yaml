@@ -1,0 +1,522 @@
+$kind: http-request
+url: http://localhost:3000/create-care-plan-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{care_plan_id}}\",\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"eHealth/care_plan_categories\",\r
+
+    \                \"code\": \"{{care_plan_class}}\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"title\": \"План Лікуваня\",\r
+
+    \    \"description\": \"123\",\r
+
+    \    \"period\": {\r
+
+    \        \"start\": \"{{careplan_period_start}}\",\r
+
+    \        \"end\": \"{{careplan_period_end}}\"\r
+
+    \    },\r
+
+    \    \"note\": \"123\",\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobEncounterID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"addresses\": [\r
+
+    \        {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                   \"system\": \"{{diagnosis_system}}\",\r
+
+    \                        \"code\": \"{{condition_diagnosis}}\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"terms_of_service\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"PROVIDING_CONDITION\",\r
+
+    \                \"code\": \"OUTPATIENT\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"status\": \"new\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const carePlanId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"care_plan_id\", carePlanId);\r
+
+      \r
+
+      // Отримуємо дату початку енкаунтера (вже має бути в глобальних)\r
+
+      const encounterStartStr = pm.globals.get(\"encounter_period_start\");\r
+
+      \r
+
+      // Якщо енкаунтер не задано — беремо вчорашню дату\r
+
+      const encounterStart = encounterStartStr ? new Date(encounterStartStr) :
+      new Date(Date.now() - 86400000);\r
+
+      \r
+
+      // Початок care_plan — на 1 день пізніше за encounter.start\r
+
+      const carePlanStart = new Date(encounterStart);\r
+
+      carePlanStart.setDate(encounterStart.getDate() + 1);\r
+
+      carePlanStart.setUTCHours(8, 45, 16, 0);\r
+
+      \r
+
+      // Кінець care_plan — через 7 днів після start\r
+
+      const carePlanEnd = new Date(carePlanStart);\r
+
+      carePlanEnd.setDate(carePlanStart.getDate() + 8);\r
+
+      carePlanEnd.setUTCHours(11, 0, 0, 0);\r
+
+      \r
+
+      // 🔍 Валідація\r
+
+      if (carePlanEnd < carePlanStart) {\r
+
+      \    throw new Error(\"❌ End date must be greater than or equal to start
+      date\");\r
+
+      }\r
+
+      \r
+
+      if (carePlanStart < encounterStart) {\r
+
+      \    throw new Error(\"❌ Care plan start date must be greater or equal
+      than Encounter period start\");\r
+
+      }\r
+
+      \r
+
+      // 🧩 Запис у глобальні змінні\r
+
+      pm.globals.set(\"careplan_period_start\", carePlanStart.toISOString());\r
+
+      pm.globals.set(\"careplan_period_end\", carePlanEnd.toISOString());\r
+
+      \r
+
+      // 🪵 Лог для перевірки\r
+
+      console.log(\"📅 CarePlan period_start:\", carePlanStart.toISOString());\r
+
+      console.log(\"📅 CarePlan period_end:\", carePlanEnd.toISOString());\r
+
+      \r
+
+      \r
+
+      \r
+
+      // --- Візуалізація результатів ---\r
+
+      function displayResponse(title, data) {\r
+
+      \    console.log(title, data);\r
+
+      \r
+
+      \    const style = `\r
+
+      \        <style>\r
+
+      \            body { font-family: \"Inter\", sans-serif; background:
+      #f8f9fa; color: #222; padding: 20px; }\r
+
+      \            h1 { color: #2b7cff; font-size: 20px; margin-bottom: 12px;
+      }\r
+
+      \            .card { background: white; border-radius: 10px; padding: 16px
+      20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }\r
+
+      \            .info { margin-bottom: 6px; }\r
+
+      \            .key { font-weight: bold; color: #333; }\r
+
+      \            pre { background: #f4f4f4; border-radius: 8px; padding: 10px;
+      overflow-x: auto; font-size: 13px; }\r
+
+      \            .warn { color: #d9534f; font-weight: bold; }\r
+
+      \            .ok { color: #28a745; font-weight: bold; }\r
+
+      \        </style>\r
+
+      \    `;\r
+
+      \r
+
+      \    const html = `\r
+
+      \        ${style}\r
+
+      \        <div class=\"card\">\r
+
+      \            <h1>${title}</h1>\r
+
+      \            <pre>${JSON.stringify(data, null, 2)}</pre>\r
+
+      \        </div>\r
+
+      \    `;\r
+
+      \r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      // --- Отримуємо значення з environment ---\r
+
+      const diagnosis = pm.environment.get(\"condition_diagnosis\");  //
+      наприклад, A01\r
+
+      const system = pm.environment.get(\"diagnosis_system\");         //
+      eHealth/ICPC2/condition_codes\r
+
+      \r
+
+      \r
+
+      \r
+
+      // --- Отримуємо глобальні словники ---\r
+
+      let icpc2Classes = pm.globals.get(\"care_plan_icpc2_classes\");\r
+
+      let icd10amClasses = pm.globals.get(\"care_plan_icd10am_clases\");\r
+
+      let carePlanClassesInfo = pm.globals.get(\"care_plan_active_classes\"); //
+      масив [{code, description}]\r
+
+      \r
+
+      \r
+
+      // --- Безпечне парсення ---\r
+
+      function safeParse(value, name) {\r
+
+      \    if (typeof value === \"string\") {\r
+
+      \        try {\r
+
+      \            return JSON.parse(value);\r
+
+      \        } catch (e) {\r
+
+      \            console.warn(`⚠️ Неможливо розпарсити ${name}:`, e);\r
+
+      \            return null;\r
+
+      \        }\r
+
+      \    }\r
+
+      \    return value;\r
+
+      }\r
+
+      \r
+
+      icpc2Classes = safeParse(icpc2Classes, \"icpc2Classes\");\r
+
+      icd10amClasses = safeParse(icd10amClasses, \"icd10amClasses\");\r
+
+      carePlanClassesInfo = safeParse(carePlanClassesInfo,
+      \"carePlanClassesInfo\");\r
+
+      \r
+
+      if (!diagnosis || !system) {\r
+
+      \    const msg = \"⚠️ Відсутні diagnosis або system у середовищі.\";\r
+
+      \    console.warn(msg);\r
+
+      \    displayResponse(\"Помилка\", { warning: msg });\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      let foundClass = null;\r
+
+      let foundDescription = null;\r
+
+      \r
+
+      // --- Пошук у ICPC2 ---\r
+
+      if (system === \"eHealth/ICPC2/condition_codes\" && icpc2Classes && typeof
+      icpc2Classes === \"object\") {\r
+
+      \    for (const [className, codes] of Object.entries(icpc2Classes)) {\r
+
+      \        const arr = (codes || \"\").split(\",\").map(c => c.trim());\r
+
+      \        if (arr.includes(diagnosis)) {\r
+
+      \            foundClass = className.toLowerCase();\r
+
+      \            pm.environment.set(\"care_plan_class\", foundClass);\r
+
+      \            pm.environment.set(\"icpc2_codes_array\",
+      JSON.stringify(arr));\r
+
+      \r
+
+      \            const match = Array.isArray(carePlanClassesInfo)\r
+
+      \                ? carePlanClassesInfo.find(c => c.code.toLowerCase() ===
+      foundClass)\r
+
+      \                : null;\r
+
+      \r
+
+      \            if (match) {\r
+
+      \                foundDescription = match.description;\r
+
+      \                pm.environment.set(\"icpc2_class_description\",
+      foundDescription);\r
+
+      \            }\r
+
+      \r
+
+      \            displayResponse(\"✅ Знайдено у ICPC2\", {\r
+
+      \                diagnosis,\r
+
+      \                class: foundClass,\r
+
+      \                description: foundDescription || \"—\",\r
+
+      \                codes: arr\r
+
+      \            });\r
+
+      \            return;\r
+
+      \        }\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      // --- Пошук у ICD10-AM ---\r
+
+      if (system.replace(/[_-]/g, \"\").toLowerCase().includes(\"icd10am\") &&
+      icd10amClasses && typeof icd10amClasses === \"object\") {\r
+
+      \    for (const [className, codes] of Object.entries(icd10amClasses)) {\r
+
+      \        const arr = (codes || \"\").split(\",\").map(c => c.trim());\r
+
+      \        if (arr.includes(diagnosis)) {\r
+
+      \            foundClass = className.toLowerCase();\r
+
+      \            pm.environment.set(\"care_plan_class\", foundClass);\r
+
+      \            pm.environment.set(\"icd10am_codes_array\",
+      JSON.stringify(arr));\r
+
+      \r
+
+      \            const match = Array.isArray(carePlanClassesInfo)\r
+
+      \                ? carePlanClassesInfo.find(c => c.code.toLowerCase() ===
+      foundClass)\r
+
+      \                : null;\r
+
+      \r
+
+      \            if (match) {\r
+
+      \                foundDescription = match.description;\r
+
+      \                pm.environment.set(\"icd10am_class_description\",
+      foundDescription);\r
+
+      \            }\r
+
+      \r
+
+      \            displayResponse(\"✅ Знайдено у ICD10-AM\", {\r
+
+      \                diagnosis,\r
+
+      \                class: foundClass,\r
+
+      \                description: foundDescription || \"—\",\r
+
+      \                codes: arr\r
+
+      \            });\r
+
+      \            return;\r
+
+      \        }\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      // --- Якщо нічого не знайдено ---\r
+
+      const msg = `⚠️ Код ${diagnosis} не знайдено у словниках для системи
+      ${system}`;\r
+
+      console.warn(msg);\r
+
+      displayResponse(\"Результат пошуку\", { warning: msg });\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      pm.test(`Care Plan content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('care_plan_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      // if(resData.signed_content){\r
+
+      //     pm.globals.set('care_plan_signed_content',
+      resData.signed_content)\r
+
+      // }"
+    language: text/javascript
+order: 4000

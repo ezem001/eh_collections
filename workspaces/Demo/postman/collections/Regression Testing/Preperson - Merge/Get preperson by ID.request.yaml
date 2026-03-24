@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host}}/api/prepersons/{{preperson_id}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r\n"
+    language: text/javascript
+order: 2000

@@ -1,0 +1,46 @@
+$kind: http-request
+url: "{{host}}/api/service_requests/fb80c279-9e6b-4231-a339-c2c01f192c5e/action\
+  s/qualify"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+  "": ""
+body:
+  type: text
+  content: "{\r
+
+    \  \"programs\": [\r
+
+    \    {\r
+
+    \      \"identifier\": {\r
+
+    \        \"type\": {\r
+
+    \          \"coding\": [\r
+
+    \            {\r
+
+    \              \"system\": \"eHealth/resources\",\r
+
+    \              \"code\": \"medical_program\"\r
+
+    \            }\r
+
+    \          ]\r
+
+    \        },\r
+
+    \        \"value\": \"963b1410-17e8-4407-b700-044c9fc555ca\"\r
+
+    \      }\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+order: 3000

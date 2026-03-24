@@ -1,0 +1,2070 @@
+$kind: http-request
+description: >-
+  Method returns list of medical programs filtering by parameters. By default
+  method returns only active medical programs `is_active=true`
+
+
+  **Scopes required:** `medical_program:read`
+url: "{{host}}/api/medical_programs?is_active=true&page_size=500&id=2adffeff-be\
+  3c-4a23-92a3-2cf4a34a2972"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer NS84ZGFESXA0cTNWdjcrdnBrV3dMUT09
+  X-Custom-PSK: "{{x-custom-psk}}"
+  api-key: "{{mis_client_secret}}"
+queryParams:
+  - key: name
+    value: "%D0%94%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%BD%D1%96%20%D0%BB%D1%96%D0%BA%D\
+      0%B8"
+    disabled: true
+  - key: is_active
+    value: "true"
+  - key: mr_blank_type
+    value: F-1
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "500"
+  - key: type
+    value: DEVICE
+    disabled: true
+  - key: type
+    value: MEDICATION
+    disabled: true
+  - key: id
+    value: 1a227396-a0e4-4c4f-a0a9-6b358c8929d
+    disabled: true
+  - key: id
+    value: c49cdca3-ff6a-4099-a294-9dd9a00ab8d3
+    disabled: true
+  - key: id
+    value: 6aced371-68f3-45b3-ac6d-b04deacf9bd9
+    disabled: true
+    description: аівавіа
+  - key: id
+    value: 0cefbce3-6dd2-45bd-b1e6-983fc055d5e0
+    disabled: true
+  - key: id
+    value: 74f24bfe-f293-4a4f-a47d-670bdc8dbc9a
+    disabled: true
+  - key: id
+    value: 963b1410-17e8-4407-b700-044c9fc555ca
+    disabled: true
+  - key: id
+    value: 0eb268fa-ab21-4df9-8d58-1bc85e393533
+    disabled: true
+  - key: id
+    value: de6fd5c1-66cf-4118-a5f3-6d32f70c5274
+    disabled: true
+  - key: id
+    value: f01d0d8c-bccb-4bde-a6c6-f4b873a005c2
+    disabled: true
+  - key: id
+    value: c41ae6c1-67db-4ee0-99f8-92d3faf19cf6
+    disabled: true
+  - key: id
+    value: 5562904e-100f-11ee-be56-0242ac120002
+    disabled: true
+  - key: id
+    value: d1fa26d1-8e25-4bc6-b76c-251f53e22d09
+    disabled: true
+  - key: id
+    value: b59f2ca3-b284-44a7-9ab1-7c5f221402c4
+    disabled: true
+  - key: id
+    value: e9c6beeb-b19f-4b97-b42a-020c5c996c56
+    disabled: true
+  - key: id
+    value: 0e26d6ca-b6c2-49d6-8d16-ca9635ea59ad
+    disabled: true
+  - key: id
+    value: 786ac2aa-af37-4bd0-b1f5-40a017bf2237
+    disabled: true
+  - key: id
+    value: 2adffeff-be3c-4a23-92a3-2cf4a34a2972
+  - key: id
+    value: 857588d8-9e12-4935-96c4-b08e95d19dce
+    disabled: true
+  - key: id
+    value: d1f8be15-f9db-4c09-abf7-aa78a5a09b24
+    disabled: true
+  - key: id
+    value: ba40bb7f-9084-4266-8316-d753037d26b6
+    disabled: true
+  - key: id
+    value: 014d1d27-a0fc-4591-81cf-46fa6ea2999d
+    disabled: true
+  - key: id
+    value: c691a8a7-283f-4c71-aa3a-7f27e7d04a81
+    disabled: true
+  - key: id
+    value: 236b2e86-54ae-4be8-8856-c9a09e21fca6
+    disabled: true
+  - key: id
+    value: 63c1f32f-c8f4-4f5b-81a9-79b8452d6545
+    disabled: true
+  - key: id
+    value: 276faa17-d6cd-4781-9166-fd2c16af20a0
+    disabled: true
+  - key: id
+    value: 96e1cf78-6524-456c-b8a9-f68177f42597
+    disabled: true
+  - key: id
+    value: a29d17ae-d4d2-4d9e-8a5f-8a68b63307f0
+    disabled: true
+  - key: id
+    value: 414e1aa4-2a5d-4a23-9312-9f8b1847fa3b
+    disabled: true
+  - key: id
+    value: 66a96847-49c0-43d9-b578-f229ba3b33e7
+    disabled: true
+  - key: id
+    value: b09c4241-01c5-4a1b-b7b7-1d91e638545c
+    disabled: true
+  - key: id
+    value: 11bffa7f-e63d-4ec8-aed2-2b526241dacb
+    disabled: true
+  - key: id
+    value: 83eee31e-3bb5-49cf-9f90-fde1be13dc95
+    disabled: true
+  - key: id
+    value: 75977dc6-49ce-4bb2-aa0f-9100c2edf440
+    disabled: true
+  - key: id
+    value: 8fe94d38-e35e-4fb3-a9d4-77945a18a5cc
+    disabled: true
+  - key: id
+    value: 638ec6b8-d461-4399-ac28-5341a2fcffd5
+    disabled: true
+  - key: id
+    value: 85a99548-ab99-4ac4-96ae-558251270690
+    disabled: true
+  - key: id
+    value: 8efe29df-18bd-4d49-8995-c3f7e44d9e12
+    disabled: true
+  - key: id
+    value: 8ff92fe9-87d4-456a-ab7a-69650a656737
+    disabled: true
+  - key: id
+    value: b15d6bfa-66a4-40ba-9965-ef7712f48da9
+    disabled: true
+  - key: id
+    value: 8a11c513-e7a9-4800-9fb9-becb743e08c4
+    disabled: true
+  - key: id
+    value: f217889f-736f-462c-8f8b-ed99edddb3be
+    disabled: true
+  - key: id
+    value: 14e19712-b443-4391-b0f7-aba8e8662459
+    disabled: true
+  - key: id
+    value: 7335a30e-61f2-42b0-9ed4-2afe847bba16
+    disabled: true
+  - key: id
+    value: b16409ab-af31-4016-bb61-7661dcce23ed
+    disabled: true
+  - key: id
+    value: e5aae687-020f-4eff-9939-5cb2f616d1f4
+    disabled: true
+  - key: id
+    value: 79c78d29-4409-4706-8a01-54bda4298170
+    disabled: true
+  - key: id
+    value: 0eececf1-aaf5-48fb-87e2-da44b7c49db2
+    disabled: true
+  - key: id
+    value: 043246d9-c7a4-4e07-818a-c0de7b9abc9a
+    disabled: true
+  - key: id
+    value: 18e20239-5a5c-493e-bbed-7a43c5c62d1d
+    disabled: true
+  - key: id
+    value: 9d94a21b-ec70-4b91-946a-981f4db8d2b9
+    disabled: true
+  - key: id
+    value: cda113e4-b8dd-4ec4-a878-3d1c7eae49da
+    disabled: true
+  - key: id
+    value: 95262828-f948-4932-a394-ead0a69a70bf
+    disabled: true
+  - key: id
+    value: f646aa61-6765-4cfa-89cd-5259b68b2ab7
+    disabled: true
+  - key: id
+    value: 0db3b845-bd1c-4021-b3f7-5a388a272fb7
+    disabled: true
+  - key: id
+    value: 9723a9a0-100a-11ee-be56-0242ac120002
+    disabled: true
+  - key: id
+    value: 1318eabc-1a1a-42f6-8450-61e11c19eede
+    disabled: true
+  - key: id
+    value: 0db3b845-bd1c-4021-b3f7-5a388a272fb7
+    disabled: true
+  - key: id
+    value: f1e60dab-0ddd-4668-99e3-a68599699b66
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "let mpData = pm.response?.json()?.data;\r
+
+      pm.globals.set(\"medical_program_data\", JSON.stringify(mpData));\r
+
+      \r
+
+      \r
+
+      const { generateEncounterJson } =
+      pm.require('@winter-zodiac-949553/generate');\r
+
+      \r
+
+      // =================================================================\r
+
+      // 🧩 Функція перевірки eligibility співробітника для MEDICATION\r
+
+      // =================================================================\r
+
+      \r
+
+      // function checkEmployeeEligibilityAndSetMedication(program,
+      medicationId, medicationDenumeratorUnit, medicationNumeratorUnit,
+      medicationPackageMinQty, medicationPackageQty, medicationInfo) {\r
+
+      //     const settings = program.medical_program_settings || {};\r
+
+      //     const employeeType = pm.environment.get(\"employee_type\");\r
+
+      //     const employeeSpecialty =
+      pm.environment.get(\"employee_specialty\");\r
+
+      //     const leProvidingCondition =
+      pm.environment.get(\"providing_condition\");\r
+
+      \r
+
+      //     const allowedTypes = settings.employee_types_to_create_request ||
+      [];\r
+
+      \r
+
+      //     // 👇 Нова логіка для спеціальностей\r
+
+      //     let specOK = false;\r
+
+      //     if (settings.speciality_types_allowed) {\r
+
+      //         // старе поле ще в силі — використовуємо його\r
+
+      //         specOK =
+      settings.speciality_types_allowed.includes(employeeSpecialty);\r
+
+      //     } else {\r
+
+      //         // нові поля\r
+
+      //         const requestAllowed =
+      settings.speciality_types_request_allowed;\r
+
+      //         const carePlanAllowed =
+      settings.speciality_types_care_plan_activity_allowed;\r
+
+      \r
+
+      //         // якщо поле null → обмежень нема\r
+
+      //         const requestOK = !requestAllowed ||
+      requestAllowed.includes(employeeSpecialty);\r
+
+      //         const carePlanOK = !carePlanAllowed ||
+      carePlanAllowed.includes(employeeSpecialty);\r
+
+      \r
+
+      //         // для MEDICATION важлива перевірка запиту\r
+
+      //         specOK = requestOK && carePlanOK; \r
+
+      //     }\r
+
+      \r
+
+      //     const allowedConditions = settings.providing_conditions_allowed ||
+      [];\r
+
+      //     const typeOK = !allowedTypes.length ||
+      allowedTypes.includes(employeeType);\r
+
+      //     const conditionOK = !allowedConditions.length ||
+      allowedConditions.includes(leProvidingCondition);\r
+
+      \r
+
+      //     if (typeOK && specOK && conditionOK) {\r
+
+      //         pm.globals.set(\"medication_id\", medicationId);\r
+
+      //         pm.globals.set(\"medication_denumerator_unit\",
+      medicationDenumeratorUnit);\r
+
+      //         pm.globals.set(\"medication_numerator_unit\",
+      medicationNumeratorUnit);\r
+
+      //         pm.globals.set(\"medication_package_min_qty\",
+      medicationPackageMinQty);\r
+
+      //         pm.globals.set(\"medication_package_qty\",
+      medicationPackageQty);\r
+
+      //         console.info(\"medication_info\", medicationInfo);\r
+
+      //         pm.globals.set(\"medication_info\",
+      JSON.stringify(medicationInfo));\r
+
+      \r
+
+      //         console.log(\"💾 Записано medication_id (співробітник
+      підходить):\", medicationId);\r
+
+      //     } else console.warn(\"⛔ medication_id НЕ записано — працівник не
+      відповідає умовам програми\");\r
+
+      // }\r
+
+      \r
+
+      \r
+
+      function checkEmployeeEligibilityAndSetMedication(program, medicationId,
+      medicationDenumeratorUnit, medicationNumeratorUnit,
+      medicationPackageMinQty, medicationPackageQty, medicationInfo) {\r
+
+      \    const settings = program.medical_program_settings || {};\r
+
+      \    const employeeType = pm.environment.get(\"employee_type\");\r
+
+      \    const employeeSpecialty =
+      pm.environment.get(\"employee_specialty\");\r
+
+      \    const leProvidingCondition =
+      pm.environment.get(\"providing_condition\");\r
+
+      \r
+
+      \    const allowedTypes = settings.employee_types_to_create_request ||
+      [];\r
+
+      \r
+
+      \    // 👇 Логіка спеціальностей з пріоритетом старого поля\r
+
+      \    let specOK = false;\r
+
+      \    let specWarning = false;\r
+
+      \    let specText = \"\";\r
+
+      \r
+
+      \    if (settings.speciality_types_allowed !== null &&
+      settings.speciality_types_allowed !== undefined) {\r
+
+      \        // Старе поле існує\r
+
+      \        if (settings.speciality_types_allowed.length === 0) {\r
+
+      \            specOK = true;\r
+
+      \            specWarning = true;\r
+
+      \            specText = \"speciality_types_allowed порожній — обмежень
+      немає\";\r
+
+      \        } else {\r
+
+      \            specOK =
+      settings.speciality_types_allowed.includes(employeeSpecialty);\r
+
+      \            specText = specOK ? \"\" : \"Спеціальність не входить у
+      allowed\";\r
+
+      \        }\r
+
+      \    } else {\r
+
+      \        // Використовуємо нові поля\r
+
+      \        const requestAllowed =
+      settings.speciality_types_request_allowed;\r
+
+      \        const carePlanAllowed =
+      settings.speciality_types_care_plan_activity_allowed;\r
+
+      \r
+
+      \        const requestOK = !requestAllowed || requestAllowed.length === 0
+      || requestAllowed.includes(employeeSpecialty);\r
+
+      \        const carePlanOK = !carePlanAllowed || carePlanAllowed.length ===
+      0 || carePlanAllowed.includes(employeeSpecialty);\r
+
+      \r
+
+      \        specOK = requestOK && carePlanOK;\r
+
+      \r
+
+      \        if ((!requestAllowed || requestAllowed.length === 0) &&
+      (!carePlanAllowed || carePlanAllowed.length === 0)) {\r
+
+      \            specWarning = true;\r
+
+      \            specText = \"Немає обмежень (request + carePlan)\";\r
+
+      \        } else if (!specOK) {\r
+
+      \            specText = \"Спеціальність не входить у allowed request або
+      carePlan\";\r
+
+      \        }\r
+
+      \    }\r
+
+      \r
+
+      \    const allowedConditions = settings.providing_conditions_allowed ||
+      [];\r
+
+      \    const typeOK = !allowedTypes.length ||
+      allowedTypes.includes(employeeType);\r
+
+      \    const conditionOK = !allowedConditions.length ||
+      allowedConditions.includes(leProvidingCondition);\r
+
+      \r
+
+      \    if (typeOK && specOK && conditionOK) {\r
+
+      \        pm.globals.set(\"medication_id\", medicationId);\r
+
+      \        pm.globals.set(\"medication_denumerator_unit\",
+      medicationDenumeratorUnit);\r
+
+      \        pm.globals.set(\"medication_numerator_unit\",
+      medicationNumeratorUnit);\r
+
+      \        pm.globals.set(\"medication_package_min_qty\",
+      medicationPackageMinQty);\r
+
+      \        pm.globals.set(\"medication_package_qty\",
+      medicationPackageQty);\r
+
+      \        console.info(\"medication_info\", medicationInfo);\r
+
+      \        pm.globals.set(\"medication_info\",
+      JSON.stringify(medicationInfo));\r
+
+      \r
+
+      \        console.log(\"💾 Записано medication_id (співробітник
+      підходить):\", medicationId);\r
+
+      \    } else console.warn(\"⛔ medication_id НЕ записано — працівник не
+      відповідає умовам програми\");\r
+
+      }\r
+
+      \r
+
+      \r
+
+      let selectedCode = \"\";\r
+
+      function displayResponse(title, summaryHtml, settingsHtml, color =
+      \"#2b7cff\", encounter, encStatus, participant) {\r
+
+      \    console.log(\"encounter data DONE!!!\", encounter)\r
+
+      \    const html = `\r
+
+      \        <div style=\"\r
+
+      \            font-family: 'Inter', 'Segoe UI', sans-serif;\r
+
+      \            background: linear-gradient(145deg, #f8faff, #eef3ff);\r
+
+      \            border-radius: 12px;\r
+
+      \            padding: 20px 28px;\r
+
+      \            box-shadow: 0 2px 8px rgba(0,0,0,0.08);\r
+
+      \            color: #333;\r
+
+      \        \">\r
+
+      \            <div style=\"\r
+
+      \                background: linear-gradient(90deg, ${color}, #6ea8fe);\r
+
+      \                padding: 10px 18px;\r
+
+      \                border-radius: 10px;\r
+
+      \                color: #fff;\r
+
+      \                font-size: 20px;\r
+
+      \                font-weight: 600;\r
+
+      \                letter-spacing: 0.5px;\r
+
+      \                margin-bottom: 18px;\r
+
+      \                box-shadow: 0 3px 6px rgba(0,0,0,0.15);\r
+
+      \            \">\r
+
+      \            <div style=\"display: flex; flex-direction: column; padding:
+      5px;\">\r
+
+      \            <span style=\"padding: 5px;\">${title}</span> \r
+
+      \            <span style=\"padding: 5px;\">${encStatus}</span>\r
+
+      \            <span style=\"padding: 5px;\">${participant}</span>\r
+
+      \            </div>\r
+
+      \            </div>\r
+
+      \            \r
+
+      \            <div style=\"\r
+
+      \                background:#fff;\r
+
+      \                border-radius:10px;\r
+
+      \                padding:18px 20px;\r
+
+      \                box-shadow:0 1px 4px rgba(0,0,0,0.06);\r
+
+      \                margin-bottom: 16px;\r
+
+      \            \">\r
+
+      \                ${summaryHtml}\r
+
+      \            </div>\r
+
+      \r
+
+      \            <div style=\"\r
+
+      \                background:#fff;\r
+
+      \                border-radius:10px;\r
+
+      \                padding:18px 20px;\r
+
+      \                box-shadow:0 1px 4px rgba(0,0,0,0.06);\r
+
+      \            \">\r
+
+      \                ${settingsHtml}\r
+
+      \            </div>\r
+
+      \r
+
+      \            <div style=\"text-align:center; margin-top:18px; color:#999;
+      font-size:12px;\">\r
+
+      \                🧠 QA Automation | Postman Visualizer\r
+
+      \            </div>\r
+
+      \        </div>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      const copyScript = `\r
+
+      <script>\r
+
+      \    function copyToClipboard(elementId, btnId, checkId) {\r
+
+      \        const el = document.getElementById(elementId);\r
+
+      \        const btn = document.getElementById(btnId);\r
+
+      \        const check = document.getElementById(checkId);\r
+
+      \        if (!el || !btn) return;\r
+
+      \r
+
+      \        const text = el.innerText.trim();\r
+
+      \        const textArea = document.createElement('textarea');\r
+
+      \        textArea.value = text;\r
+
+      \        document.body.appendChild(textArea);\r
+
+      \        textArea.select();\r
+
+      \r
+
+      \        try {\r
+
+      \            document.execCommand('copy');\r
+
+      \            btn.innerHTML = '✅ Скопійовано';\r
+
+      \           btn.style.background = (btnId === \"copyBtn\") ? '#BEF9C8' :
+      '#ff4d4f';\r
+
+      \           btn.style.color = (btnId === \"copyBtn\") ? '#0D8821' :
+      '#fff';\r
+
+      \            if (check) check.style.display = 'inline';\r
+
+      \            setTimeout(() => {\r
+
+      \                btn.innerHTML = '📋 Копіювати';\r
+
+      \                btn.style.background = (btnId === \"copyBtn\") ?
+      '#f5f8ff' : '#ff4d4f';\r
+
+      \                btn.style.color = (btnId === \"copyBtn\") ? '#2b7cff' :
+      '#fff';\r
+
+      \                if (check) check.style.display = 'none';\r
+
+      \            }, 1500);\r
+
+      \        } catch (err) {\r
+
+      \            btn.innerHTML = '❌ Помилка';\r
+
+      \            btn.style.background = '#d93025';\r
+
+      \            setTimeout(() => {\r
+
+      \                btn.innerHTML = '📋 Копіювати';\r
+
+      \                btn.style.background = '#ff4d4f';\r
+
+      \            }, 1500);\r
+
+      \        }\r
+
+      \        document.body.removeChild(textArea);\r
+
+      \    }\r
+
+      </script>\r
+
+      `;\r
+
+      \r
+
+      \r
+
+      /**\r
+
+      \ * Універсальний HTML-блок для відображення помилок, попереджень чи
+      інформаційних повідомлень.\r
+
+      \ * Можна викликати багаторазово, передаючи різні дані.\r
+
+      \ */\r
+
+      function createVisualizerCard({\r
+
+      \    title = \"⚠️ Повідомлення\",\r
+
+      \    subtitle = \"\",\r
+
+      \    color = \"#d93025\",\r
+
+      \    gradientFrom = \"#ffeaea\",\r
+
+      \    gradientTo = \"#fff5f5\",\r
+
+      \    fields = {},\r
+
+      \    button = null\r
+
+      }) {\r
+
+      \    // 🧩 Автоматичне визначення структури полів\r
+
+      \    // Якщо передано title/subtitle/name/program_id — будуємо зрозумілий
+      блок\r
+
+      \    let normalizedFields = fields;\r
+
+      \r
+
+      \    if (fields.title && fields.subtitle && fields.name &&
+      fields.program_id) {\r
+
+      \        normalizedFields = {\r
+
+      \            [fields.title]: `<code id=\"programName\"\r
+
+      \                style=\"background:#fff1f0;color:${color};\r
+
+      \                padding:2px
+      6px;border-radius:4px;\">${fields.name}</code>`,\r
+
+      \            [fields.subtitle]: `<code id=\"${button.targetId}\"\r
+
+      \                style=\"background:#fff1f0;color:${color};\r
+
+      \                padding:2px
+      6px;border-radius:4px;\">${fields.program_id}</code>`\r
+
+      \        };\r
+
+      \    }\r
+
+      \r
+
+      \    const fieldsHtml = Object.entries(normalizedFields)\r
+
+      \        .map(([label, value]) => `\r
+
+      \            <p>\r
+
+      \                <b>${label}:</b>\r
+
+      \                ${value}\r
+
+      \            </p>\r
+
+      \        `)\r
+
+      \        .join(\"\");\r
+
+      \r
+
+      \    const buttonHtml = button ? `\r
+
+      \        <button id=\"${button.id}\"\r
+
+      \            onclick=\"copyToClipboard('${button.targetId}','${button.id}\
+      ','${button.check || ''}')\"\r
+
+      \            style=\"\r
+
+      \                margin-left:8px;\r
+
+      \                background:${color};\r
+
+      \                border:none;\r
+
+      \                color:white;\r
+
+      \                border-radius:6px;\r
+
+      \                padding:4px 8px;\r
+
+      \                cursor:pointer;\r
+
+      \                font-size:13px;\r
+
+      \                transition:all 0.2s ease;\r
+
+      \            \">\r
+
+      \            ${button.text}\r
+
+      \        </button>\r
+
+      \    ` : \"\";\r
+
+      \r
+
+      \    return `\r
+
+      \        <div style=\"\r
+
+      \            font-family:'Inter','Segoe UI',sans-serif;\r
+
+      \            background:linear-gradient(135deg,${gradientFrom},${gradient\
+      To});\r
+
+      \            border-radius:16px;\r
+
+      \            padding:28px;\r
+
+      \            box-shadow:0 2px 10px rgba(0,0,0,0.1);\r
+
+      \            color:${color};\r
+
+      \        \">\r
+
+      \            <div style=\"\r
+
+      \                background:linear-gradient(90deg,${color},${color}99);\r
+
+      \                padding:14px 20px;\r
+
+      \                border-radius:12px;\r
+
+      \                color:#fff;\r
+
+      \                font-size:22px;\r
+
+      \                font-weight:700;\r
+
+      \                text-align:center;\r
+
+      \                box-shadow:0 3px 8px rgba(0,0,0,0.15);\r
+
+      \            \">\r
+
+      \                ${title}\r
+
+      \            </div>\r
+
+      \r
+
+      \            <div style=\"\r
+
+      \                background:#fff;\r
+
+      \                border-radius:12px;\r
+
+      \                padding:20px 22px;\r
+
+      \                margin-top:20px;\r
+
+      \                box-shadow:inset 0 0 0 2px ${color}33;\r
+
+      \                color:#333;\r
+
+      \                font-size:15px;\r
+
+      \                line-height:1.6;\r
+
+      \            \">\r
+
+      \                ${fieldsHtml}\r
+
+      \                ${buttonHtml}\r
+
+      \            </div>\r
+
+      \r
+
+      \            ${subtitle\r
+
+      \            ? `<div
+      style=\"margin-top:12px;color:#999;font-size:14px;text-align:center;\">${\
+      subtitle}</div>`\r
+
+      \            : \"\"}\r
+
+      \            <div
+      style=\"text-align:center;margin-top:18px;color:#aaa;font-size:12px;\">\r
+
+      \                🧠 QA Automation | Postman Visualizer\r
+
+      \            </div>\r
+
+      \            ${copyScript}\r
+
+      \        </div>\r
+
+      \    `;\r
+
+      }\r
+
+      \r
+
+      \r
+
+      let mp = JSON.parse(pm.globals.get(\"medical_program_data\") || \"{}\");\r
+
+      if (!mp || !mp[0]) {\r
+
+      \    console.error(\"❌ Не знайдено об’єкта medical_program_data у
+      globals\");\r
+
+      \    displayResponse(\"Помилка\", { message: \"Не знайдено
+      medical_program_data\" });\r
+
+      \    pm.execution.setNextRequest(null);\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      let program = mp[0];\r
+
+      const { id: programId, type: programType } = program;\r
+
+      \r
+
+      console.info(\"programType\", programType)\r
+
+      \r
+
+      if (programType === \"DEVICE\") {\r
+
+      \    console.log(\"ℹ️ Програма DEVICE — учасники не передбачені. Пропускаю
+      перевірку учасників.\");\r
+
+      \    pm.globals.set(\"medical_program_drugs\", JSON.stringify([]));\r
+
+      \    pm.globals.set(\"device_program\", programId);\r
+
+      \r
+
+      \    runMainProgramValidation(); // запускаємо основну логіку\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url:
+      `https://api-demo.ehealth.gov.ua/api/v3/drugs?medical_program_id=${progra\
+      mId}`,\r
+
+      \    method: \"GET\",\r
+
+      \    header: {\r
+
+      \        \"Content-Type\": \"application/json\",\r
+
+      \        \"api-key\": pm.environment.get(\"mis_client_secret\") ||
+      \"30276e63617461a185ec\",\r
+
+      \        \"Authorization\": pm.environment.get(\"access_token\")\r
+
+      \            ? `Bearer ${pm.environment.get(\"access_token\")}`\r
+
+      \            : \"\",\r
+
+      \        \"X-Custom-PSK\": pm.environment.get(\"x_custom_psk\") ||
+      \"a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e\"\r
+
+      \    }\r
+
+      }, function (err, res) {\r
+
+      \    if (err || !res) {\r
+
+      \        displayResponse(\"❌ Помилка запиту до API\", `<b>Не вдалося
+      отримати список учасників програми:</b> ${err}`, \"\", \"#ff4d4f\");\r
+
+      \        pm.execution.setNextRequest(null);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const json = res.json();\r
+
+      \    const drugs = json?.data || [];\r
+
+      \r
+
+      \    // ----------------------------------------------------------\r
+
+      \    // 🟥 Немає учасників (тільки для MEDICATION)\r
+
+      \    // ----------------------------------------------------------\r
+
+      \    if (drugs.length === 0) {\r
+
+      \        const msg = createVisualizerCard({\r
+
+      \            title: \"🚫 У програми немає учасників\",\r
+
+      \            subtitle: \"Перевір, чи додано препарати до медичної
+      програми.\",\r
+
+      \            color: \"#ff4d4f\",\r
+
+      \            gradientFrom: \"#fff0f0\",\r
+
+      \            gradientTo: \"#fff9f9\",\r
+
+      \            fields: {\r
+
+      \                title: \"Назва програми\",\r
+
+      \                subtitle: \"ID програми\",\r
+
+      \                name: program.name,\r
+
+      \                program_id: program.id\r
+
+      \            },\r
+
+      \            button: {\r
+
+      \                id: \"copyBtn3\",\r
+
+      \                text: \"📋 Копіювати ID\",\r
+
+      \                targetId: \"programId3\",\r
+
+      \                check: \"copyCheck\"\r
+
+      \            }\r
+
+      \        });\r
+
+      \        pm.visualizer.set(msg);\r
+
+      \        pm.execution.setNextRequest(null);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // ----------------------------------------------------------\r
+
+      \    // 🟩 Є учасники → зберігаємо і продовжуємо\r
+
+      \    // ----------------------------------------------------------\r
+
+      \r
+
+      \    console.log(`✅ Знайдено ${drugs.length} учасників у програмі`);\r
+
+      \    pm.globals.set(\"medical_program_drugs\", JSON.stringify(drugs));\r
+
+      \r
+
+      \    // MEDICATION — перевірка eligibility\r
+
+      \    if (programType === \"MEDICATION\") {\r
+
+      \        const medicationInfo = drugs[0];\r
+
+      \        const medicationId = drugs[0]?.id;\r
+
+      \        const medicationDenumeratorUnit =
+      drugs[0]?.ingredients[0]?.dosage?.denumerator_unit;\r
+
+      \        const medicationNumeratorUnit =
+      drugs[0]?.ingredients[0]?.dosage?.numerator_unit;\r
+
+      \        const medicationPackageMinQty =
+      drugs[0]?.packages[0]?.package_min_qty;\r
+
+      \        const medicationPackageQty =
+      drugs[0]?.packages[0]?.package_qty;\r
+
+      \r
+
+      \        console.log(medicationDenumeratorUnit, medicationNumeratorUnit,
+      medicationPackageMinQty, medicationPackageQty);\r
+
+      \        pm.globals.set(\"medication_program\", programId)\r
+
+      \        if (!medicationId) console.error(\"❌ У першого елемента drugs
+      немає id\");\r
+
+      \        else checkEmployeeEligibilityAndSetMedication(program,
+      medicationId, medicationDenumeratorUnit, medicationNumeratorUnit,
+      medicationPackageMinQty, medicationPackageQty, medicationInfo);\r
+
+      \    }\r
+
+      \r
+
+      \    runMainProgramValidation();\r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      // =================================================================\r
+
+      // 🧠 2️⃣ Основна функція перевірки програми (існуючий код нижче)\r
+
+      // =================================================================\r
+
+      \r
+
+      function runMainProgramValidation() {\r
+
+      \r
+
+      \    let settings = mp[0].medical_program_settings || {};\r
+
+      \r
+
+      \    let employeeType = pm.environment.get(\"employee_type\");\r
+
+      \    let employeeSpecialty = pm.environment.get(\"employee_specialty\");\r
+
+      \    let leProvidingCondition =
+      pm.environment.get(\"providing_condition\");\r
+
+      \r
+
+      \    console.log(\"👩‍⚕️ Перевірка медичної програми:\", mp[0].name);\r
+
+      \    console.log(\"Тип працівника:\", employeeType, \"| Спеціальність:\",
+      employeeSpecialty, \"| Умова:\", leProvidingCondition);\r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 2️⃣ Мапа допустимих спеціальностей для кожного типу\r
+
+      \    // ================================================================\r
+
+      \r
+
+      \    const allowedMap =
+      pm.globals.get(\"employee_type_vs_speciality_type\");\r
+
+      \r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 3️⃣ Основні перевірки\r
+
+      \    // ================================================================\r
+
+      \    // let allowedTypes = settings.employee_types_to_create_request ||
+      [];\r
+
+      \    // let allowedSpecs = settings.speciality_types_allowed || [];\r
+
+      \    // let allowedConditions = settings.providing_conditions_allowed ||
+      [];\r
+
+      \r
+
+      \    let allowedTypes = settings.employee_types_to_create_request || [];\r
+
+      \    let allowedRequestSpecs = settings.speciality_types_request_allowed;
+      // для створення e-рецепта\r
+
+      \    let allowedCarePlanSpecs =
+      settings.speciality_types_care_plan_activity_allowed; // для care plan\r
+
+      \    let allowedConditions = settings.providing_conditions_allowed ||
+      [];\r
+
+      \r
+
+      \r
+
+      \    console.log(\"allowedRequestSpecs\", allowedRequestSpecs)\r
+
+      \    let conditionListEmpty = allowedConditions.length === 0;\r
+
+      \r
+
+      \    function isSpecialityAllowed(list, speciality) {\r
+
+      \        if (list === null || list === undefined) return true;\r
+
+      \        if (!Array.isArray(list)) return true;\r
+
+      \        if (list.length === 0) return true;\r
+
+      \        return list.includes(speciality);\r
+
+      \    }\r
+
+      \r
+
+      \    let typeOK = allowedTypes.length === 0 ||
+      allowedTypes.includes(employeeType);\r
+
+      \    // let specOK = allowedSpecs.length === 0 ||
+      allowedSpecs.includes(employeeSpecialty);\r
+
+      \r
+
+      \    // Якщо масив providing_conditions_allowed порожній — програма не має
+      обмежень по умовах\r
+
+      \    let requestSpecOK = isSpecialityAllowed(allowedRequestSpecs,
+      employeeSpecialty);\r
+
+      \    console.log(\"requestSpecOK\", requestSpecOK)\r
+
+      \    let carePlanSpecOK = isSpecialityAllowed(allowedCarePlanSpecs,
+      employeeSpecialty);\r
+
+      \    let conditionOK = allowedConditions.length === 0 ||
+      allowedConditions.includes(leProvidingCondition);\r
+
+      \    let conditionWarning = allowedConditions.length === 0;\r
+
+      \    // let customOK = allowedMap[employeeType] ?
+      allowedMap[employeeType].includes(employeeSpecialty) : false;\r
+
+      \r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 4️⃣ Перевірка діагностичних кодів\r
+
+      \    // ================================================================\r
+
+      \    let diagOK = false;\r
+
+      \    let diagWarning = false;\r
+
+      \    let usedDiagType = null;\r
+
+      \    let diagList = [];\r
+
+      \r
+
+      \    if (employeeType === \"DOCTOR\") {\r
+
+      \        usedDiagType = \"ICPC2\";\r
+
+      \        diagList = settings.conditions_icpc2_allowed || [];\r
+
+      \    } else if ([\"SPECIALIST\",
+      \"MED_COORDINATOR\"].includes(employeeType)) {\r
+
+      \        usedDiagType = \"ICD10-AM\";\r
+
+      \        diagList = settings.conditions_icd10_am_allowed || [];\r
+
+      \    } else {\r
+
+      \        usedDiagType = \"—\";\r
+
+      \    }\r
+
+      \r
+
+      \    // Визначення коду для використання\r
+
+      \    if (usedDiagType === \"ICD10-AM\") {\r
+
+      \        const code = diagList[0] || \"E10.9\";\r
+
+      \        selectedCode = code;\r
+
+      \        pm.environment.set(\"icd10\", code);\r
+
+      \        pm.environment.set(\"condition_diagnosis\", code);\r
+
+      \        pm.environment.set(\"diagnosis_system\",
+      \"eHealth/ICD10_AM/condition_codes\");\r
+
+      \    } else if (usedDiagType === \"ICPC2\") {\r
+
+      \        const code = diagList[0] || \"S14\";\r
+
+      \        selectedCode = code;\r
+
+      \        pm.environment.set(\"icpc2\", code);\r
+
+      \        pm.environment.set(\"condition_diagnosis\", code);\r
+
+      \        pm.environment.set(\"diagnosis_system\",
+      \"eHealth/ICPC2/condition_codes\");\r
+
+      \    } else {\r
+
+      \        pm.environment.set(\"diagnosis_system\", \"—\");\r
+
+      \    }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \    if (diagList.length === 0) {\r
+
+      \        diagOK = true; // технічно помилки немає\r
+
+      \        diagWarning = true; // але попереджаємо користувача\r
+
+      \        console.warn(\"⚠️ У програми відсутній перелік діагнозів —
+      дозволено будь-який код із довідника.\");\r
+
+      \    } else {\r
+
+      \        diagOK = true;\r
+
+      \    }\r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 5️⃣ Формування текстового результату\r
+
+      \    // ================================================================\r
+
+      \    function conditionLine(label, ok, warning = false, warnText = \"\")
+      {\r
+
+      \        let bg, border, emoji, textColor, textStatus;\r
+
+      \r
+
+      \        if (warning) {\r
+
+      \            bg = \"#fff8e1\";\r
+
+      \            border = \"#ffe58f\";\r
+
+      \            emoji = \"⚠️\";\r
+
+      \            textColor = \"#d48806\";\r
+
+      \            textStatus = \"Попередження\";\r
+
+      \        } else if (ok) {\r
+
+      \            bg = \"#e8f9ee\";\r
+
+      \            border = \"#b7e5c3\";\r
+
+      \            emoji = \"✅\";\r
+
+      \            textColor = \"#28a745\";\r
+
+      \            textStatus = \"Виконано\";\r
+
+      \        } else {\r
+
+      \            bg = \"#ffecec\";\r
+
+      \            border = \"#ffc6c6\";\r
+
+      \            emoji = \"❌\";\r
+
+      \            textColor = \"#d93025\";\r
+
+      \            textStatus = \"Не виконано\";\r
+
+      \        }\r
+
+      \r
+
+      \        return `\r
+
+      \    <div style=\"\r
+
+      \        display:flex;\r
+
+      \        align-items:center;\r
+
+      \        margin:6px 0;\r
+
+      \        padding:6px 10px;\r
+
+      \        border-radius:8px;\r
+
+      \        background:${bg};\r
+
+      \        border:1px solid ${border};\r
+
+      \        transition:all .2s ease-in-out;\r
+
+      \    \">\r
+
+      \        <span
+      style=\"font-size:18px;margin-right:8px;\">${emoji}</span>\r
+
+      \        <span>\r
+
+      \            <b>${label}:</b> \r
+
+      \            <span
+      style=\"color:${textColor};font-weight:600;\">${textStatus}</span>\r
+
+      \            ${warnText ? `<span
+      style=\"color:#b8860b;font-style:italic;\"> — ${warnText}</span>` :
+      \"\"}\r
+
+      \        </span>\r
+
+      \    </div>`;\r
+
+      \    }\r
+
+      \r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 6️⃣ Відображення всіх налаштувань програми\r
+
+      \    // ================================================================\r
+
+      \    function displaySetting(value, trueColor = \"#4CAF50\", falseColor =
+      \"#FF5252\") {\r
+
+      \        if (value === null || value === undefined)\r
+
+      \            return `<span style=\"color:#bcbcbc;font-style:italic;\">Не
+      вказано</span>`;\r
+
+      \        if (Array.isArray(value)) {\r
+
+      \            if (value.length === 0)\r
+
+      \                return `<span
+      style=\"color:#bcbcbc;font-style:italic;\">Не вказано</span>`;\r
+
+      \            return value.map(v => `\r
+
+      \            <span style=\"\r
+
+      \                display:inline-block;\r
+
+      \                background:#f4f6f9;\r
+
+      \                color:#495057;\r
+
+      \                border:1px solid #d1d9e6;\r
+
+      \                border-radius:6px;\r
+
+      \                padding:3px 8px;\r
+
+      \                margin:2px;\r
+
+      \                font-size:13px;\r
+
+      \                font-weight:500;\r
+
+      \                transition: all .2s ease-in-out;\r
+
+      \            \">${v}</span>\r
+
+      \        `).join('');\r
+
+      \        }\r
+
+      \        if (typeof value === \"boolean\")\r
+
+      \            return `<span style=\"\r
+
+      \            color:#fff;\r
+
+      \            background:${value ? trueColor : falseColor};\r
+
+      \            border-radius:6px;\r
+
+      \            padding:2px 8px;\r
+
+      \            font-weight:500;\r
+
+      \        \">${value ? \"Так\" : \"Ні\"}</span>`;\r
+
+      \        return `<span style=\"\r
+
+      \        background:#eef3ff;\r
+
+      \        color:#2b7cff;\r
+
+      \        border-radius:6px;\r
+
+      \        padding:2px 8px;\r
+
+      \        font-weight:500;\r
+
+      \    \">${value}</span>`;\r
+
+      \    }\r
+
+      \r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // ✅ Логіка відображення спеціальностей\r
+
+      \    // ================================================================\r
+
+      \    let specHtml = \"\";\r
+
+      \    if (settings.speciality_types_allowed !== null &&
+      settings.speciality_types_allowed !== undefined) {\r
+
+      \        let specOKSingle = settings.speciality_types_allowed.length === 0
+      || settings.speciality_types_allowed.includes(employeeSpecialty);\r
+
+      \        let specWarningSingle = settings.speciality_types_allowed.length
+      === 0;\r
+
+      \        let specTextSingle = specWarningSingle\r
+
+      \            ? \"Перевір спеціальність у налаштуваннях програми (порожній
+      масив — обмежень немає)\"\r
+
+      \            : (!specOKSingle ? \"Спеціальність не входить у allowed\" :
+      \"\");\r
+
+      \        specHtml = conditionLine(\"Спеціальність відповідає вимогам
+      програми\", specOKSingle, specWarningSingle, specTextSingle);\r
+
+      \    } else {\r
+
+      \        let requestText = (!allowedRequestSpecs ||
+      allowedRequestSpecs.length === 0) ? \"Перевір спеціальність у
+      налаштуваннях програми\" : (!requestSpecOK ? \"Спеціальність не входить у
+      allowed request\" : \"\");\r
+
+      \        let carePlanText = (!allowedCarePlanSpecs ||
+      allowedCarePlanSpecs.length === 0) ? \"Без обмежень\" : (!carePlanSpecOK ?
+      \"Спеціальність не входить у allowed carePlan\" : \"\");\r
+
+      \        specHtml = `\r
+
+      \            ${conditionLine(\"Спеціальність дозволена для створення
+      e-рецепта\", requestSpecOK, !requestSpecOK, requestText)}\r
+
+      \            ${conditionLine(\"Спеціальність дозволена для активності
+      плану лікування\", carePlanSpecOK, !carePlanSpecOK, carePlanText)}\r
+
+      \        `;\r
+
+      \    }\r
+
+      \r
+
+      \    let summaryHtml = `\r
+
+      \    <h3 style=\"color:#2b7cff;margin-bottom:10px;\">🩺 Перевірка медичної
+      програми</h3>\r
+
+      \    <div style=\"font-size:15px;margin-bottom:10px;\">\r
+
+      \        <b>Програма:</b> <span
+      style=\"color:#555;\">${program.name}</span>\r
+
+      \    </div>\r
+
+      \    <div style=\"font-size:14px;margin-bottom:10px;\">\r
+
+      \    <b>Тип програми:</b> <span style=\"\r
+
+      \        background:#eef3ff;\r
+
+      \        color:#2b7cff;\r
+
+      \        border-radius:6px;\r
+
+      \        padding:2px 8px;\r
+
+      \        font-weight:500;\r
+
+      \    \">${programType || \"—\"}</span>\r
+
+      </div>\r
+
+      \r
+
+      \     <div
+      style=\"font-size:14px;margin-bottom:14px;display:flex;align-items:center;\
+      \">\r
+
+      \        <b>ID програми:</b>\r
+
+      \        <span id=\"programId\" style=\"\r
+
+      \            color:#2b7cff;\r
+
+      \            font-family:monospace;\r
+
+      \            border:1px solid #2b7cff;\r
+
+      \            border-radius:6px;\r
+
+      \            padding:2px 6px;\r
+
+      \            margin-left:6px;\r
+
+      \            background-color:#f5f8ff;\r
+
+      \            user-select:text;\r
+
+      \        \">${program.id || \"—\"}</span>\r
+
+      \r
+
+      \        <button id=\"copyBtn\"
+      onclick=\"copyToClipboard('programId','copyBtn','copyCheck')\" style=\"\r
+
+      \                        margin-left:8px;\r
+
+      \                        background:#f5f8ff;\r
+
+      \                        border:none;\r
+
+      \                        color:#2b7cff;\r
+
+      \                        border-radius:6px;\r
+
+      \                        padding:4px 8px;\r
+
+      \                        cursor:pointer;\r
+
+      \                        font-size:13px;\r
+
+      \                        transition:all 0.2s ease;\r
+
+      \                    \">📋 Копіювати</button>\r
+
+      \    </div>\r
+
+      \ ${copyScript}\r
+
+      \    \r
+
+      \r
+
+      \    <div
+      style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1\
+      fr));gap:6px 20px;margin-bottom:8px;\">\r
+
+      \        <div><b>Тип працівника:</b>
+      ${displaySetting(employeeType)}</div>\r
+
+      \        <div><b>Спеціальність:</b>
+      ${displaySetting(employeeSpecialty)}</div>\r
+
+      \        <div><b>Умова:</b>
+      ${displaySetting(leProvidingCondition)}</div>\r
+
+      \    </div>\r
+
+      \    ${conditionLine(\"Тип працівника відповідає вимогам програми\",
+      typeOK)}\r
+
+      \r
+
+      \  ${specHtml}\r
+
+      ${conditionLine(\r
+
+      \        \"Умова надання послуги відповідає вимогам\",\r
+
+      \        conditionOK,\r
+
+      \        conditionWarning,\r
+
+      \        conditionWarning\r
+
+      \            ? \"У програми <b>відсутні обмеження</b> — перевірка
+      діагнозів у рецептах не виконується\"\r
+
+      \            : \"\"\r
+
+      \    )}\r
+
+      ${conditionLine(\r
+
+      \        \"Діагностичні коди (\" + usedDiagType + \")\" + (!diagWarning ?
+      \" — <b style=\\\"color:#2b7cff;\\\">\" + selectedCode + \"</b>\" :
+      \"\"),\r
+
+      \        diagOK,\r
+
+      \        diagWarning,\r
+
+      \        diagWarning\r
+
+      \            ? \"Список діагнозів відсутній — було взято дефолтний діагноз
+      <b style=\\\"color:#d93025;\\\">\" +
+      pm.environment.get(\"condition_diagnosis\") + \"</b>\"\r
+
+      \            : \"\"\r
+
+      \    )}\r
+
+      `;\r
+
+      \r
+
+      \    // ${conditionLine(\"Спеціальність відповідає вимогам програми\",
+      specOK, allowedSpecs.length === 0, allowedSpecs.length === 0 ? \"Перевір
+      спеціальність у налаштуваннях програми\" : \"\")}\r
+
+      \r
+
+      \    // ${conditionLine(\"Діагностичні коди (\" + usedDiagType + \")\",
+      diagOK, diagList.length === 0, diagList.length === 0 ? \"Список діагнозів
+      порожній\" : \"\")}\r
+
+      \r
+
+      \    // ${conditionLine(\"Спеціальність дозволена для типу працівника\",
+      customOK)}\r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 6.5️⃣ Очікуваний vs Фактичний результат\r
+
+      \    // ================================================================\r
+
+      \    if (!(typeOK && conditionOK && diagOK)) { //specOK\r
+
+      \        const expectedHtml = `\r
+
+      \        <div style=\"background:#fff9e6;border:1px solid
+      #ffe58f;border-radius:10px;padding:14px 18px;margin-top:16px;\">\r
+
+      \            <h4 style=\"color:#d48806;margin-top:0;\">🧩 Очікуваний
+      результат:</h4>\r
+
+      \            <ul style=\"margin:0;padding-left:20px;line-height:1.5;\">\r
+
+      \                <li>Тип працівника має бути одним із:
+      ${displaySetting(allowedTypes)}</li>\r
+
+      \                <li>Спеціальність має бути однією із:
+      ${displaySetting(allowedSpecs)}</li>\r
+
+      \                <li>Умова надання послуги має бути однією із:
+      ${displaySetting(allowedConditions)}</li>\r
+
+      \                <li>Допустимі діагностичні коди (${usedDiagType}):
+      ${displaySetting(diagList)}</li>\r
+
+      \            </ul>\r
+
+      \        </div>\r
+
+      \    `;\r
+
+      \r
+
+      \        // <li>Для типу працівника допускаються спеціальності:
+      ${displaySetting(allowedMap[employeeType] || [])}</li>\r
+
+      \r
+
+      \        const actualHtml = `\r
+
+      \        <div style=\"background:#ffecec;border:1px solid
+      #ffb3b3;border-radius:10px;padding:14px 18px;margin-top:10px;\">\r
+
+      \            <h4 style=\"color:#d93025;margin-top:0;\">📋 Фактичні
+      значення:</h4>\r
+
+      \            <ul style=\"margin:0;padding-left:20px;line-height:1.5;\">\r
+
+      \                <li>Тип працівника:
+      ${displaySetting(employeeType)}</li>\r
+
+      \                <li>Спеціальність:
+      ${displaySetting(employeeSpecialty)}</li>\r
+
+      \                <li>Умова надання послуги:
+      ${displaySetting(leProvidingCondition)}</li>\r
+
+      \                <li>Тип діагнозу: ${displaySetting(usedDiagType)}</li>\r
+
+      \            </ul>\r
+
+      \        </div>\r
+
+      \    `;\r
+
+      \r
+
+      \        summaryHtml += expectedHtml + actualHtml;\r
+
+      \    }\r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 7️⃣ Відображення налаштувань програми\r
+
+      \    // ================================================================\r
+
+      \r
+
+      \    let settingsHtml = `\r
+
+      <h3 style=\"color:#2b7cff;\">⚙️ Налаштування медичної програми</h3>\r
+
+      <div
+      style=\"font-size:14px;line-height:1.5;font-family:Inter,Arial,sans-serif;\
+      \">\r
+
+      \    <div>Наявність плану лікування обов'язкова:
+      ${displaySetting(settings.care_plan_required)}</div>\r
+
+      \    <div>Не перевіряти співробітників:
+      ${displaySetting(settings.skip_employee_validation)}</div>\r
+
+      \    <div>Часткове погашення рецепту дозволено:
+      ${displaySetting(settings.multi_medication_dispense_allowed)}</div>\r
+
+      \    <div>Цифровий підпис при погашенні рецепту вимкнено:
+      ${displaySetting(settings.skip_medication_dispense_sign)}</div>\r
+
+      \    <div>Сповіщення пацієнта вимкнено:
+      ${displaySetting(settings.request_notification_disabled ||
+      settings.medication_request_notification_disabled)}</div>\r
+
+      \    <div>Не перевіряти наявність контракту:
+      ${displaySetting(settings.skip_contract_provision_verify)}</div>\r
+
+      \    <div>Зміну програми при погашенні дозволено:
+      ${displaySetting(settings.medical_program_change_on_dispense_allowed)}</d\
+      iv>\r
+
+      \    <div>Створення рецепту без обмежень за періодом:
+      ${displaySetting(settings.skip_treatment_period ||
+      settings.skip_mnn_in_treatment_period)}</div>\r
+
+      \    <div>Максимальний період курсу лікування (днів):
+      ${displaySetting(settings.request_max_period_day ||
+      settings.medication_request_max_period_day)}</div>\r
+
+      \    <div>Не перевіряти декларацію (співробітник):
+      ${displaySetting(settings.skip_request_employee_declaration_verify ||
+      settings.skip_medication_request_employee_declaration_verify)}</div>\r
+
+      \    <div>Не перевіряти декларацію (заклад):
+      ${displaySetting(settings.skip_request_legal_entity_declaration_verify ||
+      settings.skip_medication_request_legal_entity_declaration_verify)}</div>\r
+
+      \    <div>Період погашення рецепту (днів):
+      ${displaySetting(settings.dispense_period_day ||
+      settings.medication_dispense_period_day)}</div>\r
+
+      \    <div>Дозвіл на створення рецептів:
+      ${displaySetting(settings.request_allowed ||
+      settings.medication_request_allowed_text)}</div>\r
+
+      \    <div>Дозвіл на створення погашення рецептів:
+      ${displaySetting(settings.dispense_allowed ||
+      settings.medication_dispense_allowed)}</div>\r
+
+      \    <div>Не перевіряти ліцензію ДЛС:
+      ${displaySetting(settings.skip_dispense_division_dls_verify)}</div>\r
+
+      \    <div>Категорії пацієнтів, яким доступна програма:
+      ${displaySetting(settings.patient_categories_allowed)}</div>\r
+
+      \    <div>Типи ліцензій, що допускаються:
+      ${displaySetting(settings.license_types_allowed)}</div>\r
+
+      </div>\r
+
+      `;\r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 7️⃣ Візуалізація\r
+
+      \    // ================================================================\r
+
+      \r
+
+      let specCheckOk;\r
+
+      if (settings.speciality_types_allowed !== null &&
+      settings.speciality_types_allowed !== undefined) {\r
+
+      \    // старе поле використовується → беремо тільки його\r
+
+      \    specCheckOk = settings.speciality_types_allowed.length === 0 ||
+      settings.speciality_types_allowed.includes(employeeSpecialty);\r
+
+      } else {\r
+
+      \    // старого поля нема → беремо перевірки request + carePlan\r
+
+      \    specCheckOk = requestSpecOK && carePlanSpecOK;\r
+
+      }\r
+
+      console.log(\"specCheckOk\", specCheckOk)\r
+
+      \r
+
+      \    let allOk = typeOK && specCheckOk && conditionOK && diagOK;
+      //specOK\r
+
+      \    // Якщо програма неактивна — червоний блок і без settingsHtml\r
+
+      \    if (program.is_active === false) {\r
+
+      \        const inactiveHtml =\r
+
+      \            createVisualizerCard({\r
+
+      \                title: \"🚫 Програма неактивна\",\r
+
+      \                subtitle: \"\",\r
+
+      \                color: \"#ff4d4f\",\r
+
+      \                gradientFrom: \"#fff0f0\",\r
+
+      \                gradientTo: \"#fff9f9\",\r
+
+      \                fields: {\r
+
+      \                    title: \"Назва програми\",\r
+
+      \                    subtitle: \"ID програми\",\r
+
+      \                    name: program.name,\r
+
+      \                    program_id: program.id\r
+
+      \                },\r
+
+      \                button: {\r
+
+      \                    id: \"copyBtn2\",          // ID самої кнопки\r
+
+      \                    text: \"📋 Копіювати ID\", // Текст на кнопці\r
+
+      \                    targetId: \"programId2\",   // ID елемента, з якого
+      копіювати текст\r
+
+      \                    check: \"copyCheck\"       // ID елемента ✅ (не
+      обов’язковий)\r
+
+      \                }\r
+
+      \            });\r
+
+      \        pm.visualizer.set(inactiveHtml);\r
+
+      \        pm.execution.setNextRequest(null);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \    displayResponse(\r
+
+      \        allOk ? \"✅ Програма відповідає умовам\" : \"❌ Програма не
+      відповідає вимогам\",\r
+
+      \        summaryHtml,\r
+
+      \        settingsHtml,\r
+
+      \        allOk ? \"#2b7cff\" : \"#ff4d4f\",\r
+
+      \        allOk ? generateEncounterJson() : null,\r
+
+      \        allOk ? \"✅ Згенеровано Encounter JSON\" : \"\",\r
+
+      \        allOk\r
+
+      \            ? (programType === \"MEDICATION\"\r
+
+      \                ? \"✅ Дані учасника додано до змінної medication_info в
+      globals\"\r
+
+      \                : \"\")\r
+
+      \            : \"\"\r
+
+      \r
+
+      \    );\r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 8️⃣ При невідповідності — зупиняємо\r
+
+      \    // ================================================================\r
+
+      \    if (!allOk) {\r
+
+      \        pm.execution.setNextRequest(null);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // ================================================================\r
+
+      \    // 9️⃣ Якщо все добре — записуємо діагноз у env\r
+
+      \    // ================================================================\r
+
+      \r
+
+      \    if (employeeType === \"DOCTOR\") {\r
+
+      \        pm.environment.set(\"encounter_classes\", \"PHC\");\r
+
+      \    } else if (employeeType === \"SPECIALIST\") {\r
+
+      \        pm.environment.set(\"encounter_classes\", \"AMB\");\r
+
+      \    }\r
+
+      }\r\n"
+    language: text/javascript
+    packages:
+      "@winter-zodiac-949553/generate":
+        id: 019a597c-86d6-784d-934b-83f9cd880152
+order: 1000

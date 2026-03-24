@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/service_requests/325afe09-14e6-40af-a3bc-2722a8ec2752/action\
+  s/process"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 5000

@@ -1,0 +1,109 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/divisions
+  method: POST
+  headers:
+    api-key: ef7d48ecfc233d6af088
+    Authorization: Bearer {{le_primc_v2_owner_access_token}}
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: |-
+      {
+        "name": "Division of Primary care",
+        "addresses": [
+        	{
+              "type": "RESIDENCE",
+              "country": "UA",
+              "area": "ВОЛИНСЬКА",
+              "settlement": "ЛУЦЬК",
+              "settlement_type": "CITY",
+              "settlement_id": "2029f5e9-0682-4ecf-b4c3-605a9ef800ca",
+              "street_type": "STREET",
+              "street": "Олицька",
+              "building": "23",
+              "apartment": "32",
+              "zip": "43000"
+            }
+        ],
+        "phones": [
+          {
+            "type": "MOBILE",
+            "number": "+380503410871"
+          }
+        ],
+        "email": "eh_test+10@bigmir.net",
+        "type": "CLINIC",
+        "external_id": "32132467"
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Thu, 23 Nov 2023 13:19:12 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "809"
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Referrer-Policy: strict-origin-when-cross-origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "11"
+    X-Kong-Upstream-Latency: "27"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: 3263604c-aa6b-471a-bca0-df420d1ba9bc#80
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a9b3d72f1277b6-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: |-
+      {
+          "data": {
+              "addresses": [
+                  {
+                      "apartment": "32",
+                      "area": "ВОЛИНСЬКА",
+                      "building": "23",
+                      "country": "UA",
+                      "region": null,
+                      "settlement": "ЛУЦЬК",
+                      "settlement_id": "2029f5e9-0682-4ecf-b4c3-605a9ef800ca",
+                      "settlement_type": "CITY",
+                      "street": "Олицька",
+                      "street_type": "STREET",
+                      "type": "RESIDENCE",
+                      "zip": "43000"
+                  }
+              ],
+              "dls_id": null,
+              "dls_verified": null,
+              "email": "eh_test+10@bigmir.net",
+              "external_id": "32132467",
+              "id": "882457bb-64f8-4fde-a439-e5b2c0986cf9",
+              "legal_entity_id": "68c4e556-5a61-4994-a788-4949dbd76688",
+              "location": null,
+              "mountain_group": false,
+              "name": "Division of Primary care",
+              "phones": [
+                  {
+                      "number": "+380503410871",
+                      "type": "MOBILE"
+                  }
+              ],
+              "status": "ACTIVE",
+              "type": "CLINIC",
+              "working_hours": null
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "3263604c-aa6b-471a-bca0-df420d1ba9bc#80",
+              "type": "object",
+              "url": "http://api-svc.il/api/divisions"
+          }
+      }
+order: 1000

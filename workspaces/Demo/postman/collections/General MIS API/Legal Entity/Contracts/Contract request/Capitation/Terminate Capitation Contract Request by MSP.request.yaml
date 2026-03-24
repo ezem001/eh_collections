@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host}}/api/contract_requests/capitation/b2bf8b5e-bee5-4f91-bdf3-5aa765a\
+  bffd8/actions/terminate"
+method: PATCH
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+body:
+  type: text
+  content: "{\r
+
+    \  \"status_reason\": \"Неправильний період контракту\"\r
+
+    }"
+order: 6000

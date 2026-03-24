@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/persons/{{ward}}/confidant_person_relationship_requests/{{Cr\
+  eate_confidant_relationship_id}}/actions/sign"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r
+
+    \  \"signed_content\":
+    \"{{confidant_person_relationship_request_signed_content}}\"\r
+
+    }"
+order: 4000

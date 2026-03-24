@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{host}}/api/observation_configurations?code=Barthel_Extended"
+method: GET
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  api-key: "{{mis_client_secret}}"
+queryParams:
+  - key: is_active
+    value: "true"
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: code
+    value: Barthel_Extended
+  - key: code
+    value: 96761-2
+    disabled: true
+body:
+  type: json
+  content: ""
+order: 4000

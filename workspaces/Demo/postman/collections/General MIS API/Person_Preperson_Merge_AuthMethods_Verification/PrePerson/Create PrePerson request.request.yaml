@@ -1,0 +1,217 @@
+$kind: http-request
+url: "{{host}}/api/prepersons"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+      "external_id": "3999869394.2799207815.1",
+      "first_name": "Дон",
+      "last_name": "Бондар",
+      "second_name":"Іванівна",
+      "gender": "MALE",
+      "birth_date": "1988-02-02",
+      "emergency_contact": {
+        "first_name": "Йоханнес",
+        "last_name": "Петренко",
+        "second_name": "Іванівна",
+        "phones": [
+          {
+            "type": "MOBILE",
+            "number": "+380951364444"
+          }
+        ]
+      },
+      "note": "Зареєстрований у тестових цілях"
+    }
+scripts:
+  - type: beforeRequest
+    code: >
+      var current_step = environment["declaration_current_step"];
+
+      //According to business logic, phone number need to be verified in
+      Verification module.
+
+      var phone_number = '+380937404005'
+
+      // Генерирует случаиный инн/имя.
+
+      function makeRandom(regexp, n)
+
+      {
+          var text, possible, i;
+          if(regexp === "name")
+          {
+              text = "Тест";
+              possible = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЮЯ";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          else if(regexp === "tax")
+          {
+              text = "";
+              possible = "1234567890";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          else if(regexp === "mob")
+          {
+              text = "+380";
+              possible = "1234567890";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          return text;
+      }
+
+      //Присваиваем значения глобальным переменным
+
+
+      var randomName = makeRandom("name", 3);
+
+      postman.setEnvironmentVariable("declaration_first_name", randomName);
+
+      postman.setEnvironmentVariable("declaration_last_name", randomName);
+
+      postman.setEnvironmentVariable("declaration_second_name", randomName);
+    language: text/javascript
+  - type: afterResponse
+    code: >
+      // --- ENV_NAME ---
+
+      let envPart = pm.request.url.host[0];
+
+      let match = envPart.match(/api-(.+)/i);
+
+      if (match && match[1]) pm.globals.set("ENV_NAME", match[1].toUpperCase());
+
+
+      const r = pm.response.json();
+
+      const envName = pm.globals.get("ENV_NAME");
+
+
+      const isPerson = !!r?.data?.person_id;
+
+      const isPreperson = !!r?.data?.id && !isPerson;
+
+
+      if (!isPerson && !isPreperson) {
+        throw new Error("Cannot detect entity type: no data.person_id and no data.id");
+      }
+
+
+      const type = isPerson ? "PERSON" : "PREPERSON";
+
+
+      // patientId: PERSON -> person_id, PREPERSON -> data.id
+
+      const patientId = isPerson ? r.data.person_id : r.data.id;
+
+
+      let operation;
+
+
+      if (isPerson) {
+        operation = pm.globals.get("PERSON_OPERATION") || "create";
+      } else {
+        const code = pm.response.code; // 201, 200, etc.
+        operation = code === 201 ? "create" : "update";
+      }
+
+
+      console.info(operation)
+
+
+      // requestId: PERSON -> з глобалки, PREPERSON -> meta.request_id
+
+      const requestId = isPerson
+        ? pm.globals.get("PERSON_REQUEST_ID")
+        : r?.meta?.request_id;
+
+
+
+      // source data for fields
+
+      let src;
+
+      if (isPerson) {
+        const baseResponse = JSON.parse(
+          operation === "update"
+            ? pm.globals.get("UPDATE_PERSON_RESPONSE")
+            : pm.globals.get("CREATE_PERSON_RESPONSE")
+        );
+        src = baseResponse.person;
+      } else {
+        src = r.data;
+      }
+
+
+      const patientDocument = {
+        patientId,
+        type,
+        environment: envName,
+        requestId,
+
+        first_name: src.first_name,
+        second_name: src.second_name,
+        last_name: src.last_name,
+
+        birth_date: src.birth_date,
+        birth_country: src.birth_country,
+        birth_settlement: src.birth_settlement,
+
+        gender: src.gender,
+        email: src.email,
+
+        tax_id: src.tax_id,
+        no_tax_id: src.no_tax_id,
+        unzr: src.unzr,
+
+        preferred_way_communication: src.preferred_way_communication,
+        secret: src.secret,
+
+        phones: src.phones || [],
+        addresses: src.addresses || [],
+        documents: src.documents || [],
+        emergency_contact: src.emergency_contact || null,
+
+        authentication_methods: src.authentication_methods || [],
+
+        episodes: [],
+        encounters: [],
+        carePlans: [],
+        procedures: [],
+        diagnostic_reports: []
+      };
+
+
+      // щоб не затирати поля undefined при PUT
+
+      Object.keys(patientDocument).forEach(k => {
+        if (patientDocument[k] === undefined) delete patientDocument[k];
+      });
+
+
+      pm.sendRequest({
+        url: "http://localhost:3000/patient",
+        method: operation === "update" ? "PUT" : "POST",
+        header: { "Content-Type": "application/json" },
+        body: { mode: "raw", raw: JSON.stringify(patientDocument) }
+      }, (err, res) => {
+        if (err) throw err;
+        console.log("Saved:", res.json());
+      });
+    language: text/javascript
+order: 1000

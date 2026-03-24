@@ -1,0 +1,59 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/employee_requests/89c5eefe-5e0b-493e-831e-feba8c6b9ab6/user
+  method: POST
+  headers:
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: |-
+      {
+            "password":"Qwerty123456"
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Thu, 23 Nov 2023 13:24:08 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "415"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: "*"
+    Cache-Control: max-age=0, private, must-revalidate
+    Referrer-Policy: strict-origin-when-cross-origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "34"
+    X-Kong-Upstream-Latency: "258"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: ba6da85c-efa3-4c88-ac1b-51fad5081a33#21
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a9bb11089177b6-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "block_reason": null,
+              "email": "doc1_uat@ukr.net",
+              "id": "77c180b7-f535-41eb-b005-8157e0c5a113",
+              "inserted_at": "2023-11-23T13:24:08Z",
+              "is_blocked": false,
+              "person_id": "",
+              "settings": {},
+              "tax_id": "",
+              "updated_at": "2023-11-23T13:24:08Z"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "ba6da85c-efa3-4c88-ac1b-51fad5081a33#21",
+              "type": "object",
+              "url": "http://api-svc.il/api/employee_requests/89c5eefe-5e0b-493e-831e-feba8c6b9ab6/user"
+          }
+      }
+order: 1000

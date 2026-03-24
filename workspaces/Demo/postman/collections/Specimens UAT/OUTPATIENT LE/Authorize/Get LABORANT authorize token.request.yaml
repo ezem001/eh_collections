@@ -1,0 +1,36 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/auth/login
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+       "token":{
+          "grant_type":"password",
+          "email":"s23owdilw3@bloheyz.com",
+          "password":"Qwerty123456",
+          "client_id":"{{fe_client_id}}",
+          "scope":"app:authorize"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData.data && jsonData.data.value) {
+          var session_token = jsonData.data.value;
+          postman.setEnvironmentVariable("laborant_session_token", session_token);
+      } else {
+          postman.setEnvironmentVariable("laborant_session_token", "<<undefined>>");
+      }
+    language: text/javascript
+examples: ./.resources/Get LABORANT authorize token.resources/examples
+order: 10000

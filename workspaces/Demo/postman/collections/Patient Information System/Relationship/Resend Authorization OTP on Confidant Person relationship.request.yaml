@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{host_demo}}/api/persons/39ffccaa-d812-4281-99a2-38c2c9f26c77/confidant_\
+  person_relationship_requests/{{Create_confidant_relationship_id}}/actions/res\
+  end_otp"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 3000

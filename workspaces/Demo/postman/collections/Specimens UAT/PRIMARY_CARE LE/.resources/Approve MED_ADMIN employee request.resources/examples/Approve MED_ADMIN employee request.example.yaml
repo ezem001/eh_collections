@@ -1,0 +1,124 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/employee_requests/e4433079-0b82-432e-8396-933c9105467c/approve
+  method: POST
+  headers:
+    - key: api-key
+      value: ef7d48ecfc233d6af088
+    - key: Authorization
+      value: Bearer {{employee_approve_token}}
+    - key: Content-Type
+      value: application/json
+    - key: X-Custom-PSK
+      value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    - key: x-consumer-id
+      value: 8b797c23-ba47-45f2-bc0f-521013e01074
+      disabled: true
+  body:
+    type: text
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Fri, 24 Nov 2023 15:44:55 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Access-Control-Allow-Origin: "*"
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Referrer-Policy: strict-origin-when-cross-origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "59"
+    X-Kong-Upstream-Latency: "371"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: 0bcbb216-30c1-496d-a833-a0b2d84040db#28
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82b2c6a88a535a78-VIE
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "division_id": "882457bb-64f8-4fde-a439-e5b2c0986cf9",
+              "employee_id": "bf8fe3f0-3961-4524-b23d-304e1850d2d6",
+              "employee_type": "MED_ADMIN",
+              "id": "e4433079-0b82-432e-8396-933c9105467c",
+              "inserted_at": "2023-11-24T15:42:38.280431Z",
+              "legal_entity_id": "68c4e556-5a61-4994-a788-4949dbd76688",
+              "med_admin": {
+                  "educations": [
+                      {
+                          "city": "Київ",
+                          "country": "UA",
+                          "degree": "MASTER",
+                          "diploma_number": "DD123543",
+                          "institution_name": "Академія Богомольця",
+                          "issued_date": "2017-02-28",
+                          "speciality": "Педіатр"
+                      }
+                  ],
+                  "science_degree": {
+                      "city": "Київ",
+                      "country": "UA",
+                      "degree": "CANDIDATE_OF_SCIENCE",
+                      "diploma_number": "DD123543",
+                      "institution_name": "Академія Богомольця",
+                      "issued_date": "2017-08-05",
+                      "speciality": "THERAPIST"
+                  },
+                  "specialities": [
+                      {
+                          "attestation_date": "2017-02-28",
+                          "attestation_name": "Академія Богомольця",
+                          "certificate_number": "AB/21331",
+                          "level": "FIRST",
+                          "qualification_type": "AWARDING",
+                          "speciality": "THERAPIST",
+                          "speciality_officio": true,
+                          "valid_to_date": "2027-02-28"
+                      }
+                  ]
+              },
+              "party": {
+                  "birth_date": "1982-08-07",
+                  "documents": [
+                      {
+                          "issued_at": "1998-06-11",
+                          "issued_by": "123аа4567",
+                          "number": "110619",
+                          "type": "PASSPORT"
+                      }
+                  ],
+                  "email": "srd77s8rgu@happy2023year.com",
+                  "first_name": "Богдан",
+                  "gender": "MALE",
+                  "last_name": "Татаренко",
+                  "phones": [
+                      {
+                          "number": "+380503210874",
+                          "type": "MOBILE"
+                      }
+                  ],
+                  "second_name": "Васильович",
+                  "tax_id": "3140112011"
+              },
+              "position": "P7",
+              "start_date": "2015-03-03",
+              "status": "APPROVED",
+              "updated_at": "2023-11-24T15:44:55.350033Z"
+          },
+          "meta": {
+              "code": 200,
+              "request_id": "0bcbb216-30c1-496d-a833-a0b2d84040db#28",
+              "type": "object",
+              "url": "http://api-svc.il/api/employee_requests/e4433079-0b82-432e-8396-933c9105467c/approve"
+          }
+      }
+order: 1000

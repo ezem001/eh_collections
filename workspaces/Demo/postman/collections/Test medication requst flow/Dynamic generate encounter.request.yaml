@@ -1,0 +1,105 @@
+$kind: http-request
+url: http://localhost:3000/create-encounter-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"encounter\": {{generated_encounter_Encounter_part}},\r
+
+    \    \"conditions\": {{generated_encounter_Condition_part}}\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "// const uuid = require('uuid');\r
+
+      // const encounterId = uuid.v4();\r
+
+      // const visitId = uuid.v4();\r
+
+      // const observationId2 = uuid.v4();\r
+
+      \r
+
+      // // -------------------------------------------------\r
+
+      // pm.globals.set(\"encounter_id\", encounterId);\r
+
+      // pm.globals.set(\"visit_id\", visitId);\r
+
+      // pm.globals.set(\"observation_id_2\", observationId2);\r
+
+      \r
+
+      \r
+
+      // // Поточна дата\r
+
+      // const now = new Date();\r
+
+      \r
+
+      // // Дата на 1 день раніше\r
+
+      // const yesterday = new Date(now);\r
+
+      // yesterday.setDate(now.getDate() - 1);\r
+
+      \r
+
+      // // Формуємо часові межі\r
+
+      // // Початок — 10:45:16 UTC\r
+
+      // const periodStart = new Date(yesterday);\r
+
+      // periodStart.setUTCHours(10, 45, 16, 0);\r
+
+      \r
+
+      // // Кінець періоду — через 9 годин після початку (19:45:16 UTC)\r
+
+      // const periodEnd = new Date(periodStart);\r
+
+      // periodEnd.setUTCHours(periodStart.getUTCHours() + 9);\r
+
+      \r
+
+      // // Запис у глобальні змінні\r
+
+      // pm.globals.set(\"encounter_period_start\",
+      periodStart.toISOString());\r
+
+      // pm.globals.set(\"encounter_period_end\", periodEnd.toISOString());\r
+
+      \r
+
+      // // Для зручності лог\r
+
+      // console.log(\"🕒 Encounter period_start:\",
+      periodStart.toISOString());\r
+
+      // console.log(\"🕒 Encounter period_end:\", periodEnd.toISOString());"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create encounter sign content', resData)\r
+
+      \r
+
+      pm.test(`Encounter content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('encounter_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 3000

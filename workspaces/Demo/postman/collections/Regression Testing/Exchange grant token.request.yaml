@@ -1,0 +1,41 @@
+$kind: http-request
+url: "{{auth_host}}/oauth/tokens"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    
+    {
+       "token":{
+          "grant_type":"authorization_code",
+          "code": "{{user_code}}",
+          "client_id":"{{user_legal_entity}}",
+          "client_secret": "{{client_secret}}",
+          "redirect_uri": "{{user_redirect_uri}}"
+
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: >
+      pm.test("Exchange grant token - PASS. Status code is 201", () => {
+          pm.response.to.have.status(201);
+      });
+
+
+      const jsonData = pm.response.json();
+
+
+      if (jsonData?.data?.value) {
+          pm.environment.set("access_token", jsonData.data.value);
+          pm.environment.set("refresh_token", jsonData.data.details?.refresh_token || "<<undefined>>");
+      } else {
+          pm.environment.set("access_token", "<<undefined>>");
+          pm.environment.set("refresh_token", "<<undefined>>");
+      }
+    language: text/javascript
+order: 5000

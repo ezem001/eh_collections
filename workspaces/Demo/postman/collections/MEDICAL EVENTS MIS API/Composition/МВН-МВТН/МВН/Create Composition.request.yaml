@@ -1,0 +1,335 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_CATEGORIES\",\r
+
+    \                \"code\": \"LIVE_BIRTH\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_TYPES\",\r
+
+    \                \"code\": \"NEWBORN\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"event\": [\r
+
+    \        {\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_EVENTS\",\r
+
+    \                        \"code\": \"COMPOSITION_VALIDITY_PERIOD\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"period\": {\r
+
+    \                \"start\": \"2026-02-02T10:45:16Z\",\r
+
+    \                \"end\": null\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"subject\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"preperson\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{patient_id_from_episode}}\"\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"encounter\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{jobEncounterID}}\"\r
+
+    \    },\r
+
+    \    \"author\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"employee\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{user_id}}\"\r
+
+    \    },\r
+
+    \    \"section\": {\r
+
+    \        \"focus\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"person\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"f2a4e04e-5fd8-4259-8647-941ae788467f\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"extension\": [\r
+
+    \         {\r
+
+    \            \"valueCode\": \"NEWBORN_BIRTH_DATE\",\r
+
+    \            \"valueDate\": \"2026-02-02\"\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"valueCode\": \"NEWBORN_SEX\",\r
+
+    \            \"valueString\": \"FEMALE\"\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: |
+      const jsonData = pm.response.json();
+
+      /* =========================
+         Helper: Visualizer
+      ========================= */
+      function displayResponse(title, data) {
+          let html = `<h3>${title}</h3>`;
+
+          if (Array.isArray(data)) {
+              html += "<ul>";
+              data.forEach(item => html += `<li>${item}</li>`);
+              html += "</ul>";
+          } else if (typeof data === 'object') {
+              html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+          } else {
+              html += `<p>${data}</p>`;
+          }
+
+          pm.visualizer.set(html);
+      }
+
+      /* =========================
+         1️⃣ Base response check
+      ========================= */
+      pm.test("Status code is 200", () => {
+          pm.expect(pm.response.code).to.eql(200);
+      });
+
+      const compositionCheckJobID = jsonData?.data?.id;
+
+      if (!compositionCheckJobID) {
+          displayResponse("❌ composition_check_job_id not found", jsonData);
+          throw new Error("composition_check_job_id not found");
+      }
+
+      pm.globals.set("composition_check_job_id", compositionCheckJobID);
+      console.log("composition_check_job_id:", compositionCheckJobID);
+
+      /* =========================
+         2️⃣ Retry config
+      ========================= */
+      let retryCount = parseInt(pm.globals.get("retryCount") || "0");
+      const MAX_RETRIES = 10;
+      const RETRY_DELAY_MS = 3000;
+
+      /* =========================
+         3️⃣ Job status request
+      ========================= */
+      const url = `${pm.globals.get('host')}/api/patients/composition/job/${compositionCheckJobID}`;
+
+      pm.sendRequest({
+          method: "GET",
+          url,
+          header: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${pm.environment.get("access_token")}`,
+              "api-key": pm.environment.get("mis_client_secret"),
+              "X-Custom-PSK": pm.globals.get("x-custom-psk")
+          }
+      }, (err, res) => {
+
+          if (err) {
+              displayResponse("❌ Job status request error", err);
+              throw err;
+          }
+
+          let resBody;
+          try {
+              resBody = res.json();
+          } catch (e) {
+              displayResponse("❌ Cannot parse job response", res.text());
+              throw e;
+          }
+
+          const status = resBody?.data?.status;
+
+          pm.test("Job status is valid", () => {
+              pm.expect(status).to.be.oneOf(["DONE", "FAILED", "ERROR", "PENDING"]);
+          });
+
+          console.log(`🔄 Job status: ${status}, retry #${retryCount}`);
+
+          /* =========================
+             4️⃣ FAILED / ERROR
+          ========================= */
+          if (status === "FAILED" || status === "ERROR") {
+              const errors = resBody.data?.links?.map(l => l.error).filter(Boolean);
+              displayResponse("❌ Job Failed", errors || resBody);
+              pm.globals.set("retryCount", 0);
+              return;
+          }
+
+          /* =========================
+             5️⃣ Retry logic
+          ========================= */
+          if (status !== "DONE" && retryCount < MAX_RETRIES) {
+              retryCount++;
+              pm.globals.set("retryCount", retryCount);
+
+              console.log(`⏳ Retry in ${RETRY_DELAY_MS / 1000}s...`);
+
+              const waitUntil = Date.now() + RETRY_DELAY_MS;
+              while (Date.now() < waitUntil) {}
+
+              pm.execution.setNextRequest(pm.info.requestName);
+              return;
+          }
+
+          pm.globals.set("retryCount", 0);
+
+          /* =========================
+             6️⃣ DONE → save compositionId
+          ========================= */
+          if (status === "DONE") {
+              const links = resBody.data?.links || [];
+
+              const compositionLink = links.find(l => l.href?.includes("composition/"));
+
+              if (!compositionLink) {
+                  displayResponse("⚠️ DONE but no composition link", links);
+                  return;
+              }
+
+              const compositionId = compositionLink.href.split("composition/").pop();
+              pm.globals.set("JobCompositionID", compositionId);
+
+              console.log("✅ Saved compositionId:", compositionId);
+              displayResponse("✅ Job DONE", {
+                  compositionId,
+                  links: links.map(l => l.href)
+              });
+
+              // pm.execution.setNextRequest("Next request name"); // ← за потреби
+          }
+      });
+    language: text/javascript
+order: 1000

@@ -1,0 +1,210 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/device_dispenses/{{JobD\
+  eviceDispenseID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json().data;\r
+
+      \r
+
+      // Отримання поточної дати у форматі 2018-08-02T10:45:16.000Z\r
+
+      const nowIsoString = new Date().toISOString().replace(/\\.\\d{3}Z$/,
+      '.000Z');\r
+
+      \r
+
+      // Варіант 1: Complete Device Dispense\r
+
+      const jsonCompleted = {\r
+
+      \  ...resData,\r
+
+      \  status: \"completed\",\r
+
+      \  payment_amount:2,\r
+
+      \  when_handed_over:nowIsoString\r
+
+      };\r
+
+      \r
+
+      // Варіант 2: Mark in error Device dispense\r
+
+      const jsonError = {\r
+
+      \  ...resData,\r
+
+      \  status: \"entered_in_error\",\r
+
+      \  status_reason: {\r
+
+      \    coding: [\r
+
+      \      {\r
+
+      \        system: \"device_dispense_mark_in_error_reasons\",\r
+
+      \        code: \"entered_in_error\"\r
+
+      \      }\r
+
+      \    ]\r
+
+      \  }\r
+
+      };\r
+
+      \r
+
+      pm.visualizer.set(`\r
+
+      \  <style>\r
+
+      \    .container {\r
+
+      \      display: flex;\r
+
+      \      flex-wrap: wrap;\r
+
+      \      gap: 20px;\r
+
+      \    }\r
+
+      \    .block {\r
+
+      \      flex: 1 1 45%;\r
+
+      \      min-width: 300px;\r
+
+      \    }\r
+
+      \    pre {\r
+
+      \      background-color: #f6f8fa;\r
+
+      \      padding: 16px;\r
+
+      \      border-radius: 5px;\r
+
+      \      font-family: monospace;\r
+
+      \      white-space: pre-wrap;\r
+
+      \      max-height: 500px;\r
+
+      \      overflow: auto;\r
+
+      \    }\r
+
+      \    button {\r
+
+      \      margin: 10px 0;\r
+
+      \      padding: 5px 10px;\r
+
+      \      border-radius: 4px;\r
+
+      \      border: 1px solid #ccc;\r
+
+      \      background-color: #e0e0e0;\r
+
+      \      cursor: pointer;\r
+
+      \    }\r
+
+      \    button:hover {\r
+
+      \      background-color: #d0d0d0;\r
+
+      \    }\r
+
+      \    h3 {\r
+
+      \      margin-bottom: 5px;\r
+
+      \    }\r
+
+      \  </style>\r
+
+      \r
+
+      \  <div class=\"container\">\r
+
+      \    <div class=\"block\">\r
+
+      \      <h3>JSON для <u>завершення</u> DeviceDispense</h3>\r
+
+      \      <button onclick=\"copyToClipboard('json1')\">Скопіювати JSON
+      (completed)</button>\r
+
+      \      <pre id=\"json1\">{{jsonCompleted}}</pre>\r
+
+      \    </div>\r
+
+      \    <div class=\"block\">\r
+
+      \      <h3>JSON для <u>помилкового</u> DeviceDispense</h3>\r
+
+      \      <button onclick=\"copyToClipboard('json2')\">Скопіювати JSON
+      (entered_in_error)</button>\r
+
+      \      <pre id=\"json2\">{{jsonError}}</pre>\r
+
+      \    </div>\r
+
+      \  </div>\r
+
+      \r
+
+      \  <script>\r
+
+      \    function copyToClipboard(id) {\r
+
+      \      const text = document.getElementById(id).innerText;\r
+
+      \      const textArea = document.createElement('textarea');\r
+
+      \      textArea.value = text;\r
+
+      \      document.body.appendChild(textArea);\r
+
+      \      textArea.select();\r
+
+      \      try {\r
+
+      \        document.execCommand('copy');\r
+
+      \        alert('JSON скопійовано!');\r
+
+      \      } catch (err) {\r
+
+      \        alert('Помилка копіювання: ' + err);\r
+
+      \      }\r
+
+      \      document.body.removeChild(textArea);\r
+
+      \    }\r
+
+      \  </script>\r
+
+      `, {\r
+
+      \  jsonCompleted: JSON.stringify(jsonCompleted, null, 2),\r
+
+      \  jsonError: JSON.stringify(jsonError, null, 2)\r
+
+      });\r\n"
+    language: text/javascript
+order: 3000

@@ -1,0 +1,10 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/specimens/7bc264db-7dfd-42e4-b85a-93e4fa7448bf/service_requests
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{laborant_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+examples: ./.resources/Get SR in specimen context.resources/examples
+order: 11000

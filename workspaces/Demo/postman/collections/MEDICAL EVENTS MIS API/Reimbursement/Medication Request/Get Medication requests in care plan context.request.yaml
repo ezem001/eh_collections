@@ -1,0 +1,46 @@
+$kind: http-request
+url: "{{host}}/api/care_plans/eb487aaa-cfba-4c5a-bbbd-17117d30fe78/medication_r\
+  equests"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+queryParams:
+  - key: legal_entity_id
+    value: 0dccb76f-3ed0-40f4-8f73-e95e2f91ea29
+    disabled: true
+  - key: employee_id
+    value: 4f8a300e-65a0-47c1-9265-1f92b70bf049
+    disabled: true
+  - key: person_id
+    value: d290f1ee-6c54-4b01-90e6-d701748f0851
+    disabled: true
+  - key: status
+    value: ACTIVE
+    disabled: true
+  - key: request_number
+    value: 0000-243P-1X53-EH38
+    disabled: true
+  - key: created_from
+    value: 2022-10-20
+    disabled: true
+  - key: created_to
+    value: 2017-10-20
+    disabled: true
+  - key: medication_id
+    value: b075f148-7f93-4fc2-b2ec-2d81b19a9b5b
+    disabled: true
+  - key: intent
+    value: order
+    disabled: true
+  - key: encounter_id
+    value: 8b33cce1-baad-4168-9775-ae730b57d74d
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 11000

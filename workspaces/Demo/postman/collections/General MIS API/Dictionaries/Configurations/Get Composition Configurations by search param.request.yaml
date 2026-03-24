@@ -1,0 +1,93 @@
+$kind: http-request
+url: "{{host}}/api/composition_configurations?category=ADOPTER&category=ADOPTER\
+  _RELATIVE"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: type
+    value: DRIVERS
+    disabled: true
+  - key: category
+    value: DRIVERS_GROUP1
+    disabled: true
+  - key: category
+    value: DRIVERS_GROUP2
+    disabled: true
+  - key: type
+    value: ADOPTION
+    disabled: true
+  - key: category
+    value: ADOPTER
+  - key: category
+    value: ADOPTER_RELATIVE
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: >
+      const response = pm.response.json();
+
+      const item = response.data?.[0];
+
+
+      let settings = {};
+
+      try {
+          settings = JSON.parse(item.settings);
+      } catch (e) {
+          settings = { error: 'Cannot parse settings', raw: item.settings };
+      }
+
+
+      pm.visualizer.set(
+
+      `
+
+      <style>
+          body {
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                           Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+              color: #0f172a;
+              padding: 10px;
+              line-height: 1.5;
+          }
+
+          .card {
+              background: #ffffff;
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+          }
+
+          pre {
+              background: #f1f5f9;
+              border-radius: 8px;
+              padding: 16px;
+              overflow-x: auto;
+              font-size: 13px;
+              color: #020617;
+          }
+
+
+          
+      </style>
+
+
+      <div class="card">
+          <pre>{{json}}</pre>
+      </div>
+
+      `,
+
+      {
+          id: item.id,
+          category: item.category.coding[0].code,
+          type: item.type.coding[0].code,
+          json: JSON.stringify(settings, null, 2)
+      });
+    language: text/javascript
+order: 5000

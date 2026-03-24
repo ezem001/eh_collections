@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host_demo}}/api/device_requests?requisition=AX64-654T-X654-AX65"
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: Bearer {{access_token}}
+  - key: api-key
+    value: "{{mis_client_secret}}"
+  - key: "{{X-Custom-PSK}}"
+    value: "{{x-custom_demo}}"
+    disabled: true
+queryParams:
+  requisition: AX64-654T-X654-AX65
+body:
+  type: text
+  content: ""
+order: 8000

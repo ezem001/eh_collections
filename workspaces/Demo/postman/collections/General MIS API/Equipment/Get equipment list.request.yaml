@@ -1,0 +1,54 @@
+$kind: http-request
+url: "{{host}}/api/equipment?division_id={{user_division_id}}&availability_stat\
+  us=available"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: division_id
+    value: "{{user_division_id}}"
+  - key: device_definition_id
+    value: 8be63914-a278-470b-b868-1af5b9087332
+    disabled: true
+  - key: type
+    value: "03221"
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: model_number
+    value: PC122345
+    disabled: true
+  - key: manufacturer
+    value: "%D0%A4%D0%9E%D0%9F%20%D0%92%D0%B8%D1%80%D0%BE%D0%B1%D0%BD%D0%B8%D0%BA"
+    disabled: true
+  - key: availability_status
+    value: available
+  - key: recorder
+    value: 8be63914-a278-470b-b868-1af5b9087332
+    disabled: true
+  - key: inventory_number
+    value: 013655gg
+    disabled: true
+  - key: serial_number
+    value: 8be63914-a278-470b-b868-1af5b9087332
+    disabled: true
+  - key: name
+    value: 8be63914-a278-470b-b868-1af5b9087332
+    disabled: true
+  - key: created_from
+    value: 2017-08-17
+    disabled: true
+  - key: created_to
+    value: 2017-08-20
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 2000

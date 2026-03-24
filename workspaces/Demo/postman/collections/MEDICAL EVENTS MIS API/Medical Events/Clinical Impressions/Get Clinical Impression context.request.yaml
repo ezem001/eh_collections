@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/6fafd4bc-fd09-49cc-8b85-a74797ca6252/clinical_\
+  impressions/ab3a7960-72b3-43d1-a4ac-fc9564c67c03/context"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 3000

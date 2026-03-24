@@ -1,0 +1,73 @@
+$kind: http-request
+url: "{{host}}/api/institutional/divisions"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "name": "institutuional-division-request_2",
+        "addresses": [
+            {
+                "country": "UA",
+                "type": "RESIDENCE"
+            }
+        ],
+        
+        "email": "demo.emergency@ukr.net",
+        "working_hours": {
+            // "mon": [
+            //     [
+            //         "09.00",
+            //         "13.00"
+            //     ],
+            //     [
+            //         "14.00",
+            //         "20.00"
+            //     ]
+            // ],
+            // "tue": [
+            //     [
+            //         "09.00",
+            //         "18.00"
+            //     ]
+            // ],
+            // "wed": [
+            //     [
+            //         "09.00",
+            //         "13.00"
+            //     ],
+            //     [
+            //         "14.00",
+            //         "20.00"
+            //     ]
+            // ],
+            // "thu": [
+            //     [
+            //         "08.00",
+            //         "08.35"
+            //     ]
+            // ],
+            // "fri": [
+            //     [
+            //         "09.00",
+            //         "15.00"
+            //     ]
+            // ]
+        },
+        "type": "LICENSED_UNIT",
+        "legal_entity_id": "a660e381-a4a9-4cae-a91c-7c58eb542fdc",
+        "external_id": "3213213"
+    }
+scripts:
+  - type: afterResponse
+    code: |+
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+    language: text/javascript
+order: 2000

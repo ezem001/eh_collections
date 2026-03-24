@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/compositions/113c50b4-4\
+  4a5-443d-959d-c1701b5e7334/print_form?form_type=INFO_CERTIFICATE"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: form_type
+    value: INFO_CERTIFICATE
+  - key: form_type
+    value: EXTRACT
+    disabled: true
+body:
+  type: text
+  content: ""
+order: 9000

@@ -1,0 +1,42 @@
+$kind: http-request
+url: "{{host}}/api/patients/b9d31a4f-6424-4aa2-a9cb-3701adb16b01/episodes/1d22d\
+  407-3ab1-49ba-a154-455984b9fcdc"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: 30276e63617461a185ec
+body:
+  type: text
+  content: "{\r
+
+    \  \"name\": \"Епізод оновлення\",\r
+
+    \  \"care_manager\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"employee\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"c32c52a6-4e62-440e-b971-a14165eab628\"\r
+
+    \    }\r
+
+    \  }\r
+
+    }"
+order: 7000

@@ -1,0 +1,353 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/job/{{creatCompositionJobId}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: formdata
+  content: []
+scripts:
+  - type: afterResponse
+    code: "// --- 1️⃣ Розбір відповіді ---\r
+
+      let resBody;\r
+
+      try {\r
+
+      \    resBody = pm.response.json();\r
+
+      } catch (e) {\r
+
+      \    console.error(\"❌ Неможливо розпарсити JSON:\", e);\r
+
+      \    pm.execution.setNextRequest(pm.info.requestName);\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      // --- 2️⃣ Перевірки статусу коду ---\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // --- 3️⃣ Перевірки статусу виконання ---\r
+
+      pm.test(\"Status is DONE\", function () {\r
+
+      \    pm.expect(resBody.data.status).to.be.oneOf([\"DONE\", \"FAILED\",
+      \"ERROR\", \"PENDING\"]);\r
+
+      });\r
+
+      \r
+
+      // --- 4️⃣ Повторна логіка (до 5 спроб) ---\r
+
+      let retryCount = pm.globals.get(\"retryCount\") || 0;\r
+
+      retryCount = parseInt(retryCount);\r
+
+      \r
+
+      const status = resBody.data?.status;\r
+
+      \r
+
+      if (status !== \"DONE\" && retryCount < 5) {\r
+
+      \    retryCount++;\r
+
+      \    console.log(`⏳ Статус: ${status || \"невідомий\"}. Повтор через 3
+      секунди (#${retryCount})`);\r
+
+      \r
+
+      \    const wait = Date.now() + 3000;\r
+
+      \    while (Date.now() < wait) { } // блокує 3 секунди\r
+
+      \r
+
+      \    pm.globals.set(\"retryCount\", retryCount);\r
+
+      \    pm.execution.setNextRequest(pm.info.requestName);\r
+
+      \    return;\r
+
+      } else {\r
+
+      \    // Скидаємо лічильник, якщо DONE або досягнуто межу\r
+
+      \    pm.globals.set(\"retryCount\", 0);\r
+
+      }\r
+
+      \r
+
+      // --- 5️⃣ Якщо статус DONE — зберігаємо composition ID ---\r
+
+      let compositionId = null;\r
+
+      \r
+
+      if (status === \"DONE\") {\r
+
+      \    const compositionLink = resBody.data?.links?.find(link =>
+      link.href.includes(\"composition/\"));\r
+
+      \r
+
+      \    if (compositionLink) {\r
+
+      \        compositionId =
+      compositionLink.href.split(\"composition/\")[1];\r
+
+      \        pm.globals.set(\"JobCompositionID\", compositionId);\r
+
+      \        console.log(\"✅ Saved Composition ID:\", compositionId);\r
+
+      \    } else {\r
+
+      \        console.warn(\"⚠️ No composition link found.\");\r
+
+      \        return;\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      // ✅ --- 5.1️⃣ DONE => робимо GET composition + зберігаємо в нашу БД ---\r
+
+      if (status === \"DONE\" && compositionId) {\r
+
+      \r
+
+      \    // ---- дістаємо потрібні айдішки ----\r
+
+      \    const patientId = pm.globals.get(\"patient_id_from_episode\");\r
+
+      \    const episodeId = pm.globals.get(\"jobEpisodeID\");\r
+
+      \    let encounterId = pm.globals.get(\"jobEncounterID\"); // заглушка\r
+
+      \r
+
+      \    const token = pm.environment.get(\"access_token\");\r
+
+      \r
+
+      \    const apiKey = pm.environment.get(\"mis_client_secret\");\r
+
+      \r
+
+      \r
+
+      \    // ---- будуємо baseUrl з поточного хоста ----\r
+
+      \r
+
+      \r
+
+      \    const getUrl =\r
+
+      \        `${pm.globals.get(\"host\")}/api/patients/${patientId}` +\r
+
+      \        `/composition/${compositionId}` +\r
+
+      \        `/episode/${episodeId}` +\r
+
+      \        `/encounter/${encounterId}`;\r
+
+      \r
+
+      \    console.log(\"🔎 GET composition:\", getUrl);\r
+
+      \r
+
+      \    // ---- робимо GET ----\r
+
+      \    pm.sendRequest({\r
+
+      \        url: getUrl,\r
+
+      \        method: \"GET\",\r
+
+      \        header: {\r
+
+      \            \"Authorization\": `Bearer ${token}`,\r
+
+      \            \"api-key\": apiKey,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`,\r
+
+      \            \"Content-Type\": \"application/json\"\r
+
+      \        }\r
+
+      \    }, (err, getRes) => {\r
+
+      \        if (err) {\r
+
+      \            console.error(\"❌ GET composition error:\", err);\r
+
+      \            throw err;\r
+
+      \        }\r
+
+      \r
+
+      \        let body;\r
+
+      \        try {\r
+
+      \            body = getRes.json();\r
+
+      \        } catch (e) {\r
+
+      \            console.error(\"❌ Cannot parse GET response:\", e);\r
+
+      \            throw e;\r
+
+      \        }\r
+
+      \r
+
+      \        const c = body?.data || body;\r
+
+      \r
+
+      \        // ---- мінімальні хелпери (без system) ----\r
+
+      \        const code = (arr) => arr?.[0]?.code || null;\r
+
+      \        const ref = (obj) => {\r
+
+      \            const t = code(obj?.type?.coding);\r
+
+      \            const id = obj?.value || null;\r
+
+      \            if (!t && !id) return null;\r
+
+      \            return { type: t, id };\r
+
+      \        };\r
+
+      \r
+
+      \        // ---- збираємо payload в нашу БД ----\r
+
+      \        const payload = {\r
+
+      \            patientId,\r
+
+      \            episodeId,\r
+
+      \            encounterId,\r
+
+      \r
+
+      \            compositionId: c?.identifier?.value || compositionId,\r
+
+      \r
+
+      \            author: ref(c?.author),                   // employee id\r
+
+      \            category: code(c?.category?.coding),      // SICKNESS\r
+
+      \            legal_entity: ref(c?.custodian),          // legal_entity
+      id\r
+
+      \            encounter: ref(c?.encounter),             // encounter id\r
+
+      \r
+
+      \            composition_type: code(c?.type?.coding),  //
+      TEMP_DISABILITY\r
+
+      \            date: c?.date || null,\r
+
+      \            relatesTo: c.relatesTo,\r
+
+      \r
+
+      \            subject: ref(c?.subject),                 // person id\r
+
+      \            focus: ref(c?.section?.focus),            // person id\r
+
+      \r
+
+      \            status: c?.status || null,\r
+
+      \            title: c?.title || null\r
+
+      \        };\r
+
+      \r
+
+      \        // прибрати null/undefined\r
+
+      \        Object.keys(payload).forEach(k => (payload[k] == null) && delete
+      payload[k]);\r
+
+      \r
+
+      \        console.log(\"📦 Save payload:\", payload);\r
+
+      \r
+
+      \        // ---- зберігаємо в наш бек (додає до пацієнта) ----\r
+
+      \        pm.sendRequest({\r
+
+      \            url: \"http://localhost:3000/patient/composition\",\r
+
+      \            method: \"POST\",\r
+
+      \            header: { \"Content-Type\": \"application/json\" },\r
+
+      \            body: { mode: \"raw\", raw: JSON.stringify(payload) }\r
+
+      \        }, (saveErr, saveRes) => {\r
+
+      \            if (saveErr) {\r
+
+      \                console.error(\"❌ Save to local DB error:\", saveErr);\r
+
+      \                throw saveErr;\r
+
+      \            }\r
+
+      \            console.log(\"✅ Saved to patient:\", saveRes.json());\r
+
+      \        });\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      // --- 6️⃣ Якщо все завершено — переходимо до наступного запиту ---\r
+
+      if (status === \"DONE\") {\r
+
+      \    console.log(\"🎉 Job завершено успішно, переходимо до наступного
+      запиту.\");\r
+
+      \    // pm.execution.setNextRequest(\"Next request name\");\r
+
+      }\r\n"
+    language: text/javascript
+order: 6000

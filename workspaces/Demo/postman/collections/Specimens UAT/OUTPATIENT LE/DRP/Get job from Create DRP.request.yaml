@@ -1,0 +1,8 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/jobs/{{job_id}}
+method: GET
+headers:
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+examples: ./.resources/Get job from Create DRP.resources/examples
+order: 2000

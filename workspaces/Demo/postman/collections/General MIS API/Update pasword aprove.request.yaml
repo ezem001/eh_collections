@@ -1,0 +1,17 @@
+$kind: http-request
+url: https://auth-demo.ehealth.gov.ua/oauth/users/actions/update_password
+method: POST
+headers:
+  Authorization: Bearer TUE4K2k5L3JxdW5pSHRTbDFxa2JRdz09
+body:
+  type: json
+  content: "{\r
+
+    \    \"user\": {\r
+
+    \        \"password\": \"12345@Azxcvbnm\"\r
+
+    \    }\r
+
+    }"
+order: 12000

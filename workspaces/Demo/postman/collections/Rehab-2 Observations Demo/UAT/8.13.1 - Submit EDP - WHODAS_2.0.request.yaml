@@ -1,0 +1,32 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/{{patient_id}}/encounter_package"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: "Bearer {{doctor_token}} "
+  api-key: "{{mis_client_secret_demo}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value_demo}}"
+body:
+  type: text
+  content: |-
+    {
+      "visit": {
+        "id": "{{visit_id}}",
+        "period": {
+          "start": "2023-05-10T14:40:16+02:00",
+          "end": "2023-05-19T14:41:16Z"
+        }
+      },
+      "signed_data": "{{encounter_package_base64}}"
+    	
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 35000

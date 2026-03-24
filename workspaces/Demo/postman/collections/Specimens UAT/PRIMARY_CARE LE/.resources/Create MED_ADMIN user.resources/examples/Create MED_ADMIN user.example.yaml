@@ -1,0 +1,59 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/employee_requests/e4433079-0b82-432e-8396-933c9105467c/user
+  method: POST
+  headers:
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: |-
+      {
+            "password":"Qwerty123456"
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Fri, 24 Nov 2023 15:43:34 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "427"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: "*"
+    Cache-Control: max-age=0, private, must-revalidate
+    Referrer-Policy: strict-origin-when-cross-origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "38"
+    X-Kong-Upstream-Latency: "268"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: 2ae71723-6f61-4fd8-92ae-1cea9597f61e#10
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82b2c4ad387e5a78-VIE
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "block_reason": null,
+              "email": "srd77s8rgu@happy2023year.com",
+              "id": "bfefaba7-a7c2-47aa-993d-1f2bb43728fd",
+              "inserted_at": "2023-11-24T15:43:34Z",
+              "is_blocked": false,
+              "person_id": "",
+              "settings": {},
+              "tax_id": "",
+              "updated_at": "2023-11-24T15:43:34Z"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "2ae71723-6f61-4fd8-92ae-1cea9597f61e#10",
+              "type": "object",
+              "url": "http://api-svc.il/api/employee_requests/e4433079-0b82-432e-8396-933c9105467c/user"
+          }
+      }
+order: 1000

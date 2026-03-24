@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{host}}/api/patients/87841aa5-2f3d-4f18-bf15-0639f37b9fd2/care_plans/fb8\
+  e0af4-b58a-4ee2-8101-72c60f593af4/actions/complete"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"status_reason\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"eHealth/care_plan_complete_reasons\",\r
+
+    \        \"code\": \"some code\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  }\r
+
+    }"
+order: 10000

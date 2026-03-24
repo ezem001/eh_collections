@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{host}}/api/person_requests/{{Person_req_id}}/actions/resend_otp"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: status
+    value: CANCELLED
+    disabled: true
+order: 3000

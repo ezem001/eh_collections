@@ -1,0 +1,34 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: ef7d48ecfc233d6af088
+  Authorization: Bearer {{spec2_session_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+       "app":{
+          "client_id":"ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+          "redirect_uri":"https://example2.com",
+          "scope":"division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read otp:read otp:write person:read patient_summary:read encounter:write encounter:read episode:write episode:read job:read condition:read condition:write observation:read observation:write immunization:read immunization:write allergy_intolerance:read allergy_intolerance:write medication_statement:read medication_statement:write device:read device:write risk_assessment:read risk_assessment:write medication_dispense:read drugs:read medication_request:details medication_request:read medication_request:reject medication_request:resend medication_request_request:read medication_request_request:reject medication_request_request:sign medication_request_request:write diagnostic_report:read diagnostic_report:write diagnostic_report:cancel procedure:read procedure:write service_request:makeinprogress service_request:complete service_request:recall service_request:cancel service_request:write service_request:read service_request:use approval:create program_service:read medication_administration:read medication_administration:write healthcare_service:read employee_role:read person_request:write person_request:read preperson:read preperson:write authentication_method_request:write merge_request:write merge_request:sign merge_request:read composition:create composition:search composition:read composition:sign composition:cancel care_plan:write care_plan:read approval:read approval:cancel specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate encounter:cancel"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data && jsonData.data.value) {
+          var code_grant = jsonData.data.value;
+          postman.setEnvironmentVariable("spec2_code_grant", code_grant);
+      } else {
+          postman.setEnvironmentVariable("spec2_code_grant", "<<undefined>>");
+      }
+    language: text/javascript
+examples: ./.resources/Authorize VIROLOGIST scopes.resources/examples
+order: 5000

@@ -1,0 +1,32 @@
+$kind: http-request
+url: "{{host}}/api/divisions"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: ids
+    value: d290f1ee-6c54-4b01-90e6-d701748f0851
+    disabled: true
+  - key: name
+    value: "%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BF%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%B\
+      A%D0%B5%20%D0%B2%D1%96%D0%B4%D0%B4%D1%96%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F%20\
+      %D0%BA%D0%BB%D1%96%D0%BD%D1%96%D0%BA%D0%B8"
+    disabled: true
+  - key: legal_entity_id
+    value: d8b5f374-0f3c-46e6-baf1-21d97b4c9ff5
+    disabled: true
+  - key: type
+    value: CLINIC
+    disabled: true
+  - key: status
+    value: ACTIVE
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 6000

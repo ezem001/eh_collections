@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/diagnoses_groups/episodes?period_fr\
+  om=2022-01-01&period_to=2023-01-01&diagnoses_group_id=80a9e15b-b71b-4caf-8f2e\
+  -ff247e8a5677&managing_organization_id=80a9e15b-b71b-4caf-8f2e-ff247e8a5677&p\
+  age=2&page_size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  period_from: 2022-01-01
+  period_to: 2023-01-01
+  diagnoses_group_id: 80a9e15b-b71b-4caf-8f2e-ff247e8a5677
+  managing_organization_id: 80a9e15b-b71b-4caf-8f2e-ff247e8a5677
+  page: "2"
+  page_size: "50"
+scripts:
+  - type: afterResponse
+    code: |+
+      tests["Route works"] = responseCode.code === 200;
+
+
+
+    language: text/javascript
+order: 6000

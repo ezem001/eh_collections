@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host_demo}}/api/v3/declaration_requests/646a9219-cabd-4f9b-bccb-9994d10\
+  17fbd/actions/reject"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 4000

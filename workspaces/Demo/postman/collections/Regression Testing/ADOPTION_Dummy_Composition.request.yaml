@@ -1,0 +1,465 @@
+$kind: http-request
+url: http://localhost:3000/create-composition-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{composition_id}}\",\r
+
+    \    \"title\": \"{{composition_stitle}}\",\r
+
+    \    \"status\": \"FINAL\",\r
+
+    \    \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_TYPES\",\r
+
+    \                \"code\": \"ADOPTION\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_CATEGORIES\",\r
+
+    \                \"code\": \"ADOPTER\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"date\": \"{{adopterCompositionDate}}\",\r
+
+    \    \"custodian\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"legal_entity\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_legal_entity}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobEncounterID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"attester\": [\r
+
+    \        {\r
+
+    \            \"mode\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_ATTESTER_MODES\",\r
+
+    \                        \"code\": \"LEGAL\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"party\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"string\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"event\": [\r
+
+    \        {\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_EVENTS\",\r
+
+    \                        \"code\": \"ADOPTION_ADOPTER_ELIGIBLE\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"period\": {\r
+
+    \                \"start\": \"{{adopterCompositionStart}}\",\r
+
+    \                \"end\": \"{{adopterCompositionEnd}}\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"section\": [\r
+
+    \        {\r
+
+    \            \"title\": \"NOT_ADOPTION_ADOPTER_FREE_SECTION\",\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_SECTION_CODES\",\r
+
+    \                        \"code\": \"ADOPTION_ADOPTER_FREE_SECTION\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"author\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{user_id}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"entry\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"immunization\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{jobImmunizationID}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(`Composition content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('composition_signed_content',
+      resData.signed_content);\r
+
+      });"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const id = uuid.v4();\r
+
+      pm.environment.set(\"composition_id\", id);\r
+
+      \r
+
+      \r
+
+      // Отримуємо encounter_start_date з глобальних змінних\r
+
+      const encounterPeriodes = new
+      Date(pm.globals.get('encounter_start_date'));\r
+
+      \r
+
+      // Додаємо 1 день до encounter_start_date\r
+
+      const adopterCompositionDate = new Date(encounterPeriodes);\r
+
+      adopterCompositionDate.setDate(adopterCompositionDate.getDate() + 1);\r
+
+      \r
+
+      // Додаємо 2 дні до adopterCompositionDate (отримуємо start)\r
+
+      const adopterCompositionStart = new Date(adopterCompositionDate);\r
+
+      adopterCompositionStart.setDate(adopterCompositionStart.getDate() + 2);\r
+
+      \r
+
+      // Додаємо 5 днів до start (отримуємо end)\r
+
+      const adopterCompositionEnd = new Date(adopterCompositionStart);\r
+
+      adopterCompositionEnd.setDate(adopterCompositionEnd.getDate() + 5);\r
+
+      \r
+
+      // Функція для форматування дати у форматі ISO 8601 (з T00:00:00.000Z)\r
+
+      const formatISODate = (date) => date.toISOString().split('T')[0] +
+      \"T00:00:00.000Z\";\r
+
+      \r
+
+      // Зберігаємо у глобальні змінні\r
+
+      pm.globals.set('adopterCompositionDate',
+      formatISODate(adopterCompositionDate));\r
+
+      pm.globals.set('adopterCompositionStart',
+      formatISODate(adopterCompositionStart));\r
+
+      pm.globals.set('adopterCompositionEnd',
+      formatISODate(adopterCompositionEnd));\r
+
+      \r
+
+      // Виводимо у консоль для перевірки\r
+
+      console.log(\"Adopter Composition Date:\",
+      formatISODate(adopterCompositionDate));\r
+
+      console.log(\"Adopter Composition Start:\",
+      formatISODate(adopterCompositionStart));\r
+
+      console.log(\"Adopter Composition End:\",
+      formatISODate(adopterCompositionEnd));\r
+
+      \r
+
+      // // Helper function to extract IDs from URLs\r
+
+      // function extractID(url, keyword, variableName) {\r
+
+      //     if (url && url.includes(`${keyword}/`)) {\r
+
+      //         const parts = url.split(`${keyword}/`);\r
+
+      //         if (parts.length > 1) {\r
+
+      //             const extractedID = parts[1];\r
+
+      \            \r
+
+      //             // Log the extracted ID to the console (for debugging
+      purposes)\r
+
+      //             console.log(`Extracted ${variableName}:`, extractedID);\r
+
+      \            \r
+
+      //             // Set the extracted ID as an environment variable\r
+
+      //             pm.globals.set(variableName, extractedID);\r
+
+      //         } else {\r
+
+      //             console.error(`The URL does not contain the expected format
+      for ${keyword}.`);\r
+
+      //         }\r
+
+      //     } else {\r
+
+      //         console.error(`The global variable ${variableName} is not
+      defined or does not contain the expected format.`);\r
+
+      //     }\r
+
+      // }\r
+
+      \r
+
+      // // Retrieve the URL from the global variable\r
+
+      // const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      // // Extract encounter and observation IDs using the helper function\r
+
+      // extractID(url, 'encounters', 'encounter_extracted_id');\r
+
+      // extractID(url, 'observations', 'observation_extracted_id');\r
+
+      // // extractID(url, 'conditions', 'condition_extracted_id');\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+order: 91000

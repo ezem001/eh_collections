@@ -1,0 +1,73 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+  method: POST
+  headers:
+    Content-Type: application/json
+    api-key: ef7d48ecfc233d6af088
+    Authorization: Bearer {{le_primc_v2_owner_session_token}}
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: >-
+      {
+         "app":{
+            "client_id":"68c4e556-5a61-4994-a788-4949dbd76688",
+            "redirect_uri":"https://example2.com",
+            "scope":"employee_role:write employee_role:read healthcare_service:write healthcare_service:read declaration:read declaration_request:approve declaration_request:read declaration_request:reject declaration_request:write division:activate division:deactivate division:details division:read division:write employee:deactivate employee:details employee:read employee:write employee_request:approve employee_request:read employee_request:reject employee_request:write legal_entity:read otp:read otp:write person:read reimbursement_report:read secret:refresh capitation_report:read contract_request:create contract_request:read contract_request:terminate contract_request:approve contract_request:sign contract:read contract:write client:read connection:read connection:write connection:refresh_secret connection:delete related_legal_entities:read equipment:write equipment:read license:details license:read license:write rule_engine_rule:read party_verification:details party_verification:write person_verification:details person_verification:write device_request:read"
+         }
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Thu, 23 Nov 2023 12:55:15 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "1676"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: https://auth-demo.ehealth.gov.ua
+    Cache-Control: max-age=0, private, must-revalidate
+    Location: https://example2.com?code=TnVhY2tYRm1oRGlwNmQ5ajNYTi9odz09
+    Referrer-Policy: strict-origin-when-cross-origin
+    Vary: Origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "7"
+    X-Kong-Upstream-Latency: "15"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: f3176006-faf2-4306-9eb7-28b3242c585b#394
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a990c00d0e22f5-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "details": {
+                  "app_id": "793b3e93-5d4f-4ae8-bfe1-eb017f422a22",
+                  "client_id": "68c4e556-5a61-4994-a788-4949dbd76688",
+                  "grant_type": "password",
+                  "redirect_uri": "https://example2.com",
+                  "scope_request": "employee_role:write employee_role:read healthcare_service:write healthcare_service:read declaration:read declaration_request:approve declaration_request:read declaration_request:reject declaration_request:write division:activate division:deactivate division:details division:read division:write employee:deactivate employee:details employee:read employee:write employee_request:approve employee_request:read employee_request:reject employee_request:write legal_entity:read otp:read otp:write person:read reimbursement_report:read secret:refresh capitation_report:read contract_request:create contract_request:read contract_request:terminate contract_request:approve contract_request:sign contract:read contract:write client:read connection:read connection:write connection:refresh_secret connection:delete related_legal_entities:read equipment:write equipment:read license:details license:read license:write rule_engine_rule:read party_verification:details party_verification:write person_verification:details person_verification:write device_request:read"
+              },
+              "expires_at": 1700744415,
+              "id": "b8c6fe5f-15cc-4363-a894-8fbfbc1f3e91",
+              "name": "authorization_code",
+              "user_id": "4ba0e5ca-1376-4990-b293-7aa87bd0ba8d",
+              "value": "TnVhY2tYRm1oRGlwNmQ5ajNYTi9odz09"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "f3176006-faf2-4306-9eb7-28b3242c585b#394",
+              "type": "object",
+              "url": "http://api-svc.mithril/oauth/apps/authorize"
+          },
+          "urgent": {
+              "redirect_uri": "https://example2.com?code=TnVhY2tYRm1oRGlwNmQ5ajNYTi9odz09"
+          }
+      }
+order: 1000

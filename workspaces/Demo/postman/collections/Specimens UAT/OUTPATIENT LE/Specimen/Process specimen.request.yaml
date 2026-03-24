@@ -1,0 +1,24 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/cda00e44-b276-47e5-8045-dfccd18c1750/specimens/8dfd4215-4379-43b6-b9b1-79f205ce33df/actions/process
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "received_time": "2023-12-11T15:45:15.439Z"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 9000

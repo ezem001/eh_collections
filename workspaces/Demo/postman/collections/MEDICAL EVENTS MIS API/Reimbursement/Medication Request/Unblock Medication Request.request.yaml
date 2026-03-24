@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/medication_requests/ffaa9aa5-75bb-4f3f-bbff-e40b464a08db/act\
+  ions/unblock"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+body:
+  type: text
+  content: "{\r
+
+    \    \"block_reason\": \"помилки відсутні\",\r
+
+    \    \"block_reason_code\": \"DEFAULT\"\r
+
+    }"
+order: 13000

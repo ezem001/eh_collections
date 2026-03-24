@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host_demo}}/api/merge_requests?status=NEW&master_person_id=7c3da506-804\
+  d-4550-8993-bf17f9ee0402&merge_person_id=7c3da506-804d-4550-8993-bf17f9ee0403\
+  &page=2&page_size=50"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  status: NEW
+  master_person_id: 7c3da506-804d-4550-8993-bf17f9ee0402
+  merge_person_id: 7c3da506-804d-4550-8993-bf17f9ee0403
+  page: "2"
+  page_size: "50"
+order: 8000

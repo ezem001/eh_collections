@@ -1,0 +1,12 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/service_requests?requisition=7332-0462-3832-0682
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{assist_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  requisition: 7332-0462-3832-0682
+examples: ./.resources/Get SR by requisition.resources/examples
+order: 10000

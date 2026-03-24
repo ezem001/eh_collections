@@ -1,0 +1,845 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/service_requests?requisition=7332-0462-3832-0682
+  method: GET
+  headers:
+    Content-Type: application/json
+    Authorization: Bearer {{assist_access_token}}
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  queryParams:
+    requisition: 7332-0462-3832-0682
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Wed, 29 Nov 2023 14:19:46 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "28"
+    X-Kong-Upstream-Latency: "36"
+    X-Request-Id: 0bcbb216-30c1-496d-a833-a0b2d84040db#862
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82db7cce1a7677bb-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": [
+              {
+                  "note": null,
+                  "id": "0c4584f2-51f1-4a0a-82a7-130673622e7d",
+                  "patient_instruction": null,
+                  "status": "active",
+                  "based_on": [],
+                  "specimens": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "specimen",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "5bc264db-7dfd-42e4-b85a-93e4fa7448bf"
+                          }
+                      },
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "specimen",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "7bc264db-7dfd-42e4-b85a-93e4fa7448bf"
+                          }
+                      }
+                  ],
+                  "quantity": null,
+                  "reason_reference": [],
+                  "category": {
+                      "coding": [
+                          {
+                              "code": "laboratory_procedure",
+                              "system": "eHealth/SNOMED/service_request_categories"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923192614"
+                      }
+                  },
+                  "requester_employee": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1652cdf6-edc2-4e9d-a576-5b583183af2c"
+                      }
+                  },
+                  "remaining_quantity": null,
+                  "inserted_at": "2023-11-29T14:15:44.287000Z",
+                  "requester_legal_entity": {
+                      "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                      }
+                  },
+                  "priority": null,
+                  "updated_at": "2023-11-29T14:15:44.287000Z",
+                  "status_history": [
+                      {
+                          "inserted_at": "2023-11-29T14:15:44.287000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "status": "active",
+                          "status_reason": null
+                      }
+                  ],
+                  "program_service": null,
+                  "expiration_date": "2024-11-28T23:59:59Z",
+                  "completed_with": null,
+                  "subject": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "patient",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                      }
+                  },
+                  "code": {
+                      "display_value": "Аналіз; SARS-CoV-2 - Виявлення антигену методом швидкого імуноаналізу",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "service",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b3e26739-517b-4945-befa-48f2a36c4206"
+                      }
+                  },
+                  "performer": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "68c4e556-5a61-4994-a788-4949dbd76688"
+                      }
+                  },
+                  "program_processing_status": "new",
+                  "explanatory_letter": null,
+                  "supporting_info": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "episode_of_care",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "9a52292f-8633-4f31-981d-fb511715f0d3"
+                          }
+                      }
+                  ],
+                  "location_reference": null,
+                  "occurrence_date_time": "2023-11-29T17:22:19.592000Z",
+                  "performer_type": null,
+                  "used_by_employee_history": [],
+                  "intent": "order",
+                  "program": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "medical_program",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "963b1410-17e8-4407-b700-044c9fc555ca"
+                      }
+                  },
+                  "program_processing_status_history": [
+                      {
+                          "inserted_at": "2023-11-29T14:15:44.287000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "program_processing_status": "new"
+                      }
+                  ],
+                  "used_by_legal_entity_history": [],
+                  "permitted_resources": [],
+                  "used_by_legal_entity": null,
+                  "identity": {
+                      "age": 35,
+                      "first_name": "І.",
+                      "gender": "MALE",
+                      "last_name": "Пилипенко",
+                      "second_name": "П."
+                  },
+                  "status_reason": null,
+                  "requisition": "7332-0462-3832-0682",
+                  "used_by_employee": null
+              },
+              {
+                  "note": null,
+                  "id": "0c4584f2-50f1-4a0a-82a7-130673622e6d",
+                  "patient_instruction": null,
+                  "status": "active",
+                  "based_on": [],
+                  "specimens": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "specimen",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "5bc264db-7dfd-42e4-b85a-93e4fa7448bf"
+                          }
+                      },
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "specimen",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "7bc264db-7dfd-42e4-b85a-93e4fa7448bf"
+                          }
+                      }
+                  ],
+                  "quantity": null,
+                  "reason_reference": [],
+                  "category": {
+                      "coding": [
+                          {
+                              "code": "laboratory_procedure",
+                              "system": "eHealth/SNOMED/service_request_categories"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923192614"
+                      }
+                  },
+                  "requester_employee": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1652cdf6-edc2-4e9d-a576-5b583183af2c"
+                      }
+                  },
+                  "remaining_quantity": null,
+                  "inserted_at": "2023-11-29T14:07:31.383000Z",
+                  "requester_legal_entity": {
+                      "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                      }
+                  },
+                  "priority": null,
+                  "updated_at": "2023-11-29T14:07:31.383000Z",
+                  "status_history": [
+                      {
+                          "inserted_at": "2023-11-29T14:07:31.383000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "status": "active",
+                          "status_reason": null
+                      }
+                  ],
+                  "program_service": null,
+                  "expiration_date": "2024-11-28T23:59:59Z",
+                  "completed_with": null,
+                  "subject": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "patient",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                      }
+                  },
+                  "code": {
+                      "display_value": "Аналіз; SARS-CoV-2 - Виявлення антигену методом швидкого імуноаналізу",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "service",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b3e26739-517b-4945-befa-48f2a36c4206"
+                      }
+                  },
+                  "performer": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "68c4e556-5a61-4994-a788-4949dbd76688"
+                      }
+                  },
+                  "program_processing_status": "new",
+                  "explanatory_letter": null,
+                  "supporting_info": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "episode_of_care",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "9a52292f-8633-4f31-981d-fb511715f0d3"
+                          }
+                      }
+                  ],
+                  "location_reference": null,
+                  "occurrence_date_time": "2023-11-29T17:22:19.592000Z",
+                  "performer_type": null,
+                  "used_by_employee_history": [],
+                  "intent": "order",
+                  "program": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "medical_program",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "963b1410-17e8-4407-b700-044c9fc555ca"
+                      }
+                  },
+                  "program_processing_status_history": [
+                      {
+                          "inserted_at": "2023-11-29T14:07:31.383000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "program_processing_status": "new"
+                      }
+                  ],
+                  "used_by_legal_entity_history": [],
+                  "permitted_resources": [],
+                  "used_by_legal_entity": null,
+                  "identity": {
+                      "age": 35,
+                      "first_name": "І.",
+                      "gender": "MALE",
+                      "last_name": "Пилипенко",
+                      "second_name": "П."
+                  },
+                  "status_reason": null,
+                  "requisition": "7332-0462-3832-0682",
+                  "used_by_employee": null
+              },
+              {
+                  "note": null,
+                  "id": "0c4484f2-50f1-4a0a-82a7-130673622e6d",
+                  "patient_instruction": null,
+                  "status": "active",
+                  "based_on": [],
+                  "specimens": [],
+                  "quantity": null,
+                  "reason_reference": [],
+                  "category": {
+                      "coding": [
+                          {
+                              "code": "diagnostic_procedure",
+                              "system": "eHealth/SNOMED/service_request_categories"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923192614"
+                      }
+                  },
+                  "requester_employee": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                      }
+                  },
+                  "remaining_quantity": null,
+                  "inserted_at": "2023-11-29T13:45:01.162000Z",
+                  "requester_legal_entity": {
+                      "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                      }
+                  },
+                  "priority": null,
+                  "updated_at": "2023-11-29T13:45:01.162000Z",
+                  "status_history": [
+                      {
+                          "inserted_at": "2023-11-29T13:45:01.162000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "status": "active",
+                          "status_reason": null
+                      }
+                  ],
+                  "program_service": null,
+                  "expiration_date": "2024-11-28T23:59:59Z",
+                  "completed_with": null,
+                  "subject": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "patient",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                      }
+                  },
+                  "code": {
+                      "display_value": "Амбулаторний ЕКГ моніторинг, що активується пацієнтом, з записом принаймні 20 секунд до та 15 секунд після кожної активації",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "service",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "78f90bd3-05f3-4aff-a520-5f4bc705106d"
+                      }
+                  },
+                  "performer": null,
+                  "program_processing_status": "new",
+                  "explanatory_letter": null,
+                  "supporting_info": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "episode_of_care",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "9a52292f-8633-4f31-981d-fb511715f0d3"
+                          }
+                      }
+                  ],
+                  "location_reference": null,
+                  "occurrence_date_time": "2023-11-29T17:22:19.592000Z",
+                  "performer_type": null,
+                  "used_by_employee_history": [],
+                  "intent": "order",
+                  "program": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "medical_program",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "0eb268fa-ab21-4df9-8d58-1bc85e393533"
+                      }
+                  },
+                  "program_processing_status_history": [
+                      {
+                          "inserted_at": "2023-11-29T13:45:01.162000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "program_processing_status": "new"
+                      }
+                  ],
+                  "used_by_legal_entity_history": [],
+                  "permitted_resources": [],
+                  "used_by_legal_entity": null,
+                  "identity": {
+                      "age": 35,
+                      "first_name": "І.",
+                      "gender": "MALE",
+                      "last_name": "Пилипенко",
+                      "second_name": "П."
+                  },
+                  "status_reason": null,
+                  "requisition": "7332-0462-3832-0682",
+                  "used_by_employee": null
+              },
+              {
+                  "note": null,
+                  "id": "0c4484f2-50f1-4a0a-82a7-130673622e5d",
+                  "patient_instruction": null,
+                  "status": "active",
+                  "based_on": [],
+                  "specimens": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "specimen",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "5bc264db-7dfd-42e4-b85a-93e4fa7448bf"
+                          }
+                      }
+                  ],
+                  "quantity": null,
+                  "reason_reference": [],
+                  "category": {
+                      "coding": [
+                          {
+                              "code": "laboratory_procedure",
+                              "system": "eHealth/SNOMED/service_request_categories"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923192614"
+                      }
+                  },
+                  "requester_employee": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1652cdf6-edc2-4e9d-a576-5b583183af2c"
+                      }
+                  },
+                  "remaining_quantity": null,
+                  "inserted_at": "2023-11-29T13:38:11.550000Z",
+                  "requester_legal_entity": {
+                      "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                      }
+                  },
+                  "priority": null,
+                  "updated_at": "2023-11-29T13:38:11.550000Z",
+                  "status_history": [
+                      {
+                          "inserted_at": "2023-11-29T13:38:11.550000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "status": "active",
+                          "status_reason": null
+                      }
+                  ],
+                  "program_service": null,
+                  "expiration_date": "2024-11-28T23:59:59Z",
+                  "completed_with": null,
+                  "subject": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "patient",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                      }
+                  },
+                  "code": {
+                      "display_value": "Аналіз; SARS-CoV-2 - Виявлення антигену методом швидкого імуноаналізу",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "service",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b3e26739-517b-4945-befa-48f2a36c4206"
+                      }
+                  },
+                  "performer": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "68c4e556-5a61-4994-a788-4949dbd76688"
+                      }
+                  },
+                  "program_processing_status": "new",
+                  "explanatory_letter": null,
+                  "supporting_info": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "episode_of_care",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "9a52292f-8633-4f31-981d-fb511715f0d3"
+                          }
+                      }
+                  ],
+                  "location_reference": null,
+                  "occurrence_date_time": "2023-11-29T17:22:19.592000Z",
+                  "performer_type": null,
+                  "used_by_employee_history": [],
+                  "intent": "order",
+                  "program": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "medical_program",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "963b1410-17e8-4407-b700-044c9fc555ca"
+                      }
+                  },
+                  "program_processing_status_history": [
+                      {
+                          "inserted_at": "2023-11-29T13:38:11.550000Z",
+                          "inserted_by": "9d5c7d93-05e4-4d48-953d-415f9eca409d",
+                          "program_processing_status": "new"
+                      }
+                  ],
+                  "used_by_legal_entity_history": [],
+                  "permitted_resources": [],
+                  "used_by_legal_entity": null,
+                  "identity": {
+                      "age": 35,
+                      "first_name": "І.",
+                      "gender": "MALE",
+                      "last_name": "Пилипенко",
+                      "second_name": "П."
+                  },
+                  "status_reason": null,
+                  "requisition": "7332-0462-3832-0682",
+                  "used_by_employee": null
+              }
+          ],
+          "meta": {
+              "code": 200,
+              "request_id": "0bcbb216-30c1-496d-a833-a0b2d84040db#862",
+              "type": "list",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/service_requests"
+          },
+          "paging": {
+              "page_number": 1,
+              "page_size": 50,
+              "total_entries": 4,
+              "total_pages": 1
+          }
+      }
+order: 1000

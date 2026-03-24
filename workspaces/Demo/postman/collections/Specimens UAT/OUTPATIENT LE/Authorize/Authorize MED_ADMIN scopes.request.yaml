@@ -1,0 +1,36 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: ef7d48ecfc233d6af088
+  Authorization: Bearer {{medadmin_session_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+       "app":{
+          "client_id":"ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+          "redirect_uri":"https://example2.com",
+          "scope":"diagnostic_report:read diagnostic_report:cancel encounter:read encounter:cancel episode:read procedure:read procedure:cancel person:read preperson:read patient_summary:read division:read employee:read legal_entity:read job:read condition:read observation:read allergy_intolerance:read risk_assessment:read immunization:read license:read reimbursement_report:read medication_request_request:read medication_request:read medication_request:details medication_request:resend medication_request:reject medication_dispense:read medication_request_request:reject clinical_impression:read person_verification:details person_verification:write device_request:read device_request:resend device_request:revoke specimen:read specimen:cancel"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData.data && jsonData.data.value) {
+          var code_grant = jsonData.data.value;
+          postman.setEnvironmentVariable("medadmin_code_grant", code_grant);
+      } else {
+          postman.setEnvironmentVariable("medadmin_code_grant", "<<undefined>>");
+      }
+    language: text/javascript
+examples: ./.resources/Authorize MED_ADMIN scopes.resources/examples
+order: 14000

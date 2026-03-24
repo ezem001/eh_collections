@@ -1,0 +1,18 @@
+$kind: http-request
+description: |-
+  This endpoint returns list of service program members.
+
+  **Scopes required:** `program_service:read`
+url: "{{host_demo}}/api/program_services?page=2&page_size=50&medical_program_id\
+  =1380df72-275a-11e7-93ae-92361f002671"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  api-key: 30276e63617461a185ec
+queryParams:
+  page: "2"
+  page_size: "50"
+  medical_program_id: 1380df72-275a-11e7-93ae-92361f002671
+order: 4000

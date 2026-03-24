@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{pis_host}}/api/pis/bulk/divisions"
+method: GET
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  Content-Type: application/json
+  api-key: "{{client_secret}}"
+queryParams:
+  - key: depth
+    value: "1"
+    disabled: true
+body:
+  type: json
+  content: ""
+order: 3000

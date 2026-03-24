@@ -1,0 +1,172 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"edrpou\": \"35300330\",\r
+
+    \    \"type\": \"OUTPATIENT\",\r
+
+    \    \"residence_address\": {\r
+
+    \        \"apartment\": \"23\",\r
+
+    \        \"area\": \"АВТОНОМНА РЕСПУБЛІКА КРИМ\",\r
+
+    \        \"building\": \"15\",\r
+
+    \        \"country\": \"UA\",\r
+
+    \        \"region\": \"ЄВПАТОРІЯ\",\r
+
+    \        \"settlement\": \"ЗАОЗЕРНЕ\",\r
+
+    \        \"settlement_id\": \"6067b193-6e79-435c-a13b-e6b53e65cbdd\",\r
+
+    \        \"settlement_type\": \"SETTLEMENT\",\r
+
+    \        \"street\": \"II Лісопарківський\",\r
+
+    \        \"street_type\": \"STREET\",\r
+
+    \        \"type\": \"RESIDENCE\",\r
+
+    \        \"zip\": \"02090\"\r
+
+    \    },\r
+
+    \    \"phones\": [\r
+
+    \        {\r
+
+    \            \"number\": \"+380634390602\",\r
+
+    \            \"type\": \"MOBILE\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"email\": \"second.own.35300330@meta.ua\",\r
+
+    \    \"website\": \"www.msp.com.ua\",\r
+
+    \    \"receiver_funds_code\": \"12345\",\r
+
+    \    \"beneficiary\": \"Богданенко Африкан Свиридович\",\r
+
+    \    \"owner\": {\r
+
+    \        \"first_name\": \"Олександр-Михайло\",\r
+
+    \        \"last_name\": \" Кравченко/Іванов\",\r
+
+    \        \"second_name\": \"Петрович\",\r
+
+    \        \"tax_id\": \"2934511101\",\r
+
+    \        \"no_tax_id\": false,\r
+
+    \        \"birth_date\": \"1988-11-25\",\r
+
+    \        \"gender\": \"MALE\",\r
+
+    \        \"email\": \"second.own.35300330@meta.ua\",\r
+
+    \        \"documents\": [\r
+
+    \            {\r
+
+    \                \"issued_at\": \"2017-02-28\",\r
+
+    \                \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                \"number\": \"НВ345765\",\r
+
+    \                \"type\": \"PASSPORT\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"phones\": [\r
+
+    \            {\r
+
+    \                \"number\": \"+380634390602\",\r
+
+    \                \"type\": \"MOBILE\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"position\": \"P1\"\r
+
+    \    },\r
+
+    \    \"accreditation\": {\r
+
+    \        \"category\": \"SECOND\",\r
+
+    \        \"issued_date\": \"2017-02-28\",\r
+
+    \        \"expiry_date\": \"2017-02-28\",\r
+
+    \        \"order_no\": \"fd123443\",\r
+
+    \        \"order_date\": \"2017-02-28\"\r
+
+    \    },\r
+
+    \    \"license\": {\r
+
+    \        \"active_from_date\": \"2017-02-28\",\r
+
+    \        \"expiry_date\": \"2032-12-31\",\r
+
+    \        \"issued_by\": \"Кваліфікацйна комісія\",\r
+
+    \        \"issued_date\": \"2017-02-28\",\r
+
+    \        \"license_number\": \"КО1234432\",\r
+
+    \        \"order_no\": \"ВА432345\",\r
+
+    \        \"type\": \"MSP\",\r
+
+    \        \"what_licensed\": \"тестовий ЗОЗ\"\r
+
+    \    },\r
+
+    \    \"archive\": [\r
+
+    \        {\r
+
+    \            \"date\": \"2022-02-28\",\r
+
+    \            \"place\": \"вул. Грушевського 15\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"security\": {\r
+
+    \        \"redirect_uri\": \"https://test89.com\"\r
+
+    \    },\r
+
+    \    \"public_offer\": {\r
+
+    \        \"consent_text\": \"Consent text\",\r
+
+    \        \"consent\": true\r
+
+    \    }\r
+
+    }"
+order: 1000

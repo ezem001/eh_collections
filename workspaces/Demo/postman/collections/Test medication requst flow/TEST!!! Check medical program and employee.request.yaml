@@ -1,0 +1,884 @@
+$kind: http-request
+description: >-
+  Method returns list of medical programs filtering by parameters. By default
+  method returns only active medical programs `is_active=true`
+
+
+  **Scopes required:** `medical_program:read`
+url: "{{host}}/api/medical_programs?is_active=true&page_size=500&id=8efe29df-18\
+  bd-4d49-8995-c3f7e44d9e12"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer NS84ZGFESXA0cTNWdjcrdnBrV3dMUT09
+  X-Custom-PSK: "{{x-custom-psk}}"
+  api-key: "{{mis_client_secret}}"
+queryParams:
+  - key: name
+    value: "%D0%94%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%BD%D1%96%20%D0%BB%D1%96%D0%BA%D\
+      0%B8"
+    disabled: true
+  - key: is_active
+    value: "true"
+  - key: mr_blank_type
+    value: F-1
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "500"
+  - key: type
+    value: DEVICE
+    disabled: true
+  - key: type
+    value: MEDICATION
+    disabled: true
+  - key: id
+    value: 1a227396-a0e4-4c4f-a0a9-6b358c8929d
+    disabled: true
+  - key: id
+    value: c49cdca3-ff6a-4099-a294-9dd9a00ab8d3
+    disabled: true
+  - key: id
+    value: 6aced371-68f3-45b3-ac6d-b04deacf9bd9
+    disabled: true
+    description: аівавіа
+  - key: id
+    value: 0cefbce3-6dd2-45bd-b1e6-983fc055d5e0
+    disabled: true
+  - key: id
+    value: 74f24bfe-f293-4a4f-a47d-670bdc8dbc9a
+    disabled: true
+  - key: id
+    value: 963b1410-17e8-4407-b700-044c9fc555ca
+    disabled: true
+  - key: id
+    value: 0eb268fa-ab21-4df9-8d58-1bc85e393533
+    disabled: true
+  - key: id
+    value: de6fd5c1-66cf-4118-a5f3-6d32f70c5274
+    disabled: true
+  - key: id
+    value: f01d0d8c-bccb-4bde-a6c6-f4b873a005c2
+    disabled: true
+  - key: id
+    value: c41ae6c1-67db-4ee0-99f8-92d3faf19cf6
+    disabled: true
+  - key: id
+    value: 5562904e-100f-11ee-be56-0242ac120002
+    disabled: true
+  - key: id
+    value: d1fa26d1-8e25-4bc6-b76c-251f53e22d09
+    disabled: true
+  - key: id
+    value: b59f2ca3-b284-44a7-9ab1-7c5f221402c4
+    disabled: true
+  - key: id
+    value: e9c6beeb-b19f-4b97-b42a-020c5c996c56
+    disabled: true
+  - key: id
+    value: 0e26d6ca-b6c2-49d6-8d16-ca9635ea59ad
+    disabled: true
+  - key: id
+    value: 786ac2aa-af37-4bd0-b1f5-40a017bf2237
+    disabled: true
+  - key: id
+    value: 2adffeff-be3c-4a23-92a3-2cf4a34a2972
+    disabled: true
+  - key: id
+    value: 857588d8-9e12-4935-96c4-b08e95d19dce
+    disabled: true
+  - key: id
+    value: d1f8be15-f9db-4c09-abf7-aa78a5a09b24
+    disabled: true
+  - key: id
+    value: ba40bb7f-9084-4266-8316-d753037d26b6
+    disabled: true
+  - key: id
+    value: 014d1d27-a0fc-4591-81cf-46fa6ea2999d
+    disabled: true
+  - key: id
+    value: c691a8a7-283f-4c71-aa3a-7f27e7d04a81
+    disabled: true
+  - key: id
+    value: 236b2e86-54ae-4be8-8856-c9a09e21fca6
+    disabled: true
+  - key: id
+    value: 63c1f32f-c8f4-4f5b-81a9-79b8452d6545
+    disabled: true
+  - key: id
+    value: 276faa17-d6cd-4781-9166-fd2c16af20a0
+    disabled: true
+  - key: id
+    value: 96e1cf78-6524-456c-b8a9-f68177f42597
+    disabled: true
+  - key: id
+    value: a29d17ae-d4d2-4d9e-8a5f-8a68b63307f0
+    disabled: true
+  - key: id
+    value: 414e1aa4-2a5d-4a23-9312-9f8b1847fa3b
+    disabled: true
+  - key: id
+    value: 66a96847-49c0-43d9-b578-f229ba3b33e7
+    disabled: true
+  - key: id
+    value: b09c4241-01c5-4a1b-b7b7-1d91e638545c
+    disabled: true
+  - key: id
+    value: 11bffa7f-e63d-4ec8-aed2-2b526241dacb
+    disabled: true
+  - key: id
+    value: 83eee31e-3bb5-49cf-9f90-fde1be13dc95
+    disabled: true
+  - key: id
+    value: 75977dc6-49ce-4bb2-aa0f-9100c2edf440
+    disabled: true
+  - key: id
+    value: 8fe94d38-e35e-4fb3-a9d4-77945a18a5cc
+    disabled: true
+  - key: id
+    value: 638ec6b8-d461-4399-ac28-5341a2fcffd5
+    disabled: true
+  - key: id
+    value: 85a99548-ab99-4ac4-96ae-558251270690
+    disabled: true
+  - key: id
+    value: 8efe29df-18bd-4d49-8995-c3f7e44d9e12
+  - key: id
+    value: 8ff92fe9-87d4-456a-ab7a-69650a656737
+    disabled: true
+  - key: id
+    value: b15d6bfa-66a4-40ba-9965-ef7712f48da9
+    disabled: true
+  - key: id
+    value: 8a11c513-e7a9-4800-9fb9-becb743e08c4
+    disabled: true
+  - key: id
+    value: f217889f-736f-462c-8f8b-ed99edddb3be
+    disabled: true
+  - key: id
+    value: 14e19712-b443-4391-b0f7-aba8e8662459
+    disabled: true
+  - key: id
+    value: 7335a30e-61f2-42b0-9ed4-2afe847bba16
+    disabled: true
+  - key: id
+    value: b16409ab-af31-4016-bb61-7661dcce23ed
+    disabled: true
+  - key: id
+    value: e5aae687-020f-4eff-9939-5cb2f616d1f4
+    disabled: true
+  - key: id
+    value: 79c78d29-4409-4706-8a01-54bda4298170
+    disabled: true
+  - key: id
+    value: 0eececf1-aaf5-48fb-87e2-da44b7c49db2
+    disabled: true
+  - key: id
+    value: 043246d9-c7a4-4e07-818a-c0de7b9abc9a
+    disabled: true
+  - key: id
+    value: 18e20239-5a5c-493e-bbed-7a43c5c62d1d
+    disabled: true
+  - key: id
+    value: 9d94a21b-ec70-4b91-946a-981f4db8d2b9
+    disabled: true
+  - key: id
+    value: cda113e4-b8dd-4ec4-a878-3d1c7eae49da
+    disabled: true
+  - key: id
+    value: 95262828-f948-4932-a394-ead0a69a70bf
+    disabled: true
+  - key: id
+    value: f646aa61-6765-4cfa-89cd-5259b68b2ab7
+    disabled: true
+  - key: id
+    value: 0db3b845-bd1c-4021-b3f7-5a388a272fb7
+    disabled: true
+  - key: id
+    value: 9723a9a0-100a-11ee-be56-0242ac120002
+    disabled: true
+  - key: id
+    value: 1318eabc-1a1a-42f6-8450-61e11c19eede
+    disabled: true
+  - key: id
+    value: 0db3b845-bd1c-4021-b3f7-5a388a272fb7
+    disabled: true
+  - key: id
+    value: f1e60dab-0ddd-4668-99e3-a68599699b66
+    disabled: true
+  - key: id
+    value: 0cefbce3-6dd2-45bd-b1e6-983fc055d5e0
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "// =====================\r
+
+      // Shorter version, same behavior (no quality loss)\r
+
+      // =====================\r
+
+      const mpData = pm.response?.json()?.data;\r
+
+      pm.globals.set(\"medical_program_data\", JSON.stringify(mpData));\r
+
+      const { generateEncounterJson } =
+      pm.require(\"@winter-zodiac-949553/generate\");\r
+
+      \r
+
+      let selectedCode = \"\";\r
+
+      const env = (k) => pm.environment.get(k);\r
+
+      const gset = (k, v) => pm.globals.set(k, v);\r
+
+      const A = (v) => (Array.isArray(v) ? v : []);\r
+
+      const isAllowed = (list, v) =>\r
+
+      \  list === null || list === undefined || !Array.isArray(list) ||
+      list.length === 0 || list.includes(v);\r
+
+      const esc = (x) => String(x ?? \"\").replace(/[&<>\"']/g, (m) => ({
+      \"&\":\"&amp;\",\"<\":\"&lt;\",\">\":\"&gt;\",'\"':\"&quot;\",\"'\":\"&#0\
+      39;\" }[m]));\r
+
+      \r
+
+      function recommendations(s = {}) {\r
+
+      \  const pick = (k) => (s[k] === null || s[k] === undefined ? undefined :
+      s[k]);\r
+
+      \  const out = [];\r
+
+      \  const add = (x) => x && out.push(x);\r
+
+      \  add(pick(\"care_plan_required\") !== undefined ?
+      (pick(\"care_plan_required\") ? \"Порада: потрібен план лікування.\" :
+      \"Порада: план лікування не обовʼязковий.\") : null);\r
+
+      \  add(pick(\"skip_employee_validation\") !== undefined ?
+      (pick(\"skip_employee_validation\") ? \"Порада: перевірка співробітника
+      вимкнена.\" : \"Порада: перевірка співробітника увімкнена.\") : null);\r
+
+      \  add(pick(\"multi_medication_dispense_allowed\") !== undefined ?
+      (pick(\"multi_medication_dispense_allowed\") ? \"Порада: дозволено
+      часткове погашення.\" : \"Порада: часткове погашення не дозволено.\") :
+      null);\r
+
+      \  add(pick(\"skip_medication_dispense_sign\") !== undefined ?
+      (pick(\"skip_medication_dispense_sign\") ? \"Порада: підпис при погашенні
+      не потрібен.\" : \"Порада: підпис при погашенні потрібен.\") : null);\r
+
+      \  const notif = pick(\"request_notification_disabled\") ??
+      pick(\"medication_request_notification_disabled\");\r
+
+      \  add(notif !== undefined ? (notif ? \"Порада: сповіщення пацієнта
+      вимкнено.\" : \"Порада: сповіщення пацієнта увімкнено.\") : null);\r
+
+      \  const maxP = pick(\"request_max_period_day\") ??
+      pick(\"medication_request_max_period_day\");\r
+
+      \  add(typeof maxP === \"number\" ? `Порада: max період лікування —
+      ${maxP} днів.` : null);\r
+
+      \  const dispP = pick(\"dispense_period_day\") ??
+      pick(\"medication_dispense_period_day\");\r
+
+      \  add(typeof dispP === \"number\" ? `Порада: період погашення — ${dispP}
+      днів.` : null);\r
+
+      \  return out;\r
+
+      }\r
+
+      \r
+
+      function ui({ p, ok, verdict, info = [], reasons = [], diagNote = \"\",
+      recs = [], extra = \"\" }) {\r
+
+      \  const c = ok ? \"#2563eb\" : \"#ef4444\";\r
+
+      \  const html = `\r
+
+      \  <div style=\"font-family:Inter,Segoe
+      UI,Arial,sans-serif;background:#f7f9ff;padding:14px;\">\r
+
+      \    <div
+      style=\"background:${c};color:#fff;border-radius:12px;padding:12px
+      14px;\">\r
+
+      \      <div style=\"font-size:16px;font-weight:800;\">${ok ? \"✅\" :
+      \"❌\"} Перевірка програми</div>\r
+
+      \      <div style=\"margin-top:8px;line-height:1.55;opacity:.95;\">\r
+
+      \        <div><b>Назва:</b> ${esc(p?.name || \"—\")}</div>\r
+
+      \        <div><b>Тип:</b> ${esc(p?.type || \"—\")}</div>\r
+
+      \        <div><b>ID:</b> <span id=\"pid\"
+      style=\"font-family:ui-monospace,Menlo,monospace;\">${esc(p?.id ||
+      \"—\")}</span>\r
+
+      \          <button id=\"copyBtn\"
+      onclick=\"copyToClipboard('pid','copyBtn')\"
+      style=\"margin-left:8px;border:0;border-radius:8px;padding:6px
+      10px;cursor:pointer;\">📋</button>\r
+
+      \        </div>\r
+
+      \      </div>\r
+
+      \    </div>\r
+
+      \r
+
+      \    <div style=\"background:#fff;border-radius:12px;padding:12px
+      14px;margin-top:10px;box-shadow:0 1px 6px rgba(0,0,0,.06);\">\r
+
+      \      <div style=\"line-height:1.65;\"><b>Висновок:</b>
+      ${verdict}</div>\r
+
+      \      ${info.length ? `<div style=\"margin-top:10px;\"><b>Для кого і що
+      виконано:</b><ul style=\"margin:6px 0 0
+      18px;padding:0;line-height:1.6;\">${info.map(x=>`<li>${x}</li>`).join(\"\
+      \")}</ul></div>` : \"\"}\r
+
+      \      ${reasons.length ? `<div style=\"margin-top:10px;\"><b>Причини /
+      обмеження:</b><ul style=\"margin:6px 0 0
+      18px;padding:0;line-height:1.6;\">${reasons.map(x=>`<li>${x}</li>`).join(\
+      \"\")}</ul></div>` : \"\"}\r
+
+      \      ${diagNote ? `<div style=\"margin-top:10px;padding:10px
+      12px;background:#fff7ed;border-radius:10px;border:1px solid
+      #fed7aa;line-height:1.6;\">⚠️ ${diagNote}</div>` : \"\"}\r
+
+      \      ${extra ? `<div style=\"margin-top:10px;padding:10px
+      12px;background:#eef6ff;border-radius:10px;\">${extra}</div>` : \"\"}\r
+
+      \    </div>\r
+
+      \r
+
+      \    <div style=\"background:#fff;border-radius:12px;padding:12px
+      14px;margin-top:10px;box-shadow:0 1px 6px rgba(0,0,0,.06);\">\r
+
+      \      <div style=\"font-weight:800;\">Рекомендації за settings (лише не
+      null)</div>\r
+
+      \      ${recs.length ? `<ul style=\"margin:8px 0 0
+      18px;padding:0;line-height:1.6;\">${recs.map(x=>`<li>${esc(x)}</li>`).joi\
+      n(\"\")}</ul>` : `<div style=\"margin-top:8px;color:#6b7280;\">Немає
+      рекомендацій.</div>`}\r
+
+      \    </div>\r
+
+      \r
+
+      \    <div
+      style=\"margin-top:10px;color:#9ca3af;font-size:12px;text-align:center;\"\
+      >🧠 QA Automation | Postman Visualizer</div>\r
+
+      \r
+
+      \    <script>\r
+
+      \      function copyToClipboard(id, btnId){\r
+
+      \        var el=document.getElementById(id),
+      btn=document.getElementById(btnId);\r
+
+      \        if(!el||!btn) return;\r
+
+      \        var ta=document.createElement(\"textarea\");\r
+
+      \        ta.value=(el.innerText||\"\").trim();\r
+
+      \        document.body.appendChild(ta); ta.select();\r
+
+      \        try{ document.execCommand(\"copy\"); btn.innerText=\"✅\";
+      setTimeout(()=>btn.innerText=\"📋\",900); }\r
+
+      \        catch(e){ btn.innerText=\"❌\";
+      setTimeout(()=>btn.innerText=\"📋\",900); }\r
+
+      \        document.body.removeChild(ta);\r
+
+      \      }\r
+
+      \    </script>\r
+
+      \  </div>`;\r
+
+      \  pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      function diag(s, employeeType) {\r
+
+      \  let used = \"—\", list = [];\r
+
+      \  if (employeeType === \"DOCTOR\") { used = \"ICPC2\"; list =
+      A(s.conditions_icpc2_allowed); }\r
+
+      \  else if ([\"SPECIALIST\", \"MED_COORDINATOR\"].includes(employeeType))
+      { used = \"ICD10-AM\"; list = A(s.conditions_icd10_am_allowed); }\r
+
+      \r
+
+      \  if (used === \"ICD10-AM\") {\r
+
+      \    const code = list[0] || \"E10.9\";\r
+
+      \    selectedCode = code;\r
+
+      \    pm.environment.set(\"condition_diagnosis\", code);\r
+
+      \    pm.environment.set(\"diagnosis_system\",
+      \"eHealth/ICD10_AM/condition_codes\");\r
+
+      \  } else if (used === \"ICPC2\") {\r
+
+      \    const code = list[0] || \"S14\";\r
+
+      \    selectedCode = code;\r
+
+      \    pm.environment.set(\"condition_diagnosis\", code);\r
+
+      \    pm.environment.set(\"diagnosis_system\",
+      \"eHealth/ICPC2/condition_codes\");\r
+
+      \  } else pm.environment.set(\"diagnosis_system\", \"—\");\r
+
+      \r
+
+      \  return list.length === 0\r
+
+      \    ? `У програмі немає списку діагнозів (${esc(used)}). Використано
+      дефолтний: <b>${esc(pm.environment.get(\"condition_diagnosis\"))}</b>.`\r
+
+      \    : \"\";\r
+
+      }\r
+
+      \r
+
+      function specialityDecision(s, sp) {\r
+
+      \  const old = s.speciality_types_allowed;\r
+
+      \  const oldIsArray = Array.isArray(old);\r
+
+      \r
+
+      \  const req = s.speciality_types_request_allowed;\r
+
+      \  const cp = s.speciality_types_care_plan_activity_allowed;\r
+
+      \  const newPresent = req !== null && req !== undefined || cp !== null &&
+      cp !== undefined;\r
+
+      \r
+
+      \  let baseSpecOK = true, showActions = false, requestOK = true,
+      carePlanOK = true;\r
+
+      \  const info = [], reasons = [];\r
+
+      \r
+
+      \  if (oldIsArray) {\r
+
+      \    baseSpecOK = old.length === 0 || old.includes(sp);\r
+
+      \    info.push(`Спеціальність: <b>${esc(sp)}</b> ${baseSpecOK ? \"✅\" :
+      \"❌\"}.`);\r
+
+      \    if (!baseSpecOK) reasons.push(`Програма не підходить: спеціальність
+      <b>${esc(sp)}</b> не дозволена. Потрібно: <b>${esc(old.join(\", \") ||
+      \"—\")}</b>.`);\r
+
+      \    return { baseSpecOK, showActions, requestOK: true, carePlanOK: true,
+      info, reasons };\r
+
+      \  }\r
+
+      \r
+
+      \  if (newPresent) {\r
+
+      \    showActions = true;\r
+
+      \    requestOK = isAllowed(req, sp);\r
+
+      \    carePlanOK = isAllowed(cp, sp);\r
+
+      \r
+
+      \    info.push(`Спеціальність для REQUEST: <b>${esc(sp)}</b> ${requestOK ?
+      \"✅\" : \"❌\"}${(!Array.isArray(req) || req.length === 0) ? \" (обмежень
+      немає)\" : \"\"}.`);\r
+
+      \    info.push(`Спеціальність для CARE PLAN: <b>${esc(sp)}</b>
+      ${carePlanOK ? \"✅\" : \"❌\"}${(!Array.isArray(cp) || cp.length === 0) ?
+      \" (обмежень немає)\" : \"\"}.`);\r
+
+      \r
+
+      \    if (!requestOK && Array.isArray(req) && req.length)
+      reasons.push(`REQUEST не доступний для <b>${esc(sp)}</b>. Потрібно:
+      <b>${esc(req.join(\", \") || \"—\")}</b>.`);\r
+
+      \    if (!carePlanOK && Array.isArray(cp) && cp.length) reasons.push(`CARE
+      PLAN ACTIVITY не доступне для <b>${esc(sp)}</b>. Потрібно:
+      <b>${esc(cp.join(\", \") || \"—\")}</b>.`);\r
+
+      \r
+
+      \    baseSpecOK = requestOK || carePlanOK || (!Array.isArray(req) ||
+      req.length === 0) || (!Array.isArray(cp) || cp.length === 0);\r
+
+      \    if (!baseSpecOK) reasons.push(`Програма не підходить за
+      спеціальністю: <b>${esc(sp)}</b> немає у дозволених списках
+      REQUEST/CarePlan.`);\r
+
+      \    return { baseSpecOK, showActions, requestOK, carePlanOK, info,
+      reasons };\r
+
+      \  }\r
+
+      \r
+
+      \  // fallback: new lists null/undefined => all allowed (explicit for
+      old===null too)\r
+
+      \  showActions = true;\r
+
+      \  const note = old === null ? \"old=null і нові=null → дозволено всім\" :
+      \"обмеження не задані → дозволено всім\";\r
+
+      \  info.push(`Спеціальність для REQUEST: <b>${esc(sp)}</b> ✅
+      (${note}).`);\r
+
+      \  info.push(`Спеціальність для CARE PLAN: <b>${esc(sp)}</b> ✅
+      (${note}).`);\r
+
+      \  return { baseSpecOK: true, showActions, requestOK: true, carePlanOK:
+      true, info, reasons: [] };\r
+
+      }\r
+
+      \r
+
+      function setMedicationIfEligible(program, drug0) {\r
+
+      \  const s = program.medical_program_settings || {};\r
+
+      \  const t = env(\"employee_type\");\r
+
+      \  const sp = env(\"employee_specialty\");\r
+
+      \  const cond = env(\"providing_condition\");\r
+
+      \  const typeOK = A(s.employee_types_to_create_request).length === 0 ||
+      A(s.employee_types_to_create_request).includes(t);\r
+
+      \  const condOK = A(s.providing_conditions_allowed).length === 0 ||
+      A(s.providing_conditions_allowed).includes(cond);\r
+
+      \  const old = s.speciality_types_allowed;\r
+
+      \  const specOK = !Array.isArray(old) || old.length === 0 ||
+      old.includes(sp);\r
+
+      \r
+
+      \  if (typeOK && condOK && specOK) {\r
+
+      \    gset(\"medication_id\", drug0?.id);\r
+
+      \    gset(\"medication_denumerator_unit\",
+      drug0?.ingredients?.[0]?.dosage?.denumerator_unit);\r
+
+      \    gset(\"medication_numerator_unit\",
+      drug0?.ingredients?.[0]?.dosage?.numerator_unit);\r
+
+      \    gset(\"medication_package_min_qty\",
+      drug0?.packages?.[0]?.package_min_qty);\r
+
+      \    gset(\"medication_package_qty\",
+      drug0?.packages?.[0]?.package_qty);\r
+
+      \    gset(\"medication_info\", JSON.stringify(drug0 || {}));\r
+
+      \  }\r
+
+      }\r
+
+      \r
+
+      // ---------------------\r
+
+      // Load program\r
+
+      // ---------------------\r
+
+      const mp = JSON.parse(pm.globals.get(\"medical_program_data\") ||
+      \"{}\");\r
+
+      if (!mp?.[0]) {\r
+
+      \  ui({ p: {}, ok: false, verdict: \"Не знайдено medical_program_data у
+      globals.\", reasons: [\"Перевір попередній запит: response.data має
+      містити програму.\"] });\r
+
+      \  pm.execution.setNextRequest(null);\r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      const p = mp[0];\r
+
+      const s = p.medical_program_settings || {};\r
+
+      const type = p.type;\r
+
+      const pid = p.id;\r
+
+      \r
+
+      if (p.is_active === false) {\r
+
+      \  ui({ p, ok: false, verdict: \"Програма неактивна (is_active = false) —
+      нічого створювати не можна.\", recs: recommendations(s) });\r
+
+      \  pm.execution.setNextRequest(null);\r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      function validateAndShow() {\r
+
+      \  const employeeType = env(\"employee_type\");\r
+
+      \  const sp = env(\"employee_specialty\");\r
+
+      \  const cond = env(\"providing_condition\");\r
+
+      \r
+
+      \  const info = [], reasons = [];\r
+
+      \  const allowTypes = A(s.employee_types_to_create_request);\r
+
+      \  const allowConds = A(s.providing_conditions_allowed);\r
+
+      \r
+
+      \  const typeOK = allowTypes.length === 0 ||
+      allowTypes.includes(employeeType);\r
+
+      \  const condOK = allowConds.length === 0 || allowConds.includes(cond);\r
+
+      \r
+
+      \  info.push(`Тип працівника: <b>${esc(employeeType)}</b> ${typeOK ? \"✅\"
+      : \"❌\"}.`);\r
+
+      \  info.push(`Умова надання: <b>${esc(cond)}</b> ${condOK ? \"✅\" :
+      \"❌\"}${allowConds.length === 0 ? \" (обмежень немає)\" : \"\"}.`);\r
+
+      \  if (!typeOK) reasons.push(`Тип не дозволений. Потрібен:
+      <b>${esc(allowTypes.join(\", \") || \"—\")}</b>.`);\r
+
+      \  if (!condOK) reasons.push(`Умова не дозволена. Потрібна:
+      <b>${esc(allowConds.join(\", \") || \"—\")}</b>.`);\r
+
+      \r
+
+      \  const spDec = specialityDecision(s, sp);\r
+
+      \  info.push(...spDec.info);\r
+
+      \  reasons.push(...spDec.reasons);\r
+
+      \r
+
+      \  const diagNote = diag(s, employeeType);\r
+
+      \r
+
+      \  const baseOK = typeOK && condOK && spDec.baseSpecOK;\r
+
+      \  const canRequest = baseOK && (spDec.showActions ? spDec.requestOK :
+      true);\r
+
+      \  const canCarePlan = baseOK && (spDec.showActions ? spDec.carePlanOK :
+      true);\r
+
+      \r
+
+      \  const reqLabel = type === \"DEVICE\" ? \"DEVICE REQUEST\" : type ===
+      \"MEDICATION\" ? \"MEDICATION REQUEST\" : \"REQUEST\";\r
+
+      \  const verdict = !baseOK\r
+
+      \    ? \"Програма НЕ підходить (критичні невідповідності).\"\r
+
+      \    : (spDec.showActions\r
+
+      \        ? `Програма підходить: ${reqLabel} ${canRequest ? \"✅\" : \"❌\"},
+      CARE PLAN ACTIVITY ${canCarePlan ? \"✅\" : \"❌\"}.`\r
+
+      \        : `Програма підходить для ${reqLabel} (обмеження визначені через
+      speciality_types_allowed).`);\r
+
+      \r
+
+      \  const extra = baseOK ? `✅ Encounter JSON згенеровано. (з діагнозом:
+      ${esc(selectedCode || pm.environment.get(\"condition_diagnosis\") ||
+      \"—\")})` : \"\";\r
+
+      \r
+
+      \  if (baseOK) {\r
+
+      \    console.log(\"encounter data DONE!!!\", generateEncounterJson());\r
+
+      \    if (employeeType === \"DOCTOR\")
+      pm.environment.set(\"encounter_classes\", \"PHC\");\r
+
+      \    else if (employeeType === \"SPECIALIST\")
+      pm.environment.set(\"encounter_classes\", \"AMB\");\r
+
+      \  } else pm.execution.setNextRequest(null);\r
+
+      \r
+
+      \  ui({ p, ok: baseOK, verdict, info, reasons, diagNote, recs:
+      recommendations(s), extra });\r
+
+      \  if (!baseOK) pm.execution.setNextRequest(null);\r
+
+      }\r
+
+      \r
+
+      // ---------------------\r
+
+      // DEVICE: no drugs fetch\r
+
+      // ---------------------\r
+
+      if (type === \"DEVICE\") {\r
+
+      \  gset(\"medical_program_drugs\", JSON.stringify([]));\r
+
+      \  gset(\"device_program\", pid);\r
+
+      \  validateAndShow();\r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      // ---------------------\r
+
+      // MEDICATION/others: fetch drugs then validate\r
+
+      // ---------------------\r
+
+      pm.sendRequest(\r
+
+      \  {\r
+
+      \    url:
+      `https://api-demo.ehealth.gov.ua/api/v3/drugs?medical_program_id=${pid}`,\
+      \r
+
+      \    method: \"GET\",\r
+
+      \    header: {\r
+
+      \      \"Content-Type\": \"application/json\",\r
+
+      \      \"api-key\": env(\"api_key\") || \"30276e63617461a185ec\",\r
+
+      \      \"Authorization\": env(\"access_token\") ? `Bearer
+      ${env(\"access_token\")}` : \"\",\r
+
+      \      \"X-Custom-PSK\": env(\"x_custom_psk\") ||
+      \"a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e\"\r
+
+      \    }\r
+
+      \  },\r
+
+      \  (err, res) => {\r
+
+      \    if (err || !res) {\r
+
+      \      ui({ p, ok: false, verdict: \"Програма НЕ підходить, бо не вдалося
+      отримати учасників (drugs).\", reasons: [`Помилка запиту до API:
+      ${esc(String(err))}`], recs: recommendations(s) });\r
+
+      \      pm.execution.setNextRequest(null);\r
+
+      \      return;\r
+
+      \    }\r
+
+      \r
+
+      \    const drugs = res.json()?.data || [];\r
+
+      \    if (!drugs.length) {\r
+
+      \      ui({ p, ok: false, verdict: \"Програма НЕ підходить, бо у неї немає
+      учасників (drugs порожній).\", reasons: [\"Додай препарати/учасників до
+      програми або обери іншу програму.\"], recs: recommendations(s) });\r
+
+      \      pm.execution.setNextRequest(null);\r
+
+      \      return;\r
+
+      \    }\r
+
+      \r
+
+      \    gset(\"medical_program_drugs\", JSON.stringify(drugs));\r
+
+      \    if (type === \"MEDICATION\") {\r
+
+      \      gset(\"medication_program\", pid);\r
+
+      \      if (drugs[0]?.id) setMedicationIfEligible(p, drugs[0]);\r
+
+      \    }\r
+
+      \r
+
+      \    validateAndShow();\r
+
+      \  }\r
+
+      );\r\n"
+    language: text/javascript
+    packages:
+      "@winter-zodiac-949553/generate":
+        id: 019a597c-86d6-784d-934b-83f9cd880152
+order: 2000

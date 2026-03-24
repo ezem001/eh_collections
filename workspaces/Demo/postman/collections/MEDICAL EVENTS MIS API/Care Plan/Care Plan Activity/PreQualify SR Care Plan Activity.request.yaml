@@ -1,0 +1,932 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/care_plans/{{jobCarePla\
+  nID}}/activities/prequalify"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"activity\": {\r
+
+    \        \"author\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \            // {\r
+
+    \            //     \"identifier\": {\r
+
+    \            //         \"type\": {\r
+
+    \            //             \"coding\": [\r
+
+    \            //                 {\r
+
+    \            //                     \"system\": \"eHealth/resources\",\r
+
+    \            //                     \"code\": \"care_team\"\r
+
+    \            //                 }\r
+
+    \            //             ]\r
+
+    \            //         },\r
+
+    \            //         \"value\":
+    \"18e020eb-9dd9-498d-bc65-d37a47f7abfb\"\r
+
+    \            //     }\r
+
+    \            // },\r
+
+    \            // {\r
+
+    \            //     \"identifier\": {\r
+
+    \            //         \"type\": {\r
+
+    \            //             \"coding\": [\r
+
+    \            //                 {\r
+
+    \            //                     \"system\": \"eHealth/resources\",\r
+
+    \            //                     \"code\": \"care_team\"\r
+
+    \            //                 }\r
+
+    \            //             ]\r
+
+    \            //         },\r
+
+    \            //         \"value\":
+    \"c2394c27-d3ac-4f71-b0b3-596e9bf415ab\"\r
+
+    \            //     }\r
+
+    \            // }\r
+
+    \        ],\r
+
+    \        \"care_plan\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"care_plan\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobCarePlanID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"detail\": {\r
+
+    \            \"kind\": \"service_request\",\r
+
+    \            \"product_reference\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"service\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"2a3bdbc7-98d7-4892-8f82-6572f67d3bc9\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"reason_code\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\":
+    \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                            \"code\": \"E00.0\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"reason_reference\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{jobConditionID}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"goal\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\":
+    \"eHealth/care_plan_activity_goals\",\r
+
+    \                            \"code\": \"default\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"quantity\": {\r
+
+    \                \"value\": 56,\r
+
+    \                \"system\": \"SERVICE_UNIT\",\r
+
+    \                \"code\": \"PIECE\"\r
+
+    \            },\r
+
+    \            \"scheduled_period\": {\r
+
+    \                \"start\": \"{{activityStartDate}}\",\r
+
+    \                \"end\": \"{{activityEndDate}}\"\r
+
+    \            },\r
+
+    \            \"location\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"division\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_division_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"performer\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"daily_amount\": {\r
+
+    \                \"value\": 1.0,\r
+
+    \                \"system\": \"SERVICE_UNIT\",\r
+
+    \                \"code\": \"PIECE\"\r
+
+    \            },\r
+
+    \            \"description\": \"Some activity description\",\r
+
+    \            \"do_not_perform\": false,\r
+
+    \            \"status\": \"scheduled\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"programs\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"medical_program\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"0eb268fa-ab21-4df9-8d58-1bc85e393533\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"PreQualify Care Plan Activity Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"PreQualify Care Plan Activity status is VALID\", function () {\r
+
+      \   const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });\r
+
+      \r
+
+      // ---- Config ----\r
+
+      const MASK_SENSITIVE = true;\r
+
+      const SENSITIVE_HEADERS = new Set([\r
+
+      \  'authorization', 'api-key', 'x-custom-psk', 'cookie'\r
+
+      ]);\r
+
+      \r
+
+      // Headers to drop from [Request]\r
+
+      const DROP_REQUEST_HEADERS = new Set([\r
+
+      \  'accept',\r
+
+      \  'accept-encoding',\r
+
+      \  'connection',\r
+
+      \  'content-type',\r
+
+      \  'postman-token',\r
+
+      \  'user-agent',\r
+
+      \  'content-length',\r
+
+      \  'host' // keep only \"Host:\" line\r
+
+      ]);\r
+
+      \r
+
+      // ---- Helpers ----\r
+
+      function esc(s) {\r
+
+      \  return String(s ?? '')\r
+
+      \    .replaceAll('&', '&amp;')\r
+
+      \    .replaceAll('<', '&lt;')\r
+
+      \    .replaceAll('>', '&gt;');\r
+
+      }\r
+
+      \r
+
+      function safeJsonParse(text) {\r
+
+      \  try { return JSON.parse(text); } catch { return null; }\r
+
+      }\r
+
+      \r
+
+      function normalizeHeaders(headersObjOrArr) {\r
+
+      \  if (!headersObjOrArr) return {};\r
+
+      \  if (typeof headersObjOrArr?.toObject === 'function') return
+      headersObjOrArr.toObject();\r
+
+      \r
+
+      \  const out = {};\r
+
+      \  if (Array.isArray(headersObjOrArr)) {\r
+
+      \    headersObjOrArr.forEach(h => {\r
+
+      \      if (!h) return;\r
+
+      \      const k = (h.key || h.name || '').toString();\r
+
+      \      const v = (h.value ?? '').toString();\r
+
+      \      if (k) out[k] = v;\r
+
+      \    });\r
+
+      \    return out;\r
+
+      \  }\r
+
+      \r
+
+      \  if (typeof headersObjOrArr === 'object') {\r
+
+      \    Object.keys(headersObjOrArr).forEach(k => out[k] =
+      String(headersObjOrArr[k]));\r
+
+      \  }\r
+
+      \  return out;\r
+
+      }\r
+
+      \r
+
+      function shouldDropHeader(k) {\r
+
+      \  const key = String(k || '').toLowerCase().trim();\r
+
+      \  if (!key) return true;\r
+
+      \  return DROP_REQUEST_HEADERS.has(key);\r
+
+      }\r
+
+      \r
+
+      function maskHeaderValue(key, value) {\r
+
+      \  if (!MASK_SENSITIVE) return value;\r
+
+      \r
+
+      \  const k = String(key || '').toLowerCase().trim();\r
+
+      \  if (!SENSITIVE_HEADERS.has(k)) return value;\r
+
+      \r
+
+      \  if (k === 'authorization') return 'Bearer ***';\r
+
+      \  if (!value) return '***';\r
+
+      \r
+
+      \  const tail = value.length > 6 ? value.slice(-6) : value;\r
+
+      \  return `***…${tail}`;\r
+
+      }\r
+
+      \r
+
+      function formatRequestHeaders(headers) {\r
+
+      \  const obj = normalizeHeaders(headers);\r
+
+      \  const keys = Object.keys(obj)\r
+
+      \    .filter(k => !shouldDropHeader(k))\r
+
+      \    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));\r
+
+      \r
+
+      \  if (!keys.length) return '';\r
+
+      \  return keys.map(k => `${k}: ${maskHeaderValue(k,
+      obj[k])}`).join('\\n');\r
+
+      }\r
+
+      \r
+
+      function getHost(url) {\r
+
+      \  if (!url) return '';\r
+
+      \  if (typeof url === 'string') {\r
+
+      \    try { return new URL(url).host; } catch { return ''; }\r
+
+      \  }\r
+
+      \  if (url.host) {\r
+
+      \    if (Array.isArray(url.host)) return url.host.join('.');\r
+
+      \    return String(url.host);\r
+
+      \  }\r
+
+      \  if (url.toString) {\r
+
+      \    try { return new URL(url.toString()).host; } catch { return ''; }\r
+
+      \  }\r
+
+      \  return '';\r
+
+      }\r
+
+      \r
+
+      function getPathWithQuery(url) {\r
+
+      \  if (!url) return '/';\r
+
+      \r
+
+      \  if (typeof url === 'string') {\r
+
+      \    try {\r
+
+      \      const u = new URL(url);\r
+
+      \      return u.pathname + (u.search || '');\r
+
+      \    } catch {\r
+
+      \      return url;\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  const path = Array.isArray(url.path) ? '/' + url.path.join('/') :
+      (url.pathname || '/');\r
+
+      \r
+
+      \  if (Array.isArray(url.query) && url.query.length) {\r
+
+      \    const qs = url.query\r
+
+      \      .filter(q => q && q.key)\r
+
+      \      .map(q =>
+      `${encodeURIComponent(q.key)}=${encodeURIComponent(q.value ?? '')}`)\r
+
+      \      .join('&');\r
+
+      \    return `${path}?${qs}`;\r
+
+      \  }\r
+
+      \r
+
+      \  return path || '/';\r
+
+      }\r
+
+      \r
+
+      function getPmRequestBody(pmReq) {\r
+
+      \  try {\r
+
+      \    const body = pmReq?.body;\r
+
+      \    if (!body) return '';\r
+
+      \    if (body.mode === 'raw') return body.raw || '';\r
+
+      \    return '';\r
+
+      \  } catch {\r
+
+      \    return '';\r
+
+      \  }\r
+
+      }\r
+
+      \r
+
+      function stringifyMaybeJson(text) {\r
+
+      \  if (!text) return '';\r
+
+      \  const j = safeJsonParse(text);\r
+
+      \  return j ? JSON.stringify(j, null, 2) : text;\r
+
+      }\r
+
+      \r
+
+      function responseDataMetaOnly(text) {\r
+
+      \  const j = safeJsonParse(text);\r
+
+      \  if (!j) return text;\r
+
+      \r
+
+      \  const out = {\r
+
+      \    data: Object.prototype.hasOwnProperty.call(j, 'data') ? j.data :
+      undefined,\r
+
+      \    error: Object.prototype.hasOwnProperty.call(j, 'error') ? j.error :
+      undefined,\r
+
+      \    meta: Object.prototype.hasOwnProperty.call(j, 'meta') ? j.meta :
+      undefined\r
+
+      \  };\r
+
+      \  Object.keys(out).forEach(k => out[k] === undefined && delete out[k]);\r
+
+      \r
+
+      \  return JSON.stringify(out, null, 2);\r
+
+      }\r
+
+      \r
+
+      function buildRawRequest({ method, url, headers, body }) {\r
+
+      \  const host = getHost(url);\r
+
+      \  const path = getPathWithQuery(url);\r
+
+      \r
+
+      \  const headerText = formatRequestHeaders(headers);\r
+
+      \  const bodyText = body ? stringifyMaybeJson(body) : '';\r
+
+      \r
+
+      \  return [\r
+
+      \    `${(method || 'GET').toUpperCase()} ${path || '/'} HTTP/1.1`,\r
+
+      \    host ? `Host: ${host}` : null,\r
+
+      \    headerText || null,\r
+
+      \    bodyText ? `\\n${bodyText}` : null\r
+
+      \  ].filter(Boolean).join('\\n');\r
+
+      }\r
+
+      \r
+
+      function buildResponseBodyOnly({ bodyText }) {\r
+
+      \  return responseDataMetaOnly(bodyText || '');\r
+
+      }\r
+
+      \r
+
+      function buildLogText() {\r
+
+      \  const title = pm.info.requestName || 'Main request';\r
+
+      \r
+
+      \  const reqRaw = buildRawRequest({\r
+
+      \    method: pm.request.method,\r
+
+      \    url: pm.request.url,\r
+
+      \    headers: pm.request.headers,\r
+
+      \    body: getPmRequestBody(pm.request)\r
+
+      \  });\r
+
+      \r
+
+      \  const resRaw = buildResponseBodyOnly({\r
+
+      \    bodyText: pm.response.text()\r
+
+      \  });\r
+
+      \r
+
+      \  return [\r
+
+      \    `${title}\\n`,\r
+
+      \    `[Request]\\n\\n${reqRaw}\\n`,\r
+
+      \    `\\n[Response]\\n\\n${resRaw}\\n`\r
+
+      \  ].join('\\n');\r
+
+      }\r
+
+      \r
+
+      // ---- Render ----\r
+
+      (function renderMain() {\r
+
+      \  const allText = buildLogText();\r
+
+      \r
+
+      \  const html = `\r
+
+      <div style=\"display:flex; gap:8px; align-items:center;
+      margin-bottom:8px;\">\r
+
+      \  <button id=\"copyAllBtn\">Copy all</button>\r
+
+      \  <span id=\"copyMsg\" style=\"font-family: ui-monospace, SFMono-Regular,
+      Menlo, Monaco, Consolas, monospace; font-size:12px;\"></span>\r
+
+      </div>\r
+
+      \r
+
+      <textarea id=\"allLogText\" style=\"position:absolute; left:-9999px;
+      top:-9999px;\">${esc(allText)}</textarea>\r
+
+      \r
+
+      <pre style=\"margin:0; white-space:pre; font-family: ui-monospace,
+      SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px;
+      line-height: 1.35;\">\r
+
+      ${esc(allText)}\r
+
+      </pre>\r
+
+      \r
+
+      <script>\r
+
+      \  (function() {\r
+
+      \    const btn = document.getElementById('copyAllBtn');\r
+
+      \    const msg = document.getElementById('copyMsg');\r
+
+      \    const ta  = document.getElementById('allLogText');\r
+
+      \r
+
+      \    function setMsg(t) {\r
+
+      \      msg.textContent = t || '';\r
+
+      \      if (t) setTimeout(() => { msg.textContent = ''; }, 1200);\r
+
+      \    }\r
+
+      \r
+
+      \    btn.addEventListener('click', async () => {\r
+
+      \      try {\r
+
+      \        const text = ta.value || '';\r
+
+      \        if (navigator.clipboard && navigator.clipboard.writeText) {\r
+
+      \          await navigator.clipboard.writeText(text);\r
+
+      \          setMsg('Copied ✅');\r
+
+      \          return;\r
+
+      \        }\r
+
+      \        ta.focus(); ta.select();\r
+
+      \        const ok = document.execCommand('copy');\r
+
+      \        setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \      } catch (e) {\r
+
+      \        try {\r
+
+      \          ta.focus(); ta.select();\r
+
+      \          const ok = document.execCommand('copy');\r
+
+      \          setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \        } catch {\r
+
+      \          setMsg('Copy failed ❌');\r
+
+      \        }\r
+
+      \      }\r
+
+      \    });\r
+
+      \  })();\r
+
+      </script>\r
+
+      \  `;\r
+
+      \r
+
+      \  pm.visualizer.set(html);\r
+
+      })();\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const carePlanStartDate = pm.globals.get('carePlanStartDate');\r
+
+      const carePlanDate = new Date(carePlanStartDate);\r
+
+      const getCarePlanEndDate = pm.globals.get(\"carePlanEndDate\");\r
+
+      const carePlanEndDate = new Date(getCarePlanEndDate);\r
+
+      \r
+
+      // Додаємо 1 день для activityStartDate\r
+
+      const activityStartDate = new Date(carePlanDate);\r
+
+      activityStartDate.setDate(activityStartDate.getDate() + 1);\r
+
+      \r
+
+      const activityEndDate = new Date(carePlanEndDate);\r
+
+      activityEndDate.setDate(activityEndDate.getDate() - 1);\r
+
+      \r
+
+      \r
+
+      // Конвертуємо у формат ISO 8601\r
+
+      const activityStartDateISO = activityStartDate.toISOString();\r
+
+      const activityEndISO = activityEndDate.toISOString();\r
+
+      \r
+
+      // Зберігаємо значення в глобальні змінні\r
+
+      pm.globals.set('activityStartDate', activityStartDateISO);\r
+
+      pm.globals.set('activityEndDate', activityEndISO);\r
+
+      \r
+
+      console.log(\"Activity Start Date:\", activityStartDateISO);\r
+
+      console.log(\"Activity End Date:\", activityEndISO);\r
+
+      \r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+order: 1000

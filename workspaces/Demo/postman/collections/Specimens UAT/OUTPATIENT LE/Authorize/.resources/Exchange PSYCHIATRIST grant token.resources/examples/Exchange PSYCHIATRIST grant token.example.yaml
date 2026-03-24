@@ -1,0 +1,75 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/oauth/tokens/
+  method: POST
+  headers:
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: >-
+      {
+         "token":{
+            "grant_type":"authorization_code",
+            "code": "{{spec1_code_grant}}",
+            "client_id":"ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+            "client_secret": "dVBjZ1F3cmVNak1EVGxUVVFCWm81QT09",
+            "redirect_uri": "https://example2.com",
+            "scope":"division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read otp:read otp:write person:read patient_summary:read encounter:write encounter:read episode:write episode:read job:read condition:read condition:write observation:read observation:write immunization:read immunization:write allergy_intolerance:read allergy_intolerance:write medication_statement:read medication_statement:write device:read device:write risk_assessment:read risk_assessment:write medication_dispense:read drugs:read medication_request:details medication_request:read medication_request:reject medication_request:resend medication_request_request:read medication_request_request:reject medication_request_request:sign medication_request_request:write diagnostic_report:read diagnostic_report:write diagnostic_report:cancel procedure:read procedure:write service_request:makeinprogress service_request:complete service_request:recall service_request:cancel service_request:write service_request:read service_request:use approval:create program_service:read medication_administration:read medication_administration:write healthcare_service:read employee_role:read person_request:write person_request:read preperson:read preperson:write authentication_method_request:write merge_request:write merge_request:sign merge_request:read composition:create composition:search composition:read composition:sign composition:cancel care_plan:write care_plan:read approval:read approval:cancel specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate"
+         }
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Thu, 23 Nov 2023 13:46:04 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "2181"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: "*"
+    Cache-Control: max-age=0, private, must-revalidate
+    Ratelimit-Limit: "180"
+    Ratelimit-Remaining: "179"
+    Ratelimit-Reset: "56"
+    Referrer-Policy: strict-origin-when-cross-origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "32"
+    X-Kong-Upstream-Latency: "17"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Ratelimit-Limit-Minute: "180"
+    X-Ratelimit-Remaining-Minute: "179"
+    X-Request-Id: 7e83634f-d06b-4001-a2f8-780ba4b2520a#231
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a9db32cbb277b6-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "details": {
+                  "app_id": "a297c1a2-fcf4-4995-87d7-b533dbd8ca66",
+                  "client_id": "ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+                  "grant_type": "authorization_code",
+                  "redirect_uri": "https://example2.com",
+                  "refresh_token": "V3NkK2JRdDZHeDM5M0FSQTMwZGhLUT09",
+                  "scope": "division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read otp:read otp:write person:read patient_summary:read encounter:write encounter:read episode:write episode:read job:read condition:read condition:write observation:read observation:write immunization:read immunization:write allergy_intolerance:read allergy_intolerance:write medication_statement:read medication_statement:write device:read device:write risk_assessment:read risk_assessment:write medication_dispense:read drugs:read medication_request:details medication_request:read medication_request:reject medication_request:resend medication_request_request:read medication_request_request:reject medication_request_request:sign medication_request_request:write diagnostic_report:read diagnostic_report:write diagnostic_report:cancel procedure:read procedure:write service_request:makeinprogress service_request:complete service_request:recall service_request:cancel service_request:write service_request:read service_request:use approval:create program_service:read medication_administration:read medication_administration:write healthcare_service:read employee_role:read person_request:write person_request:read preperson:read preperson:write authentication_method_request:write merge_request:write merge_request:sign merge_request:read composition:create composition:search composition:read composition:sign composition:cancel care_plan:write care_plan:read approval:read approval:cancel specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate"
+              },
+              "expires_at": 1732304090,
+              "id": "630922c6-e9ef-40e8-8147-16323f352983",
+              "name": "access_token",
+              "user_id": "561b39da-9146-4788-b480-9d697a22a542",
+              "value": "amdCN01IWWRibmZ3TnVJMVZRS2VYZz09"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "7e83634f-d06b-4001-a2f8-780ba4b2520a#231",
+              "type": "object",
+              "url": "http://api-svc.mithril/oauth/tokens/"
+          }
+      }
+order: 1000

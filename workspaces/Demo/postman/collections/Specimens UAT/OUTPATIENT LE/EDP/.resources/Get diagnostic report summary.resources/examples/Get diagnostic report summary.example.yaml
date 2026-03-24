@@ -1,0 +1,204 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/summary/diagnostic_reports
+  method: GET
+  headers:
+    Content-Type: application/json
+    Authorization: Bearer {{spec2_access_token}}
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Wed, 29 Nov 2023 16:42:36 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "43"
+    X-Kong-Upstream-Latency: "34"
+    X-Request-Id: dce4cb9c-5ac2-45eb-b659-4173e5715703#987
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82dc4e0b8e9a2492-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": [
+              {
+                  "based_on": null,
+                  "cancellation_reason": null,
+                  "category": [
+                      {
+                          "coding": [
+                              {
+                                  "code": "imaging",
+                                  "system": "eHealth/diagnostic_report_categories"
+                              }
+                          ],
+                          "text": null
+                      }
+                  ],
+                  "code": {
+                      "display_value": "Комп'ютерна томографія головного мозку та грудної клітки",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "service",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "17b2fc2c-5a94-4571-b121-638627bf34aa"
+                      }
+                  },
+                  "conclusion": "Includes the Specimen as created before, as created in the current package",
+                  "conclusion_code": null,
+                  "division": null,
+                  "effective_period": {
+                      "end": "2018-08-02T11:00:00Z",
+                      "start": "2018-08-02T10:45:16Z"
+                  },
+                  "encounter": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                      }
+                  },
+                  "explanatory_letter": null,
+                  "id": "1a0a8aa2-87a4-41ca-a61c-ba0923202816",
+                  "inserted_at": "2023-11-29T16:41:18.935000Z",
+                  "issued": "2023-10-08T09:46:37Z",
+                  "managing_organization": {
+                      "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "legal_entity",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                      }
+                  },
+                  "origin_episode": null,
+                  "paper_referral": null,
+                  "performer": {
+                      "reference": {
+                          "display_value": "Богдан Васильович Татаренко",
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "employee",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                          }
+                      }
+                  },
+                  "primary_source": true,
+                  "recorded_by": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                      }
+                  },
+                  "results_interpreter": {
+                      "reference": {
+                          "display_value": "Богдан Васильович Татаренко",
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "employee",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                          }
+                      }
+                  },
+                  "specimens": [
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "specimen",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "23e40a3c-a358-4d45-9e55-9021e1f90910"
+                          }
+                      },
+                      {
+                          "display_value": null,
+                          "identifier": {
+                              "type": {
+                                  "coding": [
+                                      {
+                                          "code": "specimen",
+                                          "system": "eHealth/resources"
+                                      }
+                                  ],
+                                  "text": null
+                              },
+                              "value": "7bc264db-7dfd-42e4-b85a-93e4fa8449bf"
+                          }
+                      }
+                  ],
+                  "status": "final",
+                  "updated_at": "2023-11-29T16:41:18.935000Z"
+              }
+          ],
+          "meta": {
+              "code": 200,
+              "request_id": "dce4cb9c-5ac2-45eb-b659-4173e5715703#987",
+              "type": "list",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/summary/diagnostic_reports"
+          },
+          "paging": {
+              "page_number": 1,
+              "page_size": 50,
+              "total_entries": 1,
+              "total_pages": 1
+          }
+      }
+order: 1000

@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host_demo}}/api/jobs/{{job_id}}"
+method: GET
+headers:
+  Authorization: Bearer {{doctor_token}}
+  api-key: "{{mis_client_secret_demo}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value_demo}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      
+      pm.test("Job successfully processed", function () { 
+          (pm.expect(pm.response.json().meta.code).to.equal(303)); 
+      });
+
+      pm.test("Job not in 'pending' status", function () { 
+          (pm.expect(pm.response.json().data.status_code).to.not.equal(202)); 
+      });
+
+      pm.test("Validation did not fail", function () { 
+          (pm.expect(pm.response.json().data.status_code).to.not.equal(422)); 
+      });
+
+      pm.test("No internal error", function () { 
+          (pm.expect(pm.response.json().data.status_code).to.not.equal(500)); 
+      });
+    language: text/javascript
+order: 1000

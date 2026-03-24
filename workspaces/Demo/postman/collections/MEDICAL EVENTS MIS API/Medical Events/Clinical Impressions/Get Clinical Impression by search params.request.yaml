@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host}}/api/patients/f32392dc-57d0-40ce-abce-983eb504618a/clinical_impre\
+  ssions?encounter_id=4e4bb94f-381e-4e72-a5df-54a44d232e34&episode_id=40aa471a-\
+  f293-4927-b05f-fe9cebd8f093"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: encounter_id
+    value: 4e4bb94f-381e-4e72-a5df-54a44d232e34
+  - key: episode_id
+    value: 40aa471a-f293-4927-b05f-fe9cebd8f093
+  - key: code
+    value: insulin_1
+    disabled: true
+  - key: status
+    value: completed
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 2000

@@ -1,0 +1,100 @@
+$kind: http-request
+url: http://localhost:3000/contract-request-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"contractor_owner_id\": \"{{owner_id}}\",\r
+
+    \    \"contractor_base\": \"на підставі статуту\",\r
+
+    \    \"contractor_payment_details\": {\r
+
+    \        \"payer_account\": \"UA3412345678901234567890\",\r
+
+    \        \"bank_name\": \"Банк №8\"\r
+
+    \    },\r
+
+    \    \"end_date\": \"2027-01-01\",\r
+
+    \    \"id_form\": \"GENERAL\",\r
+
+    \    \"contract_number\": \"0000-K37M-M000\",\r
+
+    \    \"statute_md5\": {{contract_etag}},\r
+
+    \    \"additional_document_md5\": {{contract_etag}},\r
+
+    \    \"medical_programs\": [\r
+
+    \        \"857588d8-9e12-4935-96c4-b08e95d19dce\",\r
+
+    \        \"e9c6beeb-b19f-4b97-b42a-020c5c996c56\",\r
+
+    \        \"cda113e4-b8dd-4ec4-a878-3d1c7eae49da\",\r
+
+    \        \"8efe29df-18bd-4d49-8995-c3f7e44d9e12\",\r
+
+    \        \"7335a30e-61f2-42b0-9ed4-2afe847bba16\",\r
+
+    \        \"14e19712-b443-4391-b0f7-aba8e8662459\",\r
+
+    \        \"9d94a21b-ec70-4b91-946a-981f4db8d2b9\",\r
+
+    \        \"f217889f-736f-462c-8f8b-ed99edddb3be\",\r
+
+    \        \"8a11c513-e7a9-4800-9fb9-becb743e08c4\",\r
+
+    \        \"0eececf1-aaf5-48fb-87e2-da44b7c49db2\",\r
+
+    \        \"5562904e-100f-11ee-be56-0242ac120002\",\r
+
+    \        \"9723a9a0-100a-11ee-be56-0242ac120002\",\r
+
+    \        \"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0\",\r
+
+    \        \"ba40bb7f-9084-4266-8316-d753037d26b6\",\r
+
+    \        \"1a227396-a0e4-4c4f-a0a9-6b358c8929d2\",\r
+
+    \        \"2adffeff-be3c-4a23-92a3-2cf4a34a2972\"\r
+
+    \    ],\r
+
+    \    \"consent_text\": \"Цією заявою Заявник висловлює бажання укласти
+    договір про реімбурсацію з Національною службою здоров'я України та
+    підтверджує, що на момент подання цієї заяви Заявник провадить господарську
+    діяльність на підставі ліцензії на провадження господарської діяльності з
+    роздрібної торгівлі лікарськими засобами та відповідає ліцензійним умовам.
+    Заявник усвідомлює, що у разі зміни інформації, зазначеної Заявником у цій
+    заяві та (або) доданих до неї документах Заявник зобов'язаний повідомити про
+    такі зміни НСЗУ протягом трьох робочих днів з дня настання таких змін шляхом
+    надсилання інформації про такі зміни на електронну пошту reimb@nszu.gov.ua,
+    з одночасним внесенням таких змін в Систему. Заявник усвідомлює, що
+    законодавством України передбачена відповідальність за подання недостовірної
+    інформації органам державної влади.\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "// const resData = pm.response.json();\r
+
+      // console.log(resData)\r
+
+      \r
+
+      // pm.test(`Contract request content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      //     pm.expect(pm.response.code).to.eql(200);\r
+
+      //     pm.expect(resData).to.have.property('signed_content');\r
+
+      //     pm.globals.set('contract_request_signed_content',
+      resData.signed_content);\r
+
+      // });"
+    language: text/javascript
+order: 2000

@@ -1,8 +1,19 @@
 # Use this workspace to collaborate
 workspace:
   id: 8d1f9cfc-64b0-4e50-9134-8fcb4127409a
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
 cloudResources:
   collections:
+    ../postman/collections/export collection: 15381251-7b92b473-2523-4651-ac10-3e5bcfa858d6
+    ../postman/collections/Specimens UAT: 15381251-0e9972d3-4b9d-44cc-8d8a-78be42f6bf8d
+    ../postman/collections/Patient Information System: 15381251-10e5e6dd-d256-466d-ba93-d1b7ebd90944
+    ../postman/collections/Regression Testing: 15381251-1e1fe5c4-857a-45c4-a9d9-d5648356faef
+    ../postman/collections/General MIS API: 15381251-3014f588-8c03-471f-b583-b0e5474a4393
+    ../postman/collections/eHealth Medical Events API: 15381251-37e979ec-9400-4be6-bde9-e128a5ff358a
+    ../postman/collections/Test medication requst flow: 15381251-6f82ee6d-52f2-44a6-a9c0-d736751adc7e
+    ../postman/collections/Rehab-2 Observations Demo: 15381251-96dd9b76-e48c-41f1-bb47-c74b74281653
+    ../postman/collections/MEDICAL EVENTS MIS API: 15381251-b87de427-11ab-4522-b9b2-d584855d2439
     ../postman/collections/Local: 15381251-d84ef512-12f4-43e7-b134-929d4ec4dc23
 
 # All resources in the `postman/` folder are automatically registered in Local View.

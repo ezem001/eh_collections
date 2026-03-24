@@ -1,0 +1,1097 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/observations?managing_organization_id=ac81d69f-e712-4b18-b9d5-83c2a87018e1
+  method: GET
+  headers:
+    Content-Type: application/json
+    Authorization: Bearer {{spec2_access_token}}
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  queryParams:
+    - key: managing_organization_id
+      value: ac81d69f-e712-4b18-b9d5-83c2a87018e1
+    - key: specimen_id
+      value: 23e40a3c-a358-4d45-9e55-9021e1f90880
+      disabled: true
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Wed, 29 Nov 2023 16:43:58 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "95"
+    X-Kong-Upstream-Latency: "26"
+    X-Request-Id: 0bcbb216-30c1-496d-a833-a0b2d84040db#935
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82dc500c38d92492-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": [
+              {
+                  "based_on": [],
+                  "body_site": {
+                      "coding": [
+                          {
+                              "code": "left_hand",
+                              "system": "eHealth/body_sites"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "categories": [
+                      {
+                          "coding": [
+                              {
+                                  "code": "vital-signs",
+                                  "system": "eHealth/observation_categories"
+                              }
+                          ],
+                          "text": null
+                      }
+                  ],
+                  "code": {
+                      "coding": [
+                          {
+                              "code": "8310-5",
+                              "system": "eHealth/LOINC/observation_codes"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "comment": "Includes the Specimen created in the current package",
+                  "components": [
+                      {
+                          "code": {
+                              "coding": [
+                                  {
+                                      "code": "9279-1",
+                                      "system": "eHealth/LOINC/observation_codes"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "interpretation": {
+                              "coding": [
+                                  {
+                                      "code": "default_value",
+                                      "system": "eHealth/observation_interpretations"
+                                  }
+                              ],
+                              "text": "низький"
+                          },
+                          "reference_ranges": [
+                              {
+                                  "age": {
+                                      "high": {
+                                          "code": null,
+                                          "comparator": "<",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 35
+                                      },
+                                      "low": {
+                                          "code": null,
+                                          "comparator": ">",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 18
+                                      }
+                                  },
+                                  "applies_to": [
+                                      {
+                                          "coding": [
+                                              {
+                                                  "code": "default_reference_range_application",
+                                                  "system": "eHealth/reference_range_applications"
+                                              }
+                                          ],
+                                          "text": null
+                                      }
+                                  ],
+                                  "high": {
+                                      "code": "%",
+                                      "comparator": "<",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 27
+                                  },
+                                  "low": {
+                                      "code": "%",
+                                      "comparator": ">",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 13
+                                  },
+                                  "text": "Some text",
+                                  "type": {
+                                      "coding": [
+                                          {
+                                              "code": "default_reference_range",
+                                              "system": "eHealth/reference_range_types"
+                                          }
+                                      ],
+                                      "text": null
+                                  }
+                              }
+                          ],
+                          "value_period": {
+                              "end": "2018-08-02T11:00:00Z",
+                              "start": "2018-08-02T10:45:16Z"
+                          }
+                      }
+                  ],
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                      }
+                  },
+                  "diagnostic_report": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "diagnostic_report",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                      }
+                  },
+                  "effective_period": {
+                      "end": "2023-11-18T13:36:29Z",
+                      "start": "2023-11-16T13:36:29Z"
+                  },
+                  "id": "1a0a8aa2-87a4-41ca-a61c-ba0923202816",
+                  "inserted_at": "2023-11-29T16:41:18.955000Z",
+                  "interpretation": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_interpretations"
+                          }
+                      ],
+                      "text": "низький"
+                  },
+                  "issued": "2023-11-21T13:36:29Z",
+                  "method": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_methods"
+                          }
+                      ],
+                      "text": "метод ABC"
+                  },
+                  "performer": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                      }
+                  },
+                  "primary_source": true,
+                  "reference_ranges": [
+                      {
+                          "age": {
+                              "high": {
+                                  "code": null,
+                                  "comparator": "<",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 35
+                              },
+                              "low": {
+                                  "code": null,
+                                  "comparator": ">",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 18
+                              }
+                          },
+                          "applies_to": [
+                              {
+                                  "coding": [
+                                      {
+                                          "code": "default_reference_range_application",
+                                          "system": "eHealth/reference_range_applications"
+                                      }
+                                  ],
+                                  "text": null
+                              }
+                          ],
+                          "high": {
+                              "code": "%",
+                              "comparator": "<",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 27
+                          },
+                          "low": {
+                              "code": "%",
+                              "comparator": ">",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 13.000001
+                          },
+                          "text": "Some text",
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "default_reference_range",
+                                      "system": "eHealth/reference_range_types"
+                                  }
+                              ],
+                              "text": "нормальний"
+                          }
+                      }
+                  ],
+                  "specimen": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "specimen",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "23e40a3c-a358-4d45-9e55-9021e1f90910"
+                      }
+                  },
+                  "status": "valid",
+                  "updated_at": "2023-11-29T16:41:18.955000Z",
+                  "value_period": {
+                      "end": "2018-08-02T11:00:00Z",
+                      "start": "2018-08-02T10:45:16Z"
+                  }
+              },
+              {
+                  "based_on": [],
+                  "body_site": {
+                      "coding": [
+                          {
+                              "code": "left_hand",
+                              "system": "eHealth/body_sites"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "categories": [
+                      {
+                          "coding": [
+                              {
+                                  "code": "vital-signs",
+                                  "system": "eHealth/observation_categories"
+                              }
+                          ],
+                          "text": null
+                      }
+                  ],
+                  "code": {
+                      "coding": [
+                          {
+                              "code": "8310-5",
+                              "system": "eHealth/LOINC/observation_codes"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "comment": "Includes the Specimen created before",
+                  "components": [
+                      {
+                          "code": {
+                              "coding": [
+                                  {
+                                      "code": "9279-1",
+                                      "system": "eHealth/LOINC/observation_codes"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "interpretation": {
+                              "coding": [
+                                  {
+                                      "code": "default_value",
+                                      "system": "eHealth/observation_interpretations"
+                                  }
+                              ],
+                              "text": "низький"
+                          },
+                          "reference_ranges": [
+                              {
+                                  "age": {
+                                      "high": {
+                                          "code": null,
+                                          "comparator": "<",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 35
+                                      },
+                                      "low": {
+                                          "code": null,
+                                          "comparator": ">",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 18
+                                      }
+                                  },
+                                  "applies_to": [
+                                      {
+                                          "coding": [
+                                              {
+                                                  "code": "default_reference_range_application",
+                                                  "system": "eHealth/reference_range_applications"
+                                              }
+                                          ],
+                                          "text": null
+                                      }
+                                  ],
+                                  "high": {
+                                      "code": "%",
+                                      "comparator": "<",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 27
+                                  },
+                                  "low": {
+                                      "code": "%",
+                                      "comparator": ">",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 13
+                                  },
+                                  "text": "Some text",
+                                  "type": {
+                                      "coding": [
+                                          {
+                                              "code": "default_reference_range",
+                                              "system": "eHealth/reference_range_types"
+                                          }
+                                      ],
+                                      "text": null
+                                  }
+                              }
+                          ],
+                          "value_period": {
+                              "end": "2018-08-02T11:00:00Z",
+                              "start": "2018-08-02T10:45:16Z"
+                          }
+                      }
+                  ],
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                      }
+                  },
+                  "diagnostic_report": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "diagnostic_report",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                      }
+                  },
+                  "effective_period": {
+                      "end": "2023-11-18T13:36:29Z",
+                      "start": "2023-11-16T13:36:29Z"
+                  },
+                  "id": "1a0a8aa2-87a4-41ca-a61c-ba0923202826",
+                  "inserted_at": "2023-11-29T16:41:18.955000Z",
+                  "interpretation": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_interpretations"
+                          }
+                      ],
+                      "text": "низький"
+                  },
+                  "issued": "2023-11-21T13:36:29Z",
+                  "method": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_methods"
+                          }
+                      ],
+                      "text": "метод ABC"
+                  },
+                  "performer": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                      }
+                  },
+                  "primary_source": true,
+                  "reference_ranges": [
+                      {
+                          "age": {
+                              "high": {
+                                  "code": null,
+                                  "comparator": "<",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 35
+                              },
+                              "low": {
+                                  "code": null,
+                                  "comparator": ">",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 18
+                              }
+                          },
+                          "applies_to": [
+                              {
+                                  "coding": [
+                                      {
+                                          "code": "default_reference_range_application",
+                                          "system": "eHealth/reference_range_applications"
+                                      }
+                                  ],
+                                  "text": null
+                              }
+                          ],
+                          "high": {
+                              "code": "%",
+                              "comparator": "<",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 27
+                          },
+                          "low": {
+                              "code": "%",
+                              "comparator": ">",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 13.000001
+                          },
+                          "text": "Some text",
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "default_reference_range",
+                                      "system": "eHealth/reference_range_types"
+                                  }
+                              ],
+                              "text": "нормальний"
+                          }
+                      }
+                  ],
+                  "specimen": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "specimen",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7bc264db-7dfd-42e4-b85a-93e4fa8449bf"
+                      }
+                  },
+                  "status": "valid",
+                  "updated_at": "2023-11-29T16:41:18.955000Z",
+                  "value_period": {
+                      "end": "2018-08-02T11:00:00Z",
+                      "start": "2018-08-02T10:45:16Z"
+                  }
+              },
+              {
+                  "based_on": [],
+                  "body_site": {
+                      "coding": [
+                          {
+                              "code": "left_hand",
+                              "system": "eHealth/body_sites"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "categories": [
+                      {
+                          "coding": [
+                              {
+                                  "code": "vital-signs",
+                                  "system": "eHealth/observation_categories"
+                              }
+                          ],
+                          "text": null
+                      }
+                  ],
+                  "code": {
+                      "coding": [
+                          {
+                              "code": "8310-5",
+                              "system": "eHealth/LOINC/observation_codes"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "comment": "Includes the Specimen created in the current package",
+                  "components": [
+                      {
+                          "code": {
+                              "coding": [
+                                  {
+                                      "code": "9279-1",
+                                      "system": "eHealth/LOINC/observation_codes"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "interpretation": {
+                              "coding": [
+                                  {
+                                      "code": "default_value",
+                                      "system": "eHealth/observation_interpretations"
+                                  }
+                              ],
+                              "text": "низький"
+                          },
+                          "reference_ranges": [
+                              {
+                                  "age": {
+                                      "high": {
+                                          "code": null,
+                                          "comparator": "<",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 35
+                                      },
+                                      "low": {
+                                          "code": null,
+                                          "comparator": ">",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 18
+                                      }
+                                  },
+                                  "applies_to": [
+                                      {
+                                          "coding": [
+                                              {
+                                                  "code": "default_reference_range_application",
+                                                  "system": "eHealth/reference_range_applications"
+                                              }
+                                          ],
+                                          "text": null
+                                      }
+                                  ],
+                                  "high": {
+                                      "code": "%",
+                                      "comparator": "<",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 27
+                                  },
+                                  "low": {
+                                      "code": "%",
+                                      "comparator": ">",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 13
+                                  },
+                                  "text": "Some text",
+                                  "type": {
+                                      "coding": [
+                                          {
+                                              "code": "default_reference_range",
+                                              "system": "eHealth/reference_range_types"
+                                          }
+                                      ],
+                                      "text": null
+                                  }
+                              }
+                          ],
+                          "value_period": {
+                              "end": "2018-08-02T11:00:00Z",
+                              "start": "2018-08-02T10:45:16Z"
+                          }
+                      }
+                  ],
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202815"
+                      }
+                  },
+                  "diagnostic_report": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "diagnostic_report",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202815"
+                      }
+                  },
+                  "effective_period": {
+                      "end": "2023-11-18T13:36:29Z",
+                      "start": "2023-11-16T13:36:29Z"
+                  },
+                  "id": "1a0a8aa2-87a4-41ca-a61c-ba0923202815",
+                  "inserted_at": "2023-11-29T16:17:38.578000Z",
+                  "interpretation": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_interpretations"
+                          }
+                      ],
+                      "text": "низький"
+                  },
+                  "issued": "2023-11-21T13:36:29Z",
+                  "method": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_methods"
+                          }
+                      ],
+                      "text": "метод ABC"
+                  },
+                  "performer": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                      }
+                  },
+                  "primary_source": true,
+                  "reference_ranges": [
+                      {
+                          "age": {
+                              "high": {
+                                  "code": null,
+                                  "comparator": "<",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 35
+                              },
+                              "low": {
+                                  "code": null,
+                                  "comparator": ">",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 18
+                              }
+                          },
+                          "applies_to": [
+                              {
+                                  "coding": [
+                                      {
+                                          "code": "default_reference_range_application",
+                                          "system": "eHealth/reference_range_applications"
+                                      }
+                                  ],
+                                  "text": null
+                              }
+                          ],
+                          "high": {
+                              "code": "%",
+                              "comparator": "<",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 27
+                          },
+                          "low": {
+                              "code": "%",
+                              "comparator": ">",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 13.000001
+                          },
+                          "text": "Some text",
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "default_reference_range",
+                                      "system": "eHealth/reference_range_types"
+                                  }
+                              ],
+                              "text": "нормальний"
+                          }
+                      }
+                  ],
+                  "specimen": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "specimen",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "23e40a3c-a358-4d45-9e55-9021e1f90879"
+                      }
+                  },
+                  "status": "entered_in_error",
+                  "updated_at": "2023-11-29T16:25:58.387000Z",
+                  "value_period": {
+                      "end": "2018-08-02T11:00:00Z",
+                      "start": "2018-08-02T10:45:16Z"
+                  }
+              },
+              {
+                  "based_on": [],
+                  "body_site": {
+                      "coding": [
+                          {
+                              "code": "left_hand",
+                              "system": "eHealth/body_sites"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "categories": [
+                      {
+                          "coding": [
+                              {
+                                  "code": "vital-signs",
+                                  "system": "eHealth/observation_categories"
+                              }
+                          ],
+                          "text": null
+                      }
+                  ],
+                  "code": {
+                      "coding": [
+                          {
+                              "code": "8310-5",
+                              "system": "eHealth/LOINC/observation_codes"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "comment": "Includes the Specimen created before",
+                  "components": [
+                      {
+                          "code": {
+                              "coding": [
+                                  {
+                                      "code": "9279-1",
+                                      "system": "eHealth/LOINC/observation_codes"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "interpretation": {
+                              "coding": [
+                                  {
+                                      "code": "default_value",
+                                      "system": "eHealth/observation_interpretations"
+                                  }
+                              ],
+                              "text": "низький"
+                          },
+                          "reference_ranges": [
+                              {
+                                  "age": {
+                                      "high": {
+                                          "code": null,
+                                          "comparator": "<",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 35
+                                      },
+                                      "low": {
+                                          "code": null,
+                                          "comparator": ">",
+                                          "system": null,
+                                          "unit": "%",
+                                          "value": 18
+                                      }
+                                  },
+                                  "applies_to": [
+                                      {
+                                          "coding": [
+                                              {
+                                                  "code": "default_reference_range_application",
+                                                  "system": "eHealth/reference_range_applications"
+                                              }
+                                          ],
+                                          "text": null
+                                      }
+                                  ],
+                                  "high": {
+                                      "code": "%",
+                                      "comparator": "<",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 27
+                                  },
+                                  "low": {
+                                      "code": "%",
+                                      "comparator": ">",
+                                      "system": "eHealth/ucum/units",
+                                      "unit": "%",
+                                      "value": 13
+                                  },
+                                  "text": "Some text",
+                                  "type": {
+                                      "coding": [
+                                          {
+                                              "code": "default_reference_range",
+                                              "system": "eHealth/reference_range_types"
+                                          }
+                                      ],
+                                      "text": null
+                                  }
+                              }
+                          ],
+                          "value_period": {
+                              "end": "2018-08-02T11:00:00Z",
+                              "start": "2018-08-02T10:45:16Z"
+                          }
+                      }
+                  ],
+                  "context": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "encounter",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202815"
+                      }
+                  },
+                  "diagnostic_report": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "diagnostic_report",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202815"
+                      }
+                  },
+                  "effective_period": {
+                      "end": "2023-11-18T13:36:29Z",
+                      "start": "2023-11-16T13:36:29Z"
+                  },
+                  "id": "1a0a8aa2-87a4-41ca-a61c-ba0923202825",
+                  "inserted_at": "2023-11-29T16:17:38.578000Z",
+                  "interpretation": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_interpretations"
+                          }
+                      ],
+                      "text": "низький"
+                  },
+                  "issued": "2023-11-21T13:36:29Z",
+                  "method": {
+                      "coding": [
+                          {
+                              "code": "default_value",
+                              "system": "eHealth/observation_methods"
+                          }
+                      ],
+                      "text": "метод ABC"
+                  },
+                  "performer": {
+                      "display_value": "Богдан Васильович Татаренко",
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "employee",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                      }
+                  },
+                  "primary_source": true,
+                  "reference_ranges": [
+                      {
+                          "age": {
+                              "high": {
+                                  "code": null,
+                                  "comparator": "<",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 35
+                              },
+                              "low": {
+                                  "code": null,
+                                  "comparator": ">",
+                                  "system": null,
+                                  "unit": "%",
+                                  "value": 18
+                              }
+                          },
+                          "applies_to": [
+                              {
+                                  "coding": [
+                                      {
+                                          "code": "default_reference_range_application",
+                                          "system": "eHealth/reference_range_applications"
+                                      }
+                                  ],
+                                  "text": null
+                              }
+                          ],
+                          "high": {
+                              "code": "%",
+                              "comparator": "<",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 27
+                          },
+                          "low": {
+                              "code": "%",
+                              "comparator": ">",
+                              "system": "eHealth/ucum/units",
+                              "unit": "%",
+                              "value": 13.000001
+                          },
+                          "text": "Some text",
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "default_reference_range",
+                                      "system": "eHealth/reference_range_types"
+                                  }
+                              ],
+                              "text": "нормальний"
+                          }
+                      }
+                  ],
+                  "specimen": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "specimen",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "7bc264db-7dfd-42e4-b85a-93e4fa8448bf"
+                      }
+                  },
+                  "status": "entered_in_error",
+                  "updated_at": "2023-11-29T16:25:58.387000Z",
+                  "value_period": {
+                      "end": "2018-08-02T11:00:00Z",
+                      "start": "2018-08-02T10:45:16Z"
+                  }
+              }
+          ],
+          "meta": {
+              "code": 200,
+              "request_id": "0bcbb216-30c1-496d-a833-a0b2d84040db#935",
+              "type": "list",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/observations"
+          },
+          "paging": {
+              "page_number": 1,
+              "page_size": 50,
+              "total_entries": 4,
+              "total_pages": 1
+          }
+      }
+order: 1000

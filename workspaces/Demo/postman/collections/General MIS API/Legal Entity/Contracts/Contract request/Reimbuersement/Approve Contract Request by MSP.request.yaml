@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{host}}/api/contract_requests/reimbursement/b2bf8b5e-bee5-4f91-bdf3-5aa7\
+  65abffd8/actions/approve_msp"
+method: PATCH
+headers:
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+body:
+  type: text
+  content: ""
+order: 4000

@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{host}}/api/service_requests?requisition=AX654-654T&status=active&page=2\
+  &page_size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  requisition: AX654-654T
+  status: active
+  page: "2"
+  page_size: "50"
+order: 1000

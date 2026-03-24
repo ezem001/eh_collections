@@ -1,0 +1,391 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/device_dispenses/{{JobDevic\
+  eDispenseID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"based_on\": {\r
+
+    \        \"display_value\": null,\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"device_request\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"88821f44-2b4b-48a8-9bad-95de29a5a3ce\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"details\": [\r
+
+    \        {\r
+
+    \            \"device\": {\r
+
+    \                \"display_value\": null,\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"device_definition\",\r
+
+    \                                \"system\": \"eHealth/resources\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": null\r
+
+    \                    },\r
+
+    \                    \"value\": \"9221c91f-aed0-435b-9bc5-f9c8be59f146\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"discount_amount\": 400,\r
+
+    \            \"program_device\": {\r
+
+    \                \"display_value\": null,\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"program_device\",\r
+
+    \                                \"system\": \"eHealth/resources\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": null\r
+
+    \                    },\r
+
+    \                    \"value\": \"095c790c-9a70-4b37-ac4f-b556e7f1ee85\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"quantity\": {\r
+
+    \                \"code\": \"piece\",\r
+
+    \                \"system\": \"device_unit\",\r
+
+    \                \"unit\": \"шт\",\r
+
+    \                \"value\": 50\r
+
+    \            },\r
+
+    \            \"reimbursement_amount\": 400,\r
+
+    \            \"sell_price\": \"3.5e+3\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"encounter\": null,\r
+
+    \    \"explanatory_letter\": null,\r
+
+    \    \"external_performer\": null,\r
+
+    \    \"external_provider\": null,\r
+
+    \    \"id\": \"678db378-e59b-48da-8a71-439cd8c491a2\",\r
+
+    \    \"inserted_at\": \"2025-11-24T18:53:09.650000Z\",\r
+
+    \    \"location\": {\r
+
+    \        \"display_value\": \"Відділення аптеки медичної допомоги №1\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"division\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"2bb9f35c-711f-4bdf-a69f-0d4fab0d2076\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"note\": \"Some notes\",\r
+
+    \    \"part_of\": null,\r
+
+    \    \"payment_amount\": 2,\r
+
+    \    \"payment_id\": null,\r
+
+    \    \"performer\": {\r
+
+    \        \"display_value\": \"Сергій Вікторович Куриленко\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"employee\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"840644d4-db5b-4457-88e1-ef5e3be6101f\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"performer_legal_entity\": {\r
+
+    \        \"display_value\": \"\\\"ЕЛЕКТРОННЕ ЗДОРОВ'Я\\\"\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"legal_entity\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"d922e94e-3179-476c-9c53-ccf301a62939\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"primary_source\": true,\r
+
+    \    \"program\": {\r
+
+    \        \"display_value\": \"Медичні вироби для визначення рівня глюкози в
+    крові\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"medical_program\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"report_origin\": null,\r
+
+    \    \"signed_content_links\": [],\r
+
+    \    \"status\": \"completed\",\r
+
+    \    \"status_reason\": null,\r
+
+    \    \"subject\": {\r
+
+    \        \"display_value\": null,\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"patient\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"40123283-6aef-4b5e-bcef-8a1f73b4badb\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"supporting_info\": [],\r
+
+    \    \"updated_at\": \"2025-11-24T19:04:00.403000Z\",\r
+
+    \    \"when_handed_over\": \"2025-11-24T19:11:19.000Z\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Device Dispense details - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      \r
+
+      \r
+
+      \    // Keys to restore\r
+
+      \    const keys = [\"access_token\", \"user_division_id\", \"user_id\"];\r
+
+      \r
+
+      \    // Restore saved values\r
+
+      \    keys.forEach(key => {\r
+
+      \        const original = pm.environment.get(`original_${key}`);\r
+
+      \        if (original !== undefined) {\r
+
+      \            pm.environment.set(key, original);\r
+
+      \        }\r
+
+      \    });\r
+
+      \r
+
+      \    // // Cleanup\r
+
+      \    // keys.forEach(key => pm.environment.unset(`original_${key}`));\r
+
+      \r
+
+      \r
+
+      \    setTimeout(() => {\r
+
+      \        console.log(\"♻ User credentials restored.\");\r
+
+      \    }, 5000)\r
+
+      \r
+
+      \r
+
+      \r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Device dispense status is completed\", function () {\r
+
+      \    const json = pm.response.json();\r
+
+      \r
+
+      \    pm.expect(json).to.have.property(\"data\");\r
+
+      \    pm.expect(json.data).to.have.property(\"status\");\r
+
+      \    pm.expect(json.data.status).to.eql(\"completed\");\r
+
+      });"
+    language: text/javascript
+order: 55000

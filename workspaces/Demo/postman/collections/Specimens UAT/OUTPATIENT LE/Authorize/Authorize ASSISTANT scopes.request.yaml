@@ -1,0 +1,34 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: ef7d48ecfc233d6af088
+  Authorization: Bearer {{assist_session_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+       "app":{
+          "client_id":"ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+          "redirect_uri":"https://example2.com",
+          "scope":"division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read otp:read otp:write person:read patient_summary:read diagnostic_report:read diagnostic_report:write diagnostic_report:cancel procedure:read procedure:write procedure:cancel service_request:write service_request:makeinprogress service_request:complete service_request:read service_request:use service_request:recall service_request:cancel approval:create healthcare_service:read employee_role:read person_request:write person_request:read preperson:read preperson:write job:read observation:read observation:write allergy_intolerance:write medication_statement:write device:write risk_assessment:write medication_administration:write authentication_method_request:write merge_request:write merge_request:read immunization:read care_plan:read approval:read approval:cancel episode:read episode:write encounter:write encounter:read encounter:cancel immunization:write condition:write condition:read license:read medication_request_request:read medication_request:read medication_request:details medication_dispense:read medication_request:resend clinical_impression:read rule_engine_rule:read medical_event_context:read clinical_impression:write person_verification:details person_verification:write person_emergency_contact:read device_definitions:read device_request:read device_request:resend specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data && jsonData.data.value) {
+          var code_grant = jsonData.data.value;
+          postman.setEnvironmentVariable("assist_code_grant", code_grant);
+      } else {
+          postman.setEnvironmentVariable("assist_code_grant", "<<undefined>>");
+      }
+    language: text/javascript
+examples: ./.resources/Authorize ASSISTANT scopes.resources/examples
+order: 8000

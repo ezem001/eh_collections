@@ -1,0 +1,156 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/device_requests/prequalify"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+      "device_request": {
+        "intent": "order",
+        "quantity": {
+          "value": 10,
+          "system": "device_unit",
+          "code": "piece"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "device_definition_classification_type",
+              "code": "W0101060101"
+            }
+          ]
+        },
+        "encounter": {
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "encounter"
+                }
+              ]
+            },
+            "value": "{{jobEncounterID}}"
+          }
+        },
+        "requester": {
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "employee"
+                }
+              ]
+            },
+            "value": "{{user_id}}"
+          }
+        },
+        "authored_on": "2026-03-04T00:00:00.000Z",
+        "occurrence_period": {
+          "start": "2026-03-05T00:00:00.000Z",
+          "end": "2026-03-10T00:00:00.000Z"
+        },
+        "performer": {
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "legal_entity"
+                }
+              ]
+            },
+            "value": "{{user_legal_entity}}"
+          }
+        }
+      },
+      "programs": [
+        {
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "medical_program"
+                }
+              ]
+            },
+            "value": "0cefbce3-6dd2-45bd-b1e6-983fc055d5e0"
+          }
+        }
+      ]
+    }
+scripts:
+  - type: beforeRequest
+    code: "// Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      // Check if the URL is defined and contains the expected format\r
+
+      if (url && url.includes('encounters/')) {\r
+
+      \    // Extract the ID after 'encounters/'\r
+
+      \    const parts = url.split('encounters/');\r
+
+      \    if (parts.length > 1) {\r
+
+      \        const jobEncounterID = parts[1];\r
+
+      \        \r
+
+      \        // Log the extracted ID to the console (for debugging purposes)\r
+
+      \        console.log('Extracted jobEncounterID:', jobEncounterID);\r
+
+      \        \r
+
+      \        // Optionally, set the extracted ID as an environment variable\r
+
+      \        pm.globals.set('encounter_extracted_id', jobEncounterID);\r
+
+      \    } else {\r
+
+      \        console.error('The URL does not contain the expected format.');\r
+
+      \    }\r
+
+      } else {\r
+
+      \    console.error('The global variable jobEncounterID is not defined or
+      does not contain the expected format.');\r
+
+      }\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"PreQualify Device Request Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"PreQualify Device Request status is VALID\", function () {\r
+
+      \    const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 1000

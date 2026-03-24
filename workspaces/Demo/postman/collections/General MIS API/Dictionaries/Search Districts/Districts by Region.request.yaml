@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host_demo}}/api/uaddresses/regions/290f1ee-6c54-4b01-90e6-d701748f0851/\
+  districts?name=%D0%9A%D0%B8%D1%94%D0%B2%D0%BE-%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%\
+  D1%88%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9&koatuu=2625286301&page=2&page\
+  _size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  name: "%D0%9A%D0%B8%D1%94%D0%B2%D0%BE-%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D1%88%D0%B\
+    8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9"
+  koatuu: "2625286301"
+  page: "2"
+  page_size: "50"
+order: 2000

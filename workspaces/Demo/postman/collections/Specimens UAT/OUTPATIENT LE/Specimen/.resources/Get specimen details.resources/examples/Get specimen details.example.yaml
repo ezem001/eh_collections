@@ -1,0 +1,296 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/7bc264db-7dfd-42e4-b85a-93e4fa8450bf
+  method: GET
+  headers:
+    Content-Type: application/json
+    Authorization: Bearer {{spec2_access_token}}
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Wed, 29 Nov 2023 18:24:29 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "74"
+    X-Kong-Upstream-Latency: "7"
+    X-Request-Id: dce4cb9c-5ac2-45eb-b659-4173e5715703#1003
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82dce34769ce2307-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "accession_identifier": "5516-3127-3229-5318",
+              "collection": {
+                  "body_site": {
+                      "coding": [
+                          {
+                              "code": "head",
+                              "system": "eHealth/body_sites"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "collected_period": {
+                      "end": "2023-11-24T16:20:56Z",
+                      "start": "2023-11-24T16:00:56Z"
+                  },
+                  "collector": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "patient",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                      }
+                  },
+                  "duration": {
+                      "code": "s",
+                      "comparator": ">",
+                      "system": "eHealth/ucum/units",
+                      "unit": "секунда",
+                      "value": 40.5
+                  },
+                  "fasting_status_codeable_concept": {
+                      "coding": [
+                          {
+                              "code": "default",
+                              "system": "fasting_statuses"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "method": {
+                      "coding": [
+                          {
+                              "code": "default",
+                              "system": "specimen_collection_methods"
+                          }
+                      ],
+                      "text": null
+                  },
+                  "procedure": null,
+                  "quantity": {
+                      "code": "g",
+                      "system": "eHealth/ucum/units",
+                      "unit": "грам",
+                      "value": 50.68
+                  }
+              },
+              "condition": {
+                  "coding": [
+                      {
+                          "code": "default",
+                          "system": "specimen_conditions"
+                      }
+                  ],
+                  "text": null
+              },
+              "container": [
+                  {
+                      "additive_codeable_concept": {
+                          "coding": [
+                              {
+                                  "code": "default",
+                                  "system": "specimen_container_additives"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "capacity": {
+                          "code": "mg",
+                          "system": "eHealth/ucum/units",
+                          "unit": "міліграм",
+                          "value": 30000.05
+                      },
+                      "description": "First tube with blood",
+                      "identifier": "C-1",
+                      "specimen_quantity": {
+                          "code": "g",
+                          "system": "eHealth/ucum/units",
+                          "unit": "грам",
+                          "value": 20.34
+                      },
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "default",
+                                  "system": "specimen_container_types"
+                              }
+                          ],
+                          "text": null
+                      }
+                  },
+                  {
+                      "additive_codeable_concept": {
+                          "coding": [
+                              {
+                                  "code": "default",
+                                  "system": "specimen_container_additives"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "capacity": {
+                          "code": "mg",
+                          "system": "eHealth/ucum/units",
+                          "unit": "міліграм",
+                          "value": 35000.5
+                      },
+                      "description": "Second tube with blood",
+                      "identifier": "C-2",
+                      "specimen_quantity": {
+                          "code": "g",
+                          "system": "eHealth/ucum/units",
+                          "unit": "грам",
+                          "value": 30.34
+                      },
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "default",
+                                  "system": "specimen_container_types"
+                              }
+                          ],
+                          "text": null
+                      }
+                  }
+              ],
+              "context": null,
+              "id": "7bc264db-7dfd-42e4-b85a-93e4fa8450bf",
+              "inserted_at": "2023-11-29T18:18:36.026000Z",
+              "inserted_by": "04230ede-e39b-40c7-9846-2f141e49d6cf",
+              "managing_organization": {
+                  "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "legal_entity",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                  }
+              },
+              "note": "Some notes from autotest",
+              "parent": [
+                  {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "specimen",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "5bc264db-7dfd-42e4-b85a-93e4fa7448bf"
+                      }
+                  }
+              ],
+              "received_time": null,
+              "registered_by": {
+                  "display_value": "Богдан Васильович Татаренко",
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "employee",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "de7e0cd4-eafd-41ad-86f3-d11058605aa2"
+                  }
+              },
+              "request": [
+                  {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "service_request",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "0c4484f2-50f1-4a0a-82a7-130673622e6d"
+                      }
+                  },
+                  {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "service_request",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "0c4484f2-50f1-4a0a-82a7-130673622e5d"
+                      }
+                  }
+              ],
+              "status": "available",
+              "status_reason": null,
+              "subject": {
+                  "display_value": null,
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "patient",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                  }
+              },
+              "type": {
+                  "coding": [
+                      {
+                          "code": "default",
+                          "system": "specimen_types"
+                      }
+                  ],
+                  "text": null
+              },
+              "updated_at": "2023-11-29T18:18:36.026000Z",
+              "updated_by": "04230ede-e39b-40c7-9846-2f141e49d6cf"
+          },
+          "meta": {
+              "code": 200,
+              "request_id": "dce4cb9c-5ac2-45eb-b659-4173e5715703#1003",
+              "type": "object",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/7bc264db-7dfd-42e4-b85a-93e4fa8450bf"
+          }
+      }
+order: 1000

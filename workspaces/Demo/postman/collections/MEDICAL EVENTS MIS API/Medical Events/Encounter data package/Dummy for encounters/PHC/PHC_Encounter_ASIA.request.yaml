@@ -1,0 +1,1038 @@
+$kind: http-request
+url: http://localhost:3000/create-encounter-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"encounter\": {\r
+
+    \        \"id\": \"{{encounter_id}}\",\r
+
+    \        \"status\": \"finished\",\r
+
+    \        \"period\": {\r
+
+    \            \"start\": \"2025-02-16T10:45:16.000Z\",\r
+
+    \            \"end\": \"2025-02-16T10:45:16.000Z\"\r
+
+    \        },\r
+
+    \        \"visit\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"visit\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{visit_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"actions\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICPC2/actions\",\r
+
+    \                        \"code\": \"T47\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICPC2/actions\",\r
+
+    \                        \"code\": \"T50\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"division\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"division\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_division_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"episode\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"episode\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobEpisodeID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"class\": {\r
+
+    \            \"system\": \"eHealth/encounter_classes\",\r
+
+    \            \"code\": \"PHC\"\r
+
+    \        },\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_types\",\r
+
+    \                    \"code\": \"service_delivery_location\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"priority\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_priority\",\r
+
+    \                    \"code\": \"urgent\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"performer\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"reasons\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICPC2/reasons\",\r
+
+    \                        \"code\": \"A02\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICPC2/reasons\",\r
+
+    \                        \"code\": \"D09\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"diagnoses\": [\r
+
+    \            {\r
+
+    \                \"condition\": {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{encounter_id}}\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"role\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/diagnosis_roles\",\r
+
+    \                            \"code\": \"primary\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"rank\": 1\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"prescriptions\": \"Дієта №3, Омепразолу 40 мг 1 раз на добу +
+    амоксициліну 500 мг + метронідазолу 400 мг при необхідності 500 мг або
+    тинідазолу 500 мг 3 рази на добу протягом 1 тижня\"\r
+
+    \    },\r
+
+    \    \"conditions\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{encounter_id}}\",\r
+
+    \            \"primary_source\": true,\r
+
+    \            \"asserter\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"Якийсь текст\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"encounter\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"B77\",\r
+
+    \                        \"system\": \"eHealth/ICPC2/condition_codes\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"clinical_status\": \"active\",\r
+
+    \            \"verification_status\": \"confirmed\",\r
+
+    \            \"severity\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/condition_severities\",\r
+
+    \                        \"code\": \"moderate\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"body_sites\": [\r
+
+    \                {\r
+
+    \                    \"text\": \"Ліва нога\",\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"left_leg\",\r
+
+    \                            \"system\": \"eHealth/body_sites\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"onset_date\": \"2025-01-20T09:46:37.694Z\",\r
+
+    \            \"asserted_date\": \"2025-01-25T09:46:37.694Z\",\r
+
+    \            \"stage\": {\r
+
+    \                \"summary\": {\r
+
+    \                    \"text\": \"IV\",\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"default_condition_stage\",\r
+
+    \                            \"system\": \"eHealth/condition_stages\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"observations\": [\r
+
+    \        {\r
+
+    \            \"body_site\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"left_hand\",\r
+
+    \                        \"system\": \"eHealth/body_sites\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"categories\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"survey\",\r
+
+    \                            \"system\":
+    \"eHealth/observation_categories\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"97843-7\",\r
+
+    \                        \"system\": \"eHealth/LOINC/observation_codes\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"comment\": \"Some comment\",\r
+
+    \            \"components\": [\r
+
+    \                {\r
+
+    \                    \"code\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\":
+    \"eHealth/custom/observation_components\",\r
+
+    \                                \"code\": \"D1\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value_codeable_concept\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/LOINC/LL5913-0\",\r
+
+    \                                \"code\": \"LA32084-8\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"encounter\",\r
+
+    \                                \"system\": \"eHealth/resources\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": null\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"effective_period\": {\r
+
+    \                \"end\": \"2025-01-25T10:50:44Z\",\r
+
+    \                \"start\": \"2025-01-01T10:50:44Z\"\r
+
+    \            },\r
+
+    \            \"id\": \"{{observation_id}}\",\r
+
+    \            \"interpretation\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"default_value\",\r
+
+    \                        \"system\":
+    \"eHealth/observation_interpretations\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"низький\"\r
+
+    \            },\r
+
+    \            \"issued\": \"2025-01-01T10:50:44Z\",\r
+
+    \            \"method\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"default_value\",\r
+
+    \                        \"system\": \"eHealth/observation_methods\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"метод ABC\"\r
+
+    \            },\r
+
+    \            \"performer\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"employee\",\r
+
+    \                                \"system\": \"eHealth/resources\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": null\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"primary_source\": true,\r
+
+    \            \"reference_ranges\": [\r
+
+    \                {\r
+
+    \                    \"age\": {\r
+
+    \                        \"high\": {\r
+
+    \                            \"code\": null,\r
+
+    \                            \"comparator\": \"<\",\r
+
+    \                            \"system\": null,\r
+
+    \                            \"unit\": \"%\",\r
+
+    \                            \"value\": 35\r
+
+    \                        },\r
+
+    \                        \"low\": {\r
+
+    \                            \"code\": null,\r
+
+    \                            \"comparator\": \">\",\r
+
+    \                            \"system\": null,\r
+
+    \                            \"unit\": \"%\",\r
+
+    \                            \"value\": 18\r
+
+    \                        }\r
+
+    \                    },\r
+
+    \                    \"applies_to\": [\r
+
+    \                        {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"code\":
+    \"default_reference_range_application\",\r
+
+    \                                    \"system\":
+    \"eHealth/reference_range_applications\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"high\": {\r
+
+    \                        \"code\": \"%\",\r
+
+    \                        \"comparator\": \"<\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"unit\": \"%\",\r
+
+    \                        \"value\": 27\r
+
+    \                    },\r
+
+    \                    \"low\": {\r
+
+    \                        \"code\": \"%\",\r
+
+    \                        \"comparator\": \">\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"unit\": \"%\",\r
+
+    \                        \"value\": 13.000001\r
+
+    \                    },\r
+
+    \                    \"text\": \"Some text\",\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"default_reference_range\",\r
+
+    \                                \"system\":
+    \"eHealth/reference_range_types\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"нормальний\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"status\": \"valid\",\r
+
+    \            \"value_codeable_concept\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/LOINC/LL5900-7\",\r
+
+    \                        \"code\": \"LA13503-0\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"diagnostic_reports\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{diagnostic_report_id}}\",\r
+
+    \            \"status\": \"final\",\r
+
+    \            \"category\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\":
+    \"eHealth/diagnostic_report_categories\",\r
+
+    \                            \"code\": \"diagnostic_procedure\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"code\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"service\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"3c7587c8-74fb-40be-b027-b7eabd1d5ec4\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"effective_period\": {\r
+
+    \                \"start\": \"2025-01-20T10:45:16.000Z\",\r
+
+    \                \"end\": \"2025-01-25T11:00:00.000Z\"\r
+
+    \            },\r
+
+    \            \"issued\": \"2025-01-26T09:46:37.694Z\",\r
+
+    \            \"conclusion\": \"At risk of osteoporotic fracture SO TEST\",\r
+
+    \            \"recorded_by\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"encounter\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"encounter\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"primary_source\": true,\r
+
+    \            \"managing_organization\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"legal_entity\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_legal_entity}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"performer\": {\r
+
+    \                \"reference\": {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{user_id}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"results_interpreter\": {\r
+
+    \                \"reference\": {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{user_id}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const encounterId = uuid.v4();\r
+
+      const drId = uuid.v4();\r
+
+      const visitId = uuid.v4();\r
+
+      const observationId = uuid.v4();\r
+
+      pm.globals.set(\"encounter_id\", encounterId);\r
+
+      pm.globals.set(\"visit_id\", visitId);\r
+
+      pm.globals.set(\"diagnostic_report_id\", drId);\r
+
+      pm.globals.set(\"observation_id\", observationId)"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create encounter sign content', resData)\r
+
+      \r
+
+      pm.test(`Encounter content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('encounter_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 5000

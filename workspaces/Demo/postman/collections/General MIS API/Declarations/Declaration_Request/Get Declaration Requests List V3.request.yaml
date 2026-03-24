@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host_demo}}/api/v3/declaration_requests?employee_id=d290f1ee-6c54-4b01-\
+  90e6-d701748f0851&legal_entity_id=d290f1ee-6c54-4b01-90e6-d701748f0851&status\
+  =active&page=2&page_size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  employee_id: d290f1ee-6c54-4b01-90e6-d701748f0851
+  legal_entity_id: d290f1ee-6c54-4b01-90e6-d701748f0851
+  status: active
+  page: "2"
+  page_size: "50"
+order: 6000

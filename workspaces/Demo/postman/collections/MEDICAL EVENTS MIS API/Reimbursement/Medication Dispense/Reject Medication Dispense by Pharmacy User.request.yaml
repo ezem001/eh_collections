@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{host}}/api/pharmacy/medication_dispenses/{{medication_dispense_id}}/act\
+  ions/reject"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: ""
+order: 4000

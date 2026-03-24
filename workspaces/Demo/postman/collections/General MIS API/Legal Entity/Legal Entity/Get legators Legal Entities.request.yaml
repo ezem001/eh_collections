@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{host}}/api/legal_entities/id/related?page=2&page_size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  page: "2"
+  page_size: "50"
+order: 7000

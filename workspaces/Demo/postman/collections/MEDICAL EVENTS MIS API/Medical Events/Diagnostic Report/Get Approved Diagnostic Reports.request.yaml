@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/diagnostic_reports/approved?code=09\
+  dc3ed7-2169-45d8-8fa3-d918c6839bf9&page=2&page_size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  code: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  page: "2"
+  page_size: "50"
+order: 4000

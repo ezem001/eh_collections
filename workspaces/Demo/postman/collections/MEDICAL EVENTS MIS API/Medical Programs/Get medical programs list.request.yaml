@@ -1,0 +1,56 @@
+$kind: http-request
+description: >-
+  Method returns list of medical programs filtering by parameters. By default
+  method returns only active medical programs `is_active=true`
+
+
+  **Scopes required:** `medical_program:read`
+url: "{{host}}/api/medical_programs?id=8efe29df-18bd-4d49-8995-c3f7e44d9e12"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  api-key: "{{mis_client_secret}}"
+queryParams:
+  - key: name
+    value: "%D0%94%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%BD%D1%96%20%D0%BB%D1%96%D0%BA%D\
+      0%B8"
+    disabled: true
+  - key: is_active
+    value: "false"
+    disabled: true
+  - key: mr_blank_type
+    value: F-1
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "500"
+    disabled: true
+  - key: type
+    value: MEDICATION
+    disabled: true
+  - key: id
+    value: 85a99548-ab99-4ac4-96ae-558251270690
+    disabled: true
+  - key: id
+    value: f646aa61-6765-4cfa-89cd-5259b68b2ab7
+    disabled: true
+  - key: id
+    value: 8efe29df-18bd-4d49-8995-c3f7e44d9e12
+  - key: id
+    value: b16409ab-af31-4016-bb61-7661dcce23ed
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "let mp = pm.response?.json()?.data;\r
+
+      pm.globals.set(\"medical_program_data\", JSON.stringify(mp));\r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+order: 2000

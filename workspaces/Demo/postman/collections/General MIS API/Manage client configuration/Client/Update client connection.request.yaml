@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/clients/id/connections/connection_id"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"redirect_uri\": \"https://example3.com\"\r
+
+    }"
+order: 5000

@@ -1,0 +1,73 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+  method: POST
+  headers:
+    Content-Type: application/json
+    api-key: ef7d48ecfc233d6af088
+    Authorization: Bearer {{doc1_session_token}}
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: >-
+      {
+         "app":{
+            "client_id":"68c4e556-5a61-4994-a788-4949dbd76688",
+            "redirect_uri":"https://example2.com",
+            "scope":"declaration:read declaration_request:approve declaration_request:read declaration_request:sign declaration_request:write division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read otp:read otp:write person:read patient_summary:read encounter:write encounter:read encounter:cancel episode:write episode:read job:read condition:read condition:write observation:read observation:write immunization:read immunization:write allergy_intolerance:read allergy_intolerance:write medication_statement:read medication_statement:write device:read device:write risk_assessment:read risk_assessment:write medication_dispense:read drugs:read medication_request:details medication_request:read medication_request:reject medication_request:resend medication_request_request:read medication_request_request:reject medication_request_request:sign medication_request_request:write diagnostic_report:read diagnostic_report:write diagnostic_report:cancel procedure:read procedure:write procedure:cancel service_request:makeinprogress service_request:complete service_request:recall service_request:cancel service_request:write service_request:read service_request:use approval:create program_service:read medication_administration:read medication_administration:write healthcare_service:read employee_role:read person_request:write person_request:read authentication_method_request:write care_plan:read approval:read approval:cancel care_plan:write composition:create composition:sign composition:cancel composition:read composition:search license:read clinical_impression:read rule_engine_rule:read medical_event_context:read clinical_impression:write person_verification:details person_verification:write person_emergency_contact:read device_definitions:read device_request:write device_request:read device_request:resend device_request:revoke specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate"
+         }
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Thu, 23 Nov 2023 13:40:54 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "2600"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: https://auth-demo.ehealth.gov.ua
+    Cache-Control: max-age=0, private, must-revalidate
+    Location: https://example2.com?code=MGlKSHF6cGluK2JBY1QxYXVrcTluZz09
+    Referrer-Policy: strict-origin-when-cross-origin
+    Vary: Origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "43"
+    X-Kong-Upstream-Latency: "13"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: f3176006-faf2-4306-9eb7-28b3242c585b#418
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a9d39d89b577b6-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "details": {
+                  "app_id": "df90bb90-4267-42ac-af65-3e6396ebb119",
+                  "client_id": "68c4e556-5a61-4994-a788-4949dbd76688",
+                  "grant_type": "password",
+                  "redirect_uri": "https://example2.com",
+                  "scope_request": "declaration:read declaration_request:approve declaration_request:read declaration_request:sign declaration_request:write division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read otp:read otp:write person:read patient_summary:read encounter:write encounter:read encounter:cancel episode:write episode:read job:read condition:read condition:write observation:read observation:write immunization:read immunization:write allergy_intolerance:read allergy_intolerance:write medication_statement:read medication_statement:write device:read device:write risk_assessment:read risk_assessment:write medication_dispense:read drugs:read medication_request:details medication_request:read medication_request:reject medication_request:resend medication_request_request:read medication_request_request:reject medication_request_request:sign medication_request_request:write diagnostic_report:read diagnostic_report:write diagnostic_report:cancel procedure:read procedure:write procedure:cancel service_request:makeinprogress service_request:complete service_request:recall service_request:cancel service_request:write service_request:read service_request:use approval:create program_service:read medication_administration:read medication_administration:write healthcare_service:read employee_role:read person_request:write person_request:read authentication_method_request:write care_plan:read approval:read approval:cancel care_plan:write composition:create composition:sign composition:cancel composition:read composition:search license:read clinical_impression:read rule_engine_rule:read medical_event_context:read clinical_impression:write person_verification:details person_verification:write person_emergency_contact:read device_definitions:read device_request:write device_request:read device_request:resend device_request:revoke specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate"
+              },
+              "expires_at": 1700747154,
+              "id": "e8e400ac-d42c-461d-b99d-9993193ac3c3",
+              "name": "authorization_code",
+              "user_id": "77c180b7-f535-41eb-b005-8157e0c5a113",
+              "value": "MGlKSHF6cGluK2JBY1QxYXVrcTluZz09"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "f3176006-faf2-4306-9eb7-28b3242c585b#418",
+              "type": "object",
+              "url": "http://api-svc.mithril/oauth/apps/authorize"
+          },
+          "urgent": {
+              "redirect_uri": "https://example2.com?code=MGlKSHF6cGluK2JBY1QxYXVrcTluZz09"
+          }
+      }
+order: 1000

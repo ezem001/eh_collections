@@ -1,0 +1,304 @@
+$kind: http-request
+url: "{{host}}/api/v2/person_requests/{{Person_req_id}}/actions/sign"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  drfo: "2799207815"
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |+
+    {
+      "signed_content": "{{signed_content}}"
+    }
+
+scripts:
+  - type: afterResponse
+    code: >+
+      // // Отримуємо перший елемент host з URL
+
+      // let envPart = pm.request.url.host[0]; // наприклад: "api-demo"
+
+
+      // // Витягуємо тільки частину після "api-"
+
+      // let match = envPart.match(/api-(.+)/i);
+
+
+      // if (match && match[1]) {
+
+      //     // Переводимо у верхній регістр
+
+      //     let envName = match[1].toUpperCase(); // DEMO / PREPROD / STAGE
+
+
+      //     // Зберігаємо в глобальні змінні Postman
+
+      //     pm.globals.set("ENV_NAME", envName);
+
+
+      //     console.log("ENV_NAME:", envName);
+
+      // } else {
+
+      //     console.warn("Не вдалося витягти середовище з host:", envPart);
+
+      // }
+
+
+
+      // const signResponse = pm.response.json();
+
+
+      // if (!signResponse?.data?.person_id) {
+
+      //     throw new Error("Sign Person Request: person_id not found");
+
+      // }
+
+
+      // const patientId = signResponse.data.person_id;
+
+      // const operation = pm.globals.get("PERSON_OPERATION");
+
+
+      // // Load base data
+
+      // const baseResponse = JSON.parse(
+
+      //     operation === "update"
+
+      //         ? pm.globals.get("UPDATE_PERSON_RESPONSE")
+
+      //         : pm.globals.get("CREATE_PERSON_RESPONSE")
+
+      // );
+
+
+      // const patientDocument = {
+
+      //     patientId,
+
+
+      //     environment: pm.globals.get("ENV_NAME"),
+
+      //     requestId: pm.globals.get("PERSON_REQUEST_ID"),
+
+
+      //     first_name: baseResponse.person.first_name,
+
+      //     second_name: baseResponse.person.second_name,
+
+      //     last_name: baseResponse.person.last_name,
+
+
+      //     birth_date: baseResponse.person.birth_date,
+
+      //     birth_country: baseResponse.person.birth_country,
+
+      //     birth_settlement: baseResponse.person.birth_settlement,
+
+
+      //     gender: baseResponse.person.gender,
+
+      //     email: baseResponse.person.email,
+
+
+      //     tax_id: baseResponse.person.tax_id,
+
+      //     no_tax_id: baseResponse.person.no_tax_id,
+
+      //     unzr: baseResponse.person.unzr,
+
+
+      //     preferred_way_communication:
+      baseResponse.person.preferred_way_communication,
+
+      //     secret: baseResponse.person.secret,
+
+
+      //     phones: baseResponse.person.phones || [],
+
+      //     addresses: baseResponse.person.addresses || [],
+
+      //     documents: baseResponse.person.documents || [],
+
+      //     emergency_contact: baseResponse.person.emergency_contact || null,
+
+
+      //     authentication_methods: baseResponse.person.authentication_methods
+      || [],
+
+
+      //     episodes: [],
+
+      //     encounters: [],
+
+      //     carePlans: [],
+
+      //     procedures: [],
+
+      //     diagnostic_reports: []
+
+      // };
+
+      // console.log(patientDocument)
+
+
+      // pm.sendRequest({
+
+      //     url: "http://localhost:3000/patient",
+
+      //     method: operation === "update" ? "PUT" : "POST",
+
+      //     header: {
+
+      //         "Content-Type": "application/json"
+
+      //     },
+
+      //     body: {
+
+      //         mode: "raw",
+
+      //         raw: JSON.stringify(patientDocument)
+
+      //     }
+
+      // }, (err, res) => {
+
+      //     if (err) {
+
+      //         console.error(err);
+
+      //         throw err;
+
+      //     }
+
+
+      //     console.log("Saved:", res.json());
+
+      // });
+
+
+
+
+      // --- ENV_NAME ---
+
+      let envPart = pm.request.url.host[0];
+
+      let match = envPart.match(/api-(.+)/i);
+
+      if (match && match[1]) pm.globals.set("ENV_NAME", match[1].toUpperCase());
+
+
+      const r = pm.response.json();
+
+      const envName = pm.globals.get("ENV_NAME");
+
+
+      const isPerson = !!r?.data?.person_id;
+
+      const isPreperson = !!r?.data?.id && !isPerson;
+
+
+      if (!isPerson && !isPreperson) {
+        throw new Error("Cannot detect entity type: no data.person_id and no data.id");
+      }
+
+
+      const type = isPerson ? "PERSON" : "PREPERSON";
+
+
+      // patientId: PERSON -> person_id, PREPERSON -> data.id
+
+      const patientId = isPerson ? r.data.person_id : r.data.id;
+
+
+      // operation: як у тебе (можеш залишити)
+
+      const operation = pm.globals.get("PERSON_OPERATION") || "create";
+
+
+      // requestId: PERSON -> з глобалки, PREPERSON -> meta.request_id
+
+      const requestId = isPerson
+        ? pm.globals.get("PERSON_REQUEST_ID")
+        : r?.meta?.request_id;
+
+      // source data for fields
+
+      let src;
+
+      if (isPerson) {
+        const baseResponse = JSON.parse(
+          operation === "update"
+            ? pm.globals.get("UPDATE_PERSON_RESPONSE")
+            : pm.globals.get("CREATE_PERSON_RESPONSE")
+        );
+        src = baseResponse.person;
+      } else {
+        src = r.data;
+      }
+
+
+      const patientDocument = {
+        patientId,
+        type,
+        environment: envName,
+        requestId,
+
+        first_name: src.first_name,
+        second_name: src.second_name,
+        last_name: src.last_name,
+
+        birth_date: src.birth_date,
+        birth_country: src.birth_country,
+        birth_settlement: src.birth_settlement,
+
+        gender: src.gender,
+        email: src.email,
+
+        tax_id: src.tax_id,
+        no_tax_id: src.no_tax_id,
+        unzr: src.unzr,
+
+        preferred_way_communication: src.preferred_way_communication,
+        secret: src.secret,
+
+        phones: src.phones || [],
+        addresses: src.addresses || [],
+        documents: src.documents || [],
+        emergency_contact: src.emergency_contact || null,
+
+        authentication_methods: src.authentication_methods || [],
+
+        episodes: [],
+        encounters: [],
+        carePlans: [],
+        procedures: [],
+        diagnostic_reports: []
+      };
+
+
+      // щоб не затирати поля undefined при PUT
+
+      Object.keys(patientDocument).forEach(k => {
+        if (patientDocument[k] === undefined) delete patientDocument[k];
+      });
+
+
+      pm.sendRequest({
+        url: "http://localhost:3000/patient",
+        method: operation === "update" ? "PUT" : "POST",
+        header: { "Content-Type": "application/json" },
+        body: { mode: "raw", raw: JSON.stringify(patientDocument) }
+      }, (err, res) => {
+        if (err) throw err;
+        console.log("Saved:", res.json());
+      });
+
+    language: text/javascript
+order: 5000

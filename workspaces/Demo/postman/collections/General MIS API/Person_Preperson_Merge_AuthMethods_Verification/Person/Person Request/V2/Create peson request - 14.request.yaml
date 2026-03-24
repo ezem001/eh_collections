@@ -1,0 +1,501 @@
+$kind: http-request
+name: Create peson request < 14
+url: "{{host}}/api/v2/person_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"person\": {\r
+
+    \        \"first_name\": \"Жанна\",\r
+
+    \        \"last_name\": \"Тарасенко\",\r
+
+    \        \"second_name\": \"Друга\",\r
+
+    \        \"birth_date\": \"2016-09-05\",\r
+
+    \        \"birth_country\": \"Україна\",\r
+
+    \        \"birth_settlement\": \"Київ\",\r
+
+    \        \"gender\": \"FEMALE\",\r
+
+    \        \"email\": \"mail@gmail.com\",\r
+
+    \        \"no_tax_id\": false,\r
+
+    \        \"tax_id\": \"{{person_tax_id}}\",\r
+
+    \        \"secret\": \"secret\",\r
+
+    \        \"documents\": [\r
+
+    \            {\r
+
+    \                \"type\": \"BIRTH_CERTIFICATE_FOREIGN\",\r
+
+    \                \"number\": \"І-БК535267\",\r
+
+    \                \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                \"issued_at\": \"2020-05-16\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"addresses\": [\r
+
+    \            {\r
+
+    \                \"type\": \"RESIDENCE\",\r
+
+    \                \"apartment\": \"45Б\",\r
+
+    \                \"area\": \"КИЇВСЬКА\",\r
+
+    \                \"region\": \"Києво-Свят0шинський\",\r
+
+    \                \"building\": \"15\",\r
+
+    \                \"country\": \"IT\",\r
+
+    \                \"settlement\": \"ЧУГУЇВ\",\r
+
+    \                \"settlement_id\":
+    \"fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494\",\r
+
+    \                \"settlement_type\": \"CITY\",\r
+
+    \                \"street\": \"Г0голя\",\r
+
+    \                \"street_type\": \"STREET\",\r
+
+    \                \"zip\": \"02115\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"phones\": [\r
+
+    \            {\r
+
+    \                \"type\": \"MOBILE\",\r
+
+    \                \"number\": \"+380634390602\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"authentication_methods\": [\r
+
+    \            {\r
+
+    \                \"type\": \"THIRD_PERSON\",\r
+
+    \                \"value\": \"421c3318-f783-4883-a030-f0c63aa7e0bf\",\r
+
+    \                \"alias\": \"father\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"unzr\": \"20200515-00011\",\r
+
+    \        \"emergency_contact\": {\r
+
+    \            \"first_name\": \"Володимир\",\r
+
+    \            \"last_name\": \"Петренко\",\r
+
+    \            \"second_name\": \"Іванівнович\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"type\": \"MOBILE\",\r
+
+    \                    \"number\": \"+380634390340\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"confidant_person\": {\r
+
+    \            \"person_id\": \"421c3318-f783-4883-a030-f0c63aa7e0bf\",\r
+
+    \            \"documents_relationship\": [\r
+
+    \                {\r
+
+    \                    \"type\": \"CONFIDANT_CERTIFICATE\",\r
+
+    \                    \"number\": \"І-БК535231\",\r
+
+    \                    \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                    \"issued_at\": \"2020-05-16\",\r
+
+    \                    \"active_to\": \"2027-02-28\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"patient_signed\": false,\r
+
+    \    \"process_disclosure_data_consent\": true\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resBody = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      if (resBody.data.id) {\r
+
+      \    const personReqId = resBody.data.id\r
+
+      \    console.log(personReqId)\r
+
+      \    pm.globals.set(\"Person_req_id\", personReqId);\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      // -------------------------------\r
+
+      \r
+
+      \r
+
+      \r
+
+      function processUrl(doc, requestName) {\r
+
+      \  console.log(doc.url, \"urls loop\");\r
+
+      \r
+
+      \  pm.sendRequest({\r
+
+      \    url: \"http://localhost:3000/upload-jpeg\",\r
+
+      \    method: \"POST\",\r
+
+      \    header: { \"Content-Type\": \"application/json\" },\r
+
+      \    body: {\r
+
+      \      mode: \"raw\",\r
+
+      \      raw: JSON.stringify({\r
+
+      \        putUrl: doc.url,\r
+
+      \        requestName: requestName,\r
+
+      \        docType: doc.type,\r
+
+      \        width: 1200,\r
+
+      \        height: 800\r
+
+      \      })\r
+
+      \    }\r
+
+      \  }, function (err, res) {\r
+
+      \r
+
+      \    if (err) {\r
+
+      \      console.error(\"Local request failed:\", err);\r
+
+      \      displayResponse(\"Local Request Error\", { error: err.message });\r
+
+      \      return;\r
+
+      \    }\r
+
+      \r
+
+      \    const contentType = res.headers.get(\"Content-Type\") || \"\";\r
+
+      \    const responseText = res.text();\r
+
+      \r
+
+      \    console.log(\"Local response:\", res.code);\r
+
+      \    console.log(\"Response body:\", responseText);\r
+
+      \r
+
+      \    displayResponse(\"Local upload result\", {\r
+
+      \      status: res.code,\r
+
+      \      contentType,\r
+
+      \      body: responseText\r
+
+      \    });\r
+
+      \  });\r
+
+      }\r
+
+      \r
+
+      \r
+
+      // -------------------------------\r
+
+      // MAIN\r
+
+      // -------------------------------\r
+
+      \r
+
+      const resData = pm.response.json();\r
+
+      \r
+
+      const requestName =\r
+
+      \  pm.info?.requestName ||\r
+
+      \  pm.request?.name ||\r
+
+      \  \"Parent Request\";\r
+
+      \r
+
+      // Документи\r
+
+      const documents = (resData?.urgent?.documents || [])\r
+
+      \  .filter(d => d?.url && d?.type);\r
+
+      \r
+
+      // ✅ Якщо масив порожній — просто нічого не робимо\r
+
+      if (!documents.length) {\r
+
+      \  console.log(\"No documents found. Skipping upload.\");\r
+
+      \  return; // <-- просто вихід\r
+
+      }\r
+
+      \r
+
+      // Запуск тільки якщо є документи\r
+
+      documents.forEach(doc => {\r
+
+      \  processUrl(doc, requestName);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      // -------------------------------\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // // Function to handle each URL request\r
+
+      // function processUrl(url) {\r
+
+      //   console.log(url, \"urls loop\");\r
+
+      \r
+
+      //   // Мінімальний JPEG 1x1 (валидний). Можеш замінити на свій /9j/...
+      base64\r
+
+      //   const base64Jpeg =\r
+
+      //     \"/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB\
+      AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAALCAABAAEBA\
+      REA/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQ\
+      AAAAAAAAAAAAAAAAAAAAP/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCfAA/\
+      /2Q==\";\r
+
+      \r
+
+      //   // Base64 -> bytes\r
+
+      //   const buf = Buffer.from(base64Jpeg, \"base64\");\r
+
+      \r
+
+      //   // bytes -> \"latin1\" string (важливо для передачі байтів через
+      raw)\r
+
+      //   const binaryBody = buf.toString(\"latin1\");\r
+
+      \r
+
+      //   pm.sendRequest(\r
+
+      //     {\r
+
+      //       url: url,\r
+
+      //       method: \"PUT\",\r
+
+      //       header: {\r
+
+      //         // має відповідати тому, що очікує presigned URL\r
+
+      //         \"Content-Type\": \"image/jpeg\"\r
+
+      //       },\r
+
+      //       body: {\r
+
+      //         mode: \"raw\",\r
+
+      //         raw: binaryBody\r
+
+      //       }\r
+
+      //     },\r
+
+      //     function (err, res) {\r
+
+      //       if (err) {\r
+
+      //         console.error(\"Request failed:\", err);\r
+
+      //         displayResponse(\"Request Error\", { error: err.message });\r
+
+      //         return;\r
+
+      //       }\r
+
+      \r
+
+      //       console.log(\"PUT status:\", res.code);\r
+
+      //       displayResponse(\"PUT result\", { status: res.code, body:
+      res.text() });\r
+
+      //     }\r
+
+      //   );\r
+
+      // }\r
+
+      \r
+
+      // const resData = pm.response.json();\r
+
+      // const documents = resData.urgent.documents;\r
+
+      // const urls = documents.map((doc) => doc.url);\r
+
+      \r
+
+      // urls.forEach((url) => processUrl(url));\r
+
+      pm.test(\"Create peson request v2 Status code is 201\", function () {\r
+
+      \  pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "function generateRandomTaxId() {\r
+
+      \    let taxId = '';\r
+
+      \    for (let i = 0; i < 10; i++) {\r
+
+      \        taxId += Math.floor(Math.random() * 10); // Generate a random
+      digit\r
+
+      \    }\r
+
+      \    return taxId;\r
+
+      }\r
+
+      \r
+
+      // Generate a random tax ID\r
+
+      const randomTaxId = generateRandomTaxId();\r
+
+      \r
+
+      // Set the random tax ID in an environment variable\r
+
+      pm.globals.set('person_tax_id', randomTaxId);\r
+
+      \r
+
+      // Optional: Log the generated tax ID for debugging\r
+
+      console.log('Generated tax ID:', randomTaxId);"
+    language: text/javascript
+order: 2000

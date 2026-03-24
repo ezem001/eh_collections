@@ -1,0 +1,165 @@
+$kind: http-request
+url: "{{host}}/api/divisions/25da95a9-1945-40c1-b1aa-26a2de2a9919"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"addresses\": [\r
+
+    \        {\r
+
+    \                \"apartment\": \"150\",\r
+
+    \                \"area\": \"АВТОНОМНА РЕСПУБЛІКА КРИМ\",\r
+
+    \                \"building\": \"150\",\r
+
+    \                \"country\": \"UA\",\r
+
+    \                \"region\": \"ЄВПАТОРІЯ\",\r
+
+    \                \"settlement\": \"ЗАОЗЕРНЕ\",\r
+
+    \                \"settlement_id\":
+    \"6067b193-6e79-435c-a13b-e6b53e65cbdd\",\r
+
+    \                \"settlement_type\": \"SETTLEMENT\",\r
+
+    \                \"street\": \"Лісопарківський\",\r
+
+    \                \"street_type\": \"STREET\",\r
+
+    \                \"type\": \"RESIDENCE\",\r
+
+    \                \"zip\": \"12345\"\r
+
+    \            }\r
+
+    \    ],\r
+
+    \    \"email\": \"demo.emergency@ukr.net\",\r
+
+    \    \"id\": \"25da95a9-1945-40c1-b1aa-26a2de2a9919\",\r
+
+    \    \"legal_entity_id\": \"{{user_legal_entity}}\",\r
+
+    \    \"location\": {\r
+
+    \        \"latitude\": 50.7966555,\r
+
+    \        \"longitude\": 30.355165\r
+
+    \    },\r
+
+    \    \"name\": \"Testttt__1.0.1\",\r
+
+    \    \"phones\": [\r
+
+    \        {\r
+
+    \            \"number\": \"+380770000000\",\r
+
+    \            \"type\": \"MOBILE\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"type\": \"CLINIC\",\r
+
+    \    \"working_hours\": {\r
+
+    \        \"fri\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"mon\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"sat\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"sun\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"thu\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"tue\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"wed\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ]\r
+
+    \    }\r
+
+    }"
+order: 3000

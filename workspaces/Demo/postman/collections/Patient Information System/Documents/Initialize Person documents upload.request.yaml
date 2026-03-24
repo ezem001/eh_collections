@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{pis_host}}/api/pis/documents"
+method: POST
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  Content-Type: application/json
+  Authorization: Bearer {{pis_access_token}}
+  api-key: "{{client_secret}}"
+order: 1000

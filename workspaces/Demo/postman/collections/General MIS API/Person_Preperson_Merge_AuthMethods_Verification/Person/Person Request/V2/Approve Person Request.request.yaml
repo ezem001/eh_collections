@@ -1,0 +1,154 @@
+$kind: http-request
+url: "{{host}}/api/v2/person_requests/{{Person_req_id}}/actions/approve"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: Content-Type
+    value: application/json
+    disabled: true
+  - key: Authorization
+    value: Bearer {{access_token}}
+    disabled: true
+  - key: api-key
+    value: "{{mis_client_secret}}"
+    disabled: true
+body:
+  type: text
+  content: "{\r
+
+    \    \"verification_code\": 8388\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "if (pm.response.code === 200) {\r
+
+      \r
+
+      \    function displayResponse(title, data) {\r
+
+      \        const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \        pm.visualizer.set(html);\r
+
+      \    }\r
+
+      \r
+
+      \    // Extract data from the response\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    let dataToSign = responseJson.data;\r
+
+      \r
+
+      \    console.log(dataToSign)\r
+
+      \r
+
+      \    dataToSign.patient_signed = true;\r
+
+      \r
+
+      \    // Define the URL and the request details for the local server\r
+
+      \    const localServerUrl = 'http://localhost:3000/receive-data'; //
+      Replace with your local server endpoint\r
+
+      \    const requestData = {\r
+
+      \        method: 'POST',\r
+
+      \        url: localServerUrl,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json'\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify(dataToSign) // Send the entire response
+      or specific fields\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    // Send the request to the local server\r
+
+      \    pm.sendRequest(requestData, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Error sending request to local server:',
+      err);\r
+
+      \        } else {\r
+
+      \            console.log('Response from local server:', res.json());\r
+
+      \            const responseBody = res.json();\r
+
+      \r
+
+      \            pm.globals.set('signed_content',
+      responseBody.signed_content)\r
+
+      \            \r
+
+      \            displayResponse('Signed person data', responseBody);\r
+
+      \        }\r
+
+      \    });\r
+
+      } else {\r
+
+      \    console.log('Initial request failed');\r
+
+      }\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \  pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // Логування запиту та відповіді\r
+
+      \r
+
+      // (function () {\r
+
+      //   // не логувати /log щоб уникнути рекурсії\r
+
+      //   if (pm.request.url.toString().includes('/log')) return;\r
+
+      \r
+
+      //   const logger = pm.require('@winter-zodiac-949553/log-utils')\r
+
+      //   const logPayload = logger.createLogPayload(pm);\r
+
+      //   logger.sendLog(logPayload);\r
+
+      // })();"
+    language: text/javascript
+order: 4000

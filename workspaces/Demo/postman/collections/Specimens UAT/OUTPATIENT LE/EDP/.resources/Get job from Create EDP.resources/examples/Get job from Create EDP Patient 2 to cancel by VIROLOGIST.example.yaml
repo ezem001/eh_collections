@@ -1,0 +1,63 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/jobs/{{job_id}}
+  method: GET
+  headers:
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 303
+  statusText: See Other
+  headers:
+    Date: Thu, 30 Nov 2023 17:45:50 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "927"
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "7"
+    X-Kong-Upstream-Latency: "5"
+    X-Request-Id: dce4cb9c-5ac2-45eb-b659-4173e5715703#1363
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82e4e8084fba2498-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "eta": "2023-11-30T17:55:43.691Z",
+              "links": [
+                  {
+                      "entity": "encounter",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/encounters/1a0a8aa3-87a4-41ca-a61c-ba0923202918"
+                  },
+                  {
+                      "entity": "observation",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/observations/1a0a8aa3-87a4-41ca-a61c-ba0923202918"
+                  },
+                  {
+                      "entity": "specimen",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/1a0a8aa3-87a4-41ca-a61c-ba0923212918"
+                  },
+                  {
+                      "entity": "specimen",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/1a0a8aa3-87a4-41ca-a61c-ba0923222918"
+                  },
+                  {
+                      "entity": "specimen",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/1a0a8aa3-87a4-41ca-a61c-ba0923232918"
+                  }
+              ],
+              "status": "processed",
+              "status_code": 200
+          },
+          "meta": {
+              "code": 303,
+              "request_id": "dce4cb9c-5ac2-45eb-b659-4173e5715703#1363",
+              "type": "object",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/jobs/6568ca47db52a300420df02d"
+          }
+      }
+order: 10000

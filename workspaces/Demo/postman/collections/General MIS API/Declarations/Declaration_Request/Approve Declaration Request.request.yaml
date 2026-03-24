@@ -1,0 +1,88 @@
+$kind: http-request
+url: "{{host}}/api/v3/declaration_requests/{{declaration_request_id}}/actions/a\
+  pprove"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"verification_code\": 2810\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: >-
+      const jsonData = pm.response.json();
+
+
+
+      function displayResponse(title, data) {
+          const html = `
+              <h1>${title}</h1>
+              <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          pm.visualizer.set(html);
+      }
+
+
+      if(jsonData.error){
+          displayResponse('Error Approve Declaration Request Details', jsonData)
+      }
+
+
+
+
+      function sendDataToSign(dataToBeSigned) {
+          const localServerUrl = 'http://localhost:3000/receive-data';
+
+          const requestData = {
+              method: 'POST',
+              url: localServerUrl,
+              header: {
+                  'Content-Type': 'application/json',
+              },
+              body: {
+                  mode: 'raw',
+                  raw: JSON.stringify(dataToBeSigned) // Send the entire response or specific fields
+              }
+          };
+
+          // Send the request to the local server
+          pm.sendRequest(requestData, function (err, res) {
+              if (err) {
+                  console.error('Error sending request to local server:', err);
+              } else {
+                  console.log('Response from local server:', res.json());
+                  const responseBody = res.json();
+
+                  console.log(responseBody);
+
+                  pm.globals.set('declaration_signed_content', responseBody.signed_content)
+
+                  displayResponse('Signed declaration data', responseBody);
+              }
+          });
+      }
+
+
+
+      pm.test(`Approve declaration request pass. Response status is
+      200  |  ${JSON.stringify(jsonData, null, 2)}`, function () {
+
+          pm.expect(pm.response.code).to.eql(200);
+
+          let dataToBeSigned = jsonData.data.data_to_be_signed;
+
+          dataToBeSigned.person.patient_signed = true;
+
+          console.log(dataToBeSigned.person.patient_signed)
+
+          sendDataToSign(dataToBeSigned);
+
+      })
+    language: text/javascript
+order: 2000

@@ -1,0 +1,248 @@
+$kind: http-request
+url: "{{host}}/api/persons/b3695d68-0b6c-449a-9916-c755ca6e3e79/confidant_perso\
+  n_relationship_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"confidant_person_id\": \"545392cf-5671-4944-ae56-2e1ef110f1a3\",\r
+
+    \    \"documents_relationship\": [\r
+
+    \        {\r
+
+    \            \"type\": \"DOCUMENT\",\r
+
+    \            \"number\": \"І-БЛ635231\",\r
+
+    \            \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської області\",\r
+
+    \            \"issued_at\": \"2020-05-16\",\r
+
+    \            \"active_to\": \"2027-02-28\"\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "// === Helpers ===\r
+
+      const safeJson = (body) => {\r
+
+      \    try {\r
+
+      \        return pm.response.json();\r
+
+      \    } catch (e) {\r
+
+      \        console.warn(\"Response is not JSON, returning text
+      instead.\");\r
+
+      \        return pm.response.text();\r
+
+      \    }\r
+
+      };\r
+
+      \r
+
+      const log = (label, data) => {\r
+
+      \    console.log(`[DEBUG] ${label}:`, data);\r
+
+      };\r
+
+      \r
+
+      const displayResponse = (title, data) => {\r
+
+      \    const html = `\r
+
+      \        <h2>${title}</h2>\r
+
+      \        <table border=\"1\" style=\"border-collapse:collapse;
+      width:100%;\">\r
+
+      \            <tr><td><pre>${JSON.stringify(data, null,
+      2)}</pre></td></tr>\r
+
+      \        </table>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      };\r
+
+      \r
+
+      // === Main ===\r
+
+      const resBody = safeJson();\r
+
+      \r
+
+      // Збереження ID, якщо є\r
+
+      if (resBody?.data?.id) {\r
+
+      \    const personReqId = resBody.data.id;\r
+
+      \    log(\"Person Request ID\", personReqId);\r
+
+      \    pm.globals.set(\"Create_confidant_relationship_id\", personReqId);\r
+
+      }\r
+
+      \r
+
+      // Витягування ID особи з URL (meta.url)\r
+
+      if (resBody?.meta?.url) {\r
+
+      \    const url = resBody.meta.url;\r
+
+      \    const match = url.match(/\\/persons\\/([^/]+)/);\r
+
+      \    if (match && match[1]) {\r
+
+      \        const personId = match[1];\r
+
+      \        log(\"Person for Relationship\", personId);\r
+
+      \        pm.globals.set(\"ward\", personId);\r
+
+      \    } else {\r
+
+      \        console.warn(\"Could not extract personId from URL:\", url);\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      // === Handle URLs ===\r
+
+      const processUrl = (url, additionalData) => {\r
+
+      \    log(\"Processing URL\", url);\r
+
+      \r
+
+      \    pm.sendRequest({\r
+
+      \        url,\r
+
+      \        method: 'PUT',\r
+
+      \        header: { 'Content-Type': 'application/json' },\r
+
+      \        body: { mode: 'raw', raw: JSON.stringify(additionalData) }\r
+
+      \    }, (err, res) => {\r
+
+      \        if (err) {\r
+
+      \            console.error('Request failed:', err);\r
+
+      \            return displayResponse('Request Error', { error: err.message
+      });\r
+
+      \        }\r
+
+      \r
+
+      \        const contentType = res.headers.get('Content-Type') || '';\r
+
+      \        log(\"Content-Type\", contentType);\r
+
+      \r
+
+      \        let responseData;\r
+
+      \        if (contentType.includes('application/json')) {\r
+
+      \            try {\r
+
+      \                responseData = res.json();\r
+
+      \                displayResponse('Document sign successful (JSON)',
+      responseData);\r
+
+      \            } catch (e) {\r
+
+      \                console.error('JSON parsing error:', e);\r
+
+      \                displayResponse('Parsing Error', { error: 'Failed to
+      parse JSON' });\r
+
+      \            }\r
+
+      \        } else {\r
+
+      \            responseData = res.text();\r
+
+      \            displayResponse('Document sign response (Text)', { response:
+      responseData });\r
+
+      \        }\r
+
+      \    });\r
+
+      };\r
+
+      \r
+
+      // === Extract URLs ===\r
+
+      const documents = resBody?.urgent?.documents || [];\r
+
+      if (!documents.length) {\r
+
+      \    log(\"Warning\", \"No documents found in response.\");\r
+
+      } else {\r
+
+      \    const urls = documents.map(doc => doc.url).filter(Boolean);\r
+
+      \    const additionalData = { \"row\":
+      \"iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAACFElEQVR4nO3SQQ3AIADAQJh\
+      q3IOJNSTkTkEfnWPtAX/7bgfwJmORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJ\
+      Y5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWC\
+      WORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFg\
+      ljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBY\
+      JY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAW\
+      CWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwF\
+      gljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMB\
+      YJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTAWCWORMBYJY5EwFgljkTA\
+      WiQOr8wMHzTomrgAAAABJRU5ErkJggg==\" };\r
+
+      \r
+
+      \    urls.forEach((url) => processUrl(url, additionalData));\r
+
+      }\r
+
+      \r
+
+      // === Tests ===\r
+
+      pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r\n"
+    language: text/javascript
+order: 2000

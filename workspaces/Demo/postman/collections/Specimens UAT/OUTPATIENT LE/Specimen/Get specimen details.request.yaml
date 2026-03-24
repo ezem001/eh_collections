@@ -1,0 +1,10 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/cda00e44-b276-47e5-8045-dfccd18c1750/specimens/c2b9e33c-585b-4067-a5de-86e373e89546
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+examples: ./.resources/Get specimen details.resources/examples
+order: 7000

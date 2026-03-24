@@ -1,0 +1,73 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+  method: POST
+  headers:
+    Content-Type: application/json
+    api-key: ef7d48ecfc233d6af088
+    Authorization: Bearer {{laborant_session_token}}
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: >-
+      {
+         "app":{
+            "client_id":"ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+            "redirect_uri":"https://example2.com",
+            "scope":"employee_request:read employee_request:approve employee_request:reject employee:read employee_role:read diagnostic_report:write diagnostic_report:read diagnostic_report:cancel service_request:read service_request:makeinprogress service_request:use service_request:complete division:read legal_entity:read job:read observation:read observation:write specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate service_request:read_impersonal"
+         }
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Fri, 24 Nov 2023 10:19:48 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "1099"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: https://auth-demo.ehealth.gov.ua
+    Cache-Control: max-age=0, private, must-revalidate
+    Location: https://example2.com?code=Y1pwU011Z2dSTkdKODE3enN1bXZSZz09
+    Referrer-Policy: strict-origin-when-cross-origin
+    Vary: Origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "47"
+    X-Kong-Upstream-Latency: "24"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: f3176006-faf2-4306-9eb7-28b3242c585b#612
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82b0ea6bab46c26e-VIE
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "details": {
+                  "app_id": "a2808738-4c2e-44f1-b528-ae6d10eefdfe",
+                  "client_id": "ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+                  "grant_type": "password",
+                  "redirect_uri": "https://example2.com",
+                  "scope_request": "employee_request:read employee_request:approve employee_request:reject employee:read employee_role:read diagnostic_report:write diagnostic_report:read diagnostic_report:cancel service_request:read service_request:makeinprogress service_request:use service_request:complete division:read legal_entity:read job:read observation:read observation:write specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate service_request:read_impersonal"
+              },
+              "expires_at": 1700821488,
+              "id": "1eaafcb5-cb7f-429f-ae8c-3b761d4e2f4a",
+              "name": "authorization_code",
+              "user_id": "04230ede-e39b-40c7-9846-2f141e49d6cf",
+              "value": "Y1pwU011Z2dSTkdKODE3enN1bXZSZz09"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "f3176006-faf2-4306-9eb7-28b3242c585b#612",
+              "type": "object",
+              "url": "http://api-svc.mithril/oauth/apps/authorize"
+          },
+          "urgent": {
+              "redirect_uri": "https://example2.com?code=Y1pwU011Z2dSTkdKODE3enN1bXZSZz09"
+          }
+      }
+order: 1000

@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/device_dispenses?based_on=9075e0e2-\
+  6b57-47fd-aff7-324806efa7e6&location=9075e0e2-6b57-47fd-aff7-324806efa7e6&per\
+  former=9075e0e2-6b57-47fd-aff7-324806efa7e6&status=completed&when_handed_over\
+  _from=2023-08-02T10%3A45%3A16.000Z&when_handed_over_to=2023-08-02T10%3A45%3A1\
+  6.000Z&part_of=9075e0e2-6b57-47fd-aff7-324806efa7e6&device=9075e0e2&performer\
+  _legal_entity=9075e0e2-6b57-47fd-aff7-324806efa7e6&inserted_at_from=2023-08-0\
+  2T10%3A45%3A16.000Z&inserted_at_to=2023-08-02T10%3A45%3A16.000Z&page=2&page_s\
+  ize=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  based_on: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+  location: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+  performer: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+  status: completed
+  when_handed_over_from: 2023-08-02T10%3A45%3A16.000Z
+  when_handed_over_to: 2023-08-02T10%3A45%3A16.000Z
+  part_of: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+  device: 9075e0e2
+  performer_legal_entity: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+  inserted_at_from: 2023-08-02T10%3A45%3A16.000Z
+  inserted_at_to: 2023-08-02T10%3A45%3A16.000Z
+  page: "2"
+  page_size: "50"
+body:
+  type: text
+  content: ""
+order: 10000

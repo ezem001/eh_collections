@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/ee2bfebf-5b8a-4cf5-b9f2-92e93288c3c3/devices/c\
+  57e65eb-6c39-4b41-bfc3-5d6d4b03571f/context"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+order: 9000

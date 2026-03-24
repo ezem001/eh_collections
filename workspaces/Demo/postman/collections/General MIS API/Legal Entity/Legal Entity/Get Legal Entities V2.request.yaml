@@ -1,0 +1,34 @@
+$kind: http-request
+url: "{{host}}/api/v2/legal_entities"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: legal_entity_id
+    value: b075f148-7f93-4fc2-b2ec-2d81b19a9b7b
+    disabled: true
+  - key: settlement_id
+    value: b075f148-7f93-4fc2-b2ec-2d81b19a9b7b
+    disabled: true
+  - key: type
+    value: MSP
+    disabled: true
+  - key: status
+    value: ACTIVE
+    disabled: true
+  - key: nhs_verified
+    value: "false"
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: edrpou
+    value: "30054364"
+    disabled: true
+order: 6000

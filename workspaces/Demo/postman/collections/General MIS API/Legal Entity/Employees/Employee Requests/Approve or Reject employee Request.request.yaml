@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/employee_requests/f2f889bf-b9e5-40ff-938b-e94653e67f02/actions/r\
+  eject"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 5000

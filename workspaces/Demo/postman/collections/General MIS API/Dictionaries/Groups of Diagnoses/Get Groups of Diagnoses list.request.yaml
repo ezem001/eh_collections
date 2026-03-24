@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host}}/api/diagnoses_groups"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: diagnoses_group_name
+    value: Some%20name
+    disabled: true
+  - key: diagnoses_group_code
+    value: H00
+    disabled: true
+  - key: diagnosis_name
+    value: Some%20name
+    disabled: true
+  - key: diagnosis_code
+    value: G30.9
+    disabled: true
+order: 1000

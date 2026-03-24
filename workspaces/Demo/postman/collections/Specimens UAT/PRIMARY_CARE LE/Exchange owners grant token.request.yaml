@@ -1,0 +1,43 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/tokens/
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+       "token":{
+          "grant_type":"authorization_code",
+          "code": "{{le_primc_v2_owner_code_grant}}",
+          "client_id":"68c4e556-5a61-4994-a788-4949dbd76688",
+          "client_secret": "c0FBQm9HZ1pUSzB5b1ZPV3RGVkN2Zz09",
+          "redirect_uri": "https://example2.com",
+          "scope":"employee_role:write employee_role:read healthcare_service:write healthcare_service:read declaration:read declaration_request:approve declaration_request:read declaration_request:reject declaration_request:write division:activate division:deactivate division:details division:read division:write employee:deactivate employee:details employee:read employee:write employee_request:approve employee_request:read employee_request:reject employee_request:write legal_entity:read otp:read otp:write person:read reimbursement_report:read secret:refresh capitation_report:read contract_request:create contract_request:read contract_request:terminate contract_request:approve contract_request:sign contract:read contract:write client:read connection:read connection:write connection:refresh_secret connection:delete related_legal_entities:read equipment:write equipment:read license:details license:read license:write rule_engine_rule:read party_verification:details party_verification:write person_verification:details person_verification:write device_request:read"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: >+
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData.data && jsonData.data.value) {
+          var owner_access_token = jsonData.data.value;
+          var owner_refresh_token = jsonData.data.details.refresh_token;
+          postman.setEnvironmentVariable("le_primc_v2_owner_access_token", owner_access_token);
+          postman.setEnvironmentVariable("le_primc_v2_owner_refresh_token", owner_refresh_token);
+          tests["Access token generated"] = jsonData.data.value;
+      } else {
+          tests["Access token generated"] = false;
+          postman.setEnvironmentVariable("le_primc_v2_owner_access_token", "<<undefined>>");
+          postman.setEnvironmentVariable("le_primc_v2_owner_refresh_token", "<<undefined>>");
+      }
+
+    language: text/javascript
+examples: ./.resources/Exchange owners grant token.resources/examples
+order: 9000

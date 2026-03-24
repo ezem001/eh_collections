@@ -1,0 +1,76 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+  method: POST
+  headers:
+    Content-Type: application/json
+    api-key: ef7d48ecfc233d6af088
+    Authorization: Bearer {{medadmin2_session_token}}
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: >-
+      {
+         "app":{
+            "client_id":"68c4e556-5a61-4994-a788-4949dbd76688",
+            "redirect_uri":"https://example2.com",
+            "scope":"diagnostic_report:read diagnostic_report:cancel encounter:read encounter:cancel episode:read procedure:read procedure:cancel person:read patient_summary:read division:read employee:read legal_entity:read job:read condition:read observation:read allergy_intolerance:read risk_assessment:read immunization:read license:read reimbursement_report:read medication_request_request:read medication_request:read medication_request:details medication_request:resend medication_request:reject medication_dispense:read medication_request_request:reject clinical_impression:read person_verification:details person_verification:write device_request:read device_request:resend device_request:revoke specimen:read specimen:cancel"
+         }
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Fri, 24 Nov 2023 16:01:31 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "1334"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: https://auth-demo.ehealth.gov.ua
+    Cache-Control: max-age=0, private, must-revalidate
+    Location: https://example2.com?code=ZldkQi9lSDFpQmUzTmFrM3BoM01LZz09
+    Referrer-Policy: strict-origin-when-cross-origin
+    Vary: Origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "41"
+    X-Kong-Upstream-Latency: "18"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: 0bcbb216-30c1-496d-a833-a0b2d84040db#33
+    CF-Cache-Status: DYNAMIC
+    Set-Cookie: __cf_bm=Jkojm8FPv2qfhVKktAFcey0W4rAfLwtSSnwwbk08QME-1700841691-0-AZDinioqyziI4y+o8NPNvzVTWXmDNRj4GDt+t8oR1USD1Mtlo4n5UzecEiUff8KS0XpzvrYviCVqPyZ5fgUNuAs=;
+      path=/; expires=Fri, 24-Nov-23 16:31:31 GMT; domain=.ehealth.gov.ua;
+      HttpOnly; Secure; SameSite=None
+    Server: cloudflare
+    CF-RAY: 82b2def9e9905b0d-VIE
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "details": {
+                  "app_id": "af53157f-11c3-47c0-9c26-b7a420d09979",
+                  "client_id": "68c4e556-5a61-4994-a788-4949dbd76688",
+                  "grant_type": "password",
+                  "redirect_uri": "https://example2.com",
+                  "scope_request": "diagnostic_report:read diagnostic_report:cancel encounter:read encounter:cancel episode:read procedure:read procedure:cancel person:read patient_summary:read division:read employee:read legal_entity:read job:read condition:read observation:read allergy_intolerance:read risk_assessment:read immunization:read license:read reimbursement_report:read medication_request_request:read medication_request:read medication_request:details medication_request:resend medication_request:reject medication_dispense:read medication_request_request:reject clinical_impression:read person_verification:details person_verification:write device_request:read device_request:resend device_request:revoke specimen:read specimen:cancel"
+              },
+              "expires_at": 1700841991,
+              "id": "d39ccd87-d1c4-4e6a-ab79-065b29c268a6",
+              "name": "authorization_code",
+              "user_id": "bfefaba7-a7c2-47aa-993d-1f2bb43728fd",
+              "value": "ZldkQi9lSDFpQmUzTmFrM3BoM01LZz09"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "0bcbb216-30c1-496d-a833-a0b2d84040db#33",
+              "type": "object",
+              "url": "http://api-svc.mithril/oauth/apps/authorize"
+          },
+          "urgent": {
+              "redirect_uri": "https://example2.com?code=ZldkQi9lSDFpQmUzTmFrM3BoM01LZz09"
+          }
+      }
+order: 1000

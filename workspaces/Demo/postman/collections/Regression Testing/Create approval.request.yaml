@@ -1,0 +1,415 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/approvals"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"resources\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"care_plan\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": \"\"\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobCareplanID}}\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"granted_to\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"access_level\": \"write\"\r
+
+    \    }"
+scripts:
+  - type: beforeRequest
+    code: "const patientId = pm.globals.get('patient_id_from_episode');\r
+
+      const url =
+      `https://api-demo.ehealth.gov.ua/api/persons/${patientId}/authentication_\
+      methods`;\r
+
+      const accessToken = pm.environment.get('access_token');\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    console.log(title, data)\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url: url,\r
+
+      \    method: 'GET',\r
+
+      \    header: {\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \        'Authorization': `Bearer ${accessToken}`,\r
+
+      \        'api-key': '30276e63617461a185ec',\r
+
+      \        'X-Custom-PSK':
+      'a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e'\r
+
+      \    }\r
+
+      }, function (err, res) {\r
+
+      \    if (err) {\r
+
+      \        console.error('Error in request:', err);\r
+
+      \    } else {\r
+
+      \        console.log('Response Status:', res.status);\r
+
+      \        console.log('Response Body:', res.text());\r
+
+      \r
+
+      \        // Optional: Process the response data if needed\r
+
+      \        try {\r
+
+      \            const responseData = res.json();\r
+
+      \r
+
+      \            // Extract the ID from the response data\r
+
+      \            if (responseData.data && responseData.data.length > 0) {\r
+
+      \                const id = responseData.data[0].id;\r
+
+      \r
+
+      \                // Set the extracted ID in the Postman globals\r
+
+      \                pm.globals.set('patient_authentication_methods_in_approv\
+      al', id);\r
+
+      \r
+
+      \                displayResponse('Patient authentication methods in
+      approval details', responseData)\r
+
+      \                console.log('Global Variable \"authenticationMethodID\"
+      set to:', id);\r
+
+      \            } else {\r
+
+      \                console.log('No data found in response.');\r
+
+      \            }\r
+
+      \r
+
+      \            console.log('Parsed Response Data:', responseData.data);\r
+
+      \        } catch (parseError) {\r
+
+      \            console.error('Error parsing response JSON:', parseError);\r
+
+      \        }\r
+
+      \    }\r
+
+      });"
+    language: text/javascript
+  - type: afterResponse
+    code: "function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      pm.test(\"Approval Response status code is 202\", function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(202);\r
+
+      });\r
+
+      \r
+
+      // Get the response body from the main request\r
+
+      const resBody = pm.response.text();\r
+
+      const resData = JSON.parse(resBody);\r
+
+      \r
+
+      if (resData && resData.error) {\r
+
+      \    displayResponse('Create Approval Response Error Details',
+      resData.error);\r
+
+      }\r
+
+      \r
+
+      const href = resData.data.links[0].href;\r
+
+      console.log(\"Extracted href:\", href);\r
+
+      \r
+
+      // Extract the job ID from the href\r
+
+      const number = href.split('/jobs/')[1];\r
+
+      console.log(\"Extracted number:\", number);\r
+
+      \r
+
+      // Initialize retry counter in the environment\r
+
+      pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // Function to check job status\r
+
+      function checkJobStatus(jobId) {\r
+
+      \r
+
+      \    const url = `${pm.globals.get('host')}/api/jobs/${jobId}`;\r
+
+      \    const maxRetries = 3; // Set the maximum number of retries\r
+
+      \r
+
+      \    pm.sendRequest({\r
+
+      \        method: 'GET',\r
+
+      \        url: url,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \            'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \r
+
+      \        pm.test(`Job status check response status is 200 or 303`,
+      function () {\r
+
+      \            pm.expect([200, 303]).to.include(res.code);\r
+
+      \        });\r
+
+      \r
+
+      \        if (err) {\r
+
+      \            displayResponse('Request Error', { error: err.message });\r
+
+      \            console.error('Error checking job status:', err);\r
+
+      \        } else {\r
+
+      \r
+
+      \            const responseBody = res.json();\r
+
+      \            console.log('Job Status:', responseBody.data.status);\r
+
+      \r
+
+      \            if (responseBody.data.status === 'processed') {\r
+
+      \r
+
+      \                // const links = responseBody.data.links.reduce((acc,
+      link) => {\r
+
+      \                //     acc[link.entity] = link.href.replace('/api/',
+      '');\r
+
+      \                //     return acc;\r
+
+      \                // }, {});\r
+
+      \r
+
+      \                // // Iterate over the links object and set globals
+      dynamically\r
+
+      \                // Object.entries(links).forEach(([entity, href]) => {\r
+
+      \                //     const globalName =
+      `job${entity.charAt(0).toUpperCase() + entity.slice(1).replace('_',
+      '')}ID`;\r
+
+      \                //     pm.globals.set(globalName, href);\r
+
+      \                // });\r
+
+      \                pm.test(`Approval Job Success. Response status is 200
+      ${JSON.stringify(res.json(), null, 2)}`, function () {\r
+
+      \                    pm.expect(res.code).to.eql(200);\r
+
+      \                });\r
+
+      \r
+
+      \                const approvalId = responseBody.data.response_data.id\r
+
+      \                console.log(approvalId)\r
+
+      \r
+
+      \                pm.globals.set('jobApprovalID', approvalId);\r
+
+      \                displayResponse('Create Approval Job Response Details',
+      responseBody.data);\r
+
+      \            } else {\r
+
+      \r
+
+      \                // Retrieve the current retry count\r
+
+      \                let retryCount =
+      parseInt(pm.environment.get('retryCount')) || 0;\r
+
+      \r
+
+      \                if (retryCount < maxRetries) {\r
+
+      \                    // Increment the retry count and set it back to the
+      environment\r
+
+      \                    retryCount++;\r
+
+      \                    pm.environment.set('retryCount', retryCount);\r
+
+      \r
+
+      \                    console.log(`Retrying... Attempt ${retryCount}`);\r
+
+      \r
+
+      \                    setTimeout(() => {\r
+
+      \                        checkJobStatus(jobId);\r
+
+      \                    }, 1000);\r
+
+      \r
+
+      \                    displayResponse('Create Approval Job Response
+      Details2', responseBody.data);\r
+
+      \r
+
+      \                } else {\r
+
+      \                    console.log('Maximum retry limit reached.');\r
+
+      \                    displayResponse(responseBody.data.error ? 'Create
+      Approval Error Details' : 'Final Job Status Check', responseBody.data);\r
+
+      \                }\r
+
+      \            }\r
+
+      \        }\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      // Call the function with the job ID\r
+
+      checkJobStatus(number);"
+    language: text/javascript
+order: 24000

@@ -1,0 +1,47 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/jobs/{{job_id}}
+  method: GET
+  headers:
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 303
+  statusText: See Other
+  headers:
+    Date: Wed, 29 Nov 2023 15:49:44 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "402"
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "31"
+    X-Kong-Upstream-Latency: "5"
+    X-Request-Id: 0bcbb216-30c1-496d-a833-a0b2d84040db#920
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82dc0096981277b6-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "eta": "2023-11-29T15:59:33.913Z",
+              "links": [
+                  {
+                      "entity": "specimen",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/7bc264db-7dfd-42e4-b85a-93e4fa8448bf"
+                  }
+              ],
+              "status": "processed",
+              "status_code": 200
+          },
+          "meta": {
+              "code": 303,
+              "request_id": "0bcbb216-30c1-496d-a833-a0b2d84040db#920",
+              "type": "object",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/jobs/65675d8ddb52a30042365085"
+          }
+      }
+order: 5000

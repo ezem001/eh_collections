@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{host}}/api/contracts/reimbursement/9f6ae40e-0fe9-4d57-b765-a22398e7ad93"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: ""
+order: 3000

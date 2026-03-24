@@ -1,0 +1,149 @@
+$kind: http-request
+url: "{{host}}/api/contract_requests/capitation/{{contract_request_id}}/printou\
+  t_content"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+scripts:
+  - type: afterResponse
+    code: "let html;\r
+
+      \r
+
+      try {\r
+
+      \    const resData = pm.response.json();\r
+
+      \r
+
+      \    if (\r
+
+      \        resData &&\r
+
+      \        resData.data &&\r
+
+      \        typeof resData.data.printout_content === 'string'\r
+
+      \    ) {\r
+
+      \        html = resData.data.printout_content;\r
+
+      \r
+
+      \        // Візуалізувати в окремій вкладці\r
+
+      \        pm.visualizer.set(html);\r
+
+      \r
+
+      \        // Декодуємо escape-послідовності\r
+
+      \        const decodedHtml = html\r
+
+      \            .replace(/\\\\n/g, \"\\n\")\r
+
+      \            .replace(/\\\\\"/g, '\"')\r
+
+      \            .replace(/\\\\'/g, \"'\")\r
+
+      \            .replace(/\\\\\\\\/g, \"\\\\\");\r
+
+      \r
+
+      \        console.log(\"Decoded HTML:\", decodedHtml);\r
+
+      \r
+
+      \        // Відправляємо розкодований HTML на локальний сервер\r
+
+      \        pm.sendRequest({\r
+
+      \            url:
+      \"http://localhost:3000/save-html/contract_request_printout_content\",\r
+
+      \            method: \"POST\",\r
+
+      \            header: {\r
+
+      \                \"Content-Type\": \"text/plain\"\r
+
+      \            },\r
+
+      \            body: {\r
+
+      \                mode: \"raw\",\r
+
+      \                raw: decodedHtml\r
+
+      \            }\r
+
+      \        }, function (err, res) {\r
+
+      \            if (err) {\r
+
+      \                console.error(\"Error sending HTML to server:\", err);\r
+
+      \            } else {\r
+
+      \                console.log(\"Server response:\", res.text());\r
+
+      \            }\r
+
+      \        });\r
+
+      \r
+
+      \    } else {\r
+
+      \        console.warn(\"printout_content not found or not a string\");\r
+
+      \        pm.visualizer.set(`<h3>⚠️ printout_content not
+      available</h3>`);\r
+
+      \    }\r
+
+      } catch (e) {\r
+
+      \    console.error(\"Failed to parse response JSON or render template:\",
+      e.message);\r
+
+      \    pm.visualizer.set(`<h3>❌ Error parsing response or
+      rendering</h3><pre>${e.message}</pre>`);\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      // Логування запиту та відповіді\r
+
+      \r
+
+      (function () {\r
+
+      \  // не логувати /log щоб уникнути рекурсії\r
+
+      \  if (pm.request.url.toString().includes('/log')) return;\r
+
+      \r
+
+      \  const logger = pm.require('@winter-zodiac-949553/log-utils')\r
+
+      \  const logPayload = logger.createLogPayload(pm);\r
+
+      \  logger.sendLog(logPayload);\r
+
+      })();\r
+
+      \r\n"
+    language: text/javascript
+    packages:
+      "@winter-zodiac-949553/log-utils":
+        id: 019763ea-01f4-7431-9bc8-865f51c1b866
+order: 9000

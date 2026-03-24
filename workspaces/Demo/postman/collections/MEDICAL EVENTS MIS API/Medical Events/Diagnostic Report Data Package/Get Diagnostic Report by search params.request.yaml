@@ -1,0 +1,29 @@
+$kind: http-request
+url: "{{host}}/api/patients/2c46cd1d-3e28-4f8c-a35c-645019b27c3b/diagnostic_rep\
+  orts/?page=1&encounter_id=c6218ce3-99fd-49c9-9e79-ce7339a8709d&context_episod\
+  e_id=dc40dfb2-2c33-449e-b25d-d58403f150ba"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+queryParams:
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: code
+    value: "12345"
+    disabled: true
+  - key: encounter_id
+    value: c6218ce3-99fd-49c9-9e79-ce7339a8709d
+  - key: context_episode_id
+    value: dc40dfb2-2c33-449e-b25d-d58403f150ba
+  - key: issued_from
+    value: 1990-01-01
+    disabled: true
+  - key: issued_to
+    value: 2000-01-01
+    disabled: true
+order: 7000

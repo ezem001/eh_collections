@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/persons/{{patient_id_from_episode}}/medication_request_reque\
+  sts/{{medication_req_req_id}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 7000

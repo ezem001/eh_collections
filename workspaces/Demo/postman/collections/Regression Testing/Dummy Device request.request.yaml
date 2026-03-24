@@ -1,0 +1,184 @@
+$kind: http-request
+url: http://localhost:3000/create-device-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{dummy_device_request_id}}\",\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"quantity\": {\r
+
+    \        \"value\": 50,\r
+
+    \        \"system\": \"device_unit\",\r
+
+    \        \"code\": \"piece\"\r
+
+    \    },\r
+
+    \    \"code\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"device_definition_classification_type\",\r
+
+    \                \"code\": \"W0101060101\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobEncounterID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"requester\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"authored_on\": \"{{deviceRequestAuthoredOn}}\",\r
+
+    \    \"occurrence_period\": {\r
+
+    \        \"start\": \"{{deviceRequestStartedAt}}\",\r
+
+    \        \"end\": \"{{deviceRequestEndAt}}\"\r
+
+    \    },\r
+
+    \    \"performer\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"legal_entity\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_legal_entity}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"note\": \"Some notes\",\r
+
+    \    \"program\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"medical_program\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"status\": \"active\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const serviceRequestId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"dummy_device_request_id\", serviceRequestId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(`Device Request content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('device_request_signed_content',
+      resData.signed_content);\r
+
+      });"
+    language: text/javascript
+order: 48000

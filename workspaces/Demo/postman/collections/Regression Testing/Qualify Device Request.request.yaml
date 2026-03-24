@@ -1,0 +1,227 @@
+$kind: http-request
+url: "{{host}}/api/device_requests/{{JobDeviceRequestID}}/actions/qualify"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "programs": [
+          {
+             "identifier":{
+                "type":{
+                   "coding":[
+                      {
+                         "system":"eHealth/resources",
+                         "code":"medical_program"
+                      }
+                   ]
+                },
+                "value":"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0"
+             }
+          }
+       ],
+       "location": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "division"
+                        }
+                    ]
+                },
+                "value": "{{user_division_id}}"
+            }
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: "const res = pm.response.json();\r
+
+      \r
+
+      // --- Basic tests ---\r
+
+      pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Qualify Device Request status is VALID\", () => {\r
+
+      \    const status = res?.data?.[0]?.status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });\r
+
+      \r
+
+      // --- Participants processing ---\r
+
+      const participant = res?.data?.[0]?.participants?.[1];\r
+
+      if (!participant) {\r
+
+      \    console.error(\"❌ No participant found\");\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      // Save core identifiers\r
+
+      pm.globals.set(\"program_id_qualify_device_request\",
+      res.data[0].program_id);\r
+
+      pm.globals.set(\"device_definition_id_qualify_device_request\",
+      participant.device_definition.id);\r
+
+      pm.globals.set(\"program_medication_id_qualify_device_request\",
+      participant.id);\r
+
+      \r
+
+      \r
+
+      const maxReimbursement = participant.reimbursement?.reimbursement_amount
+      ?? 0; // 400.0\r
+
+      \r
+
+      // ---------------------------\r
+
+      // Формуємо discount_amount меншим на 3.3\r
+
+      // ---------------------------\r
+
+      let discountAmount = maxReimbursement - 3.3;\r
+
+      if (discountAmount <= 0) discountAmount = 1.0; // fallback\r
+
+      \r
+
+      pm.globals.set(\"device_discount_amount\", discountAmount);\r
+
+      \r
+
+      // ---------------------------\r
+
+      // Обробка sell_price з .1/.2 для JSON\r
+
+      // ---------------------------\r
+
+      function spoofNumberWithDecimal(num) {\r
+
+      \    if (!num || num <= 0) return 1.1;\r
+
+      \    const decimals = [0.1, 0.2];\r
+
+      \    if (num % 10 === 0) {\r
+
+      \        const rnd = decimals[Math.floor(Math.random() *
+      decimals.length)];\r
+
+      \        return num + rnd;\r
+
+      \    }\r
+
+      \    return num;\r
+
+      }\r
+
+      \r
+
+      const sellPrice =
+      spoofNumberWithDecimal(Number(participant.consumer_price));\r
+
+      pm.globals.set(\"device_sell_price\", sellPrice);\r
+
+      \r
+
+      // Log output\r
+
+      console.info({\r
+
+      \    program_id: res.data[0].program_id,\r
+
+      \    device_definition_id: participant.device_definition.id,\r
+
+      \    program_medication_id: participant.id,\r
+
+      \    sell_price_saved: sellPrice,\r
+
+      \    discount_amount_saved: discountAmount\r
+
+      });\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "// New user data\r
+
+      const newUser = {\r
+
+      \    access_token: \"ckJ6bnRMY3M1SHlJY1ZTbTRnaHlSdz09\",\r
+
+      \    user_division_id: \"2bb9f35c-711f-4bdf-a69f-0d4fab0d2076\",\r
+
+      \    user_id: \"840644d4-db5b-4457-88e1-ef5e3be6101f\",\r
+
+      };\r
+
+      \r
+
+      // Check if we're already switched to this user\r
+
+      const isAlreadySwitched = Object.entries(newUser).some(([key, value]) =>
+      {\r
+
+      \    return pm.environment.get(key) === value;\r
+
+      });\r
+
+      \r
+
+      // Save originals only if NOT already switched\r
+
+      if (!isAlreadySwitched) {\r
+
+      \    Object.keys(newUser).forEach(key => {\r
+
+      \        pm.environment.set(`original_${key}`, pm.environment.get(key));\r
+
+      \    });\r
+
+      \    console.log(\"🟢 Saved original environment variables\");\r
+
+      } else {\r
+
+      \    console.log(\"⚠️ Skipped saving originals — user already
+      switched\");\r
+
+      }\r
+
+      \r
+
+      // Apply new credentials\r
+
+      Object.entries(newUser).forEach(([k, v]) => pm.environment.set(k, v));\r
+
+      \r
+
+      setTimeout(() => {\r
+
+      \    console.log(\"✅ Temporary user applied:\", newUser.user_id);\r
+
+      }, 5000);\r\n"
+    language: text/javascript
+order: 51000

@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{host}}/api/patients/searchComposition?type=TEMP_DISABILITY&subject={{pa\
+  tient_for_regress}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+queryParams:
+  - key: limit
+    value: "100"
+    disabled: true
+  - key: type
+    value: TEMP_DISABILITY
+  - key: focus
+    value: 52b504c7-0177-4078-834b-52d89154081c
+    disabled: true
+  - key: offset
+    value: "135"
+    disabled: true
+  - key: episodeOfCare
+    value: c1ac2f2e-3e88-450e-9269-9ca79be4d6bd
+    disabled: true
+  - key: encounter
+    value: 3fd77b98-a280-4808-a5ac-00ec39246e38
+    disabled: true
+  - key: status
+    value: FINAL
+    disabled: true
+  - key: subject
+    value: "{{patient_for_regress}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+    language: text/javascript
+order: 89000

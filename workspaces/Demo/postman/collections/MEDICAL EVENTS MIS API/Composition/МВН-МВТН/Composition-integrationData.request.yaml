@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/patients/e6b4c939-ec66-429c-a126-8d6eedd159c4/composition/8d\
+  81adc6-8e78-4021-bbbd-0a523778524c/episode/c91badf5-3744-4a17-a98f-b726ec553b\
+  e7/encounter/344cf318-a3cc-4916-8a6b-357c9acbd7bb/integrationData"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+order: 11000

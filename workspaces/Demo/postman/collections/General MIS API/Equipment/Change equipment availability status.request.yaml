@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/equipment/id/actions/change_availability_status"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"availability_status\": \"damaged\"\r
+
+    }"
+order: 5000

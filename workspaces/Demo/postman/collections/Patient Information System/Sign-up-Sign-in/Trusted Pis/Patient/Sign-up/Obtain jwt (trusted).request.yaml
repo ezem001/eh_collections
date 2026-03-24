@@ -1,0 +1,71 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/nonce
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+        "client_id": "7aea1385-dd34-4a04-84bd-00ccfa673990",
+        "client_secret": "ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09"
+    }
+scripts:
+  - type: beforeRequest
+    code: >
+      var current_step = environment["declaration_current_step"];
+
+      //According to business logic, phone number need to be verified in
+      Verification module.
+
+      var phone_number = '+380937404005'
+
+      // Генерирует случаиный инн/имя.
+
+      function makeRandom(regexp, n)
+
+      {
+          var text, possible, i;
+          if(regexp === "name")
+          {
+              text = "Тест";
+              possible = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЮЯ";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          else if(regexp === "tax")
+          {
+              text = "";
+              possible = "1234567890";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          else if(regexp === "mob")
+          {
+              text = "+380";
+              possible = "1234567890";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          return text;
+      }
+
+      //Присваиваем значения глобальным переменным
+
+
+      var randomName = makeRandom("name", 3);
+
+      postman.setEnvironmentVariable("declaration_first_name", randomName);
+
+      postman.setEnvironmentVariable("declaration_last_name", randomName);
+
+      postman.setEnvironmentVariable("declaration_second_name", randomName);
+    language: text/javascript
+order: 1000

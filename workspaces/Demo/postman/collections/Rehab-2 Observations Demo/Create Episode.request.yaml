@@ -1,0 +1,80 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/{{patient_id}}/episodes"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{doctor_token}}
+  api-key: "{{mis_client_secret_demo}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value_demo}}"
+body:
+  type: text
+  content: |-
+    {
+      "id": "{{episode_id}}",
+      "type": {
+        "system": "eHealth/episode_types",
+        "code": "PREVENTION"
+        },
+      "status": "active",
+      "name": "Хвороба просто",
+      "managing_organization": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "legal_entity"
+              }
+            ],
+            "text": "asdf"
+          },
+          "value": "{{legal_entity_id}}"
+        }
+      },
+      "period": {
+        "start": "2021-12-18T14:40:16Z"
+      },
+      "care_manager": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "employee"
+              }
+            ]
+          },
+          "value": "{{doctor_id}}"
+        }
+      }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+  - type: beforeRequest
+    code: >-
+      var uuid = require('uuid');
+
+      var id = uuid.v4();
+
+
+      pm.environment.set("episode_id", id);
+
+      pm.environment.set("patient_id", "73aabeb2-5909-46e9-9011-34ab58cb18bb");
+
+      pm.environment.set("doctor_id", "417694f9-7e47-4097-bc3d-c4d08cfdf06c");
+
+      pm.environment.set("division_id", "ed8d1397-2a15-4060-ae0e-d7bbc9fe1871");
+
+      pm.environment.set("legal_entity_id",
+      "da563f30-812a-4eef-b344-95bfc3a77b38");
+
+      pm.environment.set("doctor_token", "eU1sZTJBVk5RNTVhZGtxZm5zckl5Zz09");
+    language: text/javascript
+order: 5000

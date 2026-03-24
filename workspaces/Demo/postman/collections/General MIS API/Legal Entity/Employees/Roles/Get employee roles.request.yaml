@@ -1,0 +1,152 @@
+$kind: http-request
+url: "{{host}}/api/employee_roles/?employee_id={{user_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: healthcare_service_id
+    value: c4de7c6e-8c6e-4d4f-8843-6bc122977227
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: employee_id
+    value: "{{user_id}}"
+scripts:
+  - type: afterResponse
+    code: "// ---------- 1️⃣ Отримуємо дані з відповіді ----------\r
+
+      let res = pm.response.json();\r
+
+      \r
+
+      if (res.data && Array.isArray(res.data)) {\r
+
+      \    // Знаходимо активну роль\r
+
+      \    let activeRole = res.data.find(item => item.status === \"ACTIVE\" &&
+      item.is_active === true);\r
+
+      \r
+
+      \    if (activeRole) {\r
+
+      \        let healthcare_service_id = activeRole.healthcare_service_id;\r
+
+      \        pm.globals.set(\"healthcare_service_id\",
+      healthcare_service_id);\r
+
+      \        console.log(\"✅ Активна роль знайдена:\",
+      healthcare_service_id);\r
+
+      \r
+
+      \        // ---------- 2️⃣ Виконуємо запит до /api/healthcare_services
+      ----------\r
+
+      \        pm.sendRequest({\r
+
+      \            url:
+      `${pm.globals.get(\"host\")}/api/healthcare_services/${healthcare_service\
+      _id}`,\r
+
+      \            method: \"GET\",\r
+
+      \            header: {\r
+
+      \                \"Authorization\": `Bearer
+      ${pm.environment.get(\"access_token\")}`,\r
+
+      \                \"api-key\":
+      `${pm.environment.get(\"mis_client_secret\")}`,\r
+
+      \                \"Content-Type\": \"application/json\",\r
+
+      \                \"X-Custom-PSK\": `${pm.globals.get(\"x-custom-psk\")}`\r
+
+      \            }\r
+
+      \        }, function (err, response) {\r
+
+      \            if (err) {\r
+
+      \                console.error(\"❌ Помилка при запиті
+      healthcare_service:\", err);\r
+
+      \                return;\r
+
+      \            }\r
+
+      \r
+
+      \            if (response.code === 200) {\r
+
+      \                let data = response.json().data;\r
+
+      \                if (data) {\r
+
+      \                    let providing_condition = data.providing_condition;\r
+
+      \                    let health_service_category =
+      data.category?.coding?.[0]?.code || null;\r
+
+      \r
+
+      \                    // ---------- 3️⃣ Зберігаємо в environment
+      ----------\r
+
+      \                    pm.environment.set(\"providing_condition\",
+      providing_condition);\r
+
+      \                    pm.environment.set(\"health_service_category\",
+      health_service_category);\r
+
+      \r
+
+      \                    console.log(\"✅ Збережено:\");\r
+
+      \                    console.log(\"providing_condition:\",
+      providing_condition);\r
+
+      \                    console.log(\"health_service_category:\",
+      health_service_category);\r
+
+      \                } else {\r
+
+      \                    console.warn(\"⚠️ Дані healthcare_service
+      відсутні.\");\r
+
+      \                }\r
+
+      \            } else {\r
+
+      \                console.error(\"❌ Помилка відповіді
+      healthcare_service:\", response.code);\r
+
+      \            }\r
+
+      \        });\r
+
+      \    } else {\r
+
+      \        console.warn(\"⚠️ Активна роль не знайдена у відповіді
+      employee_roles.\");\r
+
+      \    }\r
+
+      } else {\r
+
+      \    console.error(\"❌ Некоректний формат відповіді employee_roles.\");\r
+
+      }\r\n"
+    language: text/javascript
+order: 3000

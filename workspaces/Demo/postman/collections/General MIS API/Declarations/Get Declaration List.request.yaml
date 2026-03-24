@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/declarations?employee_id={{user_id}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: 30276e63617461a185ec
+queryParams:
+  employee_id: "{{user_id}}"
+order: 2000

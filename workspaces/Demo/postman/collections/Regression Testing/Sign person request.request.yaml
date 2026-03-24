@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host}}/api/v2/person_requests/{{Person_req_id}}/actions/sign"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |+
+    {
+      "signed_content": "{{person_req_signed_content}}"
+    }
+
+scripts:
+  - type: afterResponse
+    code: >
+      const resBody = pm.response.json();
+
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+
+          const patientID = resBody.data?.person_id
+          setTimeout(() => { pm.globals.set('patient_for_regress', patientID) }, 30000);
+      });
+    language: text/javascript
+order: 8000

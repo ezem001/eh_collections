@@ -1,0 +1,113 @@
+$kind: http-request
+url: "{{host}}/api/medication_request_requests/{{medication_req_req_id}}/action\
+  s/sign"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"signed_medication_request_request\":
+    \"{{medication_req_req_data_to_sign}}\",\r
+
+    \  \"signed_content_encoding\": \"base64\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      if (resData && resData.error) {\r
+
+      \    displayResponse('Sign Medication Request Request Response Error
+      Details', resData.error);\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      pm.test(\"Sign Medication Request Request Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \r
+
+      \    const status = resData.data.status\r
+
+      \    console.info(status)\r
+
+      \r
+
+      \    pm.test('Medication Request Request status is \"ACTIVE\"', function
+      () {\r
+
+      \        pm.expect(status).to.eql('ACTIVE');\r
+
+      \    });\r
+
+      \r
+
+      \    const printForm = resData.data.printout_form;\r
+
+      \r
+
+      \    // Regular expression to match the confirmation code\r
+
+      \    const codeMatch = printForm.match(/КОД ПІДТВЕРДЖЕННЯ:\\s*(\\d+)/);\r
+
+      \r
+
+      \    if (codeMatch && codeMatch[1]) {\r
+
+      \        const confirmationCode = codeMatch[1];\r
+
+      \        console.log(\"КОД ПІДТВЕРДЖЕННЯ:\", confirmationCode);\r
+
+      \        pm.globals.set('medication_req_confirmation_code',
+      confirmationCode);\r
+
+      \    } else {\r
+
+      \        console.log(\"КОД ПІДТВЕРДЖЕННЯ not found.\");\r
+
+      \    }\r
+
+      \r
+
+      \r
+
+      \    pm.globals.set('medication_req_id', resData.data.id);\r
+
+      \    pm.globals.set('medication_req_request_number',
+      resData.data.request_number);\r
+
+      \r
+
+      });\r\n"
+    language: text/javascript
+order: 3000

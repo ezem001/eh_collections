@@ -1,0 +1,309 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/episodes"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "id": "{{episode_id}}",
+        "name": "Епізод QA_30",
+        "status": "active",
+        "type": {
+            "system": "eHealth/episode_types",
+            "code": "TREATMENT"
+        },
+        "period": {
+            "start": "{{episode_start_date}}"
+        },
+        "managing_organization": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "legal_entity"
+                        }
+                    ]
+                },
+                "value": "{{user_legal_entity}}"
+            }
+        },
+        "care_manager": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "employee"
+                        }
+                    ]
+                },
+                "value": "{{user_id}}"
+            }
+        }
+    }
+scripts:
+  - type: beforeRequest
+    code: |
+      const uuid = require('uuid');
+      const id = uuid.v4();
+      pm.globals.set("episode_id", id);
+
+      const now = new Date();
+
+      // Зменшити дату на 2 дні
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(now.getDate() - 2);
+
+      // Форматувати дату у форматі ISO 8601
+      const formattedDate = twoDaysAgo.toISOString();
+      console.log(formattedDate)
+      // Зберегти дату в змінній середовища
+      pm.globals.set('episode_start_date', formattedDate);
+
+
+      // New user data
+      const newUser = {
+          access_token: "ME5SNGsrWXNTclVHK3VYTXg4TG5aQT09",
+          user_division_id: "f40ca1ea-e169-4db5-92ec-91d6269f3795",
+          user_id: "5746e964-80fb-43d8-b388-ced55772d2f9",
+          user_legal_entity: "0dccb76f-3ed0-40f4-8f73-e95e2f91ea29"
+      };
+
+      // Check if we're already switched to this user
+      const isAlreadySwitched = Object.entries(newUser).some(([key, value]) => {
+          return pm.environment.get(key) === value;
+      });
+
+      // Save originals only if NOT already switched
+      if (!isAlreadySwitched) {
+          Object.keys(newUser).forEach(key => {
+              pm.environment.set(`original_${key}`, pm.environment.get(key));
+          });
+          console.log("🟢 Saved original environment variables");
+      } else {
+          console.log("⚠️ Skipped saving originals — user already switched");
+      }
+
+      // Apply new credentials
+      Object.entries(newUser).forEach(([k, v]) => pm.environment.set(k, v));
+
+      console.log("✅ Temporary user applied:", newUser.user_id);
+    language: text/javascript
+  - type: afterResponse
+    code: >
+      function displayResponse(title, data) {
+          console.log(title, data)
+          const html = `
+              <h1>${title}</h1>
+              <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          pm.visualizer.set(html);
+      }
+
+
+      // Initialize variables to track the number of tests
+
+      let allTestsPassed = false;
+
+      let passedTestsCount = 0;
+
+      let totalTestsCount = 3; // Adjust based on the total number of tests
+
+
+      // Run your tests
+
+      pm.test("Check token is not expired", function () {
+          const result = pm.response.code !== 401;
+          pm.expect(result).to.be.true;
+          if (result) {
+              passedTestsCount++;
+              allTestsPassed = true;
+          }
+      });
+
+
+      pm.test("Check user has the required scope", function () {
+          const result = pm.response.code !== 403;
+          pm.expect(result).to.be.true;
+          if (result) {
+              passedTestsCount++;
+              allTestsPassed = true;
+          }
+      });
+
+
+      pm.test("Check for valid access token", function () {
+          const result = pm.response.code !== 401;
+          pm.expect(result).to.be.true;
+          if (result) {
+              passedTestsCount++;
+              allTestsPassed = true;
+          }
+      });
+
+
+      console.log(`Passed ${passedTestsCount} out of ${totalTestsCount} tests
+      ${passedTestsCount < totalTestsCount}`);
+
+      if (passedTestsCount === totalTestsCount) {
+          const jsonData = pm.response.json();
+          console.log('response in episode', jsonData);
+
+          pm.test("Episode done. Response status is 202", function () {
+              pm.expect(pm.response.code).to.eql(202);
+          });
+
+
+
+          if (jsonData && jsonData.error) {
+              displayResponse('Episode Response Error Details', jsonData.error);
+          }
+
+
+          const job_id = jsonData.data.links[0].href.substring(6) || '';
+          console.log(job_id)
+          pm.globals.set("job_id", job_id);
+
+          pm.environment.set('retryCount', 0);
+
+          // Function to check job status
+          function checkJobStatus(jobId) {
+
+              const url = `${pm.globals.get('host')}/api/jobs/${jobId}`;
+              const maxRetries = 3; // Set the maximum number of retries
+
+              pm.sendRequest({
+                  method: 'GET',
+                  url: url,
+                  header: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${pm.environment.get('access_token')}`,
+                      'api-key': `${pm.environment.get('mis_client_secret')}`,
+                      'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`
+                  }
+              }, function (err, res) {
+
+                  const responseBody = res.json();
+
+                  pm.test("Check if patient is not active", function () {
+                      if (responseBody.data.status_code === 409) {
+                          pm.expect(responseBody.error.message).to.equal("Person is not active");
+                          pm.expect(responseBody.error.type).to.equal("request_conflict");
+                      }
+                  });
+
+                  // Валідація ID епізоду
+                  pm.test("Check episode id is unique", function () {
+                      // Перевірка, чи статус відповіді є 422
+                      pm.response.to.not.have.status(422);
+
+                      // Отримання масиву помилок
+                      const errors = responseBody.data?.error?.invalid || [];
+
+                      // Перевірка на наявність помилки "Episode with such id already exists"
+                      const isIdDuplicate = errors.some(error =>
+                          error.entry === "$.id" &&
+                          Array.isArray(error.rules) &&
+                          error.rules.some(rule => rule.description === "Episode with such id already exists")
+                      );
+                      // Якщо знайдена помилка, тест не пройде
+                      pm.expect(isIdDuplicate).to.be.false;
+                  });
+
+                  pm.test("Check if episode period start date is valid", function () {
+                      const errors = responseBody.data.error?.invalid || [];
+                      const isPeriodStartError = errors.some(error =>
+                          error.entry === "$.period.start" &&
+                          error.rules.some(rule => rule.description === "Start date must be in past")
+                      );
+                      pm.expect(isPeriodStartError).to.be.false;
+                  });
+
+                  if (err) {
+                      displayResponse('Request Error', { error: err.message });
+                      console.error('Error checking job status:', err);
+                  } else {
+
+                      // const responseBody = res.json();
+                      console.log('Job Status:', responseBody.data.status);
+
+                      if (responseBody.data.status === 'processed') {
+
+                          pm.test(`Episode Job Success. Response status is 303 ${JSON.stringify(res.json(), null, 2)}`, function () {
+                              // Перевіряємо, чи код відповіді є або 303
+                              pm.expect(res.code).to.eql(303);
+                          });
+
+                          // Extract patientID and jobEpisodeID from responseBody
+                          const links = responseBody.data.links.reduce((acc, link) => {
+                              const href = link.href.replace('/api/', '');
+
+                              if (href.includes('patients/')) {
+                                  // Extract patient ID
+                                  const parts = href.split('/');
+                                  const patientIDIndex = parts.indexOf('patients') + 1;
+                                  if (patientIDIndex > 0 && patientIDIndex < parts.length) {
+                                      acc.patientID = parts[patientIDIndex];
+                                  }
+                              }
+
+                              if (href.includes('episodes/')) {
+                                  // Extract episode ID
+                                  acc.jobEpisodeID = href.split('episodes/')[1];
+                              }
+
+                              return acc;
+                          }, {});
+
+                          // Set globals
+                          if (links.patientID) {
+                              pm.globals.set('patient_id_from_episode', links.patientID);
+                          }
+
+                          if (links.jobEpisodeID) {
+                              pm.globals.set('jobEpisodeID', links.jobEpisodeID);
+                          }
+
+                          // Display response details in visualizer
+                          displayResponse('Episode Job Response Details', responseBody.data);
+
+
+                      } else {
+
+                          // Retrieve the current retry count
+                          let retryCount = parseInt(pm.environment.get('retryCount')) || 0;
+
+                          if (retryCount < maxRetries) {
+                              // Increment the retry count and set it back to the environment
+                              retryCount++;
+                              pm.environment.set('retryCount', retryCount);
+
+                              console.log(`Retrying... Attempt ${retryCount}`);
+
+                              setTimeout(() => {
+                                  checkJobStatus(jobId);
+                              }, 1000);
+
+                          } else {
+                              console.log('Maximum retry limit reached.');
+                              // Display final response details in visualizer
+                              displayResponse('Final Job Status Check', responseBody.data);
+                          }
+                      }
+                  }
+              });
+          }
+
+          // Call the function with the job ID
+          checkJobStatus(job_id);
+
+      } else {
+          console.log('One or more tests failed, skipping job status check.');
+      }
+    language: text/javascript
+order: 67000

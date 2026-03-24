@@ -1,0 +1,293 @@
+$kind: http-request
+url: http://localhost:3000/create-specimen-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"id\": \"{{specimen_id}}\",\r
+
+    \  \"status\": \"available\",\r
+
+    \  \"type\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"specimen_types\",\r
+
+    \        \"code\": \"default\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  },\r
+
+    \  \"condition\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"specimen_conditions\",\r
+
+    \        \"code\": \"default\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  },\r
+
+    \  \"note\": \"Some notes\",\r
+
+    \  \"managing_organization\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"legal_entity\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"{{user_legal_entity}}\"\r
+
+    \    }\r
+
+    \  },\r
+
+    \  \"registered_by\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"employee\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"{{user_id}}\"\r
+
+    \    }\r
+
+    \  },\r
+
+    \  \"collection\": {\r
+
+    \    \"collector\": {\r
+
+    \      \"identifier\": {\r
+
+    \        \"type\": {\r
+
+    \          \"coding\": [\r
+
+    \            {\r
+
+    \              \"system\": \"eHealth/resources\",\r
+
+    \              \"code\": \"employee\"\r
+
+    \            }\r
+
+    \          ]\r
+
+    \        },\r
+
+    \        \"value\": \"{{user_id}}\"\r
+
+    \      }\r
+
+    \    },\r
+
+    \    \"collected_date_time\": \"2025-04-21T19:14:13Z\",\r
+
+    \    \"duration\": {\r
+
+    \      \"value\": 5,\r
+
+    \      \"system\": \"eHealth/ucum/units\",\r
+
+    \      \"code\": \"min\",\r
+
+    \      \"comparator\": \">\"\r
+
+    \    },\r
+
+    \    \"quantity\": {\r
+
+    \      \"value\": 20,\r
+
+    \      \"system\": \"eHealth/ucum/units\",\r
+
+    \      \"code\": \"g\"\r
+
+    \    },\r
+
+    \    \"method\": {\r
+
+    \      \"coding\": [\r
+
+    \        {\r
+
+    \          \"system\": \"specimen_collection_methods\",\r
+
+    \          \"code\": \"default\"\r
+
+    \        }\r
+
+    \      ]\r
+
+    \    },\r
+
+    \    \"body_site\": {\r
+
+    \      \"coding\": [\r
+
+    \        {\r
+
+    \          \"system\": \"eHealth/body_sites\",\r
+
+    \          \"code\": \"head\"\r
+
+    \        }\r
+
+    \      ]\r
+
+    \    },\r
+
+    \    \"fasting_status_codeable_concept\": {\r
+
+    \      \"coding\": [\r
+
+    \        {\r
+
+    \          \"system\": \"fasting_statuses\",\r
+
+    \          \"code\": \"default\"\r
+
+    \        }\r
+
+    \      ]\r
+
+    \    }\r
+
+    \  },\r
+
+    \  \"container\": [\r
+
+    \    {\r
+
+    \      \"identifier\": \"1-3244-ABC\",\r
+
+    \      \"description\": \"Some container description\",\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"specimen_container_types\",\r
+
+    \            \"code\": \"default\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"capacity\": {\r
+
+    \        \"value\": 30000,\r
+
+    \        \"system\": \"eHealth/ucum/units\",\r
+
+    \        \"code\": \"mg\"\r
+
+    \      },\r
+
+    \      \"specimen_quantity\": {\r
+
+    \        \"value\": 20,\r
+
+    \        \"system\": \"eHealth/ucum/units\",\r
+
+    \        \"code\": \"g\"\r
+
+    \      },\r
+
+    \      \"additive_codeable_concept\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"specimen_container_additives\",\r
+
+    \            \"code\": \"default\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      }\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const id = uuid.v4();\r
+
+      pm.globals.set(\"specimen_id\", id);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create Specimen sign content', resData)\r
+
+      \r
+
+      pm.test(`Specimen content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('specimen_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 1000

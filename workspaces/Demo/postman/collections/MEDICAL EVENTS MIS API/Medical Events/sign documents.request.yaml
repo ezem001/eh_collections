@@ -1,0 +1,27 @@
+$kind: http-request
+url: https://storage-demo.ehealth.gov.ua/confidant-person-relationship-requests/2c/8d/4f/8b/8c/2c056bbe-8d54-4f6f-8b48-8cb1eec98f62/confidant_person_relationship_request_DOCUMENT.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=7200&X-Amz-SignedHeaders=host&X-Amz-Credential=AHOKBGJW12AXVMI3%2F20260226%2Fs3-demo%2Fs3%2Faws4_request&X-Amz-Date=20260226T122456Z&X-Amz-Signature=b60cddc3b8f2eb49191781a0456e0d348dcee235a2afb86e2e24c1eda3b7dc5b
+method: PUT
+headers:
+  Content-Type: image/jpeg
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: X-Amz-Algorithm
+    value: AWS4-HMAC-SHA256
+  - key: X-Amz-Expires
+    value: "7200"
+  - key: X-Amz-SignedHeaders
+    value: host
+  - key: ""
+    value: ""
+    disabled: true
+  - key: X-Amz-Credential
+    value: AHOKBGJW12AXVMI3%2F20260226%2Fs3-demo%2Fs3%2Faws4_request
+  - key: X-Amz-Date
+    value: 20260226T122456Z
+  - key: X-Amz-Signature
+    value: b60cddc3b8f2eb49191781a0456e0d348dcee235a2afb86e2e24c1eda3b7dc5b
+body:
+  type: file
+  content:
+    src: /Users/serhiikurylenko/Documents/screenshots/d3.jpeg
+order: 20000

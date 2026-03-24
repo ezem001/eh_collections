@@ -1,0 +1,109 @@
+$kind: http-request
+url: http://localhost:3000/create-employee-signed-content
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+      "employee_request": {
+        "employee_id": "2259be80-0f88-4b9e-ae9a-1ae011439c54",
+        "division_id": "c3246236-89a5-44be-8d40-45e1a2b58271",
+        "position": "P7",
+        "start_date": "2025-11-30",
+        "status": "NEW",
+        "employee_type": "DOCTOR",
+        "party": {
+          "about_myself": "Закінчив всі можливі курси і неможливо акиикпиекпеикепиекикиекеиепкиикеиеиек",
+          "birth_date": "1991-09-30",
+          "documents": [
+            {
+              "issued_at": "2017-02-28",
+              "issued_by": "Рокитнянським РВ ГУ МВС Київської області",
+              "number": "УУ130560",
+              "type": "PASSPORT"
+            }
+          ],
+          "first_name": "Ірина",
+          "gender": "FEMALE",
+          "last_name": "Тиголь",
+          "no_tax_id": false,
+          "phones": [
+            {
+              "number": "+380634390600",
+              "type": "MOBILE"
+            }
+          ],
+          "second_name": "Володимирівна",
+          "tax_id": "3351001200",
+          "working_experience": 9,
+          "email": "ira.doctor.test@meta.ua"
+        },
+        "doctor": {
+          "educations": [
+            {
+              "city": "Київ",
+              "country": "UA",
+              "degree": "MASTER",
+              "diploma_number": "AA123543",
+              "institution_name": "Академія Богомольця",
+              "issued_date": "2017-02-28",
+              "speciality": "Загальна практика - сімейна медицина"
+            }
+          ],
+          "qualifications": [
+            {
+              "additional_info": "додаткова інофрмація",
+              "certificate_number": "2017-02-28",
+              "institution_name": "Академія Богомольця",
+              "issued_date": "2017-02-28",
+              "speciality": "Загальна практика - сімейна медицина",
+              "type": "SPECIALIZATION",
+              "valid_to": "2027-02-28"
+            }
+          ],
+          "specialities": [
+            {
+              "attestation_date": "2020-06-28",
+              "attestation_name": "Академія Богомольця",
+              "certificate_number": "AB/21331",
+              "level": "FIRST",
+              "qualification_type": "AWARDING",
+              "speciality": "FAMILY_DOCTOR",
+              "speciality_officio": true,
+              "valid_to_date": "2027-02-28"
+            },
+            {
+              "attestation_date": "2020-06-28",
+              "attestation_name": "Академія Богомольця",
+              "certificate_number": "AB/21331",
+              "level": "FIRST",
+              "qualification_type": "AWARDING",
+              "speciality": "THERAPIST",
+              "speciality_officio": false,
+              "valid_to_date": "2027-02-28"
+            }
+          ]
+        }
+      }
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      const resData = pm.response.json();
+
+      console.log('create employee sign content', resData)
+
+
+      pm.test(`Employee content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {
+          pm.expect(pm.response.code).to.eql(200);
+          pm.expect(resData).to.have.property('signed_content');
+          pm.globals.set('employee_signed_content', resData.signed_content);
+      });
+    language: text/javascript
+order: 2000

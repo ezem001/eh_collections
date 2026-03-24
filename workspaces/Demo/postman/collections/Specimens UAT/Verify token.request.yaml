@@ -1,0 +1,22 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/admin/tokens/{{assist_access_token}}/verify
+method: GET
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  api-key: ef7d48ecfc233d6af088
+scripts:
+  - type: afterResponse
+    code: >-
+      
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData && jsonData.data && jsonData.data.details &&
+      jsonData.data.details.client_id) {
+          postman.setEnvironmentVariable("token_client_id", jsonData.data.details.client_id);
+      } else {
+          postman.setEnvironmentVariable("token_client_id", "<<undefined>>");
+      }
+    language: text/javascript
+order: 4000

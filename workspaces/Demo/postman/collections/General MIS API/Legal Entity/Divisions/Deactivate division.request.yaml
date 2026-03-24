@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/divisions/96e57f63-b724-4dca-aed7-8ee58307d3f5/actions/deact\
+  ivate"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: 30276e63617461a185ec
+order: 5000

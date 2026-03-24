@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/services"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 9000

@@ -1,0 +1,467 @@
+$kind: http-request
+url: http://localhost:3000/create-encounter-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"encounter\": {\r
+
+    \        \"action_references\": [],\r
+
+    \        \"actions\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"T47\",\r
+
+    \                        \"system\": \"eHealth/ICPC2/actions\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"T50\",\r
+
+    \                        \"system\": \"eHealth/ICPC2/actions\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"cancellation_reason\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/cancellation_reasons\",\r
+
+    \                    \"code\": \"typo\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"class\": {\r
+
+    \            \"code\": \"PHC\",\r
+
+    \            \"system\": \"eHealth/encounter_classes\"\r
+
+    \        },\r
+
+    \        \"period\": {\r
+
+    \            \"end\": \"2024-09-03T10:45:16Z\",\r
+
+    \            \"start\": \"2024-09-03T10:45:16Z\"\r
+
+    \        },\r
+
+    \        \"diagnoses\": [\r
+
+    \            {\r
+
+    \                \"condition\": {\r
+
+    \                    \"display_value\": null,\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"code\": \"condition\",\r
+
+    \                                    \"system\": \"eHealth/resources\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": null\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"0ea83f29-b52d-4f71-b709-274b98bf7ed8\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"rank\": 1,\r
+
+    \                \"role\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"primary\",\r
+
+    \                            \"system\": \"eHealth/diagnosis_roles\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"division\": null,\r
+
+    \        \"episode\": {\r
+
+    \            \"display_value\": null,\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"episode\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"db89594e-39fd-48c8-93f0-7d1fddacd840\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"explanatory_letter\": \"Я, Шевченко Наталія Олександрівна,
+    20.07.2018 здійснила механічну помилку при внесенні обстеження до
+    системи.\",\r
+
+    \        \"hospitalization\": {\r
+
+    \            \"admit_source\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"transfer\",\r
+
+    \                        \"system\": \"eHealth/encounter_admit_source\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"destination\": {\r
+
+    \                \"display_value\": null,\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"legal_entity\",\r
+
+    \                                \"system\": \"eHealth/resources\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": null\r
+
+    \                    },\r
+
+    \                    \"value\": \"26fc5dfe-1bea-440f-a290-48df6f0546ab\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"discharge_department\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"78\",\r
+
+    \                        \"system\":
+    \"eHealth/encounter_discharge_department\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"discharge_disposition\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"transfer_general\",\r
+
+    \                        \"system\":
+    \"eHealth/encounter_discharge_disposition\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"pre_admission_identifier\": \"12345\",\r
+
+    \            \"re_admission\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"no\",\r
+
+    \                        \"system\": \"eHealth/encounter_re_admission\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"id\": \"0ea83f29-b52d-4f71-b709-274b98bf7ed8\",\r
+
+    \        \"origin_episode\": null,\r
+
+    \        \"paper_referral\": null,\r
+
+    \        \"performer\": {\r
+
+    \            \"display_value\": \"Сергій Вікторович Куриленко\",\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"employee\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"37cdecbf-fbb2-43c6-a231-19a333668003\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"priority\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"code\": \"urgent\",\r
+
+    \                    \"system\": \"eHealth/encounter_priority\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": null\r
+
+    \        },\r
+
+    \        \"prescriptions\": \"Дієта №3, Омепразолу 40 мг 1 раз на добу +
+    амоксициліну 500 мг + метронідазолу 400 мг при необхідності 500 мг або
+    тинідазолу 500 мг 3 рази на добу протягом 1 тижня\",\r
+
+    \        \"reasons\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"S17\",\r
+
+    \                        \"system\": \"eHealth/ICPC2/reasons\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"status\": \"entered_in_error\",\r
+
+    \        \"supporting_info\": [],\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"code\": \"home\",\r
+
+    \                    \"system\": \"eHealth/encounter_types\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": null\r
+
+    \        },\r
+
+    \        \"visit\": {\r
+
+    \            \"display_value\": null,\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"visit\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"ca48ba8f-8597-424b-8f77-250010702012\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const encounterId = uuid.v4();\r
+
+      const visitId = uuid.v4();\r
+
+      pm.globals.set(\"encounter_id\", encounterId);\r
+
+      pm.globals.set(\"visit_id\", visitId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create encounter sign content', resData)\r
+
+      \r
+
+      pm.test(`Encounter content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('encounter_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      // if (resData.signed_content) {\r
+
+      //     pm.globals.set('encounter_signed_content',
+      resData.signed_content)\r
+
+      // }\r\n"
+    language: text/javascript
+order: 3000

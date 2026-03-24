@@ -1,0 +1,1004 @@
+$kind: http-request
+url: http://localhost:3000/create-encounter-signed-content
+method: POST
+body:
+  type: json
+  content: >-
+    {
+        "encounter": {
+            "id": "{{encounter_id}}",
+            "status": "finished",
+            "period": {
+                "start": "{{encounter_period_start}}",
+                "end": "{{encounter_period_end}}"
+            },
+            "visit": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "visit"
+                            }
+                        ]
+                    },
+                    "value": "{{visit_id}}"
+                }
+            },
+            "action_references": [
+                {
+                    "identifier": {
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "eHealth/resources",
+                                    "code": "service"
+                                }
+                            ]
+                        },
+                        "value": "47716290-c519-43ac-a8c8-343a544f24a9"
+                    }
+                }
+            ],
+            "division": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "division"
+                            }
+                        ]
+                    },
+                    "value": "{{user_division_id}}"
+                }
+            },
+            "episode": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "episode"
+                            }
+                        ]
+                    },
+                    "value": "{{jobEpisodeID}}"
+                }
+            },
+            "class": {
+                "system": "eHealth/encounter_classes",
+                "code": "AMB"
+            },
+            "type": {
+                "coding": [
+                    {
+                        "system": "eHealth/encounter_types",
+                        "code": "service_delivery_location"
+                    }
+                ]
+            },
+            "priority": {
+                "coding": [
+                    {
+                        "system": "eHealth/encounter_priority",
+                        "code": "urgent"
+                    }
+                ]
+            },
+            "performer": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "employee"
+                            }
+                        ]
+                    },
+                    "value": "{{user_id}}"
+                }
+            },
+            "reasons": [
+                {
+                    "coding": [
+                        {
+                            "system": "eHealth/ICPC2/reasons",
+                            "code": "S17"
+                        }
+                    ]
+                }
+            ],
+            "diagnoses": [
+                {
+                    "condition": {
+                        "identifier": {
+                            "type": {
+                                "coding": [
+                                    {
+                                        "system": "eHealth/resources",
+                                        "code": "condition"
+                                    }
+                                ]
+                            },
+                            "value": "{{condition_id}}"
+                        }
+                    },
+                    "role": {
+                        "coding": [
+                            {
+                                "system": "eHealth/diagnosis_roles",
+                                "code": "primary"
+                            }
+                        ]
+                    },
+                    "rank": 1
+                }
+            ],
+            "participant": [
+                {
+                    "identifier": {
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "eHealth/resources",
+                                    "code": "employee"
+                                }
+                            ]
+                        },
+                        "value": "{{user_id}}"
+                    }
+                }
+            ],
+            "prescriptions": "Дієта №3, Омепразолу 40 мг 1 раз на добу + амоксициліну 500 мг + метронідазолу 400 мг при необхідності 500 мг або тинідазолу 500 мг 3 рази на добу протягом 1 тижня"
+        },
+        "conditions": [
+            {
+                "id": "{{condition_id}}",
+                "primary_source": true,
+                "asserter": [
+                    {
+                        "identifier": {
+                            "type": {
+                                "coding": [
+                                    {
+                                        "system": "eHealth/resources",
+                                        "code": "employee"
+                                    }
+                                ],
+                                "text": "Якийсь текст"
+                            },
+                            "value": "{{user_id}}"
+                        }
+                    }
+                ],
+                "context": {
+                    "identifier": {
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "eHealth/resources",
+                                    "code": "encounter"
+                                }
+                            ]
+                        },
+                        "value": "{{encounter_id}}"
+                    }
+                },
+                "code": {
+                    "coding": [
+                        {
+                            "system": "eHealth/ICD10_AM/condition_codes",
+                            "code": "E10.9"
+                        }
+                    ]
+                },
+                "clinical_status": "active",
+                "verification_status": "confirmed",
+                "severity": {
+                    "coding": [
+                        {
+                            "system": "eHealth/condition_severities",
+                            "code": "moderate"
+                        }
+                    ]
+                },
+                "body_sites": [
+                    {
+                        "coding": [
+                            {
+                                "system": "eHealth/body_sites",
+                                "code": "pelvis"
+                            }
+                        ]
+                    }
+                ],
+                "onset_date": "2026-02-25T09:46:37.694Z",
+                "asserted_date": "{{encounter_period_start}}",
+                "stage": {
+                    "summary": {
+                        "coding": [
+                            {
+                                "system": "eHealth/condition_stages",
+                                "code": "default_condition_stage"
+                            }
+                        ]
+                    }
+                },
+                "evidences": [
+                    {
+                        "codes": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "eHealth/ICPC2/reasons",
+                                        "code": "T90"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "observations": [
+            {
+                "id": "{{observation_id}}",
+                "body_site": {
+                    "coding": [
+                        {
+                            "code": "left_hand",
+                            "system": "eHealth/body_sites"
+                        }
+                    ]
+                },
+                "categories": [
+                    {
+                        "coding": [
+                            {
+                                "code": "survey",
+                                "system": "eHealth/observation_categories"
+                            }
+                        ]
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "WHODAS_2.0",
+                            "system": "eHealth/custom/observation_codes"
+                        }
+                    ]
+                },
+                "comment": "Some comment",
+                "components": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "eHealth/custom/observation_components",
+                                    "code": "D1"
+                                }
+                            ]
+                        },
+                        "value_quantity": {
+                            "value": 10,
+                            "code": "mg",
+                            "unit": "mg",
+                            "system": "eHealth/ucum/units"
+                        }
+                    }
+                ],
+                "context": {
+                    "identifier": {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "encounter",
+                                    "system": "eHealth/resources"
+                                }
+                            ],
+                            "text": null
+                        },
+                        "value": "{{encounter_id}}"
+                    }
+                },
+                "effective_period": {
+                    "start": "2026-01-01T10:50:44Z",
+                    "end": "2026-02-25T10:50:44Z"
+                },
+                "issued": "{{encounter_period_start}}",
+                "interpretation": {
+                    "coding": [
+                        {
+                            "code": "default_value",
+                            "system": "eHealth/observation_interpretations"
+                        }
+                    ],
+                    "text": "низький"
+                },
+                "method": {
+                    "coding": [
+                        {
+                            "code": "default_value",
+                            "system": "eHealth/observation_methods"
+                        }
+                    ],
+                    "text": "метод ABC"
+                },
+                "performer": [
+                    {
+                        "identifier": {
+                            "type": {
+                                "coding": [
+                                    {
+                                        "code": "employee",
+                                        "system": "eHealth/resources"
+                                    }
+                                ],
+                                "text": null
+                            },
+                            "value": "{{user_id}}"
+                        }
+                    }
+                ],
+                "primary_source": true,
+                "reference_ranges": [
+                    {
+                        "age": {
+                            "high": {
+                                "code": null,
+                                "comparator": "<",
+                                "system": null,
+                                "unit": "%",
+                                "value": 35
+                            },
+                            "low": {
+                                "code": null,
+                                "comparator": ">",
+                                "system": null,
+                                "unit": "%",
+                                "value": 18
+                            }
+                        },
+                        "applies_to": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "default_reference_range_application",
+                                        "system": "eHealth/reference_range_applications"
+                                    }
+                                ]
+                            }
+                        ],
+                        "high": {
+                            "code": "%",
+                            "comparator": "<",
+                            "system": "eHealth/ucum/units",
+                            "unit": "%",
+                            "value": 27
+                        },
+                        "low": {
+                            "code": "%",
+                            "comparator": ">",
+                            "system": "eHealth/ucum/units",
+                            "unit": "%",
+                            "value": 13.000001
+                        },
+                        "text": "Some text",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "default_reference_range",
+                                    "system": "eHealth/reference_range_types"
+                                }
+                            ],
+                            "text": "нормальний"
+                        }
+                    }
+                ],
+                "status": "valid",
+                "value_quantity": {
+                    "value": 97,
+                    "code": "ScoreOf",
+                    "unit": "ScoreOf",
+                    "system": "eHealth/ucum/units"
+                }
+            },
+            {
+                "id": "{{observation_id_2}}",
+                "body_site": {
+                    "coding": [
+                        {
+                            "code": "left_hand",
+                            "system": "eHealth/body_sites"
+                        }
+                    ]
+                },
+                "categories": [
+                    {
+                        "coding": [
+                            {
+                                "code": "survey",
+                                "system": "eHealth/observation_categories"
+                            }
+                        ]
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "ISNCSCI_ASIA",
+                            "system": "eHealth/custom/observation_codes"
+                        }
+                    ]
+                },
+                "comment": "Some comment",
+                "components": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "eHealth/custom/observation_components",
+                                    "code": "D1"
+                                }
+                            ]
+                        },
+                        "value_quantity": {
+                            "value": 10,
+                            "code": "mg",
+                            "unit": "mg",
+                            "system": "eHealth/ucum/units"
+                        }
+                    }
+                ],
+                "context": {
+                    "identifier": {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "encounter",
+                                    "system": "eHealth/resources"
+                                }
+                            ],
+                            "text": null
+                        },
+                        "value": "{{encounter_id}}"
+                    }
+                },
+                "effective_period": {
+                    "start": "2026-01-01T10:50:44Z",
+                    "end": "2026-02-25T10:50:44Z"
+                },
+                "issued": "{{encounter_period_start}}",
+                "interpretation": {
+                    "coding": [
+                        {
+                            "code": "default_value",
+                            "system": "eHealth/observation_interpretations"
+                        }
+                    ],
+                    "text": "низький"
+                },
+                "method": {
+                    "coding": [
+                        {
+                            "code": "default_value",
+                            "system": "eHealth/observation_methods"
+                        }
+                    ],
+                    "text": "метод ABC"
+                },
+                "performer": [
+                    {
+                        "identifier": {
+                            "type": {
+                                "coding": [
+                                    {
+                                        "code": "employee",
+                                        "system": "eHealth/resources"
+                                    }
+                                ],
+                                "text": null
+                            },
+                            "value": "{{user_id}}"
+                        }
+                    }
+                ],
+                "primary_source": true,
+                "reference_ranges": [
+                    {
+                        "age": {
+                            "high": {
+                                "code": null,
+                                "comparator": "<",
+                                "system": null,
+                                "unit": "%",
+                                "value": 35
+                            },
+                            "low": {
+                                "code": null,
+                                "comparator": ">",
+                                "system": null,
+                                "unit": "%",
+                                "value": 18
+                            }
+                        },
+                        "applies_to": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "default_reference_range_application",
+                                        "system": "eHealth/reference_range_applications"
+                                    }
+                                ]
+                            }
+                        ],
+                        "high": {
+                            "code": "%",
+                            "comparator": "<",
+                            "system": "eHealth/ucum/units",
+                            "unit": "%",
+                            "value": 27
+                        },
+                        "low": {
+                            "code": "%",
+                            "comparator": ">",
+                            "system": "eHealth/ucum/units",
+                            "unit": "%",
+                            "value": 13.000001
+                        },
+                        "text": "Some text",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "default_reference_range",
+                                    "system": "eHealth/reference_range_types"
+                                }
+                            ],
+                            "text": "нормальний"
+                        }
+                    }
+                ],
+                "status": "valid",
+                "value_quantity": {
+                    "value": 97,
+                    "code": "ScoreOf",
+                    "unit": "ScoreOf",
+                    "system": "eHealth/ucum/units"
+                }
+            }
+        ]
+    }
+scripts:
+  - type: beforeRequest
+    code: >-
+      const { v4: uuid } = require('uuid');
+
+
+      [
+        "encounter_id",
+        "visit_id",
+        "condition_id",
+        "observation_id",
+        "observation_id_2"
+      ].forEach(key => pm.globals.set(key, uuid()));
+
+
+
+      // Поточна дата
+
+      const now = new Date();
+
+
+      // Дата на 1 день раніше
+
+      const yesterday = new Date(now);
+
+      yesterday.setDate(now.getDate() - 1);
+
+
+      // Формуємо часові межі
+
+      // Початок — 10:45:16 UTC
+
+      const periodStart = new Date(yesterday);
+
+      periodStart.setUTCHours(10, 45, 16, 0);
+
+
+      // Кінець періоду — через 9 годин після початку (19:45:16 UTC)
+
+      const periodEnd = new Date(periodStart);
+
+      periodEnd.setUTCHours(periodStart.getUTCHours() + 9);
+
+
+      // Запис у глобальні змінні
+
+      pm.globals.set("encounter_period_start", periodStart.toISOString());
+
+      pm.globals.set("encounter_period_end", periodEnd.toISOString());
+
+
+      // Для зручності лог
+
+      console.log("🕒 Encounter period_start:", periodStart.toISOString());
+
+      console.log("🕒 Encounter period_end:", periodEnd.toISOString());
+
+
+
+
+
+      // -------------------------
+
+      // Розбираємо body
+
+      // -------------------------
+
+      let parsedBody;
+
+      try {
+          parsedBody = JSON.parse(pm.request.body.raw);
+      } catch (e) {
+          throw new Error("❌ Body is not valid JSON");
+      }
+
+      if (!parsedBody.observations || !Array.isArray(parsedBody.observations)) {
+          throw new Error("❌ No observations in request body");
+      }
+
+
+      // -------------------------
+
+      // Конфігурація
+
+      // -------------------------
+
+      const baseUrl = pm.globals.get("host");
+
+      const headers = {
+          "X-Custom-PSK": pm.globals.get("x-custom-psk"),
+          "api-key": pm.environment.get("mis_client_secret")
+      };
+
+
+      const getRandomElement = (arr) => arr[Math.floor(Math.random() *
+      arr.length)];
+
+      const getRandomInt = (min, max) => {
+          const mn = Number(min ?? 0);
+          const mx = Number(max ?? 0);
+          if (!Number.isFinite(mn) || !Number.isFinite(mx)) return 0;
+          if (mx < mn) return mn;
+          return Math.floor(mn + Math.random() * (mx - mn + 1));
+      };
+
+
+      // -------------------------
+
+      // Кеш словників
+
+      // -------------------------
+
+      const dictionaryCache = {};
+
+
+      // -------------------------
+
+      // Отримання словника з кешем
+
+      // -------------------------
+
+      async function fetchDictionary(dictName) {
+          if (dictionaryCache[dictName]) return dictionaryCache[dictName];
+
+          return new Promise((resolve, reject) => {
+              pm.sendRequest(
+                  { url: `${baseUrl}/api/v2/dictionaries?name=${encodeURIComponent(dictName)}`, method: "GET", header: headers },
+                  (err, res) => {
+                      if (err) return reject("❌ Error fetching dictionary: " + err);
+
+                      const values = res.json()?.data?.[0]?.values;
+                      if (!values || !values.length) return reject(`❌ Dictionary ${dictName} has no values`);
+
+                      dictionaryCache[dictName] = values[0]; // беремо перший елемент
+                      resolve(dictionaryCache[dictName]);
+                  }
+              );
+          });
+      }
+
+
+      // -------------------------
+
+      // Хелпери для пошуку умовних конфігів
+
+      // -------------------------
+
+      const findByComponentCode = (arr, code) =>
+          Array.isArray(arr) ? arr.find(x => x?.condition?.component_code?.code === code) : undefined;
+
+      const extractAllowedExtensionCodes = (allowedExt) => {
+          // allowedExt формат:
+          // COMPONENTS_ALLOWED_EXTENSIONS: [ { check: ["item_weight"] }, ... ]
+          if (!Array.isArray(allowedExt)) return [];
+          return allowedExt.flatMap(x => Array.isArray(x?.check) ? x.check : []).filter(Boolean);
+      };
+
+
+      // -------------------------
+
+      // Обробка одного OBS
+
+      // -------------------------
+
+      const processObservation = async (obs) => {
+          const obsCode = obs?.code?.coding?.[0]?.code;
+          if (!obsCode) throw new Error("❌ Cannot extract observation code");
+
+          // Отримуємо конфігурацію
+          const configRes = await new Promise((resolve, reject) => {
+              pm.sendRequest(
+                  { url: `${baseUrl}/api/observation_configurations?code=${encodeURIComponent(obsCode)}`, method: "GET", header: headers },
+                  (err, res) => {
+                      if (err) return reject("❌ Error fetching observation config: " + err);
+                      const settings = res.json()?.data?.[0]?.settings;
+                      if (!settings) return reject("❌ No settings in observation configuration");
+                      resolve(settings);
+                  }
+              );
+          });
+
+          const {
+              COMPONENTS_REQUIRED: reqs = { check: [] },
+              COMPONENTS_BINDING: bindings = [],
+              COMPONENTS_SCORE: scores = [],
+              COMPONENTS_ALLOWED_EXTENSIONS: allowedExt = [],
+              COMPONENTS_TYPE = [],
+              COMPONENTS_QUANTITY_CODES = [],
+              COMPONENT_QUANTITY_BOUNDARIES = [],
+              RESULT_TYPE,
+              RESULT_BINDING,
+              RESULT_QUANTITY_CODES,
+              RESULT_BOUNDARIES,
+              RESULT_SCORE_CALCULATION
+          } = configRes;
+
+          const resultType = RESULT_TYPE?.check; // "codeable_concept" | "quantity"
+          const allowedExtensionCodes = extractAllowedExtensionCodes(allowedExt);
+
+          // -------------------------
+          //  COMPONENTS
+          // -------------------------
+          let components = [];
+
+          for (const req of (reqs.check || [])) {
+              const reqCode = req?.code;
+              const reqSystem = req?.system;
+
+              const compTypeObj = findByComponentCode(COMPONENTS_TYPE, reqCode);
+              const compType = compTypeObj?.check || "codeable_concept";
+
+              // ---------- COMPONENT TYPE: quantity ----------
+              if (compType === "quantity") {
+                  const qtyCodeObj = findByComponentCode(COMPONENTS_QUANTITY_CODES, reqCode);
+                  const qtyCodeInfo = qtyCodeObj?.check?.[0]; // {code, system}
+
+                  // boundaries саме під компонент + quantity_code
+                  const boundaryObj = (Array.isArray(COMPONENT_QUANTITY_BOUNDARIES) ? COMPONENT_QUANTITY_BOUNDARIES : [])
+                      .find(b =>
+                          b?.condition?.component_code?.code === reqCode &&
+                          b?.condition?.quantity_code?.code === qtyCodeInfo?.code &&
+                          b?.condition?.quantity_code?.system === qtyCodeInfo?.system
+                      );
+
+                  const min = boundaryObj?.check?.min ?? 0;
+                  const max = boundaryObj?.check?.max ?? 0;
+                  const value = getRandomInt(min, max);
+
+                  // якщо qtyCodeInfo нема — все одно не ламаємось, але value_quantity не сформуємо коректно
+                  if (qtyCodeInfo?.code && qtyCodeInfo?.system) {
+                      components.push({
+                          code: { coding: [{ system: reqSystem, code: reqCode }] },
+                          value_quantity: {
+                              value,
+                              code: qtyCodeInfo.code,
+                              unit: qtyCodeInfo.code,
+                              system: qtyCodeInfo.system
+                          }
+                      });
+                  } else {
+                      components.push({
+                          code: { coding: [{ system: reqSystem, code: reqCode }] }
+                      });
+                  }
+
+                  continue;
+              }
+
+              // ---------- COMPONENT TYPE: codeable_concept (залишаємо як є) ----------
+              const bind = (Array.isArray(bindings) ? bindings : []).find(b => b?.condition?.component_code?.code === reqCode);
+              if (!bind) {
+                  components.push({
+                      code: { coding: [{ system: reqSystem, code: reqCode }] }
+                  });
+                  continue;
+              }
+
+              const answerSystem = bind.check?.[0];
+
+              const scoresForSystem = (Array.isArray(scores) ? scores : []).filter(s => s?.condition?.answer?.system === answerSystem);
+              const chosenScore = getRandomElement(scoresForSystem);
+
+              let answerCode = chosenScore?.condition?.answer?.code || "LA12302-8";
+              const valueDecimal = chosenScore?.check ?? 0;
+
+              // spine_level_codes → code зі словника
+              if (answerSystem === "eHealth/spine_level_codes") {
+                  const dictEntry = await fetchDictionary("eHealth/spine_level_codes");
+                  answerCode = dictEntry.code;
+              }
+
+              // extensions (якщо allowed extensions є)
+              let extensions;
+              if (allowedExtensionCodes.length > 0) {
+                  extensions = allowedExtensionCodes.map(codeStr => ({
+                      code: codeStr,
+                      value_decimal: valueDecimal
+                  }));
+              }
+
+              components.push({
+                  code: { coding: [{ system: reqSystem, code: reqCode }] },
+                  value_codeable_concept: {
+                      coding: [{
+                          system: answerSystem,
+                          code: answerCode,
+                          ...(extensions ? { extension: extensions } : {})
+                      }]
+                  }
+              });
+          }
+
+          obs.components = components;
+
+          // -------------------------
+          //  RESULT_TYPE: гарантуємо тільки ОДНЕ value_*
+          // -------------------------
+          if (resultType === "codeable_concept") {
+              // прибираємо quantity якщо був
+              if (obs.value_quantity !== undefined) delete obs.value_quantity;
+
+              // формуємо value_codeable_concept
+              if (RESULT_BINDING?.check?.[0]) {
+                  const dictName = RESULT_BINDING.check[0];
+                  const dictEntry = await fetchDictionary(dictName);
+
+                  obs.value_codeable_concept = {
+                      coding: [{ code: dictEntry.code, system: dictName }]
+                  };
+              } else {
+                  if (obs.value_codeable_concept !== undefined) delete obs.value_codeable_concept;
+              }
+
+              return obs;
+          }
+
+          if (resultType === "quantity") {
+              // прибираємо codeable_concept якщо був
+              if (obs.value_codeable_concept !== undefined) delete obs.value_codeable_concept;
+
+              const quantityCode = RESULT_QUANTITY_CODES?.[0]?.check?.[0];
+              if (!quantityCode) {
+                  if (obs.value_quantity !== undefined) delete obs.value_quantity;
+                  return obs;
+              }
+
+              let value = 0;
+
+              // RESULT_SCORE_CALCULATION = SUM
+              if (RESULT_SCORE_CALCULATION?.check === "SUM") {
+                  // 1) ПЕРШИЙ ПРІОРИТЕТ: сума components.value_quantity.value (WHODAS)
+                  const componentQuantityValues = (obs.components || [])
+                      .map(c => Number(c?.value_quantity?.value))
+                      .filter(v => Number.isFinite(v));
+
+                  if (componentQuantityValues.length > 0) {
+                      value = componentQuantityValues.reduce((s, v) => s + v, 0);
+                  } else {
+                      // 2) FALLBACK: сума extensions.value_decimal (Barthel та подібне)
+                      const allExtensions = (obs.components || []).flatMap(comp =>
+                          (comp?.value_codeable_concept?.coding || []).flatMap(coding =>
+                              Array.isArray(coding?.extension) ? coding.extension : []
+                          )
+                      );
+
+                      value = allExtensions.reduce((sum, ext) => sum + (Number(ext?.value_decimal) || 0), 0);
+                  }
+              } else {
+                  // якщо не SUM — можна використати boundaries result (як fallback),
+                  // але щоб нічого не ламати, залишимо 0, або clamp по RESULT_BOUNDARIES якщо хочеш.
+                  value = 0;
+              }
+
+              // За бажанням (не обов'язково): clamp по RESULT_BOUNDARIES для цього quantity_code
+              // (щоб не вийти за max/min загального результату)
+              const rb = Array.isArray(RESULT_BOUNDARIES) ? RESULT_BOUNDARIES : [];
+              const rbMatch = rb.find(x =>
+                  x?.condition?.quantity_code?.code === quantityCode.code &&
+                  x?.condition?.quantity_code?.system === quantityCode.system
+              );
+              if (rbMatch?.check) {
+                  const minR = Number(rbMatch.check.min);
+                  const maxR = Number(rbMatch.check.max);
+                  if (Number.isFinite(minR)) value = Math.max(value, minR);
+                  if (Number.isFinite(maxR)) value = Math.min(value, maxR);
+              }
+
+              obs.value_quantity = {
+                  value,
+                  code: quantityCode.code,
+                  unit: quantityCode.code,
+                  system: quantityCode.system
+              };
+
+              return obs;
+          }
+
+          // якщо RESULT_TYPE не очікуваний — прибираємо обидва, щоб не було сміття
+          if (obs.value_quantity !== undefined) delete obs.value_quantity;
+          if (obs.value_codeable_concept !== undefined) delete obs.value_codeable_concept;
+
+          return obs;
+      };
+
+
+      // -------------------------
+
+      //  Обробка ВСІХ OBS
+
+      // -------------------------
+
+      (async () => {
+          try {
+              await Promise.all(parsedBody.observations.map(obs => processObservation(obs)));
+
+              pm.request.body.update({
+                  mode: "raw",
+                  raw: JSON.stringify(parsedBody, null, 2),
+                  options: { raw: { language: "json" } }
+              });
+
+              console.log("✅ REQUEST BODY UPDATED:", JSON.stringify(parsedBody));
+          } catch (err) {
+              console.error(err);
+              throw new Error(err);
+          }
+      })();
+    language: text/javascript
+  - type: afterResponse
+    code: >
+      const resData = pm.response.json();
+
+      console.log('create encounter sign content', resData)
+
+
+      pm.test(`Encounter content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {
+          pm.expect(pm.response.code).to.eql(200);
+          pm.expect(resData).to.have.property('signed_content');
+          pm.globals.set('encounter_signed_content', resData.signed_content);
+      });
+
+
+
+
+      // if (resData.signed_content) {
+
+      //     pm.globals.set('encounter_signed_content', resData.signed_content)
+
+      // }
+    language: text/javascript
+order: 6000

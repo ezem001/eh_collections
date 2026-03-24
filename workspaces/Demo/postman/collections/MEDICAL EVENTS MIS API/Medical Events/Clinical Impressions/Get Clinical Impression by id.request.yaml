@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/patients/f32392dc-57d0-40ce-abce-983eb504618a/clinical_impre\
+  ssions/abd18092-17ed-4976-bdc7-6a6eb2b66c95"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 1000

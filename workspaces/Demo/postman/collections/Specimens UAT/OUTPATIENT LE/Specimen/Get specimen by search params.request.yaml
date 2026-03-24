@@ -1,0 +1,31 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens?status=available&registered_by=7abb437b-e307-4c3d-84af-33d17fbc8720
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{spec2_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: collected_date
+    value: 2023-11-24
+    disabled: true
+  - key: status
+    value: available
+  - key: registered_by
+    value: 7abb437b-e307-4c3d-84af-33d17fbc8720
+    description: Virologist
+  - key: registered_by
+    value: c6dc3630-6272-4eca-b715-07f678a482b5
+    disabled: true
+    description: Endocrinolog
+  - key: registered_by
+    value: 8304cdb0-6e76-4c5e-bbd4-4a758ddb88dd
+    disabled: true
+    description: Neurolog
+  - key: registered_by
+    value: 735e7b1b-a755-45fe-96b8-b98575364d7c
+    disabled: true
+    description: Doctor
+examples: ./.resources/Get specimen by search params.resources/examples
+order: 6000

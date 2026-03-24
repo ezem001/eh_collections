@@ -1,0 +1,339 @@
+$kind: http-request
+url: "{{host}}/api/v3/person_requests/{{Person_req_id}}/actions/sign"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  drfo: "2799207815"
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |+
+    {
+      "signed_content": "{{signed_content}}"
+    }
+
+scripts:
+  - type: afterResponse
+    code: >+
+      // // --- ENV_NAME ---
+
+      // let envPart = pm.request.url.host[0];
+
+      // let match = envPart.match(/api-(.+)/i);
+
+      // if (match && match[1]) pm.globals.set("ENV_NAME",
+      match[1].toUpperCase());
+
+
+      // const r = pm.response.json();
+
+      // const envName = pm.globals.get("ENV_NAME");
+
+
+      // const isPerson = !!r?.data?.person_id;
+
+      // const isPreperson = !!r?.data?.id && !isPerson;
+
+
+      // if (!isPerson && !isPreperson) {
+
+      //   throw new Error("Cannot detect entity type: no data.person_id and no
+      data.id");
+
+      // }
+
+
+      // const type = isPerson ? "PERSON" : "PREPERSON";
+
+
+      // // patientId: PERSON -> person_id, PREPERSON -> data.id
+
+      // const patientId = isPerson ? r.data.person_id : r.data.id;
+
+
+      // // operation: як у тебе (можеш залишити)
+
+      // const operation = pm.globals.get("PERSON_OPERATION") || "create";
+
+
+      // // requestId: PERSON -> з глобалки, PREPERSON -> meta.request_id
+
+      // const requestId = isPerson
+
+      //   ? pm.globals.get("PERSON_REQUEST_ID")
+
+      //   : r?.meta?.request_id;
+
+
+      // // source data for fields
+
+      // let src;
+
+      // if (isPerson) {
+
+      //   const baseResponse = JSON.parse(
+
+      //     operation === "update"
+
+      //       ? pm.globals.get("UPDATE_PERSON_RESPONSE")
+
+      //       : pm.globals.get("CREATE_PERSON_RESPONSE")
+
+      //   );
+
+      //   src = baseResponse.person;
+
+      // } else {
+
+      //   src = r.data;
+
+      // }
+
+
+      // const patientDocument = {
+
+      //   patientId,
+
+      //   type,
+
+      //   environment: envName,
+
+      //   requestId,
+
+
+      //   first_name: src.names[0].first_name,
+
+      //   second_name: src.names[0].second_name,
+
+      //   last_name: src.names[0].last_name,
+
+
+      //   birth_date: src.birth_date,
+
+      //   birth_country: src.birth_country,
+
+      //   birth_settlement: src.birth_settlement,
+
+
+      //   gender: src.gender,
+
+      //   email: src.email,
+
+
+      //   tax_id: src.tax_id,
+
+      //   no_tax_id: src.no_tax_id,
+
+      //   unzr: src.unzr,
+
+
+      //   preferred_way_communication: src.preferred_way_communication,
+
+      //   secret: src.secret,
+
+
+      //   phones: src.phones || [],
+
+      //   addresses: src.addresses || [],
+
+      //   documents: src.documents || [],
+
+      //   emergency_contact: src.emergency_contact || null,
+
+
+      //   authentication_methods: src.authentication_methods || [],
+
+
+      //   episodes: [],
+
+      //   encounters: [],
+
+      //   carePlans: [],
+
+      //   procedures: [],
+
+      //   diagnostic_reports: []
+
+      // };
+
+
+      // // щоб не затирати поля undefined при PUT
+
+      // Object.keys(patientDocument).forEach(k => {
+
+      //   if (patientDocument[k] === undefined) delete patientDocument[k];
+
+      // });
+
+
+      // pm.sendRequest({
+
+      //   url: "http://localhost:3000/patient",
+
+      //   method: operation === "update" ? "PUT" : "POST",
+
+      //   header: { "Content-Type": "application/json" },
+
+      //   body: { mode: "raw", raw: JSON.stringify(patientDocument) }
+
+      // }, (err, res) => {
+
+      //   if (err) throw err;
+
+      //   console.log("Saved:", res.json());
+
+      // });
+
+
+
+      // --- ENV_NAME ---
+
+      let envPart = pm.request.url.host[0];
+
+      let match = envPart.match(/api-(.+)/i);
+
+      if (match && match[1]) pm.globals.set("ENV_NAME", match[1].toUpperCase());
+
+
+      const r = pm.response.json();
+
+      const envName = pm.globals.get("ENV_NAME");
+
+
+      // detect entity
+
+      const isPerson = !!r?.data?.person_id;
+
+      const isPreperson = !!r?.data?.id && !isPerson;
+
+
+      if (!isPerson && !isPreperson) {
+        throw new Error("Cannot detect entity type: no data.person_id and no data.id");
+      }
+
+
+      const type = isPerson ? "PERSON" : "PREPERSON";
+
+      const patientId = isPerson ? r.data.person_id : r.data.id;
+
+
+      // operation (leave as you have)
+
+      const operation = pm.globals.get("PERSON_OPERATION") || "create";
+
+
+      // requestId
+
+      const requestId = isPerson
+        ? pm.globals.get("PERSON_REQUEST_ID")
+        : r?.meta?.request_id;
+
+      // source data for fields
+
+      let src;
+
+      if (isPerson) {
+        const baseResponse = JSON.parse(
+          operation === "update"
+            ? pm.globals.get("UPDATE_PERSON_RESPONSE")
+            : pm.globals.get("CREATE_PERSON_RESPONSE")
+        );
+        src = baseResponse.person;
+      } else {
+        src = r.data;
+      }
+
+
+      // pick main name for legacy fields (v2 fallback + v3 selection)
+
+      function pickPrimaryName(src) {
+        const names = Array.isArray(src?.names) ? src.names : null;
+
+        if (names && names.length) {
+          const uk = names.find(n => (n?.language || "").toLowerCase() === "uk");
+          return uk || names[0];
+        }
+
+        return {
+          first_name: src?.first_name,
+          second_name: src?.second_name,
+          last_name: src?.last_name
+        };
+      }
+
+
+      const mainName = pickPrimaryName(src);
+
+      const hasNames = Array.isArray(src?.names) && src.names.length > 0;
+
+
+      const patientDocument = {
+        patientId,
+        type,
+        environment: envName,
+        requestId,
+
+        // v3: send names only if present
+        names: hasNames ? src.names : undefined,
+
+        // v2/v3: send legacy fields ONLY when v2 (no names)
+        first_name: !hasNames ? mainName?.first_name : undefined,
+        second_name: !hasNames ? mainName?.second_name : undefined,
+        last_name: !hasNames ? mainName?.last_name : undefined,
+
+        birth_date: src.birth_date,
+        birth_country: src.birth_country,
+        birth_settlement: src.birth_settlement,
+
+        gender: src.gender,
+        email: src.email,
+
+        tax_id: src.tax_id,
+        no_tax_id: src.no_tax_id,
+        unzr: src.unzr,
+
+        preferred_way_communication: src.preferred_way_communication,
+        secret: src.secret,
+
+        phones: src.phones || [],
+        addresses: src.addresses || [],
+        documents: src.documents || [],
+        emergency_contact: src.emergency_contact || null,
+
+        authentication_methods: src.authentication_methods || []
+      };
+
+
+      // IMPORTANT: for update, don't overwrite medical arrays
+
+      if (operation !== "update") {
+        patientDocument.episodes = [];
+        patientDocument.encounters = [];
+        patientDocument.carePlans = [];
+        patientDocument.procedures = [];
+        patientDocument.diagnostic_reports = [];
+      }
+
+
+      // remove undefined keys
+
+      Object.keys(patientDocument).forEach(k => {
+        if (patientDocument[k] === undefined) delete patientDocument[k];
+      });
+
+
+      pm.sendRequest({
+        url: "http://localhost:3000/patient",
+        method: operation === "update" ? "PUT" : "POST",
+        header: { "Content-Type": "application/json" },
+        body: { mode: "raw", raw: JSON.stringify(patientDocument) }
+      }, (err, res) => {
+        if (err) throw err;
+        console.log("Saved:", res.json());
+      });
+
+
+    language: text/javascript
+order: 5000

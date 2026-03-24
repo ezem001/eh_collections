@@ -1,0 +1,29 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/8d81adc6-8e78-4021-bbbd-0a523778524c/erln"
+method: PATCH
+headers:
+  - key: x-consumer-id
+    value: a747cd78-b7e5-11ea-b351-f319bc42050d
+    disabled: true
+  - key: x-person-id
+    value: af9d5b14-b7e5-11ea-8ef4-4f81455b5ebd
+    disabled: true
+  - key: api-key
+    value: "{{mis_client_secret}}"
+  - key: Authorization
+    value: Bearer {{access_token}}
+queryParams:
+  - key: limit
+    value: "1"
+    disabled: true
+  - key: type
+    value: TEMP_DISABILITY
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+    language: text/javascript
+order: 8000

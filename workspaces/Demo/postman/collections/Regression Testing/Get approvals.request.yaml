@@ -1,0 +1,42 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/approvals"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+queryParams:
+  - key: granted_to
+    value: 7ca4c165-b3b9-47bc-95f9-a9c1708f543a
+    disabled: true
+  - key: granted_resources
+    value: 0f7e98c3-e17a-48bc-85ab-a60ed506652c
+    disabled: true
+  - key: granted_resource_type
+    value: diagnostic_report
+    disabled: true
+  - key: reason
+    value: 7c3da506-804d-4550-8993-bf17f9ee0401
+    disabled: true
+  - key: access_level
+    value: read
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get approvals is 200\", function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r\n"
+    language: text/javascript
+order: 26000

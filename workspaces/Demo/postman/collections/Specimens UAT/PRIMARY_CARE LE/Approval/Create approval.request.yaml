@@ -1,0 +1,52 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/approvals
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{doc1_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "resources": [
+            {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "diagnostic_report"
+                            }
+                        ]
+                    },
+                    "value": "f24d2875-6504-4ff2-9cd3-b0a4b164a821"
+                }
+            }
+        ],
+        "granted_to": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "employee"
+                        }
+                    ]
+                },
+                "value": "735e7b1b-a755-45fe-96b8-b98575364d7c"
+            }
+        },
+        "access_level": "read"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 1000

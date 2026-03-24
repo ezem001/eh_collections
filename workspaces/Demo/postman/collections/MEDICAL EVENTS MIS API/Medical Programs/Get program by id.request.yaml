@@ -1,0 +1,13 @@
+$kind: http-request
+description: |-
+  This endpoint returns medical program by id.
+
+  **Scopes required:** `medical_program:read`
+url: "{{host}}/api/medical_programs/5562904e-100f-11ee-be56-0242ac120002"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  api-key: 30276e63617461a185ec
+order: 3000

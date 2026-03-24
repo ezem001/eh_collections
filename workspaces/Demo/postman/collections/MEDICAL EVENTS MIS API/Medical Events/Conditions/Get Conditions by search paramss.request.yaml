@@ -1,0 +1,42 @@
+$kind: http-request
+url: "{{host}}/api/patients/f32392dc-57d0-40ce-abce-983eb504618a/conditions?enc\
+  ounter_id={{jobEncounterID}}&managing_organization_id={{user_legal_entity}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: code
+    value: A20
+    disabled: true
+  - key: encounter_id
+    value: "{{jobEncounterID}}"
+  - key: episode_id
+    value: 3d15bc95-6872-47f1-a84c-0e8ca15c4eb8
+    disabled: true
+  - key: onset_date_from
+    value: 2022-10-20
+    disabled: true
+  - key: onset_date_to
+    value: 2022-10-30
+    disabled: true
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+  - key: clinical_status
+    value: finished
+    disabled: true
+  - key: verification_status
+    value: provisional
+    disabled: true
+  - key: verification_status
+    value: entered_in_error
+    disabled: true
+order: 2000

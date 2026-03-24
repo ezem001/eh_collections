@@ -1,0 +1,15 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/services
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: Bearer {{spec2_access_token}}
+    disabled: true
+  - key: api-key
+    value: ef7d48ecfc233d6af088
+    disabled: true
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 3000

@@ -1,0 +1,126 @@
+$kind: http-request
+url: "{{host}}/api/v3/declaration_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "person_id": "{{patient_for_regress}}",
+        "employee_id": "{{user_id}}",
+        "division_id": "{{user_division_id}}"
+        // "authorize_with": "ecb05bcd-b907-476f-8c98-ecedf22a1482"
+    }
+scripts:
+  - type: afterResponse
+    code: >+
+      const generalResData = pm.response.json();
+
+      const parsedGeneraData = JSON.stringify(generalResData, null, 2)
+
+
+      function displayResponse(title, data) {
+          const html = `
+              <h1>${title}</h1>
+              <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          pm.visualizer.set(html);
+      }
+
+
+
+      // pm.test(`Response status is not 200, ${generalResData.error ?
+      parsedGeneraData : ''}`, function () {
+
+      //     pm.expect(pm.response.code).to.not.eql(200);
+
+      //     const errData = pm.response.json();
+
+      //     console.log(errData)
+
+      //     displayResponse('Create Declaration Request', errData)
+
+      // });
+
+
+
+      pm.test(`Declaration request pass. Response status is
+      200  |  ${parsedGeneraData}`, function () {
+          const jsonData = pm.response.json();
+          const declarationReqId = jsonData.data.id
+          pm.expect(pm.response.code).to.eql(200);
+          pm.globals.set('declaration_request_id', declarationReqId)
+
+
+          const resData = pm.response.json();
+
+          // Extract URLs from the documents array in the response
+          const documents = resData.urgent.documents;
+          const urls = documents.map(doc => doc.url);
+
+          const additionalData = {
+              row: '0JTQvtC60YPQvNC10L3Rgg=='
+          };
+
+          // Process each URL from the documents array
+          urls.forEach(url => {
+              processUrl(url, additionalData);
+          });
+      });
+
+
+
+      // Function to handle each URL request
+
+      function processUrl(url, additionalData) {
+          console.log(url, 'urls loop');
+
+          pm.sendRequest({
+              url: url,
+              method: 'PUT',
+              header: {
+                  'Content-Type': 'image/jpeg'
+              },
+              body: {
+                  mode: 'raw',
+                  raw: JSON.stringify(additionalData) // Include additional data in the body
+              }
+          }, function (err, res) {
+              if (err) {
+                  console.error('Request failed:', err);
+                  displayResponse('Request Error', { error: err.message });
+              } else {
+                  let responseData;
+
+                  // Check content type to determine how to parse the response
+                  const contentType = res.headers.get('Content-Type');
+                  console.log(contentType)
+                  if (contentType && contentType.includes('text/plain')) {
+                      try {
+                          // Handle TEXT response if needed
+                          responseData = res.text(); // Get response as text
+                          displayResponse('Document sign successful', { response: responseData });
+                      } catch (e) {
+                          console.error('JSON parsing error:', e);
+                          displayResponse('Parsing Error', { error: 'Failed to parse JSON' });
+                          return;
+                      }
+                      // displayResponse('Document sign successful', responseData);
+                  } else {
+                      // Handle other response types if needed
+                      responseData = res.text(); // Default to text for unknown formats
+                      displayResponse('Unknown Response Format', { response: responseData });
+                  }
+              }
+          });
+      }
+
+
+
+
+
+    language: text/javascript
+order: 10000

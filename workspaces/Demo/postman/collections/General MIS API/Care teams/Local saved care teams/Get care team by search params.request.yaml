@@ -1,0 +1,27 @@
+$kind: http-request
+url: http://localhost:3000/care-teams
+method: GET
+queryParams:
+  - key: legal_entity_id
+    value: 10d87d8b-81d3-448e-ae97-f45b6b1111cd
+    disabled: true
+  - key: author_employee_id
+    value: 5746e964-80fb-43d8-b388-ced55772d2f9
+    disabled: true
+  - key: member_id
+    value: 3acde8fa-0d48-44d5-9635-f62b2fb23530
+    disabled: true
+  - key: environment
+    value: demo
+    disabled: true
+    description: preprod
+  - key: name
+    value: "6"
+    disabled: true
+  - key: category
+    value: surgical_care_team
+    disabled: true
+  - key: status
+    value: suspended
+    disabled: true
+order: 3000

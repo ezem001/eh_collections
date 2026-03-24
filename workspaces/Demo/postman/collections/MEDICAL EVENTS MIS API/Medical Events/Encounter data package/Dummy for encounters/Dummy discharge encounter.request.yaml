@@ -1,0 +1,598 @@
+$kind: http-request
+url: http://localhost:3000/create-encounter-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"encounter\": {\r
+
+    \        \"id\": \"{{encounter_id}}\",\r
+
+    \        \"status\": \"finished\",\r
+
+    \        \"period\": {\r
+
+    \            \"start\": \"2026-02-02T09:00:16Z\",\r
+
+    \            \"end\": \"2026-02-02T19:45:16Z\"\r
+
+    \        },\r
+
+    \        \"visit\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"visit\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{visit_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"action_references\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"service\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"d8a7e6e5-8d18-453e-9273-f8218f2d81a6\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"division\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"division\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_division_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"episode\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"episode\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobEpisodeID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"class\": {\r
+
+    \            \"system\": \"eHealth/encounter_classes\",\r
+
+    \            \"code\": \"INPATIENT\"\r
+
+    \        },\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_types\",\r
+
+    \                    \"code\": \"discharge\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"priority\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_priority\",\r
+
+    \                    \"code\": \"urgent\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"performer\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"reasons\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICPC2/reasons\",\r
+
+    \                        \"code\": \"S17\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"diagnoses\": [\r
+
+    \            {\r
+
+    \                \"condition\": {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{encounter_id}}\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"role\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/diagnosis_roles\",\r
+
+    \                            \"code\": \"primary\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"rank\": 1\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"participant\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"prescriptions\": \"Дієта №3, Омепразолу 40 мг 1 раз на добу +
+    амоксициліну 500 мг + метронідазолу 400 мг при необхідності 500 мг або
+    тинідазолу 500 мг 3 рази на добу протягом 1 тижня\",\r
+
+    \        \"hospitalization\": {\r
+
+    \            \"admit_source\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/encounter_admit_source\",\r
+
+    \                        \"code\": \"transfer\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"re_admission\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/encounter_re_admission\",\r
+
+    \                        \"code\": \"no\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"destination\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"legal_entity\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_legal_entity}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"discharge_disposition\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\":
+    \"eHealth/encounter_discharge_disposition\",\r
+
+    \                        \"code\": \"transfer_general\"\r
+
+    \                        // death\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"discharge_department\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\":
+    \"eHealth/encounter_discharge_department\",\r
+
+    \                        \"code\": \"78\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"pre_admission_identifier\": \"12345\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"conditions\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{encounter_id}}\",\r
+
+    \            \"primary_source\": true,\r
+
+    \            \"asserter\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"Якийсь текст\"\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{user_id}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"encounter\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                        \"code\": \"E10.02\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"clinical_status\": \"active\",\r
+
+    \            \"verification_status\": \"confirmed\",\r
+
+    \            \"severity\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/condition_severities\",\r
+
+    \                        \"code\": \"moderate\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"body_sites\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/body_sites\",\r
+
+    \                            \"code\": \"pelvis\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"onset_date\": \"2024-02-01T09:46:37.694Z\",\r
+
+    \            \"asserted_date\": \"2024-03-03T09:46:37.694Z\",\r
+
+    \            \"stage\": {\r
+
+    \                \"summary\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/condition_stages\",\r
+
+    \                            \"code\": \"default_condition_stage\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const encounterId = uuid.v4();\r
+
+      const visitId = uuid.v4();\r
+
+      pm.globals.set(\"encounter_id\", encounterId);\r
+
+      pm.globals.set(\"visit_id\", visitId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create encounter sign content', resData)\r
+
+      \r
+
+      pm.test(`Encounter content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('encounter_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      // if (resData.signed_content) {\r
+
+      //     pm.globals.set('encounter_signed_content',
+      resData.signed_content)\r
+
+      // }\r\n"
+    language: text/javascript
+order: 4000

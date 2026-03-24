@@ -1,0 +1,24 @@
+$kind: http-request
+description: |-
+  This endpoint returns medical program by id.
+
+  **Scopes required:** `medical_program:read`
+url: "{{host_demo}}/api/medical_program_provision?contract_number=0000-PAP5-M00\
+  0&medical_program_id=04d5ea65-d6e7-44f8-9eef-f0d3c1121d2b&division_id=6d07bdb\
+  0-59c0-4b54-8a90-bada3e232877&is_active=true&msp_legal_entity_id=15d5ea65-d6e\
+  7-44f8-9eef-f0d3c1121d3a&page=2&page_size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  api-key: 30276e63617461a185ec
+queryParams:
+  contract_number: 0000-PAP5-M000
+  medical_program_id: 04d5ea65-d6e7-44f8-9eef-f0d3c1121d2b
+  division_id: 6d07bdb0-59c0-4b54-8a90-bada3e232877
+  is_active: "true"
+  msp_legal_entity_id: 15d5ea65-d6e7-44f8-9eef-f0d3c1121d3a
+  page: "2"
+  page_size: "50"
+order: 4000

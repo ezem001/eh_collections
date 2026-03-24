@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/2d8c563c-d2e4-4abd-afa2-77b982cfc366/erln"
+method: PATCH
+headers:
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+order: 12000

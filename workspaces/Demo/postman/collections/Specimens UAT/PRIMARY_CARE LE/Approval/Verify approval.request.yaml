@@ -1,0 +1,15 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/approvals/30730932-ff4c-478c-a47a-e2a91399cdfa
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{doc1_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "code": 8725
+    }
+order: 3000

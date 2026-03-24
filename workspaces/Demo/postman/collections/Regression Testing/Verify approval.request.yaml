@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/approvals/{{jobApprovalID}}"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r\n  \"code\": 4328\r\n}"
+scripts:
+  - type: afterResponse
+    code: |
+      pm.test("Verify Approval is 200", function () {
+          pm.expect(pm.response.code).to.eql(200);
+      });
+    language: text/javascript
+order: 25000

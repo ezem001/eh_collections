@@ -1,0 +1,394 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_CATEGORIES\",\r
+
+    \                \"code\": \"SICKNESS\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_TYPES\",\r
+
+    \                \"code\": \"TEMP_DISABILITY\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"event\": [\r
+
+    \        {\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_EVENTS\",\r
+
+    \                        \"code\": \"COMPOSITION_VALIDITY_PERIOD\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"period\": {\r
+
+    \                \"start\": \"2026-03-03T10:45:16Z\",\r
+
+    \                \"end\": \"2026-03-07T10:45:16Z\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"subject\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"person\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{patient_id_from_episode}}\"\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"encounter\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{jobEncounterID}}\"\r
+
+    \    },\r
+
+    \    \"author\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"employee\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{user_id}}\"\r
+
+    \    },\r
+
+    \    \"section\": {\r
+
+    \        \"focus\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"person\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{patient_id_from_episode}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"extension\": [\r
+
+    \        // {\r
+
+    \        //     \"valueCode\": \"INFORM_WITH\",\r
+
+    \        //     \"valueUuid\": \"3b6d7514-5159-4cc1-a12d-0271854317c0\"\r
+
+    \        // }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: >
+      // =========================================================
+
+      // Parent request + Job polling (FULL VERSION)
+
+      // =========================================================
+
+
+      // ---------------- Utils ----------------
+
+      const safeJson = (t) => { try { return JSON.parse(t); } catch { return
+      null; } };
+
+
+      function displayResponse(title, data) {
+        const html = `
+          <style>
+            body { font-family: system-ui; padding: 12px; }
+            h1 { font-size: 18px; margin-bottom: 8px; }
+            pre { background:#0b1020; color:#e6e6e6; padding:12px; border-radius:8px; }
+            .meta { color:#666; font-size:12px; margin-top:6px; }
+          </style>
+          <h1>${title}</h1>
+          <pre>${JSON.stringify(data ?? {}, null, 2)}</pre>
+          <div class="meta">${new Date().toISOString()}</div>
+        `;
+        pm.visualizer.set(html);
+      }
+
+
+      function hardStop(title, payload, errMsg) {
+        displayResponse(title, payload);
+        pm.globals.unset("composition_check_job_id");
+        pm.globals.unset("JobCompositionID");
+        pm.environment.set("retryCount", 0);
+        throw new Error(errMsg || title);
+      }
+
+
+      // ---------------- Parent response ----------------
+
+      const httpCode = pm.response.code;
+
+      const rawParent = pm.response.text();
+
+      const parent = safeJson(rawParent);
+
+
+      // ---------- Parent SUCCESS TEST ----------
+
+      pm.test("✅ Parent request successful", function () {
+        pm.expect(httpCode, "HTTP status").to.be.within(200, 299);
+
+        pm.expect(parent, "Response must be valid JSON").to.be.an("object");
+
+        pm.expect(parent.error, "parent.error").to.not.exist;
+        pm.expect(parent.errors, "parent.errors").to.not.exist;
+
+        pm.expect(
+          !(parent.code && parent.description),
+          `coded error: ${parent.code} ${parent.description}`
+        ).to.be.true;
+
+        pm.expect(
+          parent?.data?.id,
+          "composition_check_job_id (data.id) must exist"
+        ).to.be.a("string").and.not.empty;
+      });
+
+
+      // ---------- Hard validation ----------
+
+      if (!parent) {
+        hardStop("❌ Parent response is not JSON", {
+          httpCode,
+          raw: rawParent?.slice(0, 800)
+        });
+      }
+
+
+      if (
+        parent.error ||
+        (Array.isArray(parent.errors) && parent.errors.length) ||
+        (parent.code && parent.description)
+      ) {
+        hardStop("❌ Parent returned error payload", parent);
+      }
+
+
+      const jobId = parent?.data?.id;
+
+      if (!jobId) {
+        hardStop("❌ composition_check_job_id not found in response", {
+          expected: "data.id",
+          response: parent
+        });
+      }
+
+
+      pm.globals.set("composition_check_job_id", jobId);
+
+      console.log("composition_check_job_id:", jobId);
+
+
+      // =========================================================
+
+      // Job polling
+
+      // =========================================================
+
+      const POLL_MS = 2000;
+
+      const MAX_RETRIES = 60;
+
+      pm.environment.set("retryCount", 0);
+
+
+      function buildJobReq(id) {
+        const host = pm.globals.get("host");
+        if (!host) throw new Error("pm.globals.host is not set");
+
+        return {
+          method: "GET",
+          url: `${host}/api/patients/composition/job/${id}`,
+          header: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${pm.environment.get("access_token")}`,
+            "api-key": pm.environment.get("mis_client_secret"),
+            "X-Custom-PSK": pm.globals.get("x-custom-psk")
+          }
+        };
+      }
+
+
+      function extractCompositionId(links = []) {
+        const l = links.find(x => x?.href?.includes("composition/"));
+        return l?.href ? l.href.split("composition/").pop() : null;
+      }
+
+
+      function checkJobStatus(id) {
+        pm.sendRequest(buildJobReq(id), (err, res) => {
+          if (err) {
+            displayResponse("❌ Job request error", err);
+            return;
+          }
+
+          const body = res.json?.() || safeJson(res.text()) || {};
+          const status = body?.data?.status;
+
+          pm.test("Job status valid", () => {
+            pm.expect(status).to.be.oneOf(["PENDING", "DONE", "FAILED", "ERROR"]);
+          });
+
+          console.log("Job status:", status);
+
+          // DONE
+          if (status === "DONE") {
+            const links = body?.data?.links || [];
+            const compositionId = extractCompositionId(links);
+            if (compositionId) pm.globals.set("JobCompositionID", compositionId);
+
+            displayResponse("✅ Job DONE", {
+              jobId: id,
+              compositionId,
+              links
+            });
+            pm.environment.set("retryCount", 0);
+            return;
+          }
+
+          // FAILED / ERROR
+          if (status === "FAILED" || status === "ERROR") {
+            displayResponse("❌ Job FAILED", body?.data || body);
+            pm.environment.set("retryCount", 0);
+            return;
+          }
+
+          // PENDING → retry
+          const retry = Number(pm.environment.get("retryCount")) || 0;
+          if (retry >= MAX_RETRIES) {
+            displayResponse("❌ Max retries reached", body?.data || body);
+            pm.environment.set("retryCount", 0);
+            return;
+          }
+
+          pm.environment.set("retryCount", retry + 1);
+
+          displayResponse("⏳ Job Pending", {
+            attempt: retry + 1,
+            nextPollInMs: POLL_MS,
+            status,
+            data: body?.data
+          });
+
+          setTimeout(() => checkJobStatus(id), POLL_MS);
+        });
+      }
+
+
+      // ---------------- START POLLING ----------------
+
+      checkJobStatus(jobId);
+    language: text/javascript
+order: 1000

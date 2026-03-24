@@ -1,0 +1,77 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/job/{{composition_check_job_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: formdata
+  content: []
+scripts:
+  - type: afterResponse
+    code: "// Розбираємо відповідь\r
+
+      const resBody = pm.response.json();\r
+
+      \r
+
+      // Перевіряємо статус-код\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // Перевіряємо статус DONE\r
+
+      pm.test(\"Status is DONE\", function () {\r
+
+      \    pm.expect(resBody.data.status).to.eql(\"DONE\");\r
+
+      });\r
+
+      \r
+
+      // Якщо статус 200 і DONE, зберігаємо ID\r
+
+      if (pm.response.code === 200 && resBody.data.status === \"DONE\") {\r
+
+      \    // Знаходимо посилання на composition\r
+
+      \    const compositionLink = resBody.data.links.find(link =>
+      link.href.includes(\"composition/\"));\r
+
+      \r
+
+      \    if (compositionLink) {\r
+
+      \        // Витягуємо ID після composition/\r
+
+      \        const compositionId =
+      compositionLink.href.split(\"composition/\")[1];\r
+
+      \r
+
+      \        // Зберігаємо в глобальні змінні\r
+
+      \        pm.globals.set(\"JobCompositionID\", compositionId);\r
+
+      \r
+
+      \        // Виводимо для перевірки\r
+
+      \        console.log(\"Saved Composition ID:\", compositionId);\r
+
+      \    } else {\r
+
+      \        console.warn(\"No composition link found.\");\r
+
+      \    }\r
+
+      }\r\n"
+    language: text/javascript
+order: 3000

@@ -1,0 +1,75 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/auth/login
+  method: POST
+  headers:
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: |-
+      {
+         "token":{
+            "grant_type":"password",
+            "email":"spec1_uat@ukr.net",
+            "password":"Qwerty1234567",
+            "client_id":"{{fe_client_id}}",
+            "scope":"app:authorize"
+         }
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Thu, 23 Nov 2023 13:45:26 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "475"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: https://auth-demo.ehealth.gov.ua
+    Cache-Control: max-age=0, private, must-revalidate
+    Ratelimit-Limit: "80"
+    Ratelimit-Remaining: "79"
+    Ratelimit-Reset: "34"
+    Referrer-Policy: strict-origin-when-cross-origin
+    Vary: Origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "31"
+    X-Kong-Upstream-Latency: "259"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Ratelimit-Limit-Minute: "80"
+    X-Ratelimit-Remaining-Minute: "79"
+    X-Request-Id: 7e83634f-d06b-4001-a2f8-780ba4b2520a#230
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82a9da43b8d877b6-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: |-
+      {
+          "data": {
+              "details": {
+                  "client_id": "e2e1d2c8-9bac-43c6-adef-83239940b30a",
+                  "grant_type": "password",
+                  "scope": "app:authorize"
+              },
+              "expires_at": 1732304052,
+              "id": "3ea341a1-2159-48bd-8e1f-c88a7d1bce72",
+              "name": "access_token",
+              "user_id": "561b39da-9146-4788-b480-9d697a22a542",
+              "value": "bFdHZDY0a1VDTUw4WFhHa0EyVnVuZz09"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "7e83634f-d06b-4001-a2f8-780ba4b2520a#230",
+              "type": "object",
+              "url": "http://api-svc.mithril/auth/login"
+          },
+          "urgent": {
+              "next_step": "REQUEST_APPS"
+          }
+      }
+order: 1000

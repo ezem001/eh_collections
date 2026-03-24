@@ -1,0 +1,640 @@
+$kind: http-request
+url: "{{host}}/api/medication_request_requests/prequalify"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: "{\r
+
+    \    \"medication_request_request\": {\r
+
+    \        \"person_id\": \"{{patient_id_from_episode}}\",\r
+
+    \        \"employee_id\": \"{{user_id}}\",\r
+
+    \        \"division_id\": \"{{user_division_id}}\",\r
+
+    \        \"created_at\": \"{{medicationRequestCreatedAt}}\",\r
+
+    \        \"started_at\": \"{{medicationRequestStartedAt}}\",\r
+
+    \        \"ended_at\": \"{{medicationRequestEndedAt}}\",\r
+
+    \        \"medication_id\": \"{{medication_id}}\",\r
+
+    \        \"medication_qty\": {{medication_qty}},\r
+
+    \        \"intent\": \"order\",\r
+
+    \        \"category\": \"community\",\r
+
+    \        \"context\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"encounter\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobEncounterID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"dosage_instruction\": [\r
+
+    \            {\r
+
+    \                \"sequence\": 1,\r
+
+    \                \"text\": \"0.25mg PO every 6-12 hours as needed for menses
+    from Jan 15-20, 2015.  Do not exceed more than 4mg per day\",\r
+
+    \                \"patient_instruction\": \"0.25mg PO every 6-12 hours as
+    needed for menses from Jan 15-20, 2015.  Do not exceed more than 4mg per
+    day\",\r
+
+    \                \"max_dose_per_period\": {\r
+
+    \                    \"numerator\": {\r
+
+    \                        \"value\": 0,\r
+
+    \                        \"unit\": \"mg\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"code\": \"mg\"\r
+
+    \                    },\r
+
+    \                    \"denominator\": {\r
+
+    \                        \"value\": 0,\r
+
+    \                        \"unit\": \"mg\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"code\": \"mg\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"max_dose_per_administration\": {\r
+
+    \                    \"value\": 0,\r
+
+    \                    \"unit\": \"mg\",\r
+
+    \                    \"system\": \"eHealth/ucum/units\",\r
+
+    \                    \"code\": \"mg\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"programs\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{medication_program}}\"\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "// // Отримуємо encounter_start_date з глобальних змінних\r
+
+      // const encounterPeriodes = new
+      Date(pm.globals.get('encounter_period_start'));\r
+
+      \r
+
+      // // Створюємо medicationRequestCreatedAt (на день більше за
+      encounter_start_date)\r
+
+      // const medicationRequestCreatedAt = new Date(encounterPeriodes);\r
+
+      //
+      medicationRequestCreatedAt.setDate(medicationRequestCreatedAt.getDate());\
+      \r
+
+      \r
+
+      // // Створюємо medicationRequestStartedAt (завтра відносно сьогоднішньої
+      дати)\r
+
+      // const today = new Date();\r
+
+      // const medicationRequestStartedAt = new Date(today);\r
+
+      // medicationRequestStartedAt.setDate(medicationRequestStartedAt.getDate()
+      + 1);\r
+
+      \r
+
+      // // Створюємо medicationRequestEndedAt (на 10 днів більше ніж
+      medicationRequestStartedAt)\r
+
+      // const medicationRequestEndedAt = new
+      Date(medicationRequestStartedAt);\r
+
+      // medicationRequestEndedAt.setDate(medicationRequestEndedAt.getDate() +
+      10);\r
+
+      \r
+
+      // // Обрізаємо час, залишаємо тільки YYYY-MM-DD\r
+
+      // const formatDate = (date) => date.toISOString().split('T')[0];\r
+
+      \r
+
+      // const medicationRequestCreatedAtISO =
+      formatDate(medicationRequestCreatedAt);\r
+
+      // const medicationRequestStartedAtISO =
+      formatDate(medicationRequestStartedAt);\r
+
+      // const medicationRequestEndedAtISO =
+      formatDate(medicationRequestEndedAt);\r
+
+      \r
+
+      // // Зберігаємо у глобальні змінні\r
+
+      // pm.globals.set('medicationRequestCreatedAt',
+      medicationRequestCreatedAtISO);\r
+
+      // pm.globals.set('medicationRequestStartedAt',
+      medicationRequestStartedAtISO);\r
+
+      // pm.globals.set('medicationRequestEndedAt',
+      medicationRequestEndedAtISO);\r
+
+      \r
+
+      // console.log(\"Medication Request Created At:\",
+      medicationRequestCreatedAtISO);\r
+
+      // console.log(\"Medication Request Started At:\",
+      medicationRequestStartedAtISO);\r
+
+      // console.log(\"Medication Request Ended At:\",
+      medicationRequestEndedAtISO);\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // // Отримуємо medication_info з глобалів\r
+
+      // let medicationInfo = pm.globals.get(\"medication_info\");\r
+
+      // if (typeof medicationInfo === \"string\") medicationInfo =
+      JSON.parse(medicationInfo);\r
+
+      \r
+
+      // // Дати початку та кінця лікування\r
+
+      // let startedAt = new
+      Date(pm.globals.get(\"medicationRequestStartedAt\"));\r
+
+      // let endedAt = new Date(pm.globals.get(\"medicationRequestEndedAt\"));\r
+
+      // let treatmentDays = Math.ceil((endedAt - startedAt) / (1000 * 60 * 60 *
+      24)) + 1;\r
+
+      \r
+
+      // // Перевірка наявності пакетів\r
+
+      // if (!medicationInfo.packages || medicationInfo.packages.length === 0)
+      {\r
+
+      //     throw new Error(\"404: Not found any appropriate medication with
+      such container parameters\");\r
+
+      // }\r
+
+      \r
+
+      // // Ініціалізація змінних\r
+
+      // let highestMaxDailyDosage = 0;\r
+
+      // let lowestPackageMinQty = Infinity;\r
+
+      // let medicationType = \"BRAND\"; // default, можна отримати з
+      medicationInfo.type якщо є\r
+
+      \r
+
+      // // Проходимо по всіх пакетах\r
+
+      // medicationInfo.packages.forEach(pkg => {\r
+
+      //     // Перевірка max_request_dosage\r
+
+      //     if (pkg.max_request_dosage !== null) {\r
+
+      //         if (pkg.max_request_dosage < 1) { // приклад перевірки\r
+
+      //             throw new Error(\"404: Not found any appropriate medication
+      complying with max_request_dosage limit\");\r
+
+      //         }\r
+
+      //     }\r
+
+      \    \r
+
+      //     // Для кожного program_medication беремо max_daily_dosage\r
+
+      //     pkg.program_medications.forEach(pmObj => {\r
+
+      //         if (pmObj.max_daily_dosage !== null) {\r
+
+      //             highestMaxDailyDosage = Math.max(highestMaxDailyDosage,
+      parseFloat(pmObj.max_daily_dosage));\r
+
+      //         }\r
+
+      //     });\r
+
+      \r
+
+      //     // Збираємо мінімальне package_min_qty\r
+
+      //     if (pkg.package_min_qty !== null) {\r
+
+      //         lowestPackageMinQty = Math.min(lowestPackageMinQty,
+      parseFloat(pkg.package_min_qty));\r
+
+      //     }\r
+
+      // });\r
+
+      \r
+
+      // // Якщо немає max_daily_dosage, беремо package_min_qty\r
+
+      // if (highestMaxDailyDosage === 0) highestMaxDailyDosage =
+      lowestPackageMinQty;\r
+
+      \r
+
+      // // Розрахунок максимальної кількості за період\r
+
+      // let maxMedicationQty = highestMaxDailyDosage * treatmentDays;\r
+
+      // let medicationQty = 0;\r
+
+      \r
+
+      // if (medicationType === \"BRAND\") {\r
+
+      //     // Кратність package_min_qty\r
+
+      //     medicationQty = Math.floor(maxMedicationQty / lowestPackageMinQty)
+      * lowestPackageMinQty;\r
+
+      \r
+
+      //     // Перевірка залишку\r
+
+      //     if ((maxMedicationQty - medicationQty) >= lowestPackageMinQty) {\r
+
+      //         throw new Error(\"422: The amount of medications in medication
+      request is not complying with max_daily_dosage and treatment period
+      limit\");\r
+
+      //     }\r
+
+      // } else if (medicationType === \"INNM_DOSAGE\") {\r
+
+      //     // Для INNM_DOSAGE не потрібно ділення на package_min_qty\r
+
+      //     medicationQty = maxMedicationQty;\r
+
+      //     if ((maxMedicationQty - medicationQty) < 0) {\r
+
+      //         throw new Error(\"422: The amount of medications in medication
+      request is not complying with max_daily_dosage and treatment period
+      limit\");\r
+
+      //     }\r
+
+      // }\r
+
+      \r
+
+      // // Встановлюємо глобальну змінну\r
+
+      // pm.globals.set(\"medication_qty\", medicationQty);\r
+
+      \r
+
+      // // Лог для дебагу\r
+
+      // console.log(\"Medication quantity:\", medicationQty);\r
+
+      // console.log(\"Treatment days:\", treatmentDays);\r
+
+      // console.log(\"Highest max daily dosage:\", highestMaxDailyDosage);\r
+
+      // console.log(\"Lowest package min qty:\", lowestPackageMinQty);\r
+
+      // console.log(\"Medication type:\", medicationType);\r
+
+      \r
+
+      \r
+
+      /*************************\r
+
+      \ * DATES\r
+
+      \ *************************/\r
+
+      const encounterStart = new
+      Date(pm.globals.get('encounter_period_start'));\r
+
+      \r
+
+      const medicationRequestCreatedAt = new Date(encounterStart);\r
+
+      \r
+
+      const today = new Date();\r
+
+      const medicationRequestStartedAt = new Date(today);\r
+
+      medicationRequestStartedAt.setDate(medicationRequestStartedAt.getDate() +
+      1);\r
+
+      \r
+
+      const medicationRequestEndedAt = new Date(medicationRequestStartedAt);\r
+
+      medicationRequestEndedAt.setDate(medicationRequestEndedAt.getDate() +
+      10);\r
+
+      \r
+
+      const formatDate = (date) => date.toISOString().split('T')[0];\r
+
+      \r
+
+      pm.globals.set('medicationRequestCreatedAt',
+      formatDate(medicationRequestCreatedAt));\r
+
+      pm.globals.set('medicationRequestStartedAt',
+      formatDate(medicationRequestStartedAt));\r
+
+      pm.globals.set('medicationRequestEndedAt',
+      formatDate(medicationRequestEndedAt));\r
+
+      \r
+
+      /*************************\r
+
+      \ * MEDICATION INFO\r
+
+      \ *************************/\r
+
+      let medicationInfo = pm.globals.get(\"medication_info\");\r
+
+      if (!medicationInfo) throw new Error(\"medication_info is missing\");\r
+
+      if (typeof medicationInfo === \"string\") medicationInfo =
+      JSON.parse(medicationInfo);\r
+
+      \r
+
+      /*************************\r
+
+      \ * TREATMENT DAYS\r
+
+      \ *************************/\r
+
+      const startedAt = new
+      Date(pm.globals.get(\"medicationRequestStartedAt\"));\r
+
+      const endedAt = new Date(pm.globals.get(\"medicationRequestEndedAt\"));\r
+
+      \r
+
+      const MS_PER_DAY = 1000 * 60 * 60 * 24;\r
+
+      const treatmentDays = Math.floor((endedAt - startedAt) / MS_PER_DAY) +
+      1;\r
+
+      \r
+
+      /*************************\r
+
+      \ * VALIDATION\r
+
+      \ *************************/\r
+
+      if (!Array.isArray(medicationInfo.packages) ||
+      medicationInfo.packages.length === 0) {\r
+
+      \    throw new Error(\"404: No medication packages found\");\r
+
+      }\r
+
+      \r
+
+      /*************************\r
+
+      \ * CALCULATION\r
+
+      \ *************************/\r
+
+      let highestMaxDailyDosage = 0;\r
+
+      let lowestPackageMinQty = null;\r
+
+      \r
+
+      const medicationType = medicationInfo.type || \"BRAND\";\r
+
+      \r
+
+      medicationInfo.packages.forEach(pkg => {\r
+
+      \r
+
+      \    if (Array.isArray(pkg.program_medications)) {\r
+
+      \        pkg.program_medications.forEach(pmObj => {\r
+
+      \            const v = Number(pmObj.max_daily_dosage);\r
+
+      \            if (v > highestMaxDailyDosage) highestMaxDailyDosage = v;\r
+
+      \        });\r
+
+      \    }\r
+
+      \r
+
+      \    const pkgMin = Number(pkg.package_min_qty);\r
+
+      \    if (pkgMin > 0) {\r
+
+      \        lowestPackageMinQty =\r
+
+      \            lowestPackageMinQty === null ? pkgMin :
+      Math.min(lowestPackageMinQty, pkgMin);\r
+
+      \    }\r
+
+      });\r
+
+      \r
+
+      /*************************\r
+
+      \ * FALLBACKS FOR DEMO\r
+
+      \ *************************/\r
+
+      if (highestMaxDailyDosage <= 0) highestMaxDailyDosage = 1;\r
+
+      \r
+
+      if (medicationType === \"BRAND\" && (!lowestPackageMinQty ||
+      lowestPackageMinQty <= 0)) {\r
+
+      \    lowestPackageMinQty = 1;\r
+
+      }\r
+
+      \r
+
+      /*************************\r
+
+      \ * QTY CALCULATION\r
+
+      \ *************************/\r
+
+      const maxMedicationQty = highestMaxDailyDosage * treatmentDays;\r
+
+      let medicationQty = 0;\r
+
+      \r
+
+      if (medicationType === \"BRAND\") {\r
+
+      \    medicationQty =\r
+
+      \        Math.floor(maxMedicationQty / lowestPackageMinQty) *
+      lowestPackageMinQty;\r
+
+      \r
+
+      \    // DEMO fallback: мінімально дозволена упаковка\r
+
+      \    if (medicationQty === 0) {\r
+
+      \        medicationQty = lowestPackageMinQty;\r
+
+      \    }\r
+
+      \r
+
+      } else {\r
+
+      \    medicationQty = maxMedicationQty;\r
+
+      }\r
+
+      \r
+
+      /*************************\r
+
+      \ * SAVE & LOG\r
+
+      \ *************************/\r
+
+      // pm.globals.set(\"medication_qty\", medicationQty); потрібно буде
+      повернути\r
+
+      \r
+
+      console.log({\r
+
+      \    medicationType,\r
+
+      \    treatmentDays,\r
+
+      \    highestMaxDailyDosage,\r
+
+      \    lowestPackageMinQty,\r
+
+      \    maxMedicationQty,\r
+
+      \    medicationQty\r
+
+      });\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"PreQualify Medication Request Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"PreQualify Medication Request status is VALID\", function () {\r
+
+      \    const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 1000

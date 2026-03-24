@@ -1,0 +1,64 @@
+$kind: http-request
+url: "{{host}}/api/healthcare_services/641c210c-64c4-4b3a-ac21-5285ec89bd75"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: "{\r
+
+    \    \"comment\": \"Оновлено\",\r
+
+    \    \"available_time\": [\r
+
+    \        {\r
+
+    \            \"days_of_week\": [\r
+
+    \                \"mon\",\r
+
+    \                \"tue\",\r
+
+    \                \"wed\",\r
+
+    \                \"thu\",\r
+
+    \                \"fri\",\r
+
+    \                \"sat\",\r
+
+    \                \"sun\"\r
+
+    \            ],\r
+
+    \            \"available_start_time\": \"08:30:00\",\r
+
+    \            \"available_end_time\": \"20:00:00\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"not_available\": [\r
+
+    \        {\r
+
+    \            \"description\": \"Санітарний день\",\r
+
+    \            \"during\": {\r
+
+    \                \"start\": \"2018-08-02T10:45:16.000Z\",\r
+
+    \                \"end\": \"2018-08-02T11:00:00.000Z\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+order: 3000

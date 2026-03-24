@@ -1,0 +1,545 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/diagnostic_reports/{{jo\
+  bDiagnosticreportID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: >-
+      function initLogger(pm) {
+        const MASK = true;
+        const SENSITIVE = new Set(['authorization', 'api-key', 'x-custom-psk', 'cookie']);
+        const DROP = new Set([
+          'accept', 'accept-encoding', 'connection', 'content-type', 'postman-token',
+          'user-agent', 'content-length', 'host',
+        ]);
+        const KEY = '__viz_sections__';
+
+        const jparse = (t) => { try { return JSON.parse(t); } catch { return null; } };
+        const esc = (s) => String(s ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;');
+        const uid = () => `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+
+        const headersObj = (h) => {
+          if (!h) return {};
+          if (typeof h?.toObject === 'function') return h.toObject();
+          if (Array.isArray(h)) return h.reduce((a, x) => {
+            const k = (x?.key || x?.name || '') + '';
+            if (k) a[k] = String(x?.value ?? '');
+            return a;
+          }, {});
+          if (typeof h === 'object') return Object.fromEntries(Object.entries(h).map(([k, v]) => [k, String(v)]));
+          return {};
+        };
+
+        const mask = (k, v) => {
+          const kk = String(k || '').toLowerCase().trim();
+          if (!MASK || !SENSITIVE.has(kk)) return v;
+          if (kk === 'authorization') return 'Bearer ***';
+          const s = String(v ?? '');
+          return s ? `***…${s.slice(-6)}` : '***';
+        };
+
+        const fmtHeaders = (h) => Object.entries(headersObj(h))
+          .filter(([k]) => k && !DROP.has(String(k).toLowerCase().trim()))
+          .sort((a, b) => a[0].toLowerCase().localeCompare(b[0].toLowerCase()))
+          .map(([k, v]) => `${k}: ${mask(k, v)}`)
+          .join('\n');
+
+        const hostOf = (u) => {
+          if (!u) return '';
+          try { return new URL(typeof u === 'string' ? u : u.toString()).host; }
+          catch { return Array.isArray(u?.host) ? u.host.join('.') : String(u?.host || ''); }
+        };
+
+        const pathQ = (u) => {
+          if (!u) return '/';
+          const host = hostOf(u);
+          try {
+            const s = typeof u === 'string' ? u : u.toString();
+            const abs = s.startsWith('http') ? s : `https://${host}${s.startsWith('/') ? '' : '/'}${s}`;
+            const U = new URL(abs);
+            return U.pathname + (U.search || '');
+          } catch {
+            const p = Array.isArray(u?.path) ? '/' + u.path.join('/') : (u?.pathname || '/');
+            const q = u?.query;
+            if (Array.isArray(q) && q.length) {
+              const qs = q
+                .filter(x => x?.key)
+                .map(x => `${encodeURIComponent(x.key)}=${encodeURIComponent(x.value ?? '')}`)
+                .join('&');
+              return qs ? `${p}?${qs}` : p;
+            }
+            if (q && typeof q === 'object') {
+              const qs = Object.entries(q)
+                .filter(([k]) => k)
+                .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ?? '')}`)
+                .join('&');
+              return qs ? `${p}?${qs}` : p;
+            }
+            return p || '/';
+          }
+        };
+
+        const maybeJson = (t) => {
+          const j = jparse(t);
+          return j ? JSON.stringify(j, null, 2) : String(t ?? '');
+        };
+
+        const respSlice = (t) => {
+          const j = jparse(t);
+          if (!j) return String(t ?? '');
+          const o = {};
+          if ('data' in j) o.data = j.data;
+          if ('error' in j) o.error = j.error;
+          if ('meta' in j) o.meta = j.meta;
+          return JSON.stringify(o, null, 2);
+        };
+
+        const get = () => jparse(pm.variables.get(KEY)) || [];
+        const set = (arr) => pm.variables.set(KEY, JSON.stringify(arr));
+        const add = (sec) => { const arr = get(); arr.push(sec); set(arr); };
+
+        const rawReq = (method, url, headers, bodyRaw) => [
+          `${String(method || 'GET').toUpperCase()} ${pathQ(url) || '/'} HTTP/1.1`,
+          hostOf(url) ? `Host: ${hostOf(url)}` : null,
+          fmtHeaders(headers) || null,
+          bodyRaw ? `\n${maybeJson(bodyRaw)}` : null,
+        ].filter(Boolean).join('\n');
+
+        // ===== state =====
+        let __extraHtml = '';
+        const __genEntities = {}; // entKey -> { entityTitle, variants:[{id,key,title,text}], order }
+        let __genOrder = 0;
+
+        const hasGenerated = () =>
+          Object.keys(__genEntities).some(k => (__genEntities[k]?.variants?.length || 0) > 0);
+
+        // ===== text builders =====
+        const mainOnly = () => {
+          const s = get()[0];
+          if (!s) return '';
+          return `${s.title}\n\n[Request]\n\n${s.req}\n\n[Response]\n\n${s.res}${s.err ? `\n\n[Error]\n\n${s.err}` : ''}\n`;
+        };
+
+        const subsOnly = () => {
+          const subs = get().slice(1);
+          if (!subs.length) return '';
+          return subs.map(sec =>
+            `${sec.title}\n\n[Request]\n\n${sec.req}\n\n[Response]\n\n${sec.res}${sec.err ? `\n\n[Error]\n\n${sec.err}` : ''}\n`
+          ).join('\n' + '-'.repeat(46) + '\n\n');
+        };
+
+        // ✅ MAIN copy = Main + Subrequests (if any)
+        const mainCombined = () => {
+          const m = mainOnly();
+          const s = subsOnly();
+          if (!s) return m;
+          return `${m}\n${'-'.repeat(46)}\n\n${s}\n`;
+        };
+
+        // ===== helpers for showGeneratedJson (FIX: existed but missing in your code) =====
+        const deepMerge = (a, b) => {
+          if (!b || typeof b !== 'object') return a;
+          const out = Array.isArray(a) ? [...a] : { ...(a || {}) };
+          for (const [k, v] of Object.entries(b)) {
+            if (
+              v && typeof v === 'object' && !Array.isArray(v) &&
+              out[k] && typeof out[k] === 'object' && !Array.isArray(out[k])
+            ) {
+              out[k] = deepMerge(out[k], v);
+            } else {
+              out[k] = v;
+            }
+          }
+          return out;
+        };
+
+        const pickBase = (sourceObj) => {
+          if (sourceObj && typeof sourceObj === 'object') {
+            return (sourceObj?.data && typeof sourceObj.data === 'object') ? sourceObj.data : sourceObj;
+          }
+          try {
+            const parsed = pm.response.json();
+            return (parsed?.data && typeof parsed.data === 'object') ? parsed.data : null;
+          } catch {
+            return null;
+          }
+        };
+
+        // helper: response to text
+        const extractResText = (res) => {
+          let resText = '';
+          try { resText = res?.text?.() || ''; } catch {}
+          if (!resText) { try { const j = res?.json?.(); if (j) resText = JSON.stringify(j); } catch {} }
+          return resText;
+        };
+
+        // ===== render =====
+        const render = () => {
+          const mainText = mainOnly();
+          const subText = subsOnly();
+          const showSubs = !!subText;
+          const showGen = hasGenerated();
+          const combinedText = mainCombined();
+
+          const entitiesSorted = Object.entries(__genEntities)
+            .filter(([, ent]) => (ent?.variants?.length || 0) > 0)
+            .sort((a, b) => (a[1].order ?? 0) - (b[1].order ?? 0));
+
+          const genHtml = showGen ? entitiesSorted.map(([, ent]) => {
+            const variantsHtml = (ent.variants || []).map(v => `
+              <div class="variant-card">
+                <div class="variant-header">
+                  <div class="variant-title">${esc(v.title)}</div>
+                  <button class="btn small" data-copy="${esc(v.id)}">Copy</button>
+                </div>
+                <textarea id="${esc(v.id)}" class="hidden-ta">${esc(v.text)}</textarea>
+                <pre>${esc(v.text)}</pre>
+              </div>
+            `).join('');
+
+            return `
+              <div class="entity-card">
+                <div class="entity-title">${esc(ent.entityTitle)}</div>
+                <div class="entity-sub">${(ent.variants || []).length} variant(s)</div>
+                <div class="variant-grid">${variantsHtml}</div>
+              </div>
+            `;
+          }).join('') : '';
+
+          pm.visualizer.set(`
+      <style>
+        body{ margin:0; padding:12px; font-family: ui-sans-serif, system-ui, -apple-system; background:#f8f9fb; }
+        .row{ display:flex; gap:12px; align-items:stretch; }
+        .col{ flex:1 1 0; min-width:360px; display:flex; flex-direction:column; gap:10px; max-height:calc(100vh - 24px); overflow:auto; }
+        .card{ background:#fff; border:1px solid #e6e6e6; border-radius:14px; box-shadow:0 1px 2px rgba(0,0,0,0.04); padding:12px; display:flex; flex-direction:column; gap:10px; }
+        .header{ display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+        .title{ font-weight:600; font-size:13px; }
+        .btn{ padding:6px 10px; border-radius:10px; border:1px solid #dcdcdc; background:#f4f4f4; cursor:pointer; font-size:12px; }
+        .btn:hover{ background:#eaeaea; }
+        .btn.small{ padding:4px 8px; }
+        .msg{ font-family: ui-monospace, Menlo, Monaco, Consolas, monospace; font-size:12px; color:#444; }
+        pre{ margin:0; white-space:pre; font-family: ui-monospace, Menlo, Monaco, Consolas, monospace; font-size:12px; line-height:1.4; overflow:auto; padding-right:6px; }
+        .hidden-ta{ position:absolute; left:-9999px; top:-9999px; }
+
+        .entity-card{ border:1px solid #ededed; background:#fafafa; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:10px; }
+        .entity-title{ font-weight:600; font-size:13px; }
+        .entity-sub{ color:#777; font-size:12px; }
+        .variant-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
+        .variant-card{ border:1px solid #eaeaea; background:#fff; border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:8px; }
+        .variant-header{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+        .variant-title{ font-family: ui-monospace, Menlo, Monaco, Consolas, monospace; font-size:12px; }
+      </style>
+
+
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="header">
+              <div class="title">Main request</div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <button class="btn" id="copyMainBtn">Copy</button>
+                <span class="msg" id="m1"></span>
+              </div>
+            </div>
+
+            <!-- Copy uses main + subrequests combined -->
+            <textarea id="mainAllTa" class="hidden-ta">${esc(combinedText)}</textarea>
+
+            <pre>${esc(mainText || '—')}</pre>
+          </div>
+
+          ${showSubs ? `
+          <div class="card">
+            <div class="header"><div class="title">Subrequests</div></div>
+            <pre>${esc(subText)}</pre>
+          </div>` : ``}
+
+          ${__extraHtml ? `<div class="card"><div class="title">Extra</div>${__extraHtml}</div>` : ``}
+        </div>
+
+        ${showGen ? `
+        <div class="col">
+          <div class="card">
+            <div class="header">
+              <div class="title">Generated JSON</div>
+              <span class="msg" id="m3"></span>
+            </div>
+            ${genHtml}
+          </div>
+        </div>` : ``}
+      </div>
+
+
+      <script>
+
+      (() => {
+        const msg = (el, t)=>{ if(!el) return; el.textContent=t||''; if(t) setTimeout(()=>el.textContent='',1200); };
+
+        async function copyFromTa(ta, el){
+          try{
+            const v = ta?.value || '';
+            if(!v) return msg(el,'Nothing to copy');
+            if(navigator.clipboard?.writeText){
+              await navigator.clipboard.writeText(v);
+              return msg(el,'Copied ✅');
+            }
+            ta.focus(); ta.select();
+            msg(el, document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌');
+          }catch(e){
+            try{ ta.focus(); ta.select(); msg(el, document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌'); }
+            catch{ msg(el,'Copy failed ❌'); }
+          }
+        }
+
+        const m1 = document.getElementById('m1');
+        const mainAllTa = document.getElementById('mainAllTa');
+        const mainBtn = document.getElementById('copyMainBtn');
+        if (mainBtn) mainBtn.onclick = () => copyFromTa(mainAllTa, m1);
+
+        const m3 = document.getElementById('m3');
+        document.querySelectorAll('button[data-copy]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-copy');
+            const ta = document.getElementById(id);
+            if (!ta) return msg(m3, 'Not found');
+            copyFromTa(ta, m3);
+          });
+        });
+      })();
+
+      </script>
+
+      `);
+        };
+
+        // ===== INIT MAIN =====
+        set([]);
+        add({
+          title: pm.info.requestName || 'Main request',
+          key: 'MAIN',
+          req: rawReq(
+            pm.request.method,
+            pm.request.url,
+            pm.request.headers,
+            pm.request.body?.mode === 'raw' ? pm.request.body.raw : ''
+          ),
+          res: respSlice(pm.response.text()),
+          err: ''
+        });
+        render();
+
+        // ===== Public API =====
+        return {
+          // extra blocks (not [Request]/[Response])
+          displayResponse(title, data) {
+            const safe = esc(JSON.stringify(data ?? {}, null, 2));
+            __extraHtml += `
+      <div class="entity-card" style="background:#fff;">
+        <div class="variant-header">
+          <div class="variant-title">${esc(title || 'Result')}</div>
+        </div>
+        <pre>${safe}</pre>
+      </div>`;
+            render();
+          },
+
+          // append subrequest (always adds new)
+          logSubRequest({ title, req, res, err }) {
+            const reqRaw = rawReq(
+              req?.method,
+              req?.url,
+              req?.header || req?.headers,
+              req?.body?.raw || (typeof req?.body === 'string' ? req.body : '')
+            );
+
+            const resText = extractResText(res);
+
+            add({
+              title: title || 'Sub request',
+              key: '',
+              req: reqRaw,
+              res: respSlice(resText),
+              err: err?.message || (err ? String(err) : '')
+            });
+
+            render();
+          },
+
+          // ✅ UPSERT subrequest (replace existing by key) -> for retries (e.g. Get job)
+          logSubRequestUpsert({ key, title, req, res, err }) {
+            const k = String(key || '').trim();
+            if (!k) return this.logSubRequest({ title, req, res, err });
+
+            const reqRaw = rawReq(
+              req?.method,
+              req?.url,
+              req?.header || req?.headers,
+              req?.body?.raw || (typeof req?.body === 'string' ? req.body : '')
+            );
+
+            const resText = extractResText(res);
+
+            const list = get();
+            const idx = list.findIndex(x => String(x?.key || '') === k);
+
+            const updated = {
+              title: title || 'Sub request',
+              key: k,
+              req: reqRaw,
+              res: respSlice(resText),
+              err: err?.message || (err ? String(err) : '')
+            };
+
+            if (idx >= 0) list[idx] = updated; // replace previous retry
+            else list.push(updated);           // first time add
+
+            set(list);
+            render();
+          },
+
+          /**
+           * showGeneratedJson({ entity, title, base, sourceObj, variants, mode, preset })
+           * - mode: 'append'(default) | 'replace'
+           * - preset: 'employee_request' to build {employee_request:{...}} from Get Employee Details response .data
+           *
+           * DeviceRequest example remains intact:
+           * logger.showGeneratedJson({
+           *   entity:'DeviceRequest',
+           *   variants:[{key:'revoked',patch:{...}},{key:'entered_in_error',patch:{...}}]
+           * })
+           */
+          showGeneratedJson(opts) {
+            const entity = String(opts?.entity || '').trim();
+            if (!entity) return;
+
+            const entityTitle = opts?.title || entity;
+            const base = (opts && (opts.base || opts.sourceObj))
+              ? pickBase(opts.base || opts.sourceObj)
+              : pickBase(null);
+
+            const mode = (opts?.mode === 'replace') ? 'replace' : 'append';
+            const preset = String(opts?.preset || '').trim().toLowerCase();
+
+            const entKey = entity.toLowerCase().replaceAll(' ', '_');
+
+            if (!__genEntities[entKey]) __genEntities[entKey] = { entityTitle, variants: [], order: __genOrder++ };
+            __genEntities[entKey].entityTitle = entityTitle;
+
+            const existing = (mode === 'append') ? (__genEntities[entKey].variants || []) : [];
+            const map = new Map();
+            existing.forEach(v => {
+              const k = String(v?.key || '').trim();
+              if (k) map.set(k, v);
+            });
+
+            // --- PRESET: employee_request (Get Employee Details) ---
+            if (preset === 'employee_request') {
+              let text;
+              if (!base || typeof base !== 'object') {
+                text = 'Response JSON has no "data" object — cannot generate employee_request.';
+              } else {
+                const data = base; // base is pm.response.json().data
+                const employeeEmail = pm.environment.get('user_email');
+
+                const extraKey = data.employee_type?.toLowerCase();
+                const extraData = (extraKey && data[extraKey]) ? { [extraKey]: data[extraKey] } : {};
+
+                const party = data.party || {};
+                const {
+                  declaration_count,
+                  declaration_limit,
+                  id,
+                  minfin_validation_status,
+                  verification_status,
+                  ...cleanParty
+                } = party;
+
+                cleanParty.email = cleanParty.email || employeeEmail;
+
+                const employeeRequest = {
+                  employee_id: data.id,
+                  division_id: data.division?.id || null,
+                  position: data.position,
+                  start_date: data.start_date,
+                  status: 'NEW',
+                  employee_type: data.employee_type,
+                  party: cleanParty,
+                  ...extraData
+                };
+
+                const finalJson = { employee_request: employeeRequest };
+                text = JSON.stringify(finalJson, null, 2);
+              }
+
+              map.set('employee_request', {
+                id: `gen_${entKey}_employee_request_${uid()}`,
+                key: 'employee_request',
+                title: `${entityTitle}: employee_request`,
+                text
+              });
+
+              __genEntities[entKey].variants = Array.from(map.values());
+              render();
+              return;
+            }
+
+            // --- DEFAULT behavior (patch/build variants) ---
+            const variants = (Array.isArray(opts?.variants) && opts.variants.length)
+              ? opts.variants
+              : [{
+                  key: 'entered_in_error',
+                  title: 'entered_in_error',
+                  patch: {
+                    status: 'entered_in_error',
+                    status_reason: { coding: [{ system: 'eHealth/care_plan_cancel_reasons', code: 'entered_in_error' }] }
+                  }
+                }];
+
+            if (!base || typeof base !== 'object') {
+              map.set('error', {
+                id: `gen_${entKey}_error_${uid()}`,
+                key: 'error',
+                title: `${entityTitle}: error`,
+                text: 'Response JSON has no "data" object — cannot generate JSON.'
+              });
+            } else {
+              variants.forEach((v, idx) => {
+                const k = String(v?.key || `v${idx}`).trim();
+                const vTitle = v?.title || k || `variant_${idx + 1}`;
+
+                let obj;
+                try {
+                  obj = (typeof v?.build === 'function')
+                    ? v.build(base)
+                    : deepMerge({ ...base }, v?.patch || {});
+                } catch (e) {
+                  obj = { error: 'Failed to build variant', message: e?.message || String(e) };
+                }
+
+                map.set(k, {
+                  id: `gen_${entKey}_${k}_${uid()}`,
+                  key: k,
+                  title: `${entityTitle}: ${vTitle}`,
+                  text: JSON.stringify(obj, null, 2)
+                });
+              });
+            }
+
+            __genEntities[entKey].variants = Array.from(map.values());
+            render();
+          }
+        };
+      }
+
+
+         const logger = initLogger(pm)
+    language: text/javascript
+order: 1000

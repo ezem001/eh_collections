@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{pis_host}}/api/pis/bulk/employee_roles"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{client_secret}}"
+queryParams:
+  - key: depth
+    value: "1"
+    disabled: true
+order: 6000

@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/encounters/{{jobEncounterID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Encounter by id - PASS. Status code is 200\", function ()
+      {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 70000

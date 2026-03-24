@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/forbidden_groups/210252a3-207d-4f8c-9ab3-a8239fc71b44"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: name
+    value: Some%20name
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 2000

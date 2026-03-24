@@ -1,0 +1,32 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/oauth/tokens
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+body:
+  type: text
+  content: |-
+    {
+       "token":{
+          "grant_type":"authorization_code",
+          "code": "{{auth_token}}",
+          "client_id":"a8f69562-e675-4d4e-a286-93e336143a5d",
+          "client_secret": "WDRWK29KcStZUUV6QmQyWVlqbllwdz09",
+          "redirect_uri": "https://pis_test.com/redirect"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Access granted", function () {
+          pm.response.to.have.status(201);
+          var jsonData = pm.response.json();
+          var token = jsonData.data.value;
+          pm.environment.set("pis_access_token", token);
+      });
+    language: text/javascript
+order: 4000

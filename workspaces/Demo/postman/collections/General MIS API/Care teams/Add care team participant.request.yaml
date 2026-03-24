@@ -1,0 +1,114 @@
+$kind: http-request
+description: >-
+  This method is used to add additionals participants to care team.
+
+
+  # **Attributes**
+
+
+  | **Attribute** | **Type** | **Required** | **Description / Dictionary** |
+  **Example** |
+
+  | --- | --- | --- | --- | --- |
+
+  | `role` | `string` | ✅ required | Dictionary: `care_team_participant_role` |
+  `"doctor"` |
+
+  | `participantmember_type` | `string` | ✅ required | Dictionary:
+  `care_team_participant_member_type` | `"employee"` |
+
+  | `employee_member_id` | `string` | ✅ required | Care team participant member
+  identifier | `"28d9c1be-08f0-403b-aa76-bff228c9904f"` |
+
+  | `period_start` | `string` (date) | ✅ required | Start of period when member
+  participates in care team | `"2024-11-28"` |
+
+  | `status` | `string` | ✅ required | Dictionary:
+  `care_team_participant_status` | `"active"` |
+
+  | `care_team_id` | `string` | ✅ required | Care team identifier |
+  `"28d9c1be-08f0-403b-aa76-bff228c9904f"` |
+url: "{{host}}/api/care_teams/participants"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"role\": \"care_team_manager\",\r
+
+    \  \"member_type\": \"employee\",\r
+
+    \  \"member_id\": \"c997ff66-3711-43f7-a168-7cbd5b72bd95\",\r
+
+    \  \"period_start\": \"2025-12-01\",\r
+
+    \  \"status\": \"active\",\r
+
+    \  \"care_team_id\": \"{{care_team_id}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+
+          // ------------------------------
+          //  1. Отримуємо респонс з попереднього запиту
+          // ------------------------------
+          const responseJson = pm.response.json();
+          const participantData = responseJson.data;
+          pm.globals.set("participant_id", participantData?.id)
+
+          if (!participantData) {
+              console.error("❌ No participant data in response");
+              return;
+          }
+
+          // ------------------------------
+          //  2. Підготуємо payload для бекенду
+          // ------------------------------
+          const mongoPayload = {
+              care_team_id: participantData.care_team_id,
+              id: participantData.id,
+              member_id: participantData.member_id,
+              member_type: participantData.member_type,
+              role: participantData.role,
+              status: participantData.status,
+              period_start: participantData.period_start,
+              period_end: participantData.period_end,
+              status_reason: participantData.status_reason
+          };
+
+          console.info("📤 Sending participant to backend:", mongoPayload);
+
+          // ------------------------------
+          //  3. Надсилаємо на наш бекенд
+          // ------------------------------
+          pm.sendRequest({
+              url: "http://localhost:3000/care-teams/participants",
+              method: "POST",
+              header: {
+                  "Content-Type": "application/json"
+              },
+              body: {
+                  mode: "raw",
+                  raw: JSON.stringify({ data: mongoPayload })
+              }
+          }, (err, res) => {
+              if (err) {
+                  console.error("❌ Error sending participant to backend:", err);
+                  return;
+              }
+
+              console.log("✅ Participant saved in backend:", res.json());
+          });
+
+      });
+    language: text/javascript
+order: 9000

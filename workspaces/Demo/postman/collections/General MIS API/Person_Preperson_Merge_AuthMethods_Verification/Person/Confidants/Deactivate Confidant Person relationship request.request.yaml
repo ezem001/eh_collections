@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{host}}/api/persons/ced5c690-b00f-4428-92aa-c46489c2a20c/confidant_perso\
+  n_relationship_requests/deactivate"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r
+
+    \  \"confidant_person_relationship\": {\r
+
+    \    \"id\": \"9d0f2704-29d4-4ca3-8450-32fabac52c95\",\r
+
+    \    \"documents_relationship\": [\r
+
+    \      {\r
+
+    \        \"type\": \"BIRTH_CERTIFICATE\",\r
+
+    \        \"number\": \"АА120518\",\r
+
+    \        \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської області\",\r
+
+    \        \"issued_at\": \"2020-02-28\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  },\r
+
+    \  \"authorize_with\": \"684c83ee-8633-4fcd-8580-86b4286127d9\"\r
+
+    }"
+order: 5000

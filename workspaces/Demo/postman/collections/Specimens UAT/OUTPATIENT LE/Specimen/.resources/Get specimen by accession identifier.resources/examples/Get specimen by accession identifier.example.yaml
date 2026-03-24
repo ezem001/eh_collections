@@ -1,0 +1,214 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/specimens/9363-2602-8223-4634
+  method: GET
+  headers:
+    Content-Type: application/json
+    Authorization: Bearer {{spec2_access_token}}
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Wed, 29 Nov 2023 19:40:13 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "72"
+    X-Kong-Upstream-Latency: "19"
+    X-Request-Id: dce4cb9c-5ac2-45eb-b659-4173e5715703#1024
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82dd5234b9972d43-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "accession_identifier": "9363-2602-8223-4634",
+              "collection": {
+                  "body_site": null,
+                  "collected_date_time": "2023-11-24T16:14:07Z",
+                  "collector": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "patient",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                      }
+                  },
+                  "duration": null,
+                  "fasting_status_codeable_concept": null,
+                  "method": null,
+                  "procedure": {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "procedure",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923293114"
+                      }
+                  },
+                  "quantity": {
+                      "code": "g",
+                      "system": "eHealth/ucum/units",
+                      "unit": "грам",
+                      "value": 20
+                  }
+              },
+              "condition": null,
+              "container": [
+                  {
+                      "additive_codeable_concept": null,
+                      "capacity": {
+                          "code": "mg",
+                          "system": "eHealth/ucum/units",
+                          "unit": "міліграм",
+                          "value": 30000
+                      },
+                      "description": null,
+                      "identifier": "1-3244-ABC",
+                      "specimen_quantity": {
+                          "code": "g",
+                          "system": "eHealth/ucum/units",
+                          "unit": "грам",
+                          "value": 20
+                      },
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "default",
+                                  "system": "specimen_container_types"
+                              }
+                          ],
+                          "text": null
+                      }
+                  }
+              ],
+              "context": {
+                  "display_value": null,
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "encounter",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202817"
+                  }
+              },
+              "id": "ac8a6e2e-38ae-40c6-b648-feb9aeca5919",
+              "identity": {
+                  "age": 35,
+                  "gender": "MALE"
+              },
+              "inserted_at": "2023-11-29T18:29:02.942000Z",
+              "inserted_by": "9e9e11ce-a7b4-4961-a6a8-718dd108df6c",
+              "managing_organization": {
+                  "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "legal_entity",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                  }
+              },
+              "note": "Procedure created before, parent from this package",
+              "parent": [
+                  {
+                      "display_value": null,
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "code": "specimen",
+                                      "system": "eHealth/resources"
+                                  }
+                              ],
+                              "text": null
+                          },
+                          "value": "1a0a8aa2-87a4-41ca-a61c-ba0923202817"
+                      }
+                  }
+              ],
+              "received_time": null,
+              "registered_by": {
+                  "display_value": "Богдан Васильович Татаренко",
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "employee",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "7abb437b-e307-4c3d-84af-33d17fbc8720"
+                  }
+              },
+              "request": [],
+              "status": "available",
+              "status_reason": null,
+              "subject": {
+                  "display_value": null,
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "patient",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "b47581e0-2799-4eb3-ae4c-584bbb97adc8"
+                  }
+              },
+              "type": {
+                  "coding": [
+                      {
+                          "code": "default",
+                          "system": "specimen_types"
+                      }
+                  ],
+                  "text": null
+              },
+              "updated_at": "2023-11-29T18:29:02.942000Z",
+              "updated_by": "9e9e11ce-a7b4-4961-a6a8-718dd108df6c"
+          },
+          "meta": {
+              "code": 200,
+              "request_id": "dce4cb9c-5ac2-45eb-b659-4173e5715703#1024",
+              "type": "object",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/specimens/9363-2602-8223-4634"
+          }
+      }
+order: 1000

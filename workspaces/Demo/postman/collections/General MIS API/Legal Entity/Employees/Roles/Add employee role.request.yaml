@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/employee_roles"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: "{\r
+
+    \  \"healthcare_service_id\": \"6a9d692f-0a04-454d-a409-4821b6bc91f1\",\r
+
+    \  \"employee_id\": \"2259be80-0f88-4b9e-ae9a-1ae011439c54\"\r
+
+    }"
+order: 1000

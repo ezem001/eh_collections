@@ -1,0 +1,75 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/jobs/{{job_id}}
+  method: GET
+  headers:
+    api-key: ef7d48ecfc233d6af088
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 303
+  statusText: See Other
+  headers:
+    Date: Wed, 29 Nov 2023 16:41:24 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "1339"
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Via: kong/2.8.1
+    X-Kong-Proxy-Latency: "6"
+    X-Kong-Upstream-Latency: "4"
+    X-Request-Id: 0bcbb216-30c1-496d-a833-a0b2d84040db#933
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82dc4c48a9342492-KBP
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "eta": "2023-11-29T16:51:18.567Z",
+              "links": [
+                  {
+                      "entity": "encounter",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/encounters/1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                  },
+                  {
+                      "entity": "diagnostic_report",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/diagnostic_reports/1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                  },
+                  {
+                      "entity": "procedure",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/procedures/1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                  },
+                  {
+                      "entity": "observation",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/observations/1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                  },
+                  {
+                      "entity": "observation",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/observations/1a0a8aa2-87a4-41ca-a61c-ba0923202826"
+                  },
+                  {
+                      "entity": "specimen",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/1a0a8aa2-87a4-41ca-a61c-ba0923202816"
+                  },
+                  {
+                      "entity": "specimen",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/ac8a6e2e-38ae-40c6-b648-feb9aeca5918"
+                  },
+                  {
+                      "entity": "specimen",
+                      "href": "/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/specimens/23e40a3c-a358-4d45-9e55-9021e1f90910"
+                  }
+              ],
+              "status": "processed",
+              "status_code": 200
+          },
+          "meta": {
+              "code": 303,
+              "request_id": "0bcbb216-30c1-496d-a833-a0b2d84040db#933",
+              "type": "object",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/jobs/656769aefac641004250284d"
+          }
+      }
+order: 4000

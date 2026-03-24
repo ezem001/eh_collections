@@ -1,0 +1,19 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \  \"contract_number\": \"0000-K37M-M000\",\r
+
+    \  \"medical_program_id\": \"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0\",\r
+
+    \  \"divisions\": [\r
+
+    \    \"2bb9f35c-711f-4bdf-a69f-0d4fab0d2076\"\r
+
+    \  ]\r
+
+    }"
+order: 1000

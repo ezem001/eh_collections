@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{host}}/api/patients/3241244c-acf7-40bf-8a35-d290607fb53e/compositions/s\
+  earch?type=ADOPTION"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: encounter_id
+    value: 3a0dcfd7-5348-4511-b46d-b2dc4b94ca98
+    disabled: true
+  - key: type
+    value: ADOPTION
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+body:
+  type: text
+  content: ""
+order: 8000

@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{host}}/api/dictionaries_configurations?name=prescribable_device_codes"
+method: GET
+headers:
+  Accept: application/json
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: is_active
+    value: "true"
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: name
+    value: prescribable_device_codes
+order: 1000

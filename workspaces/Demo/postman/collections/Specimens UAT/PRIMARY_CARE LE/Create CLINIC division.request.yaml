@@ -1,0 +1,58 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/divisions
+method: POST
+headers:
+  api-key: ef7d48ecfc233d6af088
+  Authorization: Bearer {{le_primc_v2_owner_access_token}}
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+      "name": "Division of Primary care",
+      "addresses": [
+      	{
+            "type": "RESIDENCE",
+            "country": "UA",
+            "area": "ВОЛИНСЬКА",
+            "settlement": "ЛУЦЬК",
+            "settlement_type": "CITY",
+            "settlement_id": "2029f5e9-0682-4ecf-b4c3-605a9ef800ca",
+            "street_type": "STREET",
+            "street": "Олицька",
+            "building": "23",
+            "apartment": "32",
+            "zip": "43000"
+          }
+      ],
+      "phones": [
+        {
+          "type": "MOBILE",
+          "number": "+380503410871"
+        }
+      ],
+      "email": "eh_test+10@bigmir.net",
+      "type": "CLINIC",
+      "external_id": "32132467"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData && jsonData.data) {
+          tests["Correct division status"] = jsonData.data.status === 'ACTIVE';
+          var division_id = jsonData.data.id;
+          postman.setEnvironmentVariable("primc_division_id", division_id);
+      } else {
+          tests["Correct division status"] = false;
+          tests["Correct legal entity"] = false;
+          postman.setEnvironmentVariable("primc_division_id", "<<undefined>>");
+      }
+    language: text/javascript
+examples: ./.resources/Create CLINIC division.resources/examples
+order: 10000

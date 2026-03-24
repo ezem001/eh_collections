@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{host}}/api/persons/b3695d68-0b6c-449a-9916-c755ca6e3e79/confidant_perso\
+  n_relationships"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+scripts:
+  - type: afterResponse
+    code: |
+      tests["Status code is 200"] = responseCode.code === 200;
+    language: text/javascript
+settings:
+  disabledSystemHeaders:
+    - accept
+    - user-agent
+    - accept-encoding
+    - connection
+order: 1000

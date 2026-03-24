@@ -1,0 +1,101 @@
+$kind: http-request
+url: "{{host}}/api/events/{{first_event_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "// Функція для перевірки одного item\r
+
+      function checkItem(item) {\r
+
+      \    pm.expect(item).to.have.property(\"changed_by\");\r
+
+      \    pm.expect(item).to.have.property(\"entity_id\");\r
+
+      \    pm.expect(item).to.have.property(\"entity_type\");\r
+
+      \    pm.expect(item).to.have.property(\"event_type\");\r
+
+      \    pm.expect(item).to.have.property(\"id\");\r
+
+      \    pm.expect(item).to.have.property(\"properties\");\r
+
+      \r
+
+      \    // Перевіряємо, що хоч один під-ключ у properties має new_value\r
+
+      \    const props = item.properties;\r
+
+      \    const hasNewValue = Object.values(props).some(p => p &&
+      p.hasOwnProperty(\"new_value\"));\r
+
+      \    pm.expect(hasNewValue).to.be.true;\r
+
+      }\r
+
+      \r
+
+      // 1. Статус відповіді\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // 2. Перевірка data (масив або об'єкт)\r
+
+      const jsonData = pm.response.json();\r
+
+      pm.test(\"Data exists\", function () {\r
+
+      \    pm.expect(jsonData).to.have.property(\"data\");\r
+
+      });\r
+
+      \r
+
+      // 3. Перевірка кожного елементу data\r
+
+      if (Array.isArray(jsonData.data)) {\r
+
+      \    pm.test(\"All data items have required fields and new_value exists in
+      properties\", function () {\r
+
+      \        jsonData.data.forEach(item => checkItem(item));\r
+
+      \    });\r
+
+      } else {\r
+
+      \    pm.test(\"Data object has required fields and new_value exists in
+      properties\", function () {\r
+
+      \        checkItem(jsonData.data);\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      // 4. Paging перевірка (якщо є)\r
+
+      if (jsonData.paging) {\r
+
+      \    pm.test(\"Paging info exists and total_entries > 0\", function () {\r
+
+      \        pm.expect(jsonData.paging).to.have.property(\"total_entries\").t\
+      hat.is.above(0);\r
+
+      \    });\r
+
+      }\r\n"
+    language: text/javascript
+order: 3000

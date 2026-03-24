@@ -1,0 +1,233 @@
+$kind: http-request
+url: "{{host}}/api/v2/legal_entities/{{user_legal_entity}}"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: ""
+scripts:
+  - type: afterResponse
+    code: |
+      const data = pm.response.json().data;
+
+      const ownerRaw = pm.environment.get('owner_data');
+      const owner = ownerRaw ? JSON.parse(ownerRaw) : {};
+      const party = owner.party || {};
+      const documents = party.documents || [];
+
+      const noTaxId = party.no_tax_id === true;
+      const taxId = noTaxId
+          ? (documents.length > 0 ? documents[0].number : data.edrpou)
+          : (party.tax_id || data.edrpou);
+      console.log(taxId)
+
+
+      const finalJson = {
+          edrpou: data.edrpou,
+          type: data.type,
+          residence_address: { ...data.residence_address },
+          phones: data.phones,
+          email: data.email,
+          website: data.website,
+          receiver_funds_code: data.receiver_funds_code,
+          beneficiary: data.beneficiary,
+          owner: {
+              first_name: party.first_name || "",
+              last_name: party.last_name || "",
+              second_name: party.second_name || "",
+              tax_id: taxId,
+              no_tax_id: noTaxId,
+              birth_date: party.birth_date || "",
+              gender: party.gender || "MALE",
+              email: party.email || data.email,
+              documents: documents,
+              phones: party.phones || data.phones,
+              position: owner.position || "P1"
+          },
+          accreditation: {
+              category: data.accreditation?.category || "",
+              issued_date: data.accreditation?.issued_date || "",
+              expiry_date: data.accreditation?.expiry_date || "",
+              order_no: data.accreditation?.order_no || "",
+              order_date: data.accreditation?.order_date || ""
+          },
+          license: {
+              active_from_date: data.license?.active_from_date || "",
+              expiry_date: data.license?.expiry_date || "",
+              issued_by: data.license?.issued_by || "",
+              issued_date: data.license?.issued_date || "",
+              license_number: data.license?.license_number || "",
+              order_no: data.license?.order_no || "",
+              type: data.license?.type || "",
+              what_licensed: data.license?.what_licensed || ""
+          },
+          archive: data.archive || [],
+          security: {
+              redirect_uri: data.security?.redirect_uri || "https://test89.com"
+          },
+          public_offer: {
+              consent_text: data.public_offer?.consent_text || "Consent text",
+              consent: data.public_offer?.consent ?? true
+          }
+      };
+
+      pm.visualizer.set(`
+          <style>
+              pre {
+                  background-color: #f6f8fa;
+                  padding: 16px;
+                  border-radius: 5px;
+                  font-family: monospace;
+                  white-space: pre-wrap;
+              }
+              button {
+                  margin-bottom: 10px;
+                  padding: 5px 10px;
+                  border-radius: 4px;
+                  border-color: #fff;
+                  cursor: pointer;
+              }
+              button:hover{
+                  border-color: #000;
+              }
+          </style>
+          <h3>Згенерований JSON</h3>
+          <button onclick="copyToClipboard()">Скопіювати JSON</button>
+          <pre id="jsonOutput">{{json}}</pre>
+          <script>
+              function copyToClipboard() {
+                  const text = document.getElementById('jsonOutput').innerText;
+                  const textArea = document.createElement('textarea');
+                  textArea.value = text;
+                  document.body.appendChild(textArea);
+                  textArea.select();
+                  try {
+                      document.execCommand('copy');
+                      alert('JSON скопійовано!');
+                  } catch (err) {
+                      alert('Помилка копіювання: ' + err);
+                  }
+                  document.body.removeChild(textArea);
+              }
+          </script>
+      `, {
+          json: JSON.stringify(finalJson, null, 2)
+      });
+    language: text/javascript
+  - type: beforeRequest
+    code: "// Отримати власника через додатковий запит\r
+
+      pm.sendRequest({\r
+
+      \    url:
+      `${pm.globals.get('host')}/api/employees?page=1&page_size=1000`,\r
+
+      \    method: 'GET',\r
+
+      \    header: {\r
+
+      \        'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \        'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \        'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \    }\r
+
+      }, function (err, response) {\r
+
+      \    if (err) {\r
+
+      \        console.error('Request error:', err);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const employees = response.json().data;\r
+
+      \    const ownerEmployee = employees.find(emp => emp.employee_type ===
+      'OWNER' && emp.is_active);\r
+
+      \r
+
+      \    if (!ownerEmployee) {\r
+
+      \        console.warn('Owner not found');\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const ownerId = ownerEmployee.id;\r
+
+      \    console.log(ownerId)\r
+
+      \r
+
+      \    // Зберегти ID власника в середовище\r
+
+      \    pm.environment.set('owner_id', ownerId);\r
+
+      \r
+
+      \    // Тепер виконуємо другий запит з отриманим ownerId\r
+
+      \    pm.sendRequest({\r
+
+      \        url: `${pm.globals.get('host')}/api/employees/${ownerId}`,\r
+
+      \        method: 'GET',\r
+
+      \        header: {\r
+
+      \            'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \        }\r
+
+      \    }, function (err2, response2) {\r
+
+      \        if (err2) {\r
+
+      \            console.error('Request 2 error:', err2);\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        const ownerData = response2.json().data;\r
+
+      \        console.log(ownerData)\r
+
+      \r
+
+      \        // Зберігаємо потрібні поля для подальшого використання у Test
+      Script\r
+
+      \        pm.environment.set('owner_data', JSON.stringify(ownerData));\r
+
+      \    });\r
+
+      })"
+    language: text/javascript
+order: 5000

@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/diagnostic_reports/{{JobDia\
+  gnosticReportID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Diagnostic Report by id - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 61000

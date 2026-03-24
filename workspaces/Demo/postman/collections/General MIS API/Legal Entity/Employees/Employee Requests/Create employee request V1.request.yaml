@@ -1,0 +1,98 @@
+$kind: http-request
+url: http://localhost:3000/create-employee-signed-content
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+        "employee_request": {
+            "division_id": "f40ca1ea-e169-4db5-92ec-91d6269f3795",
+            "position": "P67",
+            "start_date": "2026-02-22",
+            "status": "NEW",
+            "employee_type": "SPECIALIST",
+            "party": {
+                "first_name": "Сергій",
+                "last_name": "Куриленко",
+                "second_name": "Вікторович",
+                "birth_date": "1988-11-25",
+                "gender": "MALE",                                                           
+                "no_tax_id": false,
+                "tax_id": "3247112235",
+                "email": "serhii.kurylenko@ehealth.gov.ua",    
+                "documents": [
+                    {
+                        "type": "PASSPORT",
+                        "number": "ММ130577",
+                        "issued_by": "Рокитнянським РВ ГУ МВС Київської області",
+                        "issued_at": "2017-02-28"
+                    }
+                ],
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+380502298393"
+                    }
+                ],
+                "working_experience": 10,
+                "about_myself": "збс"
+            },
+            "specialist": {
+                "educations": [
+                    {
+                        "city": "Київ",
+                        "country": "UA",
+                        "degree": "MASTER",
+                        "diploma_number": "DD123543",
+                        "institution_name": "Академія Богомольця",
+                        "issued_date": "2017-02-28",
+                        "speciality": "Санологія"
+                    }
+                ],
+                "qualifications": [
+                    {
+                        "additional_info": "додаткова інофрмація",
+                        "certificate_number": "2017-02-28",
+                        "institution_name": "Академія Богомольця",
+                        "issued_date": "2017-02-28",
+                        "speciality": "Санологія",
+                        "type": "SPECIALIZATION",
+                        "valid_to": "2027-02-28"
+                    }
+                ],
+                "specialities": [
+                     {
+                        "attestation_date": "2020-06-28",
+                        "attestation_name": "Академія Богомольця",
+                        "certificate_number": "AB/21331",
+                        "level": "FIRST",
+                        "qualification_type": "AWARDING",
+                        "speciality": "CARDIOLOGY",
+                        "speciality_officio": true,
+                        "valid_to_date": "2027-02-28"
+                    }
+                ]
+            }
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      const resData = pm.response.json();
+
+      console.log('create employee sign content', resData)
+
+
+      pm.test(`Employee content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {
+          pm.expect(pm.response.code).to.eql(200);
+          pm.expect(resData).to.have.property('signed_content');
+          pm.globals.set('employee_signed_content', resData.signed_content);
+      });
+    language: text/javascript
+order: 1000

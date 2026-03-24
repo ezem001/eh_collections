@@ -1,0 +1,10 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/b47581e0-2799-4eb3-ae4c-584bbb97adc8/observations/1a0a8aa2-87a4-41ca-a61c-ba0923202816
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{spec2_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+examples: ./.resources/Get observation details.resources/examples
+order: 14000

@@ -1,0 +1,70 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/{{patient_id}}/encounter_package"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: "Bearer {{doctor_token}} "
+  api-key: "{{mis_client_secret_demo}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value_demo}}"
+body:
+  type: text
+  content: |-
+    {
+      "visit": {
+        "id": "{{visit_id}}",
+        "period": {
+          "start": "2023-05-10T14:40:16+02:00",
+          "end": "2023-05-19T14:41:16Z"
+        }
+      },
+      "signed_data": "{{encounter_package_base64}}"
+    	
+    }
+scripts:
+  - type: beforeRequest
+    code: >+
+      //2 observations
+
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))};
+
+      var encounter_package =  pm.environment.get("encounter_package");
+
+      var encounter_package_template = '{ "encounter": { "explanatory_letter":
+      "Я, Шевченко Наталія Олександрівна, 20.07.2018 здійснила механічну помилку
+      при внесенні обстеження до системи.", "cancellation_reason": { "coding": [
+      { "system": "eHealth/cancellation_reasons", "code": "typo" } ] }, '+
+      encounter_package.substring(14);
+
+
+
+      var encounter_package = JSON.parse(encounter_package_template);
+
+      encounter_package.encounter.status="entered_in_error";
+
+      encounter_package.observations[0].status="entered_in_error";
+
+      encounter_package.conditions[0].verification_status="entered_in_error";
+
+
+      var encounter_package_base64 =
+      b64EncodeUnicode(JSON.stringify(encounter_package))
+
+
+      postman.setEnvironmentVariable("encounter_package_base64",
+      encounter_package_base64);
+
+      console.log(JSON.stringify(encounter_package));
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 80000

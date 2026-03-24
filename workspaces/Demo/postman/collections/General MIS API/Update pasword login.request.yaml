@@ -1,0 +1,23 @@
+$kind: http-request
+url: https://auth-demo.ehealth.gov.ua/auth/login
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"token\": {\r
+
+    \        \"grant_type\": \"change_password\",\r
+
+    \        \"email\": \"{{user_email}}\",\r
+
+    \        \"password\": \"{{user_password}}\",\r
+
+    \        \"client_id\": \"e2e1d2c8-9bac-43c6-adef-83239940b30a\",\r
+
+    \        \"scope\": \"user:change_password\"\r
+
+    \    }\r
+
+    }\r\n"
+order: 11000

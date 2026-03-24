@@ -1,0 +1,333 @@
+$kind: http-request
+url: "{{host}}/api/medication_request_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: "{\r
+
+    \    \"medication_request_request\": {\r
+
+    \        \"person_id\": \"{{patient_id_from_episode}}\",\r
+
+    \        \"employee_id\": \"{{user_id}}\",\r
+
+    \        \"division_id\": \"{{user_division_id}}\",\r
+
+    \        \"created_at\": \"{{medicationRequestCreatedAt}}\",\r
+
+    \        \"started_at\": \"{{medicationRequestStartedAt}}\",\r
+
+    \        \"ended_at\": \"{{medicationRequestEndedAt}}\",\r
+
+    \        \"medication_id\": \"{{medication_id}}\",\r
+
+    \        \"medication_qty\": {{medication_qty}},\r
+
+    \        \"medical_program_id\": \"{{medication_program}}\",\r
+
+    \        \"intent\": \"order\",\r
+
+    \        //  \"based_on\": [\r
+
+    \        //     {\r
+
+    \        //         \"identifier\": {\r
+
+    \        //             \"type\": {\r
+
+    \        //                 \"coding\": [\r
+
+    \        //                     {\r
+
+    \        //                         \"system\": \"eHealth/resources\",\r
+
+    \        //                         \"code\": \"care_plan\"\r
+
+    \        //                     }\r
+
+    \        //                 ]\r
+
+    \        //             },\r
+
+    \        //             \"value\": \"{{jobCarePlanID}}\"\r
+
+    \        //         }\r
+
+    \        //     },\r
+
+    \        //     {\r
+
+    \        //         \"identifier\": {\r
+
+    \        //             \"type\": {\r
+
+    \        //                 \"coding\": [\r
+
+    \        //                     {\r
+
+    \        //                         \"system\": \"eHealth/resources\",\r
+
+    \        //                         \"code\": \"activity\"\r
+
+    \        //                     }\r
+
+    \        //                 ]\r
+
+    \        //             },\r
+
+    \        //             \"value\": \"{{jobActivityID}}\"\r
+
+    \        //         }\r
+
+    \        //     }\r
+
+    \        // ],\r
+
+    \        \"category\": \"community\",\r
+
+    \        \"context\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"encounter\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobEncounterID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"dosage_instruction\": [\r
+
+    \            {\r
+
+    \                \"sequence\": 1,\r
+
+    \                \"text\": \"0.25mg PO every 6-12 hours as needed for menses
+    from Jan 15-20, 2015.  Do not exceed more than 4mg per day\",\r
+
+    \                \"patient_instruction\": \"0.25mg PO every 6-12 hours as
+    needed for menses from Jan 15-20, 2015.  Do not exceed more than 4mg per
+    day\",\r
+
+    \                \"max_dose_per_period\": {\r
+
+    \                    \"numerator\": {\r
+
+    \                        \"value\": 0,\r
+
+    \                        \"unit\": \"mg\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"code\": \"mg\"\r
+
+    \                    },\r
+
+    \                    \"denominator\": {\r
+
+    \                        \"value\": 0,\r
+
+    \                        \"unit\": \"mg\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"code\": \"mg\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"max_dose_per_administration\": {\r
+
+    \                    \"value\": 0,\r
+
+    \                    \"unit\": \"mg\",\r
+
+    \                    \"system\": \"eHealth/ucum/units\",\r
+
+    \                    \"code\": \"mg\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      if (resData && resData.error) {\r
+
+      \    displayResponse('Medication Request Request Response Error Details',
+      resData.error);\r
+
+      }\r
+
+      \r
+
+      \r
+
+      function sendDataToSign(dataToBeSigned) {\r
+
+      \    const localServerUrl =
+      'http://localhost:3000/create-medication-request-request-signed-content';\
+      \r
+
+      \r
+
+      \    const requestData = {\r
+
+      \        method: 'POST',\r
+
+      \        url: localServerUrl,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify(dataToBeSigned) // Send the entire
+      response or specific fields\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    // Send the request to the local server\r
+
+      \    pm.sendRequest(requestData, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Error sending request to local server:',
+      err);\r
+
+      \        } else {\r
+
+      \            console.log('Response from local server:', res.json());\r
+
+      \            const responseBody = res.json();\r
+
+      \r
+
+      \            pm.test(`Create Medication Request Request content sign
+      success. Response status is 200 ${JSON.stringify(responseBody, null, 2)}`,
+      function () {\r
+
+      \                pm.expect(res.code).to.eql(200);\r
+
+      \                pm.expect(responseBody).to.have.property('signed_content\
+      ');\r
+
+      \                pm.globals.set('medication_req_req_data_to_sign',
+      responseBody.signed_content)\r
+
+      \r
+
+      \                displayResponse('Signed medication request request data',
+      responseBody);\r
+
+      \            });\r
+
+      \        }\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      pm.test(`Create Medication Request Request Response status code is 201  |
+      RESPONSE - ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(201);\r
+
+      \r
+
+      \    const status = resData.data.status\r
+
+      \    console.info(status)\r
+
+      \    pm.test('Medication Request Request status is \"NEW\"', function ()
+      {\r
+
+      \        pm.expect(status).to.eql('NEW');\r
+
+      \    });\r
+
+      \r
+
+      \r
+
+      \    const medicationReqReqId = resData.data.id\r
+
+      \    pm.globals.set('medication_req_req_id', medicationReqReqId);\r
+
+      \    console.info(medicationReqReqId);\r
+
+      \r
+
+      \    pm.globals.set('medication_req_req_data_to_sign', resData.data);\r
+
+      \    console.info(resData.data);\r
+
+      \r
+
+      \    sendDataToSign(resData.data);\r
+
+      \r
+
+      });"
+    language: text/javascript
+order: 2000

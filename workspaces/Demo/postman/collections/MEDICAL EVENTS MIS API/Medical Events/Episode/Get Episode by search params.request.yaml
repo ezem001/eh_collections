@@ -1,0 +1,36 @@
+$kind: http-request
+url: "{{host}}/api/patients/5546706d-6e18-47b8-82db-6d2af184f8e2/episodes?manag\
+  ing_organization_id={{user_legal_entity}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: period_from
+    value: 2022-05-01
+    disabled: true
+  - key: period_to
+    value: 2022-06-20
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+scripts:
+  - type: afterResponse
+    code: |+
+      tests["Route works"] = responseCode.code === 200;
+
+
+
+    language: text/javascript
+order: 4000

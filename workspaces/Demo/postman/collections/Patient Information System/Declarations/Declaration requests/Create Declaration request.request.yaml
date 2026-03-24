@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{pis_host}}/api/pis/declaration_requests"
+method: POST
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  Content-Type: application/json
+  Authorization: Bearer {{pis_access_token}}
+  api-key: "{{client_secret}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"employee_id\": \"e9b450c5-201a-47e1-81a3-5ce99f046e48\",\r
+
+    \  \"division_id\": \"c3246236-89a5-44be-8d40-45e1a2b58271\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const jsonData = pm.response.json();\r
+
+      const declarationReqId = jsonData.data.id\r
+
+      pm.globals.set('pis_declaration_req_id', declarationReqId)\r
+
+      console.log(declarationReqId)"
+    language: text/javascript
+order: 1000

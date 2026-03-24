@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{host_demo}}/api/jobs/66bde96fda308c0042c9e2d0"
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+scripts:
+  - type: afterResponse
+    code: |+
+      
+    language: text/javascript
+order: 5000

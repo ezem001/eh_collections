@@ -1,0 +1,7 @@
+$kind: collection
+variables:
+  base_url: https://api.example.com
+  access_token: ""
+  api_key: ""
+  patient_id: ""
+  device_dispense_id: ""

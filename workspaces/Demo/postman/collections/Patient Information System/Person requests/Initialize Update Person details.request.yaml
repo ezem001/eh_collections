@@ -1,0 +1,161 @@
+$kind: http-request
+url: "{{pis_host}}/api/pis/person_requests"
+method: POST
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  Content-Type: application/json
+  Authorization: Bearer
+    eyJhbGciOiJSUzUxMiIsImtpZCI6IktyWFJrYnpuVUV3MnJMUzdJeXZ1U0dlUkxHSFNlNGlfT0JRa0JVNUJHcGsiLCJ0eXAiOiJKV1QifQ.eyJhY2Nlc3NfdHlwZSI6IkJST0tFUiIsImFwcF9pZCI6IjE1ZGJhYzI3LWRjNDAtNGIxZS04ZDdlLTNjYWI4MzVjNjcwMyIsImFwcGxpY2FudF9wZXJzb25faWQiOiI1ZjAzYzg3Mi05YTY0LTQ2YTEtYjYzNy1jOTk0ZTNlMDg3YjUiLCJhcHBsaWNhbnRfdXNlcl9pZCI6IjU1NjI3NDU4LWYyZmMtNDIxYS04Y2YxLTBiODBmNmY4NjYxYSIsImF1ZCI6IkVIZWFsdGgiLCJjbGllbnRfaWQiOiIwYzlhOWM3OS04YzJkLTQyMDItOTUxZi02MGM4ZjVmNDcwNDEiLCJleHAiOjE3NTY5MjgzMTMsImdyYW50X3R5cGUiOiJhdXRob3JpemF0aW9uX2NvZGUiLCJpYXQiOjE3NTY4ODUxMTMsImlzcyI6IkVIZWFsdGgiLCJqdGkiOiIzMjY3ZTU1YS0zMjllLTQxZjAtOGE2MC0zMzdmYmRmN2M4MmEiLCJuYmYiOjE3NTY4ODUxMTIsInBlcnNvbl9pZCI6IjVmMDNjODcyLTlhNjQtNDZhMS1iNjM3LWM5OTRlM2UwODdiNSIsInJlZGlyZWN0X3VyaSI6Imh0dHBzOi8vcGlzX3Rlc3QuY29tL3JlZGlyZWN0IiwicmVmcmVzaF90b2tlbiI6ImVtaFNWbmRFVUZCUmRFdFRlalphTUZKQ1VHcE5VVDA5Iiwic2NvcGUiOiJhcHA6ZGVsZXRlX3BpcyBhcHA6cmVhZF9waXMgYXV0aGVudGljYXRpb25fbWV0aG9kOmRlYWN0aXZhdGVfcGlzIGF1dGhlbnRpY2F0aW9uX21ldGhvZDpyZWFkX3BpcyBhdXRoZW50aWNhdGlvbl9tZXRob2Q6d3JpdGVfcGlzIGF1dGhlbnRpY2F0aW9uX21ldGhvZF9yZXF1ZXN0OndyaXRlX3BpcyBkZWNsYXJhdGlvbjpkZXRhaWxzX3BpcyBkZWNsYXJhdGlvbjpyZWFkX3BpcyBkZWNsYXJhdGlvbjp0ZXJtaW5hdGVfcGlzIGRlY2xhcmF0aW9uX3JlcXVlc3Q6ZGV0YWlsc19waXMgZGVjbGFyYXRpb25fcmVxdWVzdDpyZWFkX3BpcyBkZWNsYXJhdGlvbl9yZXF1ZXN0OnJlamVjdF9waXMgZGVjbGFyYXRpb25fcmVxdWVzdDpzaWduX3BpcyBkZWNsYXJhdGlvbl9yZXF1ZXN0OndyaXRlX3BpcyBwZXJzb246ZGV0YWlsc19waXMgcGVyc29uX2RvY3VtZW50czp3cml0ZV9waXMgcGVyc29uX3JlcXVlc3Q6ZGV0YWlsc19waXMgcGVyc29uX3JlcXVlc3Q6cmVhZF9waXMgcGVyc29uX3JlcXVlc3Q6cmVqZWN0X3BpcyBwZXJzb25fcmVxdWVzdDp3cml0ZV9waXMgcGVyc29uX3ZlcmlmaWNhdGlvbjpkZXRhaWxzX3BpcyIsInN1YiI6IjU1NjI3NDU4LWYyZmMtNDIxYS04Y2YxLTBiODBmNmY4NjYxYSIsInR5cCI6ImFjY2Vzc190b2tlbiJ9.MrCF1xS55lVxcf85YruywwXjKItPKa-yO2QamVWDwd3I7NsfyX0wprG8VZ6AttqoBnH9u15SQnf-jvvkBxadI-FzT5e73AkzviRpSjhHMPX1UjzibFPFQQLTxLpCGRu5EXoIi8q8dp90Rii-EpTaGM-21Yovukdz7zrgpTsivXM32nkacbLBFWQ4ehjeoXizQK9E2_wLc3k_RE914pKKkFW_9wXNYpxj8A3Duuup0XT1IhazupmIt2GcnEfj4ZNpot5YRB59WnB_IL6tl7kz-Rqt5hAkrjTYWL0P5DVSps4vVOASPCszlbaQ8nG9rarzQxknc7GABGBMAXmlLPHcyg
+  api-key: "{{client_secret}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"person\": {\r
+
+    \        \"first_name\": \"Олег\",\r
+
+    \        \"last_name\": \"Двадцять-восьмий\",\r
+
+    \        \"second_name\": \"Володимирович\",\r
+
+    \        \"birth_date\": \"2009-08-12\",\r
+
+    \        \"birth_country\": \"UA\",\r
+
+    \        \"birth_settlement\": \"Київ\",\r
+
+    \        \"gender\": \"MALE\",\r
+
+    \        \"tax_id\": \"3709711128\",\r
+
+    \        \"no_tax_id\": false,\r
+
+    \        \"secret\": \"secret\",\r
+
+    \        \"documents\": [\r
+
+    \            {\r
+
+    \                \"type\": \"NATIONAL_ID\",\r
+
+    \                \"number\": \"789123456\",\r
+
+    \                \"issued_by\": \"Апр\",\r
+
+    \                \"issued_at\": \"2020-12-12\",\r
+
+    \                \"expiration_date\": \"2030-12-12\"\r
+
+    \            },\r
+
+    \            {\r
+
+    \                \"type\": \"MARRIAGE_CERTIFICATE\",\r
+
+    \                \"number\": \"ЮЮ111111\",\r
+
+    \                \"issued_by\": \"Иииууап\",\r
+
+    \                \"issued_at\": \"2021-12-12\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"addresses\": [\r
+
+    \            {\r
+
+    \                \"type\": \"RESIDENCE\",\r
+
+    \                \"apartment\": \"45Б\",\r
+
+    \                \"area\": \"КИЇВСЬКА\",\r
+
+    \                \"region\": \"Києво-Свят0шинський\",\r
+
+    \                \"building\": \"15\",\r
+
+    \                \"country\": \"IT\",\r
+
+    \                \"settlement\": \"ЧУГУЇВ\",\r
+
+    \                \"settlement_id\":
+    \"fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494\",\r
+
+    \                \"settlement_type\": \"CITY\",\r
+
+    \                \"street\": \"Г0голя\",\r
+
+    \                \"street_type\": \"STREET\",\r
+
+    \                \"zip\": \"02115\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"phones\": [\r
+
+    \            {\r
+
+    \                \"type\": \"MOBILE\",\r
+
+    \                \"number\": \"+380634390602\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"unzr\": \"20090812-45605\",\r
+
+    \        \"emergency_contact\": {\r
+
+    \            \"first_name\": \"Впир\",\r
+
+    \            \"last_name\": \"Іччс\",\r
+
+    \            \"second_name\": \"Яамр\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"number\": \"+380634390602\",\r
+
+    \                    \"type\": \"MOBILE\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"preferred_way_communication\": \"email\"\r
+
+    \    },\r
+
+    \    \"patient_signed\": false,\r
+
+    \    \"process_disclosure_data_consent\": true\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const responseJson = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      \    const personRequestId = responseJson?.data?.id;\r
+
+      \    pm.globals.set(\"initialaze_update_person_request_id\",
+      personRequestId);\r
+
+      });\r\n"
+    language: text/javascript
+order: 1000

@@ -1,0 +1,34 @@
+$kind: http-request
+url: "{{host}}/api/healthcare_services/?division_id=c3246236-89a5-44be-8d40-45e\
+  1a2b58271"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: speciality_type
+    value: FAMILY_DOCTOR
+    disabled: true
+  - key: providing_condition
+    value: OUTPATIENT
+    disabled: true
+  - key: category
+    value: MSP
+    disabled: true
+  - key: type
+    value: SALE
+    disabled: true
+  - key: status
+    value: ACTIVE
+    disabled: true
+  - key: page
+    value: ""
+    disabled: true
+  - key: page_size
+    value: "1000"
+    disabled: true
+  - key: division_id
+    value: c3246236-89a5-44be-8d40-45e1a2b58271
+order: 6000

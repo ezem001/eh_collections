@@ -1,0 +1,92 @@
+$kind: http-request
+url: "{{host}}/api/divisions"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "name": "Test_2.0",
+        "addresses": [
+            {
+                "apartment": "99",
+                "area": "М.КИЇВ",
+                "building": "20",
+                "country": "UA",
+                "region": "М.КИЇВ",
+                "settlement": "Київ",
+                "settlement_id": "adaa4abf-f530-461c-bcbf-a0ac210d955b",
+                "settlement_type": "CITY",
+                "street": "Леоніда Первомайського",
+                "street_type": "STREET",
+                "type": "RESIDENCE",
+                "zip": "01200"
+            }
+        ],
+        "phones": [
+            {
+                "type": "MOBILE",
+                "number": "+380447777777"
+            }
+        ],
+        "email": "demo.emergency@ukr.net",
+        "working_hours": {
+            "mon": [
+                [
+                    "09.00",
+                    "13.00"
+                ],
+                [
+                    "14.00",
+                    "20.00"
+                ]
+            ],
+            "tue": [
+                [
+                    "09.00",
+                    "18.00"
+                ]
+            ],
+            "wed": [
+                [
+                    "09.00",
+                    "13.00"
+                ],
+                [
+                    "14.00",
+                    "20.00"
+                ]
+            ],
+            "thu": [
+                [
+                    "08.00",
+                    "08.35"
+                ]
+            ],
+            "fri": [
+                [
+                    "09.00",
+                    "15.00"
+                ]
+            ]
+        },
+        "type": "CLINIC",
+        "legal_entity_id": "{{user_legal_entity}}",
+        "external_id": "3213213",
+        "location": {
+            "latitude": 49.3333333,
+            "longitude": 36.3333333
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: |+
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+    language: text/javascript
+order: 1000

@@ -1,0 +1,169 @@
+$kind: http-request
+url: "{{host}}/api/persons/{{ward}}/confidant_person_relationship_requests/{{Cr\
+  eate_confidant_relationship_id}}/actions/approve"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r
+
+    \  \"verification_code\": 2286\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "// === Helpers ===\r
+
+      const safeJson = () => {\r
+
+      \    try {\r
+
+      \        return pm.response.json();\r
+
+      \    } catch (e) {\r
+
+      \        console.warn(\"[WARN] Response is not JSON, returning text
+      instead.\");\r
+
+      \        return pm.response.text();\r
+
+      \    }\r
+
+      };\r
+
+      \r
+
+      const log = (label, data) => {\r
+
+      \    console.log(`[DEBUG] ${label}:`, data);\r
+
+      };\r
+
+      \r
+
+      const displayResponse = (title, data) => {\r
+
+      \    const html = `\r
+
+      \        <h2>${title}</h2>\r
+
+      \        <table border=\"1\" style=\"border-collapse:collapse;
+      width:100%;\">\r
+
+      \            <tr><td><pre>${JSON.stringify(data, null,
+      2)}</pre></td></tr>\r
+
+      \        </table>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      };\r
+
+      \r
+
+      // === Main ===\r
+
+      \r
+
+      // 1. Тест статусу відповіді\r
+
+      pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // 2. Отримання даних безпечним методом\r
+
+      const responseJson = safeJson();\r
+
+      const dataToSign = responseJson?.data;\r
+
+      \r
+
+      if (!dataToSign) {\r
+
+      \    log(\"Warning\", \"No 'data' field found in response.\");\r
+
+      \    displayResponse(\"Warning\", { message: \"No 'data' field found in
+      response.\" });\r
+
+      } else {\r
+
+      \    const localServerUrl =
+      'http://localhost:3000/confidant-person-relationship-request'; // онови
+      при потребі\r
+
+      \r
+
+      \    const requestData = {\r
+
+      \        method: 'POST',\r
+
+      \        url: localServerUrl,\r
+
+      \        header: { 'Content-Type': 'application/json' },\r
+
+      \        body: { mode: 'raw', raw: JSON.stringify(dataToSign) }\r
+
+      \    };\r
+
+      \r
+
+      \    pm.sendRequest(requestData, (err, res) => {\r
+
+      \        if (err) {\r
+
+      \            console.error('[ERROR] Request to local server failed:',
+      err);\r
+
+      \            return displayResponse('Local Server Error', { error:
+      err.message });\r
+
+      \        }\r
+
+      \r
+
+      \        let responseBody;\r
+
+      \        try {\r
+
+      \            responseBody = res.json();\r
+
+      \            log(\"Local server JSON response\", responseBody);\r
+
+      \        } catch {\r
+
+      \            responseBody = res.text();\r
+
+      \            console.warn(\"[WARN] Local server returned non-JSON
+      response\");\r
+
+      \        }\r
+
+      \r
+
+      \        // Зберігаємо підписані дані у глобальні змінні\r
+
+      \        if (responseBody?.signed_content) {\r
+
+      \            pm.globals.set('confidant_person_relationship_request_signed\
+      _content', responseBody.signed_content);\r
+
+      \        }\r
+
+      \r
+
+      \        displayResponse('Signed person data', responseBody);\r
+
+      \    });\r
+
+      }\r\n"
+    language: text/javascript
+order: 3000

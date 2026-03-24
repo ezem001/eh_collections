@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/persons/b3695d68-0b6c-449a-9916-c755ca6e3e79/authentication_\
+  methods"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 1000

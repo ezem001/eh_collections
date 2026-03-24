@@ -1,0 +1,40 @@
+$kind: http-request
+url: "{{host}}/api/persons?birth_date=2006-09-05&first_name=Артем&last_name=Мороз"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: second_name
+    value: Іванівна
+    disabled: true
+  - key: birth_date
+    value: 2006-09-05
+  - key: first_name
+    value: Артем
+  - key: last_name
+    value: Мороз
+  - key: tax_id
+    value: "4730419503"
+    disabled: true
+  - key: birth_certificate
+    value: I-БК535231
+    disabled: true
+  - key: phone_number
+    value: "+380634390602"
+    disabled: true
+    description: "%2B"
+scripts:
+  - type: afterResponse
+    code: |
+      tests["Status code is 200"] = responseCode.code === 200;
+    language: text/javascript
+settings:
+  disabledSystemHeaders:
+    - accept
+    - user-agent
+    - accept-encoding
+    - connection
+order: 3000

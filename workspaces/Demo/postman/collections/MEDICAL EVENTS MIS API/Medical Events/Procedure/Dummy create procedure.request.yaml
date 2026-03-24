@@ -1,0 +1,255 @@
+$kind: http-request
+url: http://localhost:3000/procedure-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{procedure_id}}\",\r
+
+    \    \"status\": \"completed\",\r
+
+    \    \"based_on\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"service_request\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{JobSericeRequestID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"code\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"service\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"40b2dfdf-7623-4fa5-bbfb-58a6b651ff0c\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"performed_period\": {\r
+
+    \        \"start\": \"2025-08-01T10:45:16.000Z\",\r
+
+    \        \"end\": \"2025-08-10T10:45:16.000Z\"\r
+
+    \    },\r
+
+    \    \"recorded_by\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"primary_source\": true,\r
+
+    \    \"performer\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"Галина Олександрівна\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"division\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"division\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_division_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"managing_organization\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"legal_entity\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_legal_entity}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"eHealth/procedure_categories\",\r
+
+    \                \"code\": \"procedure\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"used_references\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"equipment\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"bef8be0f-c31c-4e9e-b61d-71b565c3e5a0\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const procedureId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"procedure_id\", procedureId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create procedure sign content', resData)\r
+
+      \r
+
+      pm.test(`Procedure content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('procedure_signed_content', resData.signed_content);\r
+
+      });"
+    language: text/javascript
+order: 1000

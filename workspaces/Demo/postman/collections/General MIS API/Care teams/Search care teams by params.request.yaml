@@ -1,0 +1,39 @@
+$kind: http-request
+description: This method is used to search for care teams in the system.
+url: "{{host}}/api/care_teams?status=active&legal_entity_id={{user_legal_entity}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: category
+    value: palliative_care_team
+    disabled: true
+  - key: period_start_from
+    value: 2024-12-12
+    disabled: true
+  - key: period_start_to
+    value: 2024-12-22
+    disabled: true
+  - key: period_end_from
+    value: 2025-12-12
+    disabled: true
+  - key: period_end_to
+    value: 2025-12-22
+    disabled: true
+  - key: status
+    value: active
+  - key: legal_entity_id
+    value: "{{user_legal_entity}}"
+  - key: member_employee_id
+    value: d17fe0c5-5c14-4982-b267-a17d62529ded
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 4000

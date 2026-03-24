@@ -1,0 +1,79 @@
+$kind: http-request
+url: "{{host}}/api/contract_requests/capitation/{{contract_request_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+scripts:
+  - type: afterResponse
+    code: "var template = `\r
+
+      <style type=\"text/css\">\r
+
+      \    .tftable {font-size:14px;color:#333333;width:100%;border-width:
+      1px;border-color: #87ceeb;border-collapse: collapse;}\r
+
+      \    .tftable th {font-size:18px;background-color:#87ceeb;border-width:
+      1px;padding: 8px;border-style: solid;border-color:
+      #87ceeb;text-align:left;}\r
+
+      \    .tftable tr {background-color:#ffffff;}\r
+
+      \    .tftable td {font-size:14px;border-width: 1px;padding:
+      8px;border-style: solid;border-color: #87ceeb;}\r
+
+      \    .tftable tr:hover {background-color:#e0ffff;}\r
+
+      </style>\r
+
+      \r
+
+      <table class=\"tftable\" border=\"1\">\r
+
+      \    <tr>\r
+
+      \        <th>Assignee ID</th>\r
+
+      \        <th>Contract Number</th>\r
+
+      \        <th>Contractor Base</th>\r
+
+      \        <th>End Date</th>\r
+
+      \        <th>Status</th>\r
+
+      \    </tr>\r
+
+      \    <tr>\r
+
+      \        <td>{{response.data.assignee_id}}</td>\r
+
+      \        <td>{{response.data.contract_number}}</td>\r
+
+      \        <td>{{response.data.contractor_base}}</td>\r
+
+      \        <td>{{response.data.end_date}}</td>\r
+
+      \        <td>{{response.data.status}}</td>\r
+
+      \    </tr>\r
+
+      </table>\r
+
+      `;\r
+
+      \r
+
+      function constructVisualizerPayload() {\r
+
+      \    return { response: pm.response.json() }\r
+
+      }\r
+
+      \r
+
+      pm.visualizer.set(template, constructVisualizerPayload());"
+    language: text/javascript
+order: 8000

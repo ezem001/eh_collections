@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host}}/api/patients/4e1085a4-fa48-4926-8e55-2e86e49c4934/encounters?man\
+  aging_organization_id={{user_legal_entity}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: date_from
+    value: 2022-10-20
+    disabled: true
+  - key: date_to
+    value: 2022-10-30
+    disabled: true
+  - key: origin_episode_id
+    value: 455ad865-6d60-49da-922c-132c799bffcc
+    disabled: true
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+order: 2000

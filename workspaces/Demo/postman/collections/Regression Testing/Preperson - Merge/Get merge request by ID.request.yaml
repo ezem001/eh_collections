@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host}}/api/merge_requests/{{merge_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get merge request by ID successful\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 7000

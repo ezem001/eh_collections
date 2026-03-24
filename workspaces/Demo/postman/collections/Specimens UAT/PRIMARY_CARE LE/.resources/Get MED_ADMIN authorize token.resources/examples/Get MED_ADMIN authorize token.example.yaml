@@ -1,0 +1,70 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/auth/login
+  method: POST
+  headers:
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  body:
+    type: text
+    content: |-
+      {
+         "token":{
+            "grant_type":"password",
+            "email":"srd77s8rgu@happy2023year.com",
+            "password":"Qwerty123456",
+            "client_id":"{{fe_client_id}}",
+            "scope":"app:authorize"
+         }
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Date: Fri, 24 Nov 2023 15:45:21 GMT
+    Content-Type: application/json; charset=utf-8
+    Content-Length: "474"
+    Connection: keep-alive
+    Access-Control-Allow-Origin: https://auth-demo.ehealth.gov.ua
+    Cache-Control: max-age=0, private, must-revalidate
+    Referrer-Policy: strict-origin-when-cross-origin
+    Vary: Origin
+    Via: kong/2.8.1
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: SAMEORIGIN
+    X-Kong-Proxy-Latency: "32"
+    X-Kong-Upstream-Latency: "260"
+    X-Permitted-Cross-Domain-Policies: none
+    X-Request-Id: f7015dc2-2f99-4480-9472-7ecc1466469b#13
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 82b2c74adca15a78-VIE
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: |-
+      {
+          "data": {
+              "details": {
+                  "client_id": "e2e1d2c8-9bac-43c6-adef-83239940b30a",
+                  "grant_type": "password",
+                  "scope": "app:authorize"
+              },
+              "expires_at": 1732397647,
+              "id": "239ed9e3-ef46-4d05-a470-61d5c59e2056",
+              "name": "access_token",
+              "user_id": "bfefaba7-a7c2-47aa-993d-1f2bb43728fd",
+              "value": "Y2QvM0VXV0dZM1RCRmFmOFRpR2phQT09"
+          },
+          "meta": {
+              "code": 201,
+              "request_id": "f7015dc2-2f99-4480-9472-7ecc1466469b#13",
+              "type": "object",
+              "url": "http://api-svc.mithril/auth/login"
+          },
+          "urgent": {
+              "next_step": "REQUEST_APPS"
+          }
+      }
+order: 1000

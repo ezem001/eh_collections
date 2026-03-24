@@ -1,0 +1,10 @@
+$kind: http-request
+description: Returns single Device Dispense by identifier.
+url: "{{base_url}}/api/patients/{{patient_id}}/device_dispenses/{{device_dispen\
+  se_id}}"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  API-key: "{{api_key}}"
+  Content-Type: application/json
+order: 1000

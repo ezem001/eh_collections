@@ -1,0 +1,90 @@
+$kind: http-request
+url: "{{host}}/api/patients/b1b6b68b-ff03-4914-b84a-dd566bf75bbf/device_dispens\
+  es/bb34b8cc-e12e-4fc5-b573-da0e3fb39e43/actions/stop"
+method: PATCH
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: Bearer {{access_token}}
+  - key: api-key
+    value: "{{mis_client_secret}}"
+  - key: "{{X-Custom-PSK}}"
+    value: "{{x-custom_demo}}"
+    disabled: true
+body:
+  type: text
+  content: ""
+scripts:
+  - type: beforeRequest
+    code: |+
+      //2 observations
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))};
+          
+
+      let today = () => {
+        let currentDate = new Date();
+        //return currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+        return currentDate.toISOString()
+      }
+
+      var encounter_date = today();
+
+      var uuid = require('uuid');
+
+      var encounter_id = uuid.v4();
+      pm.environment.set("encounter_id", encounter_id);
+
+      var immunization_id=uuid.v4();
+      pm.environment.set("immunization_id", immunization_id);
+      var observation_id_1=uuid.v4();
+      pm.environment.set("observation_id_1", observation_id_1);
+      var observation_id_2=uuid.v4();
+      pm.environment.set("observation_id_2", observation_id_2);
+          
+      var encounter_package_template = '{ "encounter": { "id": "{{encounter_id}}", "prescriptions": "dnt jdj", "date": "2018-11-23", "status": "finished", "visit": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "visit" } ] }, "value": "{{visit_id}}" } }, "episode": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "episode" } ] }, "value": "{{episode_id}}" } }, "class": { "system": "eHealth/encounter_classes", "code": "PHC" }, "type": { "coding": [ { "system": "eHealth/encounter_types", "code": "service_delivery_location" } ] }, "performer": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ] }, "value": "{{doctor_id}}" } }, "reasons": [ { "coding": [ { "system": "eHealth/ICPC2/reasons", "code": "A02" } ] }, { "coding": [ { "system": "eHealth/ICPC2/reasons", "code": "D09" } ] } ], "diagnoses": [ { "condition": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "condition" } ] }, "value": "{{condition_id}}" } }, "role": { "coding": [ { "system": "eHealth/diagnosis_roles", "code": "primary" } ] }, "rank": 1 } ], "actions": [ { "coding": [ { "system": "eHealth/ICPC2/actions", "code": "*30" } ] }, { "coding": [ { "system": "eHealth/ICPC2/actions", "code": "*30" } ] } ], "division": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "division" } ] }, "value": "{{division_id}}" } } }, "observations": [ { "id": "{{observation_id_1}}", "status": "valid", "context": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "{{encounter_id}}" } }, "categories": [ { "coding": [ { "system": "eHealth/observation_categories", "code": "vital-signs" } ] } ], "code": { "coding": [ { "system": "eHealth/LOINC/observation_codes", "code": "8310-5" } ] }, "effective_period": { "start": "2018-08-02T10:45:16.000Z", "end": "2018-08-02T11:00:00.000Z" }, "issued": "2018-08-02T10:45:16.000Z", "primary_source": false, "report_origin": { "coding": [ { "system": "eHealth/report_origins", "code": "related person" } ], "text": "Галина Олександрівна" }, "interpretation": { "coding": [ { "system": "eHealth/observation_interpretations", "code": "default_observation_interpretation" } ], "text": "низький" }, "comment": "Some comment", "body_site": { "coding": [ { "system": "eHealth/body_sites", "code": "default_body_site" } ] }, "method": { "coding": [ { "system": "eHealth/observation_methods", "code": "default_observation_method" } ], "text": "метод ABC" }, "value_period": { "start": "2018-08-02T10:45:16.000Z", "end": "2018-08-02T11:00:00.000Z" }, "reference_ranges": [ { "low": { "value": 13.000001, "comparator": ">", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "high": { "value": 27, "comparator": "<", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "type": { "coding": [ { "system": "eHealth/reference_range_types", "code": "default_reference_range" } ], "text": "нормальний" }, "applies_to": [ { "coding": [ { "system": "eHealth/reference_range_applications", "code": "default_reference_range_application" } ] } ], "age": { "low": { "value": 18, "comparator": ">", "unit": "%" }, "high": { "value": 35, "comparator": "<", "unit": "%" } }, "text": "Some text" } ], "components": [ { "code": { "coding": [ { "system": "eHealth/LOINC/observation_codes", "code": "9279-1" } ] }, "value_quantity": { "value": 13, "comparator": ">", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "interpretation": { "coding": [ { "system": "eHealth/observation_interpretations", "code": "default_observation_interpretation" } ], "text": "низький" }, "reference_ranges": [ { "low": { "value": 13, "comparator": ">", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "high": { "value": 27, "comparator": "<", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "type": { "coding": [ { "system": "eHealth/reference_range_types", "code": "default_reference_range" } ] }, "applies_to": [ { "coding": [ { "system": "eHealth/reference_range_applications", "code": "default_reference_range_application" } ] } ], "age": { "low": { "value": 18.0, "comparator": ">", "unit": "%" }, "high": { "value": 35, "comparator": "<", "unit": "%" } }, "text": "Some text" } ] } ] }, { "id": "{{observation_id_2}}", "status": "valid", "context": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "{{encounter_id}}" } }, "categories": [ { "coding": [ { "system": "eHealth/observation_categories", "code": "vital-signs" } ] } ], "code": { "coding": [ { "system": "eHealth/LOINC/observation_codes", "code": "80319-7" } ] }, "effective_date_time": "2018-08-02T10:45:16.000Z", "issued": "1994-09-02T10:45:16.000Z", "primary_source": true, "performer": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ] }, "value": "{{doctor_id}}" } }, "interpretation": { "coding": [ { "system": "eHealth/observation_interpretations", "code": "default_observation_interpretation" } ] }, "comment": "Some comment", "body_site": { "coding": [ { "system": "eHealth/body_sites", "code": "default_body_site" } ] }, "method": { "coding": [ { "system": "eHealth/observation_methods", "code": "default_observation_method" } ], "text": "метод ABC" }, "value_period": { "start": "2018-08-02T10:45:16.000Z", "end": "2018-08-02T11:00:00.000Z" }, "reference_ranges": [ { "low": { "value": 13.000001, "comparator": ">", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "high": { "value": 27, "comparator": "<", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "type": { "coding": [ { "system": "eHealth/reference_range_types", "code": "default_reference_range" } ], "text": "нормальний" }, "applies_to": [ { "coding": [ { "system": "eHealth/reference_range_applications", "code": "default_reference_range_application" } ] } ], "age": { "low": { "value": 18, "comparator": ">", "unit": "%" }, "high": { "value": 35, "comparator": "<", "unit": "%" } }, "text": "Some text" } ], "components": [ { "code": { "coding": [ { "system": "eHealth/LOINC/observation_codes", "code": "9279-1" } ] }, "value_quantity": { "value": 13, "comparator": ">", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "interpretation": { "coding": [ { "system": "eHealth/observation_interpretations", "code": "default_observation_interpretation" } ], "text": "низький" }, "reference_ranges": [ { "low": { "value": 13, "comparator": ">", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "high": { "value": 27, "comparator": "<", "unit": "%", "system": "eHealth/ucum/units", "code": "%" }, "type": { "coding": [ { "system": "eHealth/reference_range_types", "code": "default_reference_range" } ] }, "applies_to": [ { "coding": [ { "system": "eHealth/reference_range_applications", "code": "default_reference_range_application" } ] } ], "age": { "low": { "value": 18.0, "comparator": ">", "unit": "%" }, "high": { "value": 35, "comparator": "<", "unit": "%" } }, "text": "Some text" } ] } ] } ] }';
+      var encounter_package = JSON.parse(encounter_package_template);
+      encounter_package.encounter.id=encounter_id;
+      encounter_package.encounter.date=encounter_date;
+      encounter_package.encounter.visit.identifier.value=pm.environment.get("visit_id");
+      encounter_package.encounter.episode.identifier.value=pm.environment.get("episode_id");
+      encounter_package.encounter.diagnoses[0].condition.identifier.value=pm.environment.get("condition_id_1");
+      encounter_package.encounter.division.identifier.value=pm.environment.get("division_id");
+      encounter_package.encounter.performer.identifier.value=pm.environment.get("doctor_id");
+
+      encounter_package.observations[0].id=observation_id_1;
+      encounter_package.observations[0].context.identifier.value=encounter_id;
+      //encounter_package.observations[0].reaction_on.identifier.value=pm.environment.get("immunization_id_1");
+      //encounter_package.observations[0].performer.identifier.value=pm.environment.get("doctor_id");
+      encounter_package.observations[1].id=observation_id_2;
+      encounter_package.observations[1].context.identifier.value=encounter_id;
+      encounter_package.observations[1].performer.identifier.value=pm.environment.get("doctor_id");
+      encounter_package.observations[0].body_site.coding[0].code = "left_leg";
+      encounter_package.observations[0].components[0].interpretation.coding[0].code = "expected";
+      encounter_package.observations[0].interpretation.coding[0].code = "expected";
+      encounter_package.observations[0].method.coding[0].code = "physical";
+      encounter_package.observations[1].body_site.coding[0].code = "right_leg";
+      encounter_package.observations[1].components[0].interpretation.coding[0].code = "expected";
+      encounter_package.observations[1].interpretation.coding[0].code = "expected";
+      encounter_package.observations[1].method.coding[0].code = "physical";
+
+      var encounter_package_base64 = b64EncodeUnicode(JSON.stringify(encounter_package));
+      postman.setEnvironmentVariable("encounter_package", JSON.stringify(encounter_package));
+
+      postman.setEnvironmentVariable("encounter_package_base64", encounter_package_base64);
+
+
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 8000

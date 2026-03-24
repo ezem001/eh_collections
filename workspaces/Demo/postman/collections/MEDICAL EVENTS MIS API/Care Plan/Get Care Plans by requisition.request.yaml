@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{host}}/api/care_plans?requisition=4596-9721-7334-3969"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+queryParams:
+  - key: requisition
+    value: 4596-9721-7334-3969
+  - key: status
+    value: active
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 7000

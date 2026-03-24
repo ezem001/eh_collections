@@ -1,0 +1,47 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/observations?encounter_\
+  id={{jobEncounterID}}&managing_organization_id={{user_legal_entity}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: code
+    value: 10569-2
+    disabled: true
+  - key: encounter_id
+    value: "{{jobEncounterID}}"
+  - key: diagnostic_report_id
+    value: ""
+    disabled: true
+  - key: episode_id
+    value: "{{jobEpisodeID}}"
+    disabled: true
+  - key: issued_from
+    value: 1990-01-01
+    disabled: true
+  - key: issued_to
+    value: 2000-01-01
+    disabled: true
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Observations by searсh params - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 75000

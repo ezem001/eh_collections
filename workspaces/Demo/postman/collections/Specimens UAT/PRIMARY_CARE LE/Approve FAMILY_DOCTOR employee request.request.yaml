@@ -1,0 +1,34 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/employee_requests/89c5eefe-5e0b-493e-831e-feba8c6b9ab6/approve
+method: POST
+headers:
+  - key: api-key
+    value: ef7d48ecfc233d6af088
+  - key: Authorization
+    value: Bearer {{employee_approve_token}}
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  - key: x-consumer-id
+    value: 8b797c23-ba47-45f2-bc0f-521013e01074
+    disabled: true
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Status code is 200"] = responseCode.code === 200;
+
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data && jsonData.data.employee_id) {
+          var owner_id = jsonData.data.employee_id;
+          postman.setEnvironmentVariable("doc1_employee_id", owner_id);
+      } else {
+          postman.setEnvironmentVariable("doc1_employee_id", "<<undefined>>");
+      }
+    language: text/javascript
+examples: ./.resources/Approve FAMILY_DOCTOR employee request.resources/examples
+order: 14000

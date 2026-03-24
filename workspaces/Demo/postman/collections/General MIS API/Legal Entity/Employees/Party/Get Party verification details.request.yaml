@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/parties/9c5d2bee-a3a4-4d6f-8cda-d28d6195fc16/verification"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 1000

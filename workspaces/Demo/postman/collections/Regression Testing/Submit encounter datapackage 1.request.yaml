@@ -1,0 +1,274 @@
+$kind: http-request
+name: Submit encounter datapackage
+url: "{{host}}/api/patients/{{patient_for_regress}}/encounter_package"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |
+    {
+      "visit": {
+        "id": "{{visit_id}}",
+        "period": {
+          "start": "2022-05-05T10:42:16.000Z",
+          "end": "2024-06-10T11:46:17.000Z"
+        }
+      },
+      "signed_data": "{{encounter_signed_content}}"
+    }
+scripts:
+  - type: afterResponse
+    code: "// Helper function: Capitalize and format path segment to Title Case\r
+
+      function formatEntityTitle(pathSegment) {\r
+
+      \    if (!pathSegment) return 'Job';\r
+
+      \    return pathSegment\r
+
+      \        .split('_')\r
+
+      \        .map(part => part.charAt(0).toUpperCase() + part.slice(1))\r
+
+      \        .join(' ');\r
+
+      }\r
+
+      \r
+
+      // Get dynamic entity name from URL path (e.g., 'encounters',
+      'device_dispenses')\r
+
+      const resourceType = pm.request.url.path[3]; // Dynamically detects
+      resource\r
+
+      const resourceLabel = formatEntityTitle(resourceType);\r
+
+      \r
+
+      // 🔧 Display JSON in Visualizer\r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      // Parse initial response\r
+
+      const resBody = pm.response.text();\r
+
+      const resData = JSON.parse(resBody);\r
+
+      console.log(pm.request.url.path[3])\r
+
+      \r
+
+      // ⛔ Show error if initial response has it\r
+
+      if (resData && resData.error) {\r
+
+      \    displayResponse(`${resourceLabel} Response Error Details`,
+      resData.error);\r
+
+      }\r
+
+      \r
+
+      // Extract Job ID from href\r
+
+      const href = resData.data.links[0].href;\r
+
+      const jobId = href.split('/jobs/')[1];\r
+
+      console.log(\"Extracted jobId:\", jobId);\r
+
+      \r
+
+      // Init retry counter\r
+
+      pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // 🔄 Check job status recursively\r
+
+      function checkJobStatus(jobId) {\r
+
+      \    const url = `${pm.globals.get('host')}/api/jobs/${jobId}`;\r
+
+      \    const maxRetries = 3;\r
+
+      \r
+
+      \    pm.sendRequest({\r
+
+      \        method: 'GET',\r
+
+      \        url: url,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \            'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \        pm.test(`${resourceLabel} job check response is 200 or 303`,
+      function () {\r
+
+      \            pm.expect([200, 303]).to.include(res.code);\r
+
+      \        });\r
+
+      \r
+
+      \        if (err) {\r
+
+      \            displayResponse(`${resourceLabel} Job Request Error`, {
+      error: err.message });\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        const responseBody = res.json();\r
+
+      \        const jobStatus = responseBody.data.status;\r
+
+      \        console.log(`${resourceLabel} Job Status:`, jobStatus);\r
+
+      \r
+
+      \        if (jobStatus === 'processed') {\r
+
+      \            // ✅ Success\r
+
+      \            pm.test(`${resourceLabel} Job Processed (303 expected)`,
+      function () {\r
+
+      \                pm.expect(res.code).to.eql(303);\r
+
+      \            });\r
+
+      \r
+
+      \          // Set global vars for result links (only the ID part)\r
+
+      \                const links = responseBody.data.links.reduce((acc, link)
+      => {\r
+
+      \                    const parts = link.href.split('/');\r
+
+      \                    const id = parts[parts.length - 1]; // extract only
+      the last part (ID)\r
+
+      \                    acc[link.entity] = acc[link.entity] || [];\r
+
+      \                    acc[link.entity].push(id);\r
+
+      \                    return acc;\r
+
+      \                }, {});\r
+
+      \r
+
+      \                Object.entries(links).forEach(([entity, ids]) => {\r
+
+      \                    ids.forEach((id, index) => {\r
+
+      \                        const capitalizedEntity =
+      entity.charAt(0).toUpperCase() + entity.slice(1).replace('_', '');\r
+
+      \                        const globalName = ids.length === 1\r
+
+      \                            ? `job${capitalizedEntity}ID`\r
+
+      \                            : `job${capitalizedEntity}ID_${index + 1}`;\r
+
+      \                        pm.globals.set(globalName, id);\r
+
+      \                    });\r
+
+      \                });\r
+
+      \r
+
+      \            displayResponse(`${resourceLabel} Job Response Details`,
+      responseBody.data);\r
+
+      \        } else {\r
+
+      \            // 🔁 Retry if not yet processed\r
+
+      \            let retryCount = parseInt(pm.environment.get('retryCount'))
+      || 0;\r
+
+      \r
+
+      \            if (retryCount < maxRetries) {\r
+
+      \                retryCount++;\r
+
+      \                pm.environment.set('retryCount', retryCount);\r
+
+      \                console.log(`Retrying ${resourceLabel} job... Attempt
+      ${retryCount}`);\r
+
+      \                setTimeout(() => checkJobStatus(jobId), 1000);\r
+
+      \r
+
+      \                displayResponse(`${resourceLabel} Job Status Pending`,
+      responseBody.data);\r
+
+      \            } else {\r
+
+      \                console.warn(`❌ Max retries reached for ${resourceLabel}
+      job.`);\r
+
+      \                const finalTitle = responseBody.data.error\r
+
+      \                    ? `${resourceLabel} Job Error Details`\r
+
+      \                    : `Final ${resourceLabel} Job Status Check`;\r
+
+      \                displayResponse(finalTitle, responseBody.data);\r
+
+      \            }\r
+
+      \        }\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      // ▶️ Trigger job check\r
+
+      checkJobStatus(jobId);"
+    language: text/javascript
+order: 69000

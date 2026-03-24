@@ -1,0 +1,40 @@
+$kind: http-request
+url: "{{host_demo}}/api/pharmacy/medication_dispenses?medication_request_id=f11\
+  21ea8-28e3-417c-862d-54d087ebd907"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: id
+    value: a89f6a26-4221-4597-a1d2-542d5e40b565
+    disabled: true
+  - key: legal_entity_id
+    value: a89f6a26-4221-4597-a1d2-542d5e40b565
+    disabled: true
+  - key: division_id
+    value: a89f6a26-4221-4597-a1d2-542d5e40b565
+    disabled: true
+  - key: status
+    value: PROCESSED
+    disabled: true
+  - key: dispensed_from
+    value: "'2017"
+    disabled: true
+  - key: dispensed_to
+    value: "'2017"
+    disabled: true
+  - key: care_plan_id
+    value: 8838982b-6a77-4cb5-87cd-cdb82eb55364
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: medication_request_id
+    value: f1121ea8-28e3-417c-862d-54d087ebd907
+order: 5000

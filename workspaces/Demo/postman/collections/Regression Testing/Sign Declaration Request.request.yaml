@@ -1,0 +1,58 @@
+$kind: http-request
+url: "{{host}}/api/v3/declaration_requests/{{declaration_request_id}}/actions/sign"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"signed_declaration_request\": \"{{declaration_signed_content}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const jsonData = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      if (jsonData.error) {\r
+
+      \    displayResponse('Error Sign Declaration Request Details', jsonData)\r
+
+      }\r
+
+      \r
+
+      pm.test(`Sign declaration request ${pm.response.code === 200 ? 'pass' :
+      'fail'}. Response code is ${pm.response.code === 200 ? '200' :
+      pm.response.code} / ${JSON.stringify(jsonData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    console.log(jsonData);\r
+
+      \    const declarationId = jsonData.data.id;\r
+
+      \    pm.globals.set('declaration_id', declarationId)\r
+
+      })"
+    language: text/javascript
+order: 13000

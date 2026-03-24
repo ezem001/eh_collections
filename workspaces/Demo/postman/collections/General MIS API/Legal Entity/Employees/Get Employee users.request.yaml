@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{host}}/api/employees/{{user_id}}/users"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 7000

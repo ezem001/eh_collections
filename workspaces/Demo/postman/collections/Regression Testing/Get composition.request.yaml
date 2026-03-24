@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/composition/{{JobCompositio\
+  nID}}/episode/{{jobEpisodeID}}/encounter/{{jobEncounterID}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: |-
+      // Розбираємо відповідь
+      const resBody = pm.response.json();
+
+
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+
+
+          const contentString = JSON.stringify(resBody);
+
+          console.log(contentString);
+
+          // Зберігаємо у глобальні змінні
+          pm.globals.set("ContentForSign", contentString);
+
+      });
+    language: text/javascript
+order: 86000

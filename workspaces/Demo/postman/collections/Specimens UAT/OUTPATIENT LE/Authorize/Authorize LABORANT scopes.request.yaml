@@ -1,0 +1,36 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: ef7d48ecfc233d6af088
+  Authorization: Bearer {{laborant_session_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+       "app":{
+          "client_id":"ac81d69f-e712-4b18-b9d5-83c2a87018e1",
+          "redirect_uri":"https://example2.com",
+          "scope":"employee_request:read employee_request:approve employee_request:reject employee:read employee_role:read diagnostic_report:write diagnostic_report:read diagnostic_report:cancel service_request:read service_request:makeinprogress service_request:use service_request:complete division:read legal_entity:read job:read observation:read observation:write specimen:write specimen:read specimen:process specimen:cancel specimen:reject specimen:invalidate service_request:read_impersonal"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData.data && jsonData.data.value) {
+          var code_grant = jsonData.data.value;
+          postman.setEnvironmentVariable("laborant_code_grant", code_grant);
+      } else {
+          postman.setEnvironmentVariable("laborant_code_grant", "<<undefined>>");
+      }
+    language: text/javascript
+examples: ./.resources/Authorize LABORANT scopes.resources/examples
+order: 11000

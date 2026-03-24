@@ -1,0 +1,54 @@
+$kind: http-request
+url: "{{host}}/api/parties/verifications"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: verification_status
+    value: VERIFIED
+    disabled: true
+  - key: status
+    value: ""
+    disabled: true
+  - key: division_id
+    value: c3246236-89a5-44be-8d40-45e1a2b58271
+    disabled: true
+  - key: page
+    value: ""
+    disabled: true
+  - key: page_size
+    value: ""
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "const data = pm.response.json().data;\r
+
+      \r
+
+      // Створюємо мапу для підрахунку кількості кожного party_id\r
+
+      const counts = data.reduce((acc, item) => {\r
+
+      \  acc[item.party_id] = (acc[item.party_id] || 0) + 1;\r
+
+      \  return acc;\r
+
+      }, {});\r
+
+      console.log(counts)\r
+
+      \r
+
+      // Фільтруємо тільки ті елементи, у яких party_id зустрічається більше
+      одного разу\r
+
+      const duplicateParties = data.filter(item => counts[item.party_id] > 1);\r
+
+      \r
+
+      console.log(duplicateParties);\r\n"
+    language: text/javascript
+order: 2000

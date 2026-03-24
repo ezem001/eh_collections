@@ -1,0 +1,106 @@
+$kind: http-request
+url: "{{host}}/api/events/?date_to={{event_list_date_to}}&date={{event_list_date}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: date_to
+    value: "{{event_list_date_to}}"
+  - key: event_type
+    value: StatusChangeEvent
+    disabled: true
+  - key: entity_type
+    value: Party
+    disabled: true
+  - key: entity_type
+    value: Person
+    disabled: true
+  - key: attribute_name
+    value: status
+    disabled: true
+  - key: new_value
+    value: VERIFIED
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "5000"
+    disabled: true
+  - key: date
+    value: 2025-08-14T01:01:11Z
+    disabled: true
+  - key: date
+    value: "{{event_list_date}}"
+scripts:
+  - type: beforeRequest
+    code: "// Поточна дата\r
+
+      const now = new Date();\r
+
+      \r
+
+      // Створюємо дату сьогодні о 08:00:00 UTC\r
+
+      const dateAt8 = new Date(Date.UTC(\r
+
+      \    now.getUTCFullYear(),\r
+
+      \    now.getUTCMonth(),\r
+
+      \    now.getUTCDate(),\r
+
+      \    8, 0, 0\r
+
+      ));\r
+
+      \r
+
+      // date_to = +3 години\r
+
+      const dateTo = new Date(dateAt8.getTime() + 3 * 60 * 60 * 1000);\r
+
+      \r
+
+      // Форматування у вигляді YYYY-MM-DDTHH:mm:ssZ\r
+
+      function toIsoZ(d) {\r
+
+      \    return d.toISOString().replace(/\\.\\d{3}Z$/, \"Z\");\r
+
+      }\r
+
+      \r
+
+      const eventDate = toIsoZ(dateAt8);\r
+
+      const eventDateTo = toIsoZ(dateTo);\r
+
+      \r
+
+      // Збереження в globals\r
+
+      pm.globals.set(\"event_list_date\", eventDate);\r
+
+      pm.globals.set(\"event_list_date_to\", eventDateTo);\r
+
+      \r
+
+      // Логи\r
+
+      console.log(\"event_list_date:\", eventDate);\r
+
+      console.log(\"event_list_date_to:\", eventDateTo);\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"Get events list, check period - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 1000

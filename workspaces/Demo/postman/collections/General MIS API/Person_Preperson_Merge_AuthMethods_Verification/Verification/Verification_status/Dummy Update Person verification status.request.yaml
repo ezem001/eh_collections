@@ -1,0 +1,19 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"dracs_death\": {\r
+
+    \        \"verification_status\": \"VERIFIED\",\r
+
+    \        \"verification_reason\": \"MANUAL_NOT_CONFIRMED\",\r
+
+    \        \"verification_comment\": \"Смерть не підтверджено\"\r
+
+    \    }\r
+
+    }"
+order: 1000
