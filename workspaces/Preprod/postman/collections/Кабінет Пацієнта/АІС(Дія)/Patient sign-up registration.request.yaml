@@ -1,4 +1,5 @@
 $kind: http-request
+name: Patient sign-up registration
 url: https://pis-demo.ehealth.gov.ua/api/pis/register
 method: POST
 headers:
@@ -11,8 +12,7 @@ headers:
     value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
     disabled: true
   - key: Authorization
-    value: Bearer
-      eyJhbGciOiJSUzUxMiIsImtpZCI6IktyWFJrYnpuVUV3MnJMUzdJeXZ1U0dlUkxHSFNlNGlfT0JRa0JVNUJHcGsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJ0cnVzdGVkLWNsaWVudCIsImV4cCI6MTcxNzUwMjYzMywiaWF0IjoxNzE3NTAxNzMzLCJpc3MiOiJFSGVhbHRoIiwianRpIjoiZmFmYjI5OGUtMDkxZi00MmE1LThhY2UtNjgwNDlmMmI2OWRjIiwibmJmIjoxNzE3NTAxNzMyLCJub25jZSI6ImI1YmY4MWQ3LWU3ZGYtNDI2NS04MzcwLTY1MjAwNTgwN2MwOSIsInN1YiI6ImI1YmY4MWQ3LWU3ZGYtNDI2NS04MzcwLTY1MjAwNTgwN2MwOSIsInR5cCI6ImFjY2VzcyJ9.ObeSFES7GUQqE5_G7cfXnTdoouqeozn4sSLnga5koa7h1e83ftouVoKsuIPElGvVlMNoGgKtbJxbmowgaL9NAc9XofNnzyGprNMYTe-Zuh0hVowcIf87k-fbLAHVGoyje9mWRVSYEreNE5QQ6w64n66CGMNHhLxSj5jaz_VKFKGGuxHmdLqJ9LLzXRleoyl1uZEGu8DPhXM_b44qQzDV6LZ0vY0eIbVWpRxPVY6NdezHbxEaVe1IDUz_DJWj4oDu3HNouS9XYfpHA7_tF09i5-ZbRvI6MKB3XIzcvdQJRUv2Kd2u1wIWgt4kUHTRwbYS1tPuq2BinkUQV8qxI38ASg
+    value: "Bearer "
 body:
   type: text
   content: >-

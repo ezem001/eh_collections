@@ -1,8 +1,9 @@
 $kind: http-request
+name: Create approval by DR
 url: "{{host}}/api/patients/{{patient_id}}/approvals"
 method: POST
 headers:
-  Authorization: Bearer aFg0aE1VbTI5N0FaWG9OQ1hycDBrdz09
+  Authorization: ""
   api-key: "{{mis_client_secret}}"
   Content-Type: application/json
 body:

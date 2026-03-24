@@ -1,4 +1,5 @@
 $kind: http-request
+name: Create Composition
 url: "{{host_demo}}/api/patients/composition"
 method: POST
 headers:
@@ -223,7 +224,7 @@ scripts:
               url: url,
               header: {
                   'Content-Type': 'application/json',
-                  'Authorization': 'Bearer V1JIRGlZWllxYmJsNkt0V3dOWEs4QT09',
+                  'Authorization': '',
                   'api-key': '30276e63617461a185ec',
                   'X-Custom-PSK': 'a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e'
               }

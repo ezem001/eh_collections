@@ -1,4 +1,5 @@
 $kind: http-request
+name: Get legal_entities
 url: https://pis-preprod.ehealth.gov.ua/api/pis/bulk/legal_entities
 method: GET
 headers:
@@ -10,7 +11,7 @@ headers:
   - key: api-key
     value: dda8f27e3188f973e15b025bad084c04
   - key: Authorization
-    value: Bearer V3RWUW5jVzRnWllHWWw2MkJSWDZ2UT09
+    value: ""
     disabled: true
 queryParams:
   - key: depth

@@ -1,4 +1,5 @@
 $kind: http-request
+name: Search legal entities
 url: https://pis-demo.ehealth.gov.ua/api/pis/legal_entities?settlement_id=fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494&settlement=ЧУГУЇВ&page=1&page_size=50
 method: GET
 headers:
@@ -11,7 +12,7 @@ headers:
     value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
     disabled: true
   - key: Authorization
-    value: Bearer V3RWUW5jVzRnWllHWWw2MkJSWDZ2UT09
+    value: ""
     disabled: true
 queryParams:
   - key: type

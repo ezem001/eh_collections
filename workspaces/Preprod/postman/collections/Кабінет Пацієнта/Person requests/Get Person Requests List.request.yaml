@@ -1,4 +1,5 @@
 $kind: http-request
+name: Get Person Requests List
 url: https://pis-demo.ehealth.gov.ua/api/pis/person_requests?page=1&page_size=50
 method: GET
 headers:
@@ -10,7 +11,7 @@ headers:
   - key: api-key
     value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
   - key: Authorization
-    value: Bearer cUdFVWJjTVVVNTkzOEUxVXVza1p2dz09
+    value: ""
 queryParams:
   - key: status
     value: APPROVED

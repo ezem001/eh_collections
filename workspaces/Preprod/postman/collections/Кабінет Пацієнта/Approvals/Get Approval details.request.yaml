@@ -1,11 +1,12 @@
 $kind: http-request
+name: Get Approval details
 url: https://pis-demo.ehealth.gov.ua/api/pis/apps/019e6147-f0a4-4ad7-9642-d4ea6fa131fe
 method: GET
 headers:
   - key: Content-Type
     value: application/json
   - key: Authorization
-    value: Bearer cUdFVWJjTVVVNTkzOEUxVXVza1p2dz09
+    value: ""
   - key: api-key
     value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
   - key: X-Custom-PSK

@@ -1,4 +1,5 @@
 $kind: http-request
+name: Patient sign-up
 url: https://pis-auth-preprod.ehealth.gov.ua/sign-up?client_id=6e39ce2e-520b-4905-890f-7fc69acfe85c&redirect_uri=https://pis_test.com/redirect&scope=app:read_pis
   app:delete_pis confidant_person:login confidant_person:sign_up
   person_documents:write_pis person_verification:details_pis person:details_pis
@@ -15,7 +16,7 @@ headers:
   Content-Type: application/json
   X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
   api-key: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
-  Authorization: Bearer WVpza3NEdlpGYUVyNnhjTFNsRm1hZz09
+  Authorization: ""
 queryParams:
   - key: client_id
     value: 6e39ce2e-520b-4905-890f-7fc69acfe85c

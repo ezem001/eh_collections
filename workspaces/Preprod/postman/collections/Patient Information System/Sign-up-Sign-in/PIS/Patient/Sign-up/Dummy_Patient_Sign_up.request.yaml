@@ -1,4 +1,5 @@
 $kind: http-request
+name: Dummy_Patient_Sign_up
 url: ""
 method: GET
 body:
@@ -133,18 +134,7 @@ body:
 
     \    \"process_disclosure_data_consent\": true,\r
 
-    \    \"jwt\":
-    \"eyJhbGciOiJSUzUxMiIsImtpZCI6IktyWFJrYnpuVUV3MnJMUzdJeXZ1U0dlUkxHSFNlNGlfT\
-    0JRa0JVNUJHcGsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJtaXRocmlsLWxvZ2luIiwiZXhwIjoxN\
-    zM0NzAwNDk3LCJpYXQiOjE3MzQ2OTk1OTcsImlzcyI6IkVIZWFsdGgiLCJqdGkiOiJkZDczYjI2\
-    Ni1kOTIyLTRlMTMtYjdjNS0wOTJmYTQ0ZGI3Y2UiLCJuYmYiOjE3MzQ2OTk1OTYsIm5vbmNlIjo\
-    iNWRkNjY4MDgtMTE2YS00YmE4LThjY2UtODdlNzFkYmQ1NmExIiwic3ViIjoiNWRkNjY4MDgtMT\
-    E2YS00YmE4LThjY2UtODdlNzFkYmQ1NmExIiwidHlwIjoiYWNjZXNzIn0.Y25lFbrviSMormR1f\
-    9HiV2EG6a4J4E67uNB1emqTkfTehibcEklLGQ9XDhTQHBomJgGGQp58MNePQ6Ar1xjNThh0T8Si\
-    XQVbs9AyG1NvlaUvkNlNgJDjj1cu-KqutSRA_AVWsPFsql-ZPeWchmVpfTUnpgFZoKHZeOV_CAP\
-    6H4EZqGyRsBfGdVUW-9-tizyq5RJ9CSDfjC31QEi0cv6YrcbxkS-tztT62T-IHAt9a0aUix_Ksn\
-    os3u18bXLl1UnkAi6WpFM72KXzh0rmL-3gPShEBHK7BDUgW3u0wlxNKdajYG__SOaSC1PAtoiur\
-    ckoIQ2ir1u15s6S1Ttx8Ch8ZQ\"\r
+    \    \"jwt\": \"\"\r
 
     }"
 order: 5000

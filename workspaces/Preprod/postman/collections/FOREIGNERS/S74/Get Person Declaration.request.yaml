@@ -1,8 +1,0 @@
-$kind: http-request
-url: https://api-demo.ehealth.gov.ua/api/persons/3bd56046-488c-47c7-83df-785acb4139b8/declaration
-method: GET
-headers:
-  api-key: 30276e63617461a185ec
-  Authorization: Bearer TUQ4SU9tSkYyZlNLMzlVNjhQbTRidz09
-  X-Custom-PSK: "{{mis_dev_x_custom_psk}}"
-order: 4000

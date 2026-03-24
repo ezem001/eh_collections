@@ -1,4 +1,5 @@
 $kind: http-request
+name: Dummy patient sign-up validation
 url: https://ehealth.edenlabllc.com/dummy/pis/sign-up_validation
 method: POST
 headers:
@@ -137,18 +138,7 @@ body:
 
     \  \"process_disclosure_data_consent\": true,\r
 
-    \  \"jwt\":
-    \"eyJhbGciOiJSUzUxMiIsImtpZCI6IktyWFJrYnpuVUV3MnJMUzdJeXZ1U0dlUkxHSFNlNGlfT\
-    0JRa0JVNUJHcGsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJ0cnVzdGVkLWNsaWVudCIsImV4cCI6M\
-    TcxNzU4NDQ0OCwiaWF0IjoxNzE3NTgzNTQ4LCJpc3MiOiJFSGVhbHRoIiwianRpIjoiNmFiODQy\
-    Y2ItMjI4MS00MjY3LTg0MzktMGE1NmNlZWQyMzU5IiwibmJmIjoxNzE3NTgzNTQ3LCJub25jZSI\
-    6ImNmNmQwN2MzLWNiNzAtNDU0Yi1iZWZlLTllMWY1OWUwNGM3ZCIsInN1YiI6ImNmNmQwN2MzLW\
-    NiNzAtNDU0Yi1iZWZlLTllMWY1OWUwNGM3ZCIsInR5cCI6ImFjY2VzcyJ9.K4O16qhfudrrMR24\
-    lo33jJ6fscMyWsiGtYWPuBWrtjcHqxjIm2yWJW4lTbKFKQSvFaVMLirzVPLwbtsADA-bdNyFGML\
-    N9tNbcSS_q1l5Nn2C2wNHNUMtQYAmCwEL6rCCFsXnulSj8HM6PA-faTPDpRMlyWbqhlNYf9H9UD\
-    e_syg3NWmStHOFAx1cyo3TTnIl50ZmXSPshWplw5FoscPRJJTtEcEfjhTRgMYnlR08MGBJgoqzN\
-    KSbWyU_RcsLnCZG0ZsQXeMMpKhu-DRmI7JKl0NjaeLzzP8T8pyO65CDzphPK4OSMCEHRTxVLaQ2\
-    FpBM0s4Ici7N9o5DFU_gMcHhIA\"\r
+    \  \"jwt\": \"\"\r
 
     }"
 order: 2000

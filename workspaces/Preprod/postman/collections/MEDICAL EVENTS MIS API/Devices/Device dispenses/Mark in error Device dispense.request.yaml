@@ -1,10 +1,11 @@
 $kind: http-request
+name: Mark in error Device dispense
 url: "{{host_demo}}/api/patients/patient_id/device_dispenses/device_dispense_id\
   /actions/mark_in_error"
 method: PATCH
 headers:
   Content-Type: application/json
-  Authorization: Bearer Tys5L0dUSzYwUS83ZDVIdzdvdDBJdz09
+  Authorization: ""
   api-key: "{{demo-api-key}}"
   "{{X-Custom-PSK}}": "{{x-custom_demo}}"
 body:

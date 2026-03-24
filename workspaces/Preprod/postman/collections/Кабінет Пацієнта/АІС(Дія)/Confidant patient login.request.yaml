@@ -1,4 +1,5 @@
 $kind: http-request
+name: Confidant patient login
 url: https://pis-demo.ehealth.gov.ua/api/pis/confidant/login
 method: POST
 headers:
@@ -11,7 +12,7 @@ headers:
     value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
     disabled: true
   - key: Authorization
-    value: Bearer dEdrS1lyMmN5djRHRjNUZC8yQTFOZz09
+    value: ""
     disabled: true
 body:
   type: text

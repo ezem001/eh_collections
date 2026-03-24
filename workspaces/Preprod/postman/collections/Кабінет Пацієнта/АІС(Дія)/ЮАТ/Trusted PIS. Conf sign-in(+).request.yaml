@@ -1,4 +1,5 @@
 $kind: http-request
+name: Trusted PIS. Conf sign-in(+)
 url: https://pis-demo.ehealth.gov.ua/api/pis/confidant/sign-in
 method: POST
 headers:
@@ -10,7 +11,7 @@ headers:
   - key: api-key
     value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
   - key: Authorization
-    value: Bearer dEdrS1lyMmN5djRHRjNUZC8yQTFOZz09
+    value: ""
     disabled: true
 body:
   type: text

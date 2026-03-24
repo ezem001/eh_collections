@@ -1,5 +1,4 @@
 $kind: http-request
-name: Terminate declaration
 url: https://pis-demo.ehealth.gov.ua/api/pis/declarations/e6bfde06-2f42-4d33-8c99-561a05dd05b4/actions/terminate
 method: PATCH
 headers:
@@ -11,7 +10,7 @@ headers:
   - key: api-key
     value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
   - key: Authorization
-    value: ""
+    value: Bearer WDdXRmp1K0xwbHNsNVkxOGROSmY3QT09
 body:
   type: json
   content: "{\r

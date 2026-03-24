@@ -1,5 +1,4 @@
 $kind: graphql-request
-name: Create Device Definition from Admin Panel
 url: https://admin.dev.edenlab.com.ua/graphql
 query: >-
   mutation CreateDeviceDefinitionMutation($input: CreateDeviceDefinitionInput!)
@@ -98,6 +97,6 @@ variables: |-
     }
   }
 headers:
-  Authorization: ""
+  Authorization: Bearer QXUxSVFId1pESVhmblNORFNBbXdBZz09
   Content-Type: application/json
 order: 38000

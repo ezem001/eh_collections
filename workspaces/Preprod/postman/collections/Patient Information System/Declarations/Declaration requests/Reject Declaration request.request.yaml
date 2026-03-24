@@ -1,4 +1,5 @@
 $kind: http-request
+name: Reject Declaration request
 url: https://pis-demo.ehealth.gov.ua/api/pis/declaration_requests/fb39c887-2720-4931-aae8-1f7a69df8e45/actions/reject
 method: PATCH
 headers:
@@ -10,5 +11,5 @@ headers:
   - key: api-key
     value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
   - key: Authorization
-    value: Bearer V3RWUW5jVzRnWllHWWw2MkJSWDZ2UT09
+    value: ""
 order: 5000

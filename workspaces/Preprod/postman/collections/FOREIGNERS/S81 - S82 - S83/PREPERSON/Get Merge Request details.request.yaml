@@ -1,9 +1,0 @@
-$kind: http-request
-url: https://api-demo.ehealth.gov.ua/api/merge_requests/c7cc6b2f-05a3-44c3-826a-34984b3b4303
-method: GET
-headers:
-  Content-Type: application/json
-  api-key: 30276e63617461a185ec
-  Authorization: Bearer {{employee_access_token}}
-  X-Custom-PSK: a1aa07c96f3f4d91870f923a53cc9aa8f23bbc01a8238d1c2c26d4299715a7e4
-order: 7000

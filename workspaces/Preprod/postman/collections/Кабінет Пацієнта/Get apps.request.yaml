@@ -1,9 +1,10 @@
 $kind: http-request
+name: Get apps
 url: https://pis-preprod.ehealth.gov.ua/api/pis/apps
 method: GET
 headers:
   Content-Type: application/json
-  Authorization: Bearer M2c3QUlWTXpvUGpuSktld00zQjVpQT09
+  Authorization: ""
   X-Custom-PSK: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
   api-key: 83550c00774bb2151a95c1b00d16af1f
 queryParams:

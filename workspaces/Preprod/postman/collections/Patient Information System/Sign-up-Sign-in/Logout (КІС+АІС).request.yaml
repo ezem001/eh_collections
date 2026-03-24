@@ -1,5 +1,4 @@
 $kind: http-request
-name: Logout (КІС+АІС)
 url: https://pis-demo.ehealth.gov.ua/auth/logout
 method: POST
 headers:
@@ -7,7 +6,7 @@ headers:
     value: application/json
     disabled: true
   - key: Authorization
-    value: ""
+    value: Bearer VDNpK3dkTU5LU0k5SlJjSGlNa0ZUZz09
     disabled: true
   - key: X-Custom-PSK
     value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e

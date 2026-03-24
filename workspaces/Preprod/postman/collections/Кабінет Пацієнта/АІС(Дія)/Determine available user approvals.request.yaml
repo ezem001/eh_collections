@@ -1,4 +1,5 @@
 $kind: http-request
+name: Determine available user approvals
 url: https://pis-demo.ehealth.gov.ua/oauth/user/apps?client_id=7aea1385-dd34-4a04-84bd-00ccfa673990&scope=app:read_pis
 method: GET
 headers:
@@ -10,7 +11,7 @@ headers:
   - key: api-key
     value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
   - key: Authorization
-    value: Bearer a1hybDVNKzMvRkp5ZHF6UWE0aHBKZz09
+    value: ""
 queryParams:
   client_id: 7aea1385-dd34-4a04-84bd-00ccfa673990
   scope: app:read_pis

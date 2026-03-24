@@ -1,4 +1,5 @@
 $kind: http-request
+name: Dummy Patient sign-up
 url: ""
 method: GET
 body:
@@ -135,18 +136,7 @@ body:
 
     \    \"process_disclosure_data_consent\": true,\r
 
-    \    \"jwt\":
-    \"eyJhbGciOiJSUzUxMiIsImtpZCI6IktyWFJrYnpuVUV3MnJMUzdJeXZ1U0dlUkxHSFNlNGlfT\
-    0JRa0JVNUJHcGsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJ0cnVzdGVkLWNsaWVudCIsImV4cCI6M\
-    TczNDY5NjU5NiwiaWF0IjoxNzM0Njk1Njk2LCJpc3MiOiJFSGVhbHRoIiwianRpIjoiMjg1MGE1\
-    YjEtOTZjMi00OTIzLTlkMDMtYTJhZTQyODM0YWUwIiwibmJmIjoxNzM0Njk1Njk1LCJub25jZSI\
-    6IjJkYzk2NWRhLWUxMTItNGNjYS1iYjU5LWUzY2E5M2U1YjQ1OSIsInN1YiI6IjJkYzk2NWRhLW\
-    UxMTItNGNjYS1iYjU5LWUzY2E5M2U1YjQ1OSIsInR5cCI6ImFjY2VzcyJ9.Bkaj9K5dcSJuCfk6\
-    42v-f3pR30enI05zp5udyEykh6ltIqt44TIgubnRZvKrzF-dp7Zb8bilEFJMbYTRoGf0wCyzIb0\
-    yn3gg3CP2SSsF87ShB4YASi22bvaB9bWFliAEDDPbsMyHbKbzyQX7tRfyfpfYzorgaLQ4qEjeYf\
-    mBvOzVYfujpAXdgWLUA8MJixyGiq18Ovf4n2h3F6byPAVdV4VUaj_jSgo_YVR4CBEbmBbG4T70Z\
-    mtBc9m-b28Sm47rUYrUbymmPy-2_LLn7S9MYk8nQ1Yz_-MGc4SieDhhZ3w4NWxshcQmp9btO2KL\
-    yFKnXQUy378c44Bsc7Y7t5DB8Q\"\r
+    \    \"jwt\": \"\"\r
 
     }"
 order: 2000

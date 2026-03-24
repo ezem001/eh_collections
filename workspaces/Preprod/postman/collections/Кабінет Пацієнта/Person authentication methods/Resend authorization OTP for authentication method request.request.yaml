@@ -1,4 +1,5 @@
 $kind: http-request
+name: Resend authorization OTP for authentication method request
 url: https://pis-demo.ehealth.gov.ua/api/pis/authentication_method_requests/{{request_id}}/actions/resend_otp
 method: POST
 headers:
@@ -10,7 +11,7 @@ headers:
   - key: api-key
     value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
   - key: Authorization
-    value: Bearer c2778f3064753ea70de870a53795f5c9
+    value: ""
 examples: ./.resources/Resend authorization OTP for authentication method
   request.resources/examples
 order: 2000

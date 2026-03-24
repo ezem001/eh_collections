@@ -1,4 +1,5 @@
 $kind: http-request
+name: Create approval care_plan
 url: "{{host}}/api/patients/{{patient_id_from_episode}}/approvals"
 method: POST
 headers:
@@ -163,8 +164,7 @@ scripts:
 
       //             'Content-Type': 'application/json',\r
 
-      //             'Authorization': 'Bearer
-      WUFKZDJ2TFhtUHNvZlQ1OUVuazhpUT09',\r
+      //             'Authorization': '',\r
 
       //             'api-key': '30276e63617461a185ec',\r
 

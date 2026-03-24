@@ -6,7 +6,7 @@ request:
     Content-Type: application/json
     X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
     api-key: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
-    Authorization: Bearer alo1UVpIZWtPN3JFanptY0Zwb0QwUT09
+    Authorization: ""
   body:
     type: text
     content: >-

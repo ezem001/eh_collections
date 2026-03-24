@@ -1,4 +1,5 @@
 $kind: http-request
+name: Deactivate authentication method
 url: https://pis-demo.ehealth.gov.ua/api/pis/authentication_methods/{{id}}/actions/deactivate
 method: PATCH
 headers:
@@ -10,6 +11,6 @@ headers:
   - key: api-key
     value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
   - key: Authorization
-    value: Bearer c2778f3064753ea70de870a53795f5c9
+    value: ""
 examples: ./.resources/Deactivate authentication method.resources/examples
 order: 4000

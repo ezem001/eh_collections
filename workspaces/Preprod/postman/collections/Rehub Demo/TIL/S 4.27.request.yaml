@@ -1,11 +1,12 @@
 $kind: http-request
+name: S 4.27
 url: http://192.168.5.4:31234/min_sp/device_dispenses
 method: POST
 headers:
   Uxp-Client: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS
   Uxp-Service: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS/get_device_request_data_package
   Uxp-Transaction-Id: "{{Uxp-Transaction-Id}}"
-  Authorization: Basic YWRtaW46YWRtaW4=
+  Authorization: ""
 body:
   type: json
   content: |-

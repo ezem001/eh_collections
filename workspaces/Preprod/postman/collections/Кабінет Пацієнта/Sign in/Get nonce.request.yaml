@@ -1,4 +1,5 @@
 $kind: http-request
+name: Get nonce
 url: https://pis-preprod.ehealth.gov.ua/oauth/nonce
 method: POST
 headers:
@@ -9,7 +10,7 @@ headers:
   - key: api-key
     value: 83550c00774bb2151a95c1b00d16af1f
   - key: Authorization
-    value: Bearer alo1UVpIZWtPN3JFanptY0Zwb0QwUT09
+    value: ""
     disabled: true
 body:
   type: json
