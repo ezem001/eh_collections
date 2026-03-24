@@ -1,0 +1,41 @@
+$kind: http-request
+url: http://localhost:3000/patient/search
+method: GET
+queryParams:
+  - key: type
+    value: PERSON
+    disabled: true
+  - key: environment
+    value: DEMO
+    disabled: true
+  - key: has
+    value: episode
+    disabled: true
+  - key: has
+    value: observation
+    disabled: true
+  - key: episodeId
+    value: ""
+    disabled: true
+  - key: encounterId
+    value: d6fdd46b-bd90-4a65-a8f8-b0c8f7ca0250
+    disabled: true
+  - key: conditionId
+    value: "{{jobConditionID}}"
+    disabled: true
+  - key: observationId
+    value: ""
+    disabled: true
+  - key: compositionId
+    value: bb65162d-10a2-4b34-9f8a-c965b38e9677
+    disabled: true
+  - key: created_from
+    value: 2026-02-03
+    disabled: true
+  - key: created_to
+    value: 2026-02-03
+    disabled: true
+  - key: patientId
+    value: "{{patient_id_from_episode}}"
+    disabled: true
+order: 5000

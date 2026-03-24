@@ -1,0 +1,11 @@
+$kind: http-request
+url: http://localhost:3000/logs
+method: GET
+queryParams:
+  - key: message
+    value: person_requests
+    disabled: true
+  - key: message
+    value: contracts
+    disabled: true
+order: 1000

@@ -1,0 +1,55 @@
+$kind: http-request
+url: https://echerga.mod.gov.ua/APPVER4/prelim/savePrelimOrder/
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json, text/plain, */*
+  Origin: https://echerga.mod.gov.ua
+  Referer: https://echerga.mod.gov.ua/index
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+    like Gecko) Chrome/139.0.0.0 Safari/537.36
+body:
+  type: json
+  content: |-
+    {
+        "guid": "af883a2b-651e-4b26-827d-9900487dace4",
+        "number": null,
+        "branchGuid": "3397b5fc-9f90-4c77-9991-8e3d0e56dfad",
+        "entity": {
+          "entityAttributes": [
+            {
+              "value": "Куриленко Сергій Вікторович",
+              "attributeGuid": "cf63e2de-f3cc-4e51-adbe-30919bbfb5e1",
+              "attributeDescription": "Person.FullName",
+              "entityGuid": "af883a2b-651e-4b26-827d-9900487dace4"
+            },
+            {
+              "value": "",
+              "attributeGuid": "dc56c43c-9ba0-4a47-a304-921e512350f2",
+              "attributeDescription": "Person.IdentificationNumber",
+              "entityGuid": "af883a2b-651e-4b26-827d-9900487dace4"
+            },
+            {
+              "value": "634390602",
+              "attributeGuid": "7aee0bf8-e31b-43a9-af89-064ba7c2f5be",
+              "attributeDescription": "Person.PhoneNumber",
+              "entityGuid": "af883a2b-651e-4b26-827d-9900487dace4"
+            },
+            {
+              "value": "s.kurylenko.mail@gmail.com",
+              "attributeGuid": "ca781cb6-9a95-44fc-ab91-0ccf68eeee08",
+              "attributeDescription": "Person.Email",
+              "entityGuid": "af883a2b-651e-4b26-827d-9900487dace4"
+            }
+          ]
+        },
+        "orderJobs": [
+          {
+            "guid": "0a9e294b-cc1f-4155-b5f0-2338bc030571",
+            "jobGuid": "cf3dba33-ed30-4ef3-ae7f-09f819a5234f",
+            "orderGuid": "af883a2b-651e-4b26-827d-9900487dace4",
+            "plannedBeginTime": "2025-08-20T09:30:00.000Z"
+          }
+        ]
+      }
+order: 4000
