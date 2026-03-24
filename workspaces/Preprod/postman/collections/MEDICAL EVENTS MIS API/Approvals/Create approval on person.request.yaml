@@ -1,0 +1,1384 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/approvals"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"person\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"person\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{patient_id_from_episode}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"granted_to\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"created_by\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"access_level\": \"read\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "// function displayResponse(title, data) {\r
+
+      //     const html = `\r
+
+      //         <h1>${title}</h1>\r
+
+      //         <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      //     pm.visualizer.set(html);\r
+
+      // }\r
+
+      \r
+
+      // pm.test(\"Approval Response status code is 202\", function () {\r
+
+      //     pm.expect(pm.response.code).to.eql(202);\r
+
+      // });\r
+
+      \r
+
+      // // Get the response body from the main request\r
+
+      // const resBody = pm.response.text();\r
+
+      // const resData = JSON.parse(resBody);\r
+
+      \r
+
+      // if (resData && resData.error) {\r
+
+      //     displayResponse('Create Approval Response Error Details',
+      resData.error);\r
+
+      // }\r
+
+      \r
+
+      // const href = resData.data.links[0].href;\r
+
+      // console.log(\"Extracted href:\", href);\r
+
+      \r
+
+      // // Extract the job ID from the href\r
+
+      // const number = href.split('/jobs/')[1];\r
+
+      // console.log(\"Extracted number:\", number);\r
+
+      \r
+
+      // // Initialize retry counter in the environment\r
+
+      // pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // // Function to check job status\r
+
+      // function checkJobStatus(jobId) {\r
+
+      \r
+
+      //      const url = `${pm.globals.get('host')}/api/jobs/${jobId}`;\r
+
+      //     const maxRetries = 3; // Set the maximum number of retries\r
+
+      \r
+
+      //     pm.sendRequest({\r
+
+      //         method: 'GET',\r
+
+      //         url: url,\r
+
+      //         header: {\r
+
+      //             'Content-Type': 'application/json',\r
+
+      //             'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      //             'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      //             'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      //         }\r
+
+      //     }, function (err, res) {\r
+
+      \r
+
+      //         pm.test(`Job status check response status is 200 or 303`,
+      function () {\r
+
+      //             pm.expect([200, 303]).to.include(res.code);\r
+
+      //         });\r
+
+      \r
+
+      //         if (err) {\r
+
+      //             displayResponse('Request Error', { error: err.message });\r
+
+      //             console.error('Error checking job status:', err);\r
+
+      //         } else {\r
+
+      \r
+
+      //             const responseBody = res.json();\r
+
+      //             console.log('Job Status:', responseBody.data.status);\r
+
+      \r
+
+      //             if (responseBody.data.status === 'processed') {\r
+
+      \r
+
+      //             (`Approval Job Success. Response status is 200
+      ${JSON.stringify(res.json(), null, 2)}`, function () {\r
+
+      //                     pm.expect(res.code).to.eql(200);\r
+
+      //                 });\r
+
+      \r
+
+      //                 const approvalId = responseBody.data.response_data.id\r
+
+      //                 console.log(approvalId)\r
+
+      \r
+
+      //                 pm.globals.set('jobApprovalID', approvalId);\r
+
+      //                 displayResponse('Create Approval Job Response Details',
+      responseBody.data);\r
+
+      //             } else {\r
+
+      \r
+
+      //                 // Retrieve the current retry count\r
+
+      //                 let retryCount =
+      parseInt(pm.environment.get('retryCount')) || 0;\r
+
+      \r
+
+      //                 if (retryCount < maxRetries) {\r
+
+      //                     // Increment the retry count and set it back to the
+      environment\r
+
+      //                     retryCount++;\r
+
+      //                     pm.environment.set('retryCount', retryCount);\r
+
+      \r
+
+      //                     console.log(`Retrying... Attempt ${retryCount}`);\r
+
+      \r
+
+      //                     setTimeout(() => {\r
+
+      //                         checkJobStatus(jobId);\r
+
+      //                     }, 1000);\r
+
+      \r
+
+      //                     displayResponse('Create Approval Job Response
+      Details2', responseBody.data);\r
+
+      \r
+
+      //                 } else {\r
+
+      //                     console.log('Maximum retry limit reached.');\r
+
+      //                     displayResponse(responseBody.data.error ? 'Create
+      Approval Error Details' : 'Final Job Status Check', responseBody.data);\r
+
+      //                 }\r
+
+      //             }\r
+
+      //         }\r
+
+      //     });\r
+
+      // }\r
+
+      \r
+
+      // // Call the function with the job ID\r
+
+      // checkJobStatus(number);\r
+
+      \r
+
+      \r
+
+      \r
+
+      function initLogger(pm) {\r
+
+      \    const MASK = true;\r
+
+      \    const SENSITIVE = new Set(['authorization', 'api-key',
+      'x-custom-psk', 'cookie']);\r
+
+      \    const DROP = new Set(['accept', 'accept-encoding', 'connection',
+      'content-type', 'postman-token', 'user-agent', 'content-length',
+      'host']);\r
+
+      \    const KEY = '__viz_sections__';\r
+
+      \r
+
+      \    const jparse = t => { try { return JSON.parse(t); } catch { return
+      null; } };\r
+
+      \    const esc = s => String(s ?? '').replaceAll('&',
+      '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');\r
+
+      \r
+
+      \    const headersObj = h => {\r
+
+      \        if (!h) return {};\r
+
+      \        if (h.toObject) return h.toObject();\r
+
+      \        if (Array.isArray(h)) return h.reduce((a, x) => { const k =
+      (x?.key || x?.name || '') + ''; if (k) a[k] = String(x?.value ?? '');
+      return a; }, {});\r
+
+      \        if (typeof h === 'object') return
+      Object.fromEntries(Object.entries(h).map(([k, v]) => [k, String(v)]));\r
+
+      \        return {};\r
+
+      \    };\r
+
+      \r
+
+      \    const mask = (k, v) => {\r
+
+      \        k = String(k || '').toLowerCase().trim();\r
+
+      \        if (!MASK || !SENSITIVE.has(k)) return v;\r
+
+      \        if (k === 'authorization') return 'Bearer ***';\r
+
+      \        v = String(v ?? '');\r
+
+      \        return v ? `***…${v.slice(-6)}` : '***';\r
+
+      \    };\r
+
+      \r
+
+      \    const fmtHeaders = h => Object.entries(headersObj(h))\r
+
+      \        .filter(([k]) => k &&
+      !DROP.has(String(k).toLowerCase().trim()))\r
+
+      \        .sort((a, b) =>
+      a[0].toLowerCase().localeCompare(b[0].toLowerCase()))\r
+
+      \        .map(([k, v]) => `${k}: ${mask(k, v)}`)\r
+
+      \        .join('\\n');\r
+
+      \r
+
+      \    const hostOf = u => {\r
+
+      \        if (!u) return '';\r
+
+      \        try { return new URL(typeof u === 'string' ? u :
+      u.toString()).host; }\r
+
+      \        catch { return Array.isArray(u?.host) ? u.host.join('.') :
+      String(u?.host || ''); }\r
+
+      \    };\r
+
+      \r
+
+      \    const pathQ = u => {\r
+
+      \        if (!u) return '/';\r
+
+      \        const host = hostOf(u);\r
+
+      \        try {\r
+
+      \            const s = typeof u === 'string' ? u : u.toString();\r
+
+      \            const abs = s.startsWith('http') ? s :
+      `https://${host}${s.startsWith('/') ? '' : '/'}${s}`;\r
+
+      \            const U = new URL(abs);\r
+
+      \            return U.pathname + (U.search || '');\r
+
+      \        } catch {\r
+
+      \            const p = Array.isArray(u?.path) ? '/' + u.path.join('/') :
+      (u?.pathname || '/');\r
+
+      \            const q = u?.query;\r
+
+      \            if (Array.isArray(q) && q.length) {\r
+
+      \                const qs = q.filter(x => x?.key).map(x =>
+      `${encodeURIComponent(x.key)}=${encodeURIComponent(x.value ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            if (q && typeof q === 'object') {\r
+
+      \                const qs = Object.entries(q).filter(([k]) => k).map(([k,
+      v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            return p || '/';\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    const maybeJson = t => { const j = jparse(t); return j ?
+      JSON.stringify(j, null, 2) : String(t ?? ''); };\r
+
+      \r
+
+      \    const respSlice = t => {\r
+
+      \        const j = jparse(t);\r
+
+      \        if (!j) return String(t ?? '');\r
+
+      \        const o = {};\r
+
+      \        if ('data' in j) o.data = j.data;\r
+
+      \        if ('error' in j) o.error = j.error;\r
+
+      \        if ('meta' in j) o.meta = j.meta;\r
+
+      \        return JSON.stringify(o, null, 2);\r
+
+      \    };\r
+
+      \r
+
+      \    const get = () => jparse(pm.variables.get(KEY)) || [];\r
+
+      \    const set = s => pm.variables.set(KEY, JSON.stringify(s));\r
+
+      \    const add = sec => { const s = get(); s.push(sec); set(s); };\r
+
+      \r
+
+      \    const buildText = () => get().map(sec => {\r
+
+      \        return
+      `${sec.title}\\n\\n[Request]\\n\\n${sec.req}\\n\\n[Response]\\n\\n${sec.r\
+      es}${sec.err ? `\\n\\n[Error]\\n\\n${sec.err}` : ''}\\n`;\r
+
+      \    }).join('\\n' + '-'.repeat(46) + '\\n\\n');\r
+
+      \r
+
+      \    // extra blocks (displayResponse + generatedJson) are rendered from
+      these globals\r
+
+      \    let __extraHtml = '';\r
+
+      \    let __genText = '';\r
+
+      \r
+
+      \    const render = () => {\r
+
+      \        const text = buildText();\r
+
+      \        pm.visualizer.set(`\r
+
+      <div
+      style=\"display:flex;gap:8px;align-items:center;margin-bottom:8px;\">\r
+
+      \  <button id=\"copyLogBtn\">Copy log</button>\r
+
+      \  ${__genText ? `<button id=\"copyGenBtn\">Copy Generated JSON</button>`
+      : ``}\r
+
+      \  <span id=\"m\"
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;\"></span>\r
+
+      </div>\r
+
+      \r
+
+      <textarea id=\"logTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(text)}</texta\
+      rea>\r
+
+      <textarea id=\"genTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(__genText ||
+      '')}</textarea>\r
+
+      \r
+
+      <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(text)}</pre>\r
+
+      \r
+
+      <div id=\"extra\" style=\"margin-top:10px;\">${__extraHtml || ''}</div>\r
+
+      \r
+
+      <script>\r
+
+      (() => {\r
+
+      \  const m = document.getElementById('m');\r
+
+      \  const logTa = document.getElementById('logTa');\r
+
+      \  const genTa = document.getElementById('genTa');\r
+
+      \r
+
+      \  const msg=(x)=>{m.textContent=x||''; if(x)
+      setTimeout(()=>m.textContent='',1200);};\r
+
+      \r
+
+      \  async function copyFrom(ta){\r
+
+      \    try{\r
+
+      \      const v = ta.value || '';\r
+
+      \      if(!v) return msg('Nothing to copy');\r
+
+      \      if(navigator.clipboard?.writeText){ await
+      navigator.clipboard.writeText(v); return msg('Copied ✅'); }\r
+
+      \      ta.focus(); ta.select();\r
+
+      \      msg(document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \    }catch(e){\r
+
+      \      try{ ta.focus(); ta.select(); msg(document.execCommand('copy') ?
+      'Copied ✅' : 'Copy failed ❌'); }\r
+
+      \      catch{ msg('Copy failed ❌'); }\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  document.getElementById('copyLogBtn').onclick = () =>
+      copyFrom(logTa);\r
+
+      const genBtn = document.getElementById('copyGenBtn');\r
+
+      if (genBtn) genBtn.onclick = () => copyFrom(genTa);\r
+
+      \r
+
+      })();\r
+
+      </script>\r
+
+      `);\r
+
+      \    };\r
+
+      \r
+
+      \    const rawReq = (method, url, headers, bodyRaw) => {\r
+
+      \        const u = url;\r
+
+      \        return [\r
+
+      \            `${String(method || 'GET').toUpperCase()} ${pathQ(u) || '/'}
+      HTTP/1.1`,\r
+
+      \            hostOf(u) ? `Host: ${hostOf(u)}` : null,\r
+
+      \            fmtHeaders(headers) || null,\r
+
+      \            bodyRaw ? `\\n${maybeJson(bodyRaw)}` : null\r
+
+      \        ].filter(Boolean).join('\\n');\r
+
+      \    };\r
+
+      \r
+
+      \    // ===== INIT MAIN (once) =====\r
+
+      \    set([]);\r
+
+      \    add({\r
+
+      \        title: pm.info.requestName || 'Main request',\r
+
+      \        req: rawReq(pm.request.method, pm.request.url,
+      pm.request.headers, pm.request.body?.mode === 'raw' ? pm.request.body.raw
+      : ''),\r
+
+      \        res: respSlice(pm.response.text())\r
+
+      \    });\r
+
+      \    render();\r
+
+      \r
+
+      \    // ===== Public API =====\r
+
+      \    const api = {\r
+
+      \r
+
+      \        // ---- extra block: generic (does NOT create
+      [Request]/[Response]) ----\r
+
+      \        displayResponse(title, data) {\r
+
+      \            const safe = esc(JSON.stringify(data ?? {}, null, 2));\r
+
+      \            const block = `\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">${esc(title || 'Result')}</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${safe}</pre>\r
+
+      </div>`;\r
+
+      \            __extraHtml = block + (__genText ?
+      __extraHtml.replace(/^[\\s\\S]*?<!--GEN-->/, '') : '');\r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        // ---- log section for pm.sendRequest (creates
+      [Request]/[Response]) ----\r
+
+      \        logSubRequest({ title, req, res, err }) {\r
+
+      \            const reqRaw = rawReq(\r
+
+      \                req?.method,\r
+
+      \                req?.url,\r
+
+      \                req?.header || req?.headers,\r
+
+      \                req?.body?.raw || (typeof req?.body === 'string' ?
+      req.body : '')\r
+
+      \            );\r
+
+      \r
+
+      \            let resText = '';\r
+
+      \            try { resText = res?.text?.() || ''; } catch { }\r
+
+      \            if (!resText) { try { const j = res?.json?.(); if (j) resText
+      = JSON.stringify(j); } catch { } }\r
+
+      \r
+
+      \            add({\r
+
+      \                title: title || 'Sub request',\r
+
+      \                req: reqRaw,\r
+
+      \                res: respSlice(resText),\r
+
+      \                err: err?.message || (err ? String(err) : '')\r
+
+      \            });\r
+
+      \r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        /**\r
+
+      \         * ---- Generated JSON block (separate, does NOT add sections)
+      ----\r
+
+      \         * Default: takes pm.response.json().data and applies
+      entered_in_error payload.\r
+
+      \         * You can override: showGeneratedJson(sourceObj)\r
+
+      \         */\r
+
+      \        showGeneratedJson(sourceObj) {\r
+
+      \            let parsed = sourceObj;\r
+
+      \            if (!parsed) {\r
+
+      \                try { parsed = pm.response.json(); } catch { parsed =
+      null; }\r
+
+      \            }\r
+
+      \r
+
+      \            let text = '';\r
+
+      \            if (!parsed || typeof parsed !== 'object') {\r
+
+      \                text = 'Response is not valid JSON — cannot generate
+      finalJson.';\r
+
+      \            } else if (!parsed.data || typeof parsed.data !== 'object')
+      {\r
+
+      \                text = 'Response JSON has no \"data\" object — cannot
+      generate finalJson.';\r
+
+      \            } else {\r
+
+      \                const resData = parsed.data;\r
+
+      \                const finalJson = {\r
+
+      \                    ...resData,\r
+
+      \                    status: 'new',\r
+
+      \                    status_reason: {\r
+
+      \                        coding: [{ system:
+      'eHealth/care_plan_cancel_reasons', code: 'entered_in_error' }]\r
+
+      \                    }\r
+
+      \                };\r
+
+      \                text = JSON.stringify(finalJson, null, 2);\r
+
+      \            }\r
+
+      \r
+
+      \            __genText = text;\r
+
+      \r
+
+      \            const genBlock = `\r
+
+      <!--GEN-->\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">Згенерований JSON</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(__genText)}</pr\
+      e>\r
+
+      </div>`;\r
+
+      \r
+
+      \            // append generated block AFTER other extra blocks (if any)\r
+
+      \            __extraHtml = (__extraHtml || '') + genBlock;\r
+
+      \            render();\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    return api;\r
+
+      }\r
+
+      \r
+
+      \r
+
+      const logger = initLogger(pm)\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      /**\r
+
+      \ * Modern Postman script (2026): same logic, cleaner + safer\r
+
+      \ * - Retries job status up to 3 times with 1s delay\r
+
+      \ * - Writes job entity IDs to globals (job{Entity}ID / job{Entity}ID_2
+      ...)\r
+
+      \ * - Visualizer output for error/pending/success\r
+
+      \ * + ALSO stores jobApprovalID and obApprovalID when response_data.id
+      exists\r
+
+      \ */\r
+
+      \r
+
+      // ---- Utils ----\r
+
+      const safeJson = (text) => {\r
+
+      \  try { return JSON.parse(text); } catch { return null; }\r
+
+      };\r
+
+      \r
+
+      const toTitle = (s) =>\r
+
+      \  (s ? String(s) : 'job')\r
+
+      \    .split('_')\r
+
+      \    .filter(Boolean)\r
+
+      \    .map(p => p.charAt(0).toUpperCase() + p.slice(1))\r
+
+      \    .join(' ');\r
+
+      \r
+
+      const toEntityKey = (s) =>\r
+
+      \  String(s || '')\r
+
+      \    .trim()\r
+
+      \    .toLowerCase();\r
+
+      \r
+
+      const toEntityLabel = (s) =>\r
+
+      \  String(s || '')\r
+
+      \    .trim()\r
+
+      \    .replaceAll('_', ' ')\r
+
+      \    .replace(/\\b\\w/g, (c) => c.toUpperCase())\r
+
+      \    .replaceAll(' ', ''); // \"clinical_impression\" ->
+      \"ClinicalImpression\"\r
+
+      \r
+
+      // ---- Determine resource label (avoid brittle path[3]) ----\r
+
+      const pathParts = pm.request.url?.path || [];\r
+
+      const resourceType =\r
+
+      \  pathParts[3] ||\r
+
+      \  [...pathParts].reverse().find(p => p && p !== 'api') ||\r
+
+      \  'job';\r
+
+      \r
+
+      const resourceLabel = toTitle(resourceType);\r
+
+      console.log('resourceType:', resourceType);\r
+
+      \r
+
+      // ---- Parse initial response safely ----\r
+
+      const resData = safeJson(pm.response.text());\r
+
+      \r
+
+      if (!resData) {\r
+
+      \  logger.displayResponse(`${resourceLabel} Response Parse Error`, {\r
+
+      \    error: 'Response is not valid JSON',\r
+
+      \    rawSnippet: pm.response.text()?.slice(0, 500)\r
+
+      \  });\r
+
+      \  pm.globals.unset('ci_encounter');\r
+
+      \  throw new Error('Response is not valid JSON');\r
+
+      }\r
+
+      \r
+
+      if (resData?.error) {\r
+
+      \  logger.displayResponse(`${resourceLabel} Response Error Details`,
+      resData.error);\r
+
+      \  pm.globals.unset('ci_encounter');\r
+
+      \  throw new Error('Initial response contains error');\r
+
+      }\r
+
+      \r
+
+      // ---- Extract jobId from href ----\r
+
+      const href = resData?.data?.links?.[0]?.href;\r
+
+      if (!href || !href.includes('/jobs/')) {\r
+
+      \  logger.displayResponse(`${resourceLabel} Job Link Missing`, {\r
+
+      \    expected: 'res.data.links[0].href containing \"/jobs/\"',\r
+
+      \    got: href,\r
+
+      \    responseData: resData?.data\r
+
+      \  });\r
+
+      \  pm.globals.unset('ci_encounter');\r
+
+      \  throw new Error('Job href not found in response');\r
+
+      }\r
+
+      \r
+
+      const jobId = href.split('/jobs/')[1];\r
+
+      console.log('Extracted jobId:', jobId);\r
+
+      pm.globals.set('extracted_job_id', jobId);\r
+
+      \r
+
+      // ---- Retry control ----\r
+
+      const MAX_RETRIES = 3;\r
+
+      const RETRY_DELAY_MS = 1000;\r
+
+      pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // ---- Request builder ----\r
+
+      function buildJobCheckRequest(jobId) {\r
+
+      \  const host = pm.globals.get('host');\r
+
+      \  if (!host) throw new Error('pm.globals.host is not set');\r
+
+      \r
+
+      \  return {\r
+
+      \    method: 'GET',\r
+
+      \    url: `${host}/api/jobs/${jobId}`,\r
+
+      \    header: {\r
+
+      \      'Content-Type': 'application/json',\r
+
+      \      'Authorization': `Bearer ${pm.environment.get('access_token')}`,\r
+
+      \      'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \      'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \    }\r
+
+      \  };\r
+
+      }\r
+
+      \r
+
+      // ---- Links -> globals (same naming logic) ----\r
+
+      function writeLinksToGlobals(linksArray) {\r
+
+      \  const linksByEntity = (linksArray || []).reduce((acc, link) => {\r
+
+      \    const entity = toEntityKey(link?.entity);\r
+
+      \    const href = link?.href;\r
+
+      \    if (!entity || !href) return acc;\r
+
+      \r
+
+      \    const id = href.split('/').pop();\r
+
+      \    if (!id) return acc;\r
+
+      \r
+
+      \    acc[entity] = acc[entity] || [];\r
+
+      \    acc[entity].push(id);\r
+
+      \    return acc;\r
+
+      \  }, {});\r
+
+      \r
+
+      \  Object.entries(linksByEntity).forEach(([entity, ids]) => {\r
+
+      \    const entityLabel = toEntityLabel(entity);\r
+
+      \    ids.forEach((id, idx) => {\r
+
+      \      const globalName = ids.length === 1\r
+
+      \        ? `job${entityLabel}ID`\r
+
+      \        : `job${entityLabel}ID_${idx + 1}`;\r
+
+      \      pm.globals.set(globalName, id);\r
+
+      \    });\r
+
+      \  });\r
+
+      \r
+
+      \  return linksByEntity;\r
+
+      }\r
+
+      \r
+
+      /**\r
+
+      \ * ✅ NEW (minimal): store approval ids when job has response_data.id\r
+
+      \ * Does NOT affect main logic.\r
+
+      \ */\r
+
+      function saveApprovalIdsFromJob(jobBody) {\r
+
+      \  const approvalId = jobBody?.data?.response_data?.id;\r
+
+      \  if (!approvalId) return;\r
+
+      \r
+
+      \  // Keep your existing behavior (jobApprovalID)\r
+
+      \  pm.globals.set('jobApprovalID', approvalId);\r
+
+      \r
+
+      \  // Also store obApprovalID (requested)\r
+
+      \  pm.globals.set('obApprovalID', approvalId);\r
+
+      \r
+
+      \  console.log('Saved approval ids:', { jobApprovalID: approvalId,
+      obApprovalID: approvalId });\r
+
+      }\r
+
+      \r
+
+      // ---- Poll job status ----\r
+
+      function checkJobStatus(jobId) {\r
+
+      \  let req;\r
+
+      \  try {\r
+
+      \    req = buildJobCheckRequest(jobId);\r
+
+      \  } catch (e) {\r
+
+      \    logger.displayResponse(`${resourceLabel} Job Config Error`, { error:
+      e.message });\r
+
+      \    return;\r
+
+      \  }\r
+
+      \r
+
+      \  pm.sendRequest(req, (err, res) => {\r
+
+      \    if (err) {\r
+
+      \      logger.displayResponse(`${resourceLabel} Job Request Error`, {
+      error: err.message });\r
+
+      \      return;\r
+
+      \    }\r
+
+      \r
+
+      \    pm.test(`${resourceLabel} job check response is 200 or 303`, () =>
+      {\r
+
+      \      pm.expect([200, 303]).to.include(res.code);\r
+
+      \    });\r
+
+      \r
+
+      \    const body = res.json?.() || {};\r
+
+      \    const status = body?.data?.status;\r
+
+      \    console.log(`${resourceLabel} Job Status:`, status);\r
+
+      \r
+
+      \    if (status === 'processed') {\r
+
+      \      pm.test(`${resourceLabel} Job Processed (200 expected)`, () => {\r
+
+      \        pm.expect(res.code).to.eql(200);\r
+
+      \      });\r
+
+      \r
+
+      \      writeLinksToGlobals(body?.data?.links);\r
+
+      \r
+
+      \      // ✅ NEW: store jobApprovalID + obApprovalID if present\r
+
+      \      saveApprovalIdsFromJob(body);\r
+
+      \r
+
+      \      logger.displayResponse(`${resourceLabel} Job Response Details`,
+      body?.data);\r
+
+      \r
+
+      \      // Generate log in visualizer\r
+
+      \      logger.logSubRequest({ title: 'Get job', req, res, err });\r
+
+      \      return;\r
+
+      \    }\r
+
+      \r
+
+      \    // retry path\r
+
+      \    const retryCount = Number(pm.environment.get('retryCount')) || 0;\r
+
+      \r
+
+      \    if (retryCount < MAX_RETRIES) {\r
+
+      \      const next = retryCount + 1;\r
+
+      \      pm.environment.set('retryCount', next);\r
+
+      \      console.log(`Retrying ${resourceLabel} job... Attempt ${next}`);\r
+
+      \r
+
+      \      logger.displayResponse(`${resourceLabel} Job Status Pending`,
+      body?.data);\r
+
+      \      setTimeout(() => checkJobStatus(jobId), RETRY_DELAY_MS);\r
+
+      \      return;\r
+
+      \    }\r
+
+      \r
+
+      \    console.warn(`❌ Max retries reached for ${resourceLabel} job.`);\r
+
+      \    const finalTitle = body?.data?.error\r
+
+      \      ? `${resourceLabel} Job Error Details`\r
+
+      \      : `Final ${resourceLabel} Job Status Check`;\r
+
+      \r
+
+      \    logger.logSubRequest({ title: 'Get job', req, res, err });\r
+
+      \    logger.displayResponse(finalTitle, body?.data);\r
+
+      \  });\r
+
+      }\r
+
+      \r
+
+      // ---- start ----\r
+
+      checkJobStatus(jobId);"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const patientId = pm.globals.get('patient_id_from_episode');\r
+
+      const url =
+      `https://api-preprod.ehealth.gov.ua/api/persons/${patientId}/authenticati\
+      on_methods`;\r
+
+      const accessToken = pm.environment.get('access_token');\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    console.log(title, data)\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url: url,\r
+
+      \    method: 'GET',\r
+
+      \    header: {\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \        'Authorization': `Bearer ${accessToken}`,\r
+
+      \        'api-key': '30276e63617461a185ec',\r
+
+      \        'X-Custom-PSK':
+      '0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b'\r
+
+      \    }\r
+
+      }, function (err, res) {\r
+
+      \    if (err) {\r
+
+      \        console.error('Error in request:', err);\r
+
+      \    } else {\r
+
+      \        console.log('Response Status:', res.status);\r
+
+      \        console.log('Response Body:', res.text());\r
+
+      \r
+
+      \        // Optional: Process the response data if needed\r
+
+      \        try {\r
+
+      \            const responseData = res.json();\r
+
+      \r
+
+      \            // Extract the ID from the response data\r
+
+      \            if (responseData.data && responseData.data.length > 0) {\r
+
+      \                const id = responseData.data[0].id;\r
+
+      \r
+
+      \                // Set the extracted ID in the Postman globals\r
+
+      \                pm.globals.set('patient_authentication_methods_in_approv\
+      al', id);\r
+
+      \r
+
+      \                displayResponse('Patient authentication methods in
+      approval details', responseData)\r
+
+      \                console.log('Global Variable \"authenticationMethodID\"
+      set to:', id);\r
+
+      \            } else {\r
+
+      \                console.log('No data found in response.');\r
+
+      \            }\r
+
+      \r
+
+      \            console.log('Parsed Response Data:', responseData.data);\r
+
+      \        } catch (parseError) {\r
+
+      \            console.error('Error parsing response JSON:', parseError);\r
+
+      \        }\r
+
+      \    }\r
+
+      });\r\n"
+    language: text/javascript
+order: 10000

@@ -1,0 +1,305 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/composition"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_CATEGORIES\",\r
+
+    \                \"code\": \"LIVE_BIRTH\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_TYPES\",\r
+
+    \                \"code\": \"NEWBORN\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"event\": [\r
+
+    \        {\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_EVENTS\",\r
+
+    \                        \"code\": \"COMPOSITION_VALIDITY_PERIOD\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"period\": {\r
+
+    \                \"start\": \"2024-12-01T10:45:16Z\",\r
+
+    \                \"end\": null\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"subject\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"preperson\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{patient_id_from_episode}}\"\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"encounter\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{encounter_extracted_id}}\"\r
+
+    \    },\r
+
+    \    \"author\": {\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/resources\",\r
+
+    \                    \"code\": \"employee\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": \"string\"\r
+
+    \        },\r
+
+    \        \"value\": \"{{user_id}}\"\r
+
+    \    },\r
+
+    \    \"section\": {\r
+
+    \        \"focus\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"person\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"4563dca3-b086-49fd-bd28-d4e49809565d\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"extension\": [\r
+
+    \         {\r
+
+    \            \"valueCode\": \"NEWBORN_BIRTH_DATE\",\r
+
+    \            \"valueDate\": \"2024-12-01\"\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"valueCode\": \"NEWBORN_SEX\",\r
+
+    \            \"valueString\": \"MALE\"\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: >+
+      const jsonData = pm.response.json();
+
+
+      function displayResponse(title, data) {
+          const html = `
+              <h1>${title}</h1>
+              <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          pm.visualizer.set(html);
+      }
+
+
+
+      pm.test("Check composition code be 200", function () {
+          pm.expect(pm.response.code).to.eql(200);
+
+          const compositionCheckJobID = jsonData?.data.id;
+          pm.globals.set('composition_check_job_id', compositionCheckJobID)
+          console.log(compositionCheckJobID)
+
+          const compositionCheckJobIdVar = pm.globals.get('composition_check_job_id');
+          const url = `https://api-demo.ehealth.gov.ua/api/patients/composition/job/${compositionCheckJobIdVar}`;
+
+          pm.sendRequest({
+              method: 'GET',
+              url: url,
+              header: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer V1JIRGlZWllxYmJsNkt0V3dOWEs4QT09',
+                  'api-key': '30276e63617461a185ec',
+                  'X-Custom-PSK': 'a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e'
+              }
+          }, function (err, res) {
+              console.log('error', err);
+              console.log('response', res)
+              const responseBody = res.json();
+
+              if (responseBody?.data?.links && Array.isArray(responseBody.data.links)) {
+                  console.log('Відповідь містить data та links:', responseBody.data.links);
+
+                  // Збір усіх значень href
+                  const hrefs = responseBody.data.links.map(link => link.href);
+
+                  // Виклик displayResponse із усіма значеннями href
+                  displayResponse('Create Composition Request Job Response Details', hrefs);
+
+                  // Перевірка та збереження compositionId, якщо є 'composition/'
+                  responseBody.data.links.forEach(link => {
+                      if (link.href.includes('composition/')) {
+                          const compositionId = link.href.split('composition/').pop();
+                          // Збереження compositionId у глобальні змінні Postman
+                          pm.globals.set('compositionId', compositionId);
+                      }
+                  });
+
+                  console.log('Всі href:', hrefs);
+              } else {
+                  console.log('Відповідь не містить data або links.');
+              }
+          });
+      })
+
+    language: text/javascript
+  - type: beforeRequest
+    code: "// Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      // Check if the URL is defined and contains the expected format\r
+
+      if (url && url.includes('encounters/')) {\r
+
+      \    // Extract the ID after 'encounters/'\r
+
+      \    const parts = url.split('encounters/');\r
+
+      \    if (parts.length > 1) {\r
+
+      \        const jobEncounterID = parts[1];\r
+
+      \        \r
+
+      \        // Log the extracted ID to the console (for debugging purposes)\r
+
+      \        console.log('Extracted jobEncounterID:', jobEncounterID);\r
+
+      \        \r
+
+      \        // Optionally, set the extracted ID as an environment variable\r
+
+      \        pm.globals.set('encounter_extracted_id', jobEncounterID);\r
+
+      \    } else {\r
+
+      \        console.error('The URL does not contain the expected format.');\r
+
+      \    }\r
+
+      } else {\r
+
+      \    console.error('The global variable jobEncounterID is not defined or
+      does not contain the expected format.');\r
+
+      }\r\n"
+    language: text/javascript
+order: 2000

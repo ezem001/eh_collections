@@ -1,0 +1,9 @@
+$kind: http-request
+name: S14.1 Get care plan activity by id
+url: https://api-demo.ehealth.gov.ua/api/patients/87a71a7b-a5b9-4e74-acff-013c03809a39/care_plans/d425a8ee-ac0d-4391-8ecd-168ec7173a66/activities/47639ded-50e7-4762-8233-b4bad16205f1
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 2000

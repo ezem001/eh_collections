@@ -1,0 +1,32 @@
+$kind: http-request
+url: "{{host}}/api/events?date=2025-10-17T12%3A00%3A00&event_type=StatusChangeE\
+  vent&entity_type=Person"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: date
+    value: 2025-10-17T12%3A00%3A00
+  - key: date_to
+    value: 2017-12-07T15%3A00%3A00
+    disabled: true
+  - key: event_type
+    value: StatusChangeEvent
+  - key: entity_type
+    value: Person
+  - key: attribute_name
+    value: status
+    disabled: true
+  - key: new_value
+    value: COMPLETED
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 2000

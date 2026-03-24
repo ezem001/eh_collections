@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/v2/employee_requests"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+      "signed_content": "{{employee_signed_content}}",
+      "signed_content_encoding": "base64"
+    }
+order: 4000

@@ -1,0 +1,796 @@
+$kind: http-request
+url: http://localhost:3000/create-encounter-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"encounter\": {\r
+
+    \        \"id\": \"{{encounter_dummy_id}}\",\r
+
+    \        \"status\": \"finished\",\r
+
+    \        \"period\": {\r
+
+    \            \"start\": \"{{encounter_period_start}}\",\r
+
+    \            \"end\": \"{{encounter_period_end}}\"\r
+
+    \        },\r
+
+    \        \"visit\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"visit\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{visit_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"action_references\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"service\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"7be27ed7-db47-4ef5-95da-74a60a8ffc8a\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"division\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"division\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_division_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"episode\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"episode\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobEpisodeID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"class\": {\r
+
+    \            \"system\": \"eHealth/encounter_classes\",\r
+
+    \            \"code\": \"AMB\"\r
+
+    \        },\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_types\",\r
+
+    \                    \"code\": \"service_delivery_location\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"priority\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_priority\",\r
+
+    \                    \"code\": \"urgent\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"performer\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"reasons\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICPC2/reasons\",\r
+
+    \                        \"code\": \"S17\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"diagnoses\": [\r
+
+    \            {\r
+
+    \                \"condition\": {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{condition_id}}\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"role\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/diagnosis_roles\",\r
+
+    \                            \"code\": \"primary\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"rank\": 1\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        // \"participant\": [\r
+
+    \        //     {\r
+
+    \        //         \"identifier\": {\r
+
+    \        //             \"type\": {\r
+
+    \        //                 \"coding\": [\r
+
+    \        //                     {\r
+
+    \        //                         \"system\": \"eHealth/resources\",\r
+
+    \        //                         \"code\": \"employee\"\r
+
+    \        //                     }\r
+
+    \        //                 ]\r
+
+    \        //             },\r
+
+    \        //             \"value\": \"{{user_id}}\"\r
+
+    \        //         }\r
+
+    \        //     }\r
+
+    \        // ],\r
+
+    \        \"prescriptions\": \"Дієта №3, Омепразолу 40 мг 1 раз на добу +
+    амоксициліну 500 мг + метронідазолу 400 мг при необхідності 500 мг або
+    тинідазолу 500 мг 3 рази на добу протягом 1 тижня\"\r
+
+    \    },\r
+
+    \    \"conditions\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{condition_id}}\",\r
+
+    \            \"primary_source\": true,\r
+
+    \            \"asserter\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"Якийсь текст\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"encounter\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_dummy_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                        \"code\": \"P75\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"clinical_status\": \"active\",\r
+
+    \            \"verification_status\": \"confirmed\",\r
+
+    \            \"severity\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/condition_severities\",\r
+
+    \                        \"code\": \"moderate\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"body_sites\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/body_sites\",\r
+
+    \                            \"code\": \"pelvis\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"onset_date\": \"2026-02-01T09:46:37.694Z\",\r
+
+    \            \"asserted_date\": \"2026-03-03T09:46:37.694Z\",\r
+
+    \            \"stage\": {\r
+
+    \                \"summary\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/condition_stages\",\r
+
+    \                            \"code\": \"default_condition_stage\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"evidences\": [\r
+
+    \                {\r
+
+    \                    \"codes\": [\r
+
+    \                        {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\":
+    \"eHealth/ICPC2/reasons\",\r
+
+    \                                    \"code\": \"T90\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"devices\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{device_id}}\",\r
+
+    \            \"name\": [\r
+
+    \                {\r
+
+    \                    \"type\": \"user_friendly\",\r
+
+    \                    \"value\": \"Тест-смужки Accu-Chek Active для
+    глюкометра\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"status\": \"active\",\r
+
+    \            \"serial_number\": \"WSPX30\",\r
+
+    \            //   \"parent\": {\r
+
+    \            //     \"identifier\": {\r
+
+    \            //       \"type\": {\r
+
+    \            //         \"coding\": [\r
+
+    \            //           {\r
+
+    \            //             \"system\": \"eHealth/resources\",\r
+
+    \            //             \"code\": \"device\"\r
+
+    \            //           }\r
+
+    \            //         ]\r
+
+    \            //       },\r
+
+    \            //       \"value\": \"9183a36b-4d45-4244-9339-63d81cd08d9c\"\r
+
+    \            //     }\r
+
+    \            //   },\r
+
+    \            \"recorder\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"encounter\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_dummy_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\":
+    \"device_definition_classification_type\",\r
+
+    \                        \"code\": \"30221\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"lot_number\": \"WZ12345678\",\r
+
+    \            \"manufacturer\": \"TestGlobalMed, Inc\",\r
+
+    \            \"manufacture_date\": \"1999-01-01T00:00:00.000Z\",\r
+
+    \            \"expiration_date\": \"2020-01-01T00:00:00.000Z\",\r
+
+    \            \"model_number\": \"TSPX30\",\r
+
+    \            \"note\": \"Тест\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"device_associations\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{device_association_id}}\",\r
+
+    \            \"device\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"device\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{device_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"status\": \"implanted\",\r
+
+    \            \"association_date\": \"2026-03-05\",\r
+
+    \            \"recorded\": \"{{encounter_period_start}}\",\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"encounter\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_dummy_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"recorder\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create encounter sign content', resData)\r
+
+      \r
+
+      pm.test(`Encounter content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('encounter_signed_content', resData.signed_content);\r
+
+      });\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const { v4: uuid } = require('uuid');\r
+
+      \r
+
+      [\r
+
+      \  \"encounter_dummy_id\",\r
+
+      \  \"visit_id\",\r
+
+      \  \"condition_id\",\r
+
+      \  \"device_id\",\r
+
+      \  \"device_association_id\"\r
+
+      ].forEach(key => pm.globals.set(key, uuid()));\r
+
+      \r
+
+      \r
+
+      // Поточна дата\r
+
+      const now = new Date();\r
+
+      \r
+
+      // Дата на 1 день раніше\r
+
+      const yesterday = new Date(now);\r
+
+      yesterday.setDate(now.getDate() - 1);\r
+
+      \r
+
+      // Формуємо часові межі\r
+
+      // Початок — 10:45:16 UTC\r
+
+      const periodStart = new Date(yesterday);\r
+
+      periodStart.setUTCHours(10, 45, 16, 0);\r
+
+      \r
+
+      // Кінець періоду — через 9 годин після початку (19:45:16 UTC)\r
+
+      const periodEnd = new Date(periodStart);\r
+
+      periodEnd.setUTCHours(periodStart.getUTCHours() + 9);\r
+
+      \r
+
+      // Запис у глобальні змінні\r
+
+      pm.globals.set(\"encounter_period_start\", periodStart.toISOString());\r
+
+      pm.globals.set(\"encounter_period_end\", periodEnd.toISOString());\r
+
+      \r
+
+      // Для зручності лог\r
+
+      console.log(\"🕒 Encounter period_start:\", periodStart.toISOString());\r
+
+      console.log(\"🕒 Encounter period_end:\", periodEnd.toISOString());"
+    language: text/javascript
+order: 6000

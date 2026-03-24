@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host}}/api/persons/{{auth_method_person_id}}/authentication_method_requ\
+  ests/{{Person_auth_method_id}}/actions/approve"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"verification_code\": 2552\r
+
+    }"
+order: 3000

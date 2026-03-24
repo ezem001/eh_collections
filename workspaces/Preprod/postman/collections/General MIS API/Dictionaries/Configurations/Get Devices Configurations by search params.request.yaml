@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/devices_configurations?is_active=true&page_size=200"
+method: GET
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  api-key: "{{mis_client_secret}}"
+queryParams:
+  - key: is_active
+    value: "true"
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "200"
+body:
+  type: json
+  content: ""
+order: 3000

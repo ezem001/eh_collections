@@ -1,0 +1,50 @@
+$kind: http-request
+url: "{{host}}/api/healthcare_services"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"division_id\": \"8de56110-c1cc-4fe9-bb45-509a6c17963a\",\r
+
+    \    \"license_id\": \"580fcc34-8593-4a53-81f7-26d6e1e9d953\",\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"HEALTHCARE_SERVICE_CATEGORIES\",\r
+
+    \                \"code\": \"PHARMACY\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"type\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"HEALTHCARE_SERVICE_PHARMACY_DRUGS_TYPES\",\r
+
+    \        \"code\": \"SALE\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  }\r
+
+    }"
+order: 2000

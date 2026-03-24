@@ -1,0 +1,42 @@
+$kind: http-request
+url: "{{host}}/api/employees?page_size=1000"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: no_tax_id
+    value: "true"
+    disabled: true
+  - key: tax_id
+    value: "3015492561"
+    disabled: true
+  - key: party_id
+    value: 879250ff-9bfb-481b-b46e-b95de9549c7c
+    disabled: true
+  - key: edrpou
+    value: "38782323"
+    disabled: true
+  - key: legal_entity_id
+    value: d290f1ee-6c54-4b01-90e6-d701748f0152
+    disabled: true
+  - key: division_id
+    value: 2fe7d6e2-c772-4187-8c61-a7ef0b31d74f
+    disabled: true
+  - key: status
+    value: APPROVED
+    disabled: true
+  - key: employee_type
+    value: FAMILY_DOCTOR
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "1000"
+  - key: verification_status
+    value: VERIFIED
+    disabled: true
+order: 7000

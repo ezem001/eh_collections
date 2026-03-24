@@ -1,0 +1,89 @@
+$kind: http-request
+name: S 4.11.0
+url: http://192.168.5.4:31234/min_sp/device_dispenses
+method: POST
+headers:
+  Uxp-Client: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS
+  Uxp-Service: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS/get_device_request_data_package
+  Uxp-Transaction-Id: "{{Uxp-Transaction-Id}}"
+  Authorization: ""
+body:
+  type: json
+  content: |-
+    {
+        "id": "{{device_dispense_id}}",
+        "status": "completed",
+        "when_handed_over": "{{current_date_time}}",
+        "note": "Створено через Трембіта сервіс",
+        "primary_source": true,
+        "based_on": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "device_request"
+                        }
+                    ]
+                },
+                "value": "f102cbeb-9da5-451e-bc47-b0cef8b72526"
+            }
+        },
+        "subject": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "patient"
+                        }
+                    ]
+                },
+                "value": "{{patient_id}}"
+            }
+        },
+        "external_provider": {
+            "provider_legal_entity_name": "minSoc",
+            "provider_legal_entity_edrpou": "37567866"
+        },
+        "details": [
+            {
+                "device": {
+                    "identifier": {
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "eHealth/resources",
+                                    "code": "device_definition"
+                                }
+                            ]
+                        },
+                     "value": "90ffab2d-4819-4d82-9699-148aeeb914db"
+                    }
+                },
+                "quantity": {
+                    "value": 13,
+                    "system": "device_unit",
+                    "code": "piece"
+                }
+            }
+        ]
+    }
+scripts:
+  - type: beforeRequest
+    code: >-
+      pm.environment.set("Uxp-Transaction-Id",
+      pm.variables.replaceIn('{{$guid}}'));
+
+      pm.environment.set("device_dispense_id",
+      pm.variables.replaceIn('{{$guid}}'));
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 25000

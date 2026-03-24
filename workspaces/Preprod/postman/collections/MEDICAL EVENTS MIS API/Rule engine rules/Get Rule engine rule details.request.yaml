@@ -1,0 +1,565 @@
+$kind: http-request
+url: "{{host}}/api/rule_engine_rules/e7791669-2a9b-471d-88c8-084b44c41c3f"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: |
+      const res = pm.response.json();
+      const rule = res?.data ?? {};
+      const meta = res?.meta ?? {};
+      const items = Array.isArray(rule.items) ? rule.items : [];
+      const itemsComparator = String(rule.items_comparator || "and").toLowerCase();
+
+      function esc(s) {
+          return String(s ?? "")
+              .replaceAll("&", "&amp;")
+              .replaceAll("<", "&lt;")
+              .replaceAll(">", "&gt;")
+              .replaceAll('"', "&quot;")
+              .replaceAll("'", "&#039;");
+      }
+      function uniq(arr) { return [...new Set(arr)]; }
+
+      function traverse(node, fn) {
+          if (!node || typeof node !== "object") return;
+          fn(node);
+          if (Array.isArray(node)) node.forEach(n => traverse(n, fn));
+          else Object.values(node).forEach(v => traverse(v, fn));
+      }
+
+      function findInLists(json) {
+          const lists = [];
+          traverse(json, (n) => {
+              if (n && typeof n === "object" && Array.isArray(n.in) && Array.isArray(n.in[1])) {
+                  lists.push(n.in[1].filter(x => typeof x === "string" || typeof x === "number"));
+              }
+          });
+          return lists;
+      }
+
+      function findAllComparisons(json) {
+          const OPS = ["==", "!=", "<", "<=", ">", ">="];
+          const out = [];
+          traverse(json, (n) => {
+              if (!n || typeof n !== "object" || Array.isArray(n)) return;
+              for (const op of OPS) {
+                  if (!Object.prototype.hasOwnProperty.call(n, op)) continue;
+                  if (!Array.isArray(n[op])) continue;
+
+                  const arr = n[op];
+
+                  // 2-arg compare
+                  if (arr.length === 2) {
+                      const left = arr[0];
+                      const right = arr[1];
+                      const leftVar = (left && typeof left === "object" && typeof left.var === "string") ? left.var : null;
+                      out.push({ op, kind: "binary", leftVar, left, right });
+                  }
+
+                  // 3-arg between form e.g. "<=": [ 18, {var:"value.value_quantity.value"}, 25 ]
+                  if ((op === "<=" || op === ">=") && arr.length === 3) {
+                      const a = arr[0], b = arr[1], c = arr[2];
+                      const midVar = (b && typeof b === "object" && typeof b.var === "string") ? b.var : null;
+                      out.push({ op, kind: "between3", midVar, low: a, high: c });
+                  }
+              }
+          });
+          return out;
+      }
+
+      function looksLikeLoinc(code) { return /^\d{4,5}-\d$/.test(String(code)); }
+      function looksLikeIcd(code) { return /^[A-Z]\d{2}(\.\d+)?$/.test(String(code)); } // allow G11.0, T92.3, etc.
+      function looksLikeUuid(s) { return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(s)); }
+
+      function extractPredicatesForRoot(itemJson, rootName) {
+          const preds = [];
+          traverse(itemJson, (n) => {
+              if (n && typeof n === "object" && Array.isArray(n.some) && n.some.length === 2) {
+                  const left = n.some[0];
+                  if (left && typeof left === "object" && left.var === rootName) preds.push(n.some[1]);
+              }
+          });
+          return preds;
+      }
+
+      // ---- date_add(now, -N, "month"/"day") parser ----
+      function parseDateExpr(expr) {
+          if (!expr || typeof expr !== "object") return null;
+
+          if (Array.isArray(expr.date_add) && expr.date_add.length === 3) {
+              const base = expr.date_add[0];
+              const amount = expr.date_add[1];
+              const unit = expr.date_add[2];
+
+              const isNow = base && typeof base === "object" && Object.prototype.hasOwnProperty.call(base, "now");
+              if (!isNow) return null;
+
+              if (typeof amount === "number" && typeof unit === "string") {
+                  const abs = Math.abs(amount);
+                  const sign = amount < 0 ? "-" : "+";
+                  const u = unit.endsWith("s") ? unit : unit + "s";
+                  return `now ${sign} ${abs} ${u}`;
+              }
+          }
+
+          return null;
+      }
+
+      function normalizeComparator(op) {
+          if (op === "==") return "=";
+          return op;
+      }
+
+      /* ===================== condition date constraints (onset_date etc.) ===================== */
+
+      function formatVarConstraint(varName, comps) {
+          const between = comps.find(c => c.kind === "between3" && c.midVar === varName);
+          if (between) {
+              const low = parseDateExpr(between.low);
+              const high = parseDateExpr(between.high);
+              if (low && high) return `${varName} BETWEEN ${low} AND ${high}`;
+          }
+
+          const bin = comps.find(c =>
+              c.kind === "binary" &&
+              c.leftVar === varName &&
+              (c.op === ">=" || c.op === ">" || c.op === "<=" || c.op === "<")
+          );
+          if (bin) {
+              const rhs = parseDateExpr(bin.right);
+              if (rhs) return `${varName} ${bin.op} ${rhs}`;
+          }
+
+          return null;
+      }
+
+      function extractConditionDateConstraints(itemJson, rootName = "conditions") {
+          const preds = extractPredicatesForRoot(itemJson, rootName);
+          if (!preds.length) return [];
+
+          const out = [];
+          for (const p of preds) {
+              const comps = findAllComparisons(p);
+              const onset = formatVarConstraint("onset_date", comps);
+              if (onset) out.push(onset);
+          }
+
+          return uniq(out);
+      }
+
+      /* ===================== END condition date constraints ===================== */
+
+      // ---- Condition extraction (simple some(conditions) patterns) ----
+      function extractConditionRequirements(itemJson) {
+          const condPreds = extractPredicatesForRoot(itemJson, "conditions");
+          if (!condPreds.length) return null;
+
+          const merged = { and: condPreds };
+          const allCodes = uniq(findInLists(merged).flat().flat()).map(String);
+
+          const icdCodes = uniq(allCodes.filter(looksLikeIcd));
+          const confirmed = allCodes.includes("confirmed");
+          const active = allCodes.includes("active");
+
+          const mainIcd = icdCodes.filter(c => /^(C50|D05)\./.test(c)); // breast
+          const alt = icdCodes.filter(c => /^(X76|Y78)$/.test(c));
+
+          return { icdCodes, mainIcd, alt, confirmed, active };
+      }
+
+      // ---- Observation extraction (unit/value/code + issued constraints) ----
+      function extractObservationRequirementsFromPredicate(obsPredicate) {
+          const comps = findAllComparisons(obsPredicate);
+          const codesFlat = uniq(findInLists(obsPredicate).flat().flat()).map(String);
+          const loinc = uniq(codesFlat.filter(looksLikeLoinc));
+
+          const unitComp = comps.find(c => c.kind === "binary" && c.leftVar?.includes("value.value_quantity.unit") && c.op === "==" && typeof c.right === "string");
+
+          // numeric value compare (binary)
+          const valueComp = comps.find(c => c.kind === "binary" && c.leftVar?.includes("value.value_quantity.value") && typeof c.right === "number");
+
+          // ✅ FIX: numeric value BETWEEN (3-arg compare) e.g. 18..25
+          const valueBetween = comps.find(c =>
+              c.kind === "between3" &&
+              typeof c.midVar === "string" &&
+              c.midVar.includes("value.value_quantity.value") &&
+              typeof c.low === "number" &&
+              typeof c.high === "number"
+          );
+          const valueRange = valueBetween ? { low: valueBetween.low, high: valueBetween.high } : null;
+
+          const issuedGte = comps.find(c => c.kind === "binary" && c.leftVar === "issued" && c.op === ">=");
+          const issuedBetween = comps.find(c => c.kind === "between3" && c.midVar === "issued");
+
+          let issuedText = null;
+          if (issuedGte) {
+              const rhs = parseDateExpr(issuedGte.right);
+              if (rhs) issuedText = `issued >= ${rhs}`;
+          }
+          if (issuedBetween) {
+              const low = parseDateExpr(issuedBetween.low);
+              const high = parseDateExpr(issuedBetween.high);
+              if (low && high) issuedText = `issued BETWEEN ${low} AND ${high}`;
+          }
+
+          // value_codeable_concept constraints (e.g. Student / eHealth/occupation_type)
+          const codingPreds = extractPredicatesForRoot(obsPredicate, "value.value_codeable_concept.coding");
+          let vccCode = null;
+          let vccSystem = null;
+
+          if (codingPreds.length) {
+              const merged = { and: codingPreds };
+              const mergedComps = findAllComparisons(merged);
+
+              const codeEq = mergedComps.find(c => c.kind === "binary" && c.leftVar === "code" && c.op === "==" && typeof c.right === "string");
+              const systemEq = mergedComps.find(c => c.kind === "binary" && c.leftVar === "system" && c.op === "==" && typeof c.right === "string");
+
+              vccCode = codeEq?.right ?? null;
+              vccSystem = systemEq?.right ?? null;
+          }
+
+          const hasSomething =
+              loinc.length ||
+              (unitComp && unitComp.right) ||
+              (valueComp && typeof valueComp.right === "number") ||
+              !!valueRange ||
+              !!issuedText ||
+              !!vccCode ||
+              !!vccSystem;
+
+          if (!hasSomething) return null;
+
+          return {
+              loinc,
+              unit: unitComp?.right,
+
+              valueComparator: valueComp ? normalizeComparator(valueComp.op) : null,
+              value: valueComp?.right,
+              valueRange,
+
+              issuedText,
+
+              valueCodeableConceptCode: vccCode,
+              valueCodeableConceptSystem: vccSystem
+          };
+      }
+
+      function extractAllObservationRequirements(itemJson) {
+          const obsPreds = extractPredicatesForRoot(itemJson, "observations");
+          if (!obsPreds.length) return [];
+
+          const reqs = obsPreds.map(p => extractObservationRequirementsFromPredicate(p)).filter(Boolean);
+
+          const seen = new Set();
+          const out = [];
+          for (const r of reqs) {
+              const key = [
+                  r.loinc.join(","),
+                  r.unit,
+                  r.valueComparator,
+                  r.value,
+                  r.valueRange ? `${r.valueRange.low}-${r.valueRange.high}` : "",
+                  r.issuedText,
+                  r.valueCodeableConceptCode,
+                  r.valueCodeableConceptSystem
+              ].join("|");
+
+              if (!seen.has(key)) { seen.add(key); out.push(r); }
+          }
+          return out;
+      }
+
+      // ---- medication_dispenses reduce/filter pattern ----
+      function extractMedicationDispenseRule(itemJson) {
+          let found = null;
+
+          traverse(itemJson, (n) => {
+              if (found) return;
+              if (!n || typeof n !== "object") return;
+
+              if (Object.prototype.hasOwnProperty.call(n, ">=") && Array.isArray(n[">="]) && n[">="].length === 2) {
+                  const left = n[">="][0];
+                  const right = n[">="][1];
+                  if (right !== 1) return;
+
+                  if (!left || typeof left !== "object" || !Array.isArray(left.reduce)) return;
+
+                  const reduceArr = left.reduce;
+                  const filterContainer = reduceArr[0];
+                  if (!filterContainer || typeof filterContainer !== "object" || !Array.isArray(filterContainer.filter)) return;
+
+                  const filterArr = filterContainer.filter;
+                  if (filterArr.length !== 2) return;
+
+                  const root = filterArr[0];
+                  const predicate = filterArr[1];
+                  if (!root || typeof root !== "object" || root.var !== "medication_dispenses") return;
+
+                  found = { predicate };
+              }
+          });
+
+          if (!found) return null;
+
+          const predicate = found.predicate;
+          const allCodes = uniq(findInLists(predicate).flat().flat()).map(String);
+
+          const programIds = uniq(allCodes.filter(looksLikeUuid));
+          const statuses = uniq(allCodes.filter(s => /^[A-Z_]+$/.test(s)));
+
+          const comps = findAllComparisons(predicate);
+          const updatedAtGte = comps.find(c => c.kind === "binary" && c.leftVar === "updated_at" && c.op === ">=");
+          const updatedAtBetween = comps.find(c => c.kind === "between3" && c.midVar === "updated_at");
+          let updatedAtText = null;
+
+          if (updatedAtGte) {
+              const rhs = parseDateExpr(updatedAtGte.right);
+              if (rhs) updatedAtText = `updated_at >= ${rhs}`;
+          }
+          if (updatedAtBetween) {
+              const low = parseDateExpr(updatedAtBetween.low);
+              const high = parseDateExpr(updatedAtBetween.high);
+              if (low && high) updatedAtText = `updated_at BETWEEN ${low} AND ${high}`;
+          }
+
+          return { programIds, statuses, updatedAtText, minCount: 1 };
+      }
+
+      /* ===================== COUNT rules (reduce/filter) ===================== */
+
+      function extractCountFilterRule(itemJson) {
+          let found = null;
+
+          traverse(itemJson, (n) => {
+              if (found) return;
+              if (!n || typeof n !== "object") return;
+
+              for (const op of [">=", ">", "<=", "<", "=="]) {
+                  if (!Object.prototype.hasOwnProperty.call(n, op)) continue;
+                  if (!Array.isArray(n[op]) || n[op].length !== 2) continue;
+
+                  const left = n[op][0];
+                  const right = n[op][1];
+                  if (typeof right !== "number") continue;
+
+                  if (!left || typeof left !== "object" || !Array.isArray(left.reduce)) continue;
+                  const reduceArr = left.reduce;
+
+                  const filterContainer = reduceArr[0];
+                  if (!filterContainer || typeof filterContainer !== "object" || !Array.isArray(filterContainer.filter)) continue;
+
+                  const filterArr = filterContainer.filter;
+                  if (filterArr.length !== 2) continue;
+
+                  const root = filterArr[0];
+                  const predicate = filterArr[1];
+                  if (!root || typeof root !== "object" || typeof root.var !== "string") continue;
+
+                  found = { rootVar: root.var, predicate, op, threshold: right };
+              }
+          });
+
+          return found;
+      }
+
+      function extractConditionCountRule(itemJson) {
+          const r = extractCountFilterRule(itemJson);
+          if (!r || r.rootVar !== "conditions") return null;
+
+          const allCodes = uniq(findInLists(r.predicate).flat().flat()).map(String);
+          const icdCodes = uniq(allCodes.filter(looksLikeIcd));
+          const active = allCodes.includes("active");
+          const confirmed = allCodes.includes("confirmed");
+
+          return {
+              op: r.op,
+              threshold: r.threshold,
+              icdCodes,
+              active,
+              confirmed
+          };
+      }
+
+      /* ===================== END COUNT rules ===================== */
+
+      // ---- Build structured block per item ----
+      function buildStructured(it) {
+          const itemJson = it?.value?.json;
+          const fallback = it?.value?.string ? String(it.value.string) : "";
+          if (!itemJson) return null;
+
+          const lines = [];
+
+          // 1) Conditions (simple some(...) style)
+          const cond = extractConditionRequirements(itemJson);
+          if (cond) {
+              lines.push("Condition:");
+              if (cond.icdCodes.length) {
+                  const codes = cond.icdCodes;
+                  const head = codes.slice(0, 12);
+                  const rest = codes.length - head.length;
+                  lines.push(`• code.coding.code IN [${head.join(", ")}${rest > 0 ? `, … +${rest}` : ""}]`);
+              } else if (cond.mainIcd.length) {
+                  lines.push(`• code.coding.code IN [${cond.mainIcd.join(", ")}]`);
+              }
+
+              if (cond.active) lines.push(`• clinical_status = active`);
+              if (cond.confirmed) lines.push(`• verification_status = confirmed`);
+          }
+
+          // onset_date / date constraints for conditions
+          const condDates = extractConditionDateConstraints(itemJson, "conditions");
+          if (cond && condDates.length) {
+              condDates.forEach(d => lines.push(`• ${d}`));
+          }
+
+          // 1b) Conditions (COUNT rule style: reduce(filter(conditions)) >= N)
+          const condCount = extractConditionCountRule(itemJson);
+          if (condCount) {
+              lines.push("Conditions (count rule):");
+              if (condCount.icdCodes.length) {
+                  lines.push(`• code.coding.code IN [${condCount.icdCodes.join(", ")}]`);
+              }
+              if (condCount.active) lines.push(`• clinical_status = active`);
+              if (condCount.confirmed) lines.push(`• verification_status = confirmed`);
+
+              const condCountDates = extractConditionDateConstraints(itemJson, "conditions");
+              condCountDates.forEach(d => lines.push(`• ${d}`));
+
+              lines.push(`• count ${condCount.op} ${condCount.threshold}`);
+          }
+
+          // 2) Observations
+          const obs = extractAllObservationRequirements(itemJson);
+          if (obs.length) {
+              obs.forEach((o, idx) => {
+                  lines.push(obs.length > 1 ? `Observation #${idx + 1}:` : "Observation:");
+                  if (o.loinc.length === 1) lines.push(`• code.coding.code = "${o.loinc[0]}"`);
+                  else if (o.loinc.length > 1) lines.push(`• code.coding.code IN [${o.loinc.join(", ")}]`);
+
+                  if (o.valueCodeableConceptCode || o.valueCodeableConceptSystem) {
+                      lines.push(`• value_codeable_concept.coding.code = "${o.valueCodeableConceptCode ?? "-"}"`);
+                      lines.push(`• value_codeable_concept.coding.system = "${o.valueCodeableConceptSystem ?? "-"}"`);
+                  }
+
+                  if (o.issuedText) lines.push(`• ${o.issuedText}`);
+
+                  if (o.unit) lines.push(`• value_quantity.unit = "${o.unit}"`);
+
+                  // ✅ FIX: show BETWEEN for numeric range
+                  if (o.valueRange) {
+                      lines.push(`• value_quantity.value BETWEEN ${o.valueRange.low} AND ${o.valueRange.high}`);
+                  } else if (o.valueComparator && typeof o.value === "number") {
+                      lines.push(`• value_quantity.comparator = "${o.valueComparator}"`);
+                      lines.push(`• value_quantity.value = ${o.value}`);
+                  }
+              });
+          }
+
+          // 3) Medication dispenses count
+          const md = extractMedicationDispenseRule(itemJson);
+          if (md) {
+              lines.push("Medication Dispense:");
+              if (md.programIds.length) lines.push(`• medical_program_id IN [${md.programIds.join(", ")}]`);
+              if (md.updatedAtText) lines.push(`• ${md.updatedAtText}`);
+              if (md.statuses.length) lines.push(`• status IN [${md.statuses.join(", ")}]`);
+              lines.push(`• count >= ${md.minCount}`);
+          }
+
+          if (!lines.length) return null;
+          return { structured: lines.join("\n"), fallback };
+      }
+
+      function pre(text) {
+          return `<pre class="mono">${esc(text)}</pre>`;
+      }
+
+      const comparatorText =
+          itemsComparator === "and"
+              ? `items_comparator = AND → потрібно виконати ВСІ вимоги`
+              : `items_comparator = OR → достатньо виконати БУДЬ-ЯКИЙ ОДИН сценарій`;
+
+      const rowsHtml = items
+          .slice()
+          .sort((a, b) => (a.number ?? 0) - (b.number ?? 0))
+          .map((it) => {
+              const title =
+                  itemsComparator === "or"
+                      ? `Сценарій №${it.number}: ${it.description || ""}`
+                      : `${it.description || ""}`;
+
+              const built = buildStructured(it);
+
+              const body = built
+                  ? `
+              <div class="label">Потрібно налаштувати ЕМЗ в encounter package відповідно правилу:</div>
+              ${pre(built.structured)}
+              ${built.fallback ? `
+                <details class="details">
+                  <summary>Показати оригінал правила</summary>
+                  <div class="raw">${esc(built.fallback)}</div>
+                </details>` : ``}
+            `
+                  : (it?.value?.string ? `
+              <div class="label">value.string (fallback):</div>
+              <div class="raw">${esc(it.value.string)}</div>
+            ` : `<div class="raw">Немає даних для відображення</div>`);
+
+              return `
+            <div class="row">
+              <div class="rowTitle">${esc(title)}</div>
+              ${body}
+            </div>
+          `;
+          })
+          .join("");
+
+      const html = `
+      <style>
+        body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; color: #111; background: #f6f7fb; }
+        .wrap { max-width: 1100px; margin: 0 auto; background: #fff; border: 1px solid #e7e8ef; border-radius: 14px;
+                box-shadow: 0 6px 24px rgba(17, 24, 39, 0.06); overflow: hidden; }
+        .head { padding: 16px 18px; border-bottom: 1px solid #eef0f6; background: linear-gradient(180deg, #ffffff, #fbfbfe); }
+        .h1 { font-size: 16px; font-weight: 800; margin: 0 0 6px; }
+        .meta { font-size: 12px; color: #4b5563; line-height: 1.35; }
+        .chips { margin-top: 10px; display:flex; flex-wrap:wrap; gap:8px; }
+        .chip { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid #e5e7eb; background: #f9fafb; color: #111827; }
+        .ok { border-color: #bbf7d0; background: #f0fdf4; }
+        .no { border-color: #fecaca; background: #fff1f2; }
+        .body { padding: 14px 18px 18px; }
+        .row { border: 1px solid #eef0f6; border-radius: 12px; padding: 12px; margin-top: 10px; background:#fff; }
+        .rowTitle { font-weight: 800; font-size: 13px; margin-bottom: 10px; color:#111827; }
+        .label { font-size: 12px; font-weight: 700; color:#374151; margin-bottom: 6px; }
+        .raw { font-size: 13px; color: #111827; background:#fafafa; border:1px solid #eee; border-radius:10px; padding:10px; line-height:1.45; }
+        .mono { margin:0; font-size: 12px; background:#0b1220; color:#e5e7eb; border-radius:10px; padding:10px; white-space:pre-wrap; border:1px solid #11182722;}
+        details.details { margin-top: 8px; }
+        details.details > summary { cursor: pointer; font-size: 12px; font-weight: 700; color:#374151; }
+      </style>
+
+      <div class="wrap">
+        <div class="head">
+          <div class="h1">${esc(rule.name || "Rule")}</div>
+          <div class="meta">
+            code: <b>${esc(rule.code?.code || "-")}</b> · system: ${esc(rule.code?.system || "-")} · id: ${esc(rule.id || "-")}
+            <br>${esc(comparatorText)}
+          </div>
+          <div class="chips">
+            <span class="chip ${rule.is_active ? "ok" : "no"}">${rule.is_active ? "ACTIVE" : "INACTIVE"}</span>
+            <span class="chip ${rule.is_enabled ? "ok" : "no"}">${rule.is_enabled ? "ENABLED" : "DISABLED"}</span>
+          </div>
+        </div>
+
+        <div class="body">
+          ${rowsHtml || `<div class="raw">Немає items для відображення</div>`}
+        </div>
+      </div>
+      `;
+
+      pm.visualizer.set(html);
+    language: text/javascript
+order: 2000

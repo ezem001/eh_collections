@@ -1,0 +1,178 @@
+$kind: http-request
+url: http://localhost:3000/create-care-plan-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{care_plan_id}}\",\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"eHealth/care_plan_categories\",\r
+
+    \                \"code\": \"class_4\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"title\": \"План Лікуваня\",\r
+
+    \    \"description\": \"123\",\r
+
+    \    \"period\": {\r
+
+    \        \"start\": \"2026-03-18T08:45:16.000Z\",\r
+
+    \        \"end\": \"2026-04-18T11:00:00.000Z\"\r
+
+    \    },\r
+
+    \    \"note\": \"123\",\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobEncounterID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"addresses\": [\r
+
+    \        {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                    \"code\": \"E10.9\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"terms_of_service\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"PROVIDING_CONDITION\",\r
+
+    \                \"code\": \"OUTPATIENT\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    // \"inform_with\": {\r
+
+    \    //     \"auth_method_id\": \"c8031f6d-5145-4256-94b2-a9d2e79dc104\"\r
+
+    \    // },\r
+
+    \    \"status\": \"new\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const carePlanId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"care_plan_id\", carePlanId);\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      pm.test(`Care Plan content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('care_plan_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      // if(resData.signed_content){\r
+
+      //     pm.globals.set('care_plan_signed_content',
+      resData.signed_content)\r
+
+      // }"
+    language: text/javascript
+order: 2000

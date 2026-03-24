@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/encounters?managing_organiz\
+  ation_id={{user_legal_entity}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: date_from
+    value: 2022-10-20
+    disabled: true
+  - key: date_to
+    value: 2022-10-30
+    disabled: true
+  - key: origin_episode_id
+    value: 1242121d-bdfb-420b-a1bc-64d9abeddaf5
+    disabled: true
+  - key: incoming_referral_id
+    value: ""
+    disabled: true
+  - key: episode_id
+    value: 34ac9c30-78d1-4bdd-8ab9-d48f5e7cd7f2
+    disabled: true
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Encounters by search params - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 58000

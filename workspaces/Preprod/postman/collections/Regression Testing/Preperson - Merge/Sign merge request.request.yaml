@@ -1,0 +1,34 @@
+$kind: http-request
+url: "{{host}}/api/merge_requests/{{merge_req_id}}/actions/sign"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+body:
+  type: text
+  content: "{\r
+
+    \  \"signed_content\": \"{{merge_req_signed_content}}\",\r
+
+    \  \"signed_content_encoding\": \"base64\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Merge request sign successful\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      \r
+
+      \    const resData = pm.response.json();\r
+
+      \r
+
+      \    pm.globals.set('merge_id', resData.data?.id)\r
+
+      });"
+    language: text/javascript
+order: 6000

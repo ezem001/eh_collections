@@ -1,0 +1,277 @@
+$kind: http-request
+url: http://localhost:3000/procedure-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{procedure_id}}\",\r
+
+    \    \"status\": \"completed\",\r
+
+    \    \"based_on\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"service_request\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{JobSericeRequestID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"code\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"service\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"40b2dfdf-7623-4fa5-bbfb-58a6b651ff0c\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"performed_period\": {\r
+
+    \        \"start\": \"{{procedureStart}}\",\r
+
+    \        \"end\": \"{{procedureEnd}}\"\r
+
+    \    },\r
+
+    \    \"recorded_by\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"primary_source\": true,\r
+
+    \    \"performer\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": \"Галина Олександрівна\"\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"division\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"division\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_division_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"managing_organization\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"legal_entity\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_legal_entity}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"eHealth/procedure_categories\",\r
+
+    \                \"code\": \"procedure\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const procedureId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"procedure_id\", procedureId);\r
+
+      \r
+
+      \r
+
+      \r
+
+      // Отримуємо поточну дату\r
+
+      const today = new Date();\r
+
+      \r
+
+      // Обчислюємо procedureStart (сьогодні - 10 днів)\r
+
+      const procedureStart = new Date(today);\r
+
+      procedureStart.setDate(procedureStart.getDate() - 10);\r
+
+      \r
+
+      // Обчислюємо procedureEnd (сьогодні - 1 день)\r
+
+      const procedureEnd = new Date(today);\r
+
+      procedureEnd.setDate(procedureEnd.getDate() - 1);\r
+
+      \r
+
+      // Функція для форматування дати у форматі ISO 8601 (з T00:00:00.000Z)\r
+
+      const formatISODate = (date) => date.toISOString();\r
+
+      \r
+
+      // Зберігаємо у глобальні змінні\r
+
+      pm.globals.set('procedureStart', formatISODate(procedureStart));\r
+
+      pm.globals.set('procedureEnd', formatISODate(procedureEnd));\r
+
+      \r
+
+      // Виводимо у консоль для перевірки\r
+
+      console.log(\"Procedure Start:\", formatISODate(procedureStart));\r
+
+      console.log(\"Procedure End:\", formatISODate(procedureEnd));\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create procedure sign content', resData)\r
+
+      \r
+
+      pm.test(`Procedure content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('procedure_signed_content', resData.signed_content);\r
+
+      });\r\n"
+    language: text/javascript
+order: 63000

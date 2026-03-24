@@ -1,0 +1,27 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/oauth/apps/authorize
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{login_token}}
+body:
+  type: text
+  content: >-
+    {
+        "app": {
+            "client_id": "a8f69562-e675-4d4e-a286-93e336143a5d",
+            "redirect_uri": "https://pis_test.com/redirect",
+            "scope": "app:delete_pis app:read_pis authentication_method:deactivate_pis authentication_method:read_pis authentication_method:write_pis authentication_method_request:write_pis confidant_person:login confidant_person:sign_up declaration:details_pis declaration:read_pis declaration:terminate_pis declaration_request:details_pis declaration_request:read_pis declaration_request:reject_pis declaration_request:sign_pis declaration_request:write_pis person:details_pis person_documents:write_pis person_request:details_pis person_request:read_pis person_request:reject_pis person_request:write_pis person_verification:details_pis"
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Authorization passed", function () {
+          pm.response.to.have.status(201);
+          var jsonData = pm.response.json();
+          var token = jsonData.data.value;
+          pm.environment.set("auth_token", token);
+      });
+    language: text/javascript
+order: 3000

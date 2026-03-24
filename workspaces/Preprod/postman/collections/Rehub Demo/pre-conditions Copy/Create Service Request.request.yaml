@@ -1,0 +1,66 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/service_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+        "signed_data": "{{service_request_base64}}"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: |+
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))
+      };
+
+      var current_date = new Date();
+      pm.environment.set("current_date", current_date);
+
+      var sr_period_start = new Date();
+      sr_period_start.setHours(sr_period_start.getHours() + 1);
+      pm.environment.set("sr_period_start", sr_period_start);
+
+
+      pm.environment.set("service_request_id", pm.variables.replaceIn('{{$guid}}'));
+
+      var service_request_template = '{ "id": "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "status": "active", "intent": "order", "priority": "routine", "category": { "coding": [ { "system": "eHealth/SNOMED/service_request_categories", "code": "hospitalization" } ] }, "code": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "service" } ] }, "value": "fa27374c-ac61-44e6-aec8-88da07dde294" } }, "context": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "occurrence_period": { "start": "2018-08-02T10:45:16.000Z", "end": "2018-08-02T11:00:00.000Z" }, "requester_employee": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "performer_type": { "coding": [ { "system": "SPECIALITY_TYPE", "code": "ADOLESCENT_MEDICINE" } ] }, "requester_legal_entity": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "legal_entity" } ] }, "value": "75a6d991-0bf7-476f-b3cf-bec83f044b2a" } }, "note": "Some notes", "patient_instruction": "Some patient instructions", "quantity": { "value": 10, "system": "SERVICE_UNIT", "code": "PIECE" }, "inform_with": { "auth_method_id": "cc949559-5dfe-420f-ac05-065e443b2cc6" } }';
+      var  service_request_template = JSON.parse(service_request_template);
+
+      //VALUES
+
+      //condition
+
+      service_request_template.id = pm.environment.get("service_request_id");
+      service_request_template.context.identifier.value = pm.environment.get("encounter_id");
+      service_request_template.requester_employee.identifier.value= pm.environment.get("employee_id");
+      service_request_template.occurrence_period.start= sr_period_start;
+      service_request_template.occurrence_period.end= sr_period_start;
+      service_request_template.requester_legal_entity.identifier.value= pm.environment.get("le_id");
+      service_request_template.inform_with.auth_method_id=pm.environment.get("auth_method_id");
+
+      postman.setEnvironmentVariable("encounter_package", JSON.stringify(service_request_template));
+      service_request_base64 = b64EncodeUnicode(JSON.stringify(service_request_template));
+      postman.setEnvironmentVariable("service_request_base64", service_request_base64);
+
+
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 4000

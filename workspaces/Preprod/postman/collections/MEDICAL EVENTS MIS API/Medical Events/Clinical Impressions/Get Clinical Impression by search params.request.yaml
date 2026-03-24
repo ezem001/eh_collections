@@ -1,0 +1,341 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/clinical_impressions"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: encounter_id
+    value: 3a27905b-f546-4515-b739-c006f8b94301
+    disabled: true
+  - key: episode_id
+    value: 3a27905b-f546-4515-b739-c006f8b94300
+    disabled: true
+  - key: code
+    value: insulin_1
+    disabled: true
+  - key: status
+    value: completed
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: >
+      // ---- Config ----
+
+      const MASK_SENSITIVE = true;
+
+      const SENSITIVE_HEADERS = new Set([
+        'authorization', 'api-key', 'x-custom-psk', 'cookie'
+      ]);
+
+
+      // Headers to drop from [Request]
+
+      const DROP_REQUEST_HEADERS = new Set([
+        'accept',
+        'accept-encoding',
+        'connection',
+        'content-type',
+        'postman-token',
+        'user-agent',
+        'content-length',
+        'host' // keep only "Host:" line
+      ]);
+
+
+      // ---- Helpers ----
+
+      function esc(s) {
+        return String(s ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;');
+      }
+
+
+      function safeJsonParse(text) {
+        try { return JSON.parse(text); } catch { return null; }
+      }
+
+
+      function normalizeHeaders(headersObjOrArr) {
+        if (!headersObjOrArr) return {};
+        if (typeof headersObjOrArr?.toObject === 'function') return headersObjOrArr.toObject();
+
+        const out = {};
+        if (Array.isArray(headersObjOrArr)) {
+          headersObjOrArr.forEach(h => {
+            if (!h) return;
+            const k = (h.key || h.name || '').toString();
+            const v = (h.value ?? '').toString();
+            if (k) out[k] = v;
+          });
+          return out;
+        }
+
+        if (typeof headersObjOrArr === 'object') {
+          Object.keys(headersObjOrArr).forEach(k => out[k] = String(headersObjOrArr[k]));
+        }
+        return out;
+      }
+
+
+      function shouldDropHeader(k) {
+        const key = String(k || '').toLowerCase().trim();
+        if (!key) return true;
+        return DROP_REQUEST_HEADERS.has(key);
+      }
+
+
+      function maskHeaderValue(key, value) {
+        if (!MASK_SENSITIVE) return value;
+
+        const k = String(key || '').toLowerCase().trim();
+        if (!SENSITIVE_HEADERS.has(k)) return value;
+
+        if (k === 'authorization') return 'Bearer ***';
+        if (!value) return '***';
+
+        const tail = value.length > 6 ? value.slice(-6) : value;
+        return `***…${tail}`;
+      }
+
+
+      function formatRequestHeaders(headers) {
+        const obj = normalizeHeaders(headers);
+        const keys = Object.keys(obj)
+          .filter(k => !shouldDropHeader(k))
+          .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+        if (!keys.length) return '';
+        return keys.map(k => `${k}: ${maskHeaderValue(k, obj[k])}`).join('\n');
+      }
+
+
+      function getHost(url) {
+        if (!url) return '';
+        if (typeof url === 'string') {
+          try { return new URL(url).host; } catch { return ''; }
+        }
+        if (url.host) {
+          if (Array.isArray(url.host)) return url.host.join('.');
+          return String(url.host);
+        }
+        if (url.toString) {
+          try { return new URL(url.toString()).host; } catch { return ''; }
+        }
+        return '';
+      }
+
+
+      function getPathWithQuery(url) {
+        if (!url) return '/';
+
+        // 1) If url is string -> parse directly
+        if (typeof url === 'string') {
+          try {
+            const u = new URL(url);
+            return u.pathname + (u.search || '');
+          } catch {
+            // maybe no scheme ("/api/..")
+            return url;
+          }
+        }
+
+        // 2) Try toString() (Postman Url object often has full query here)
+        try {
+          const s = url.toString ? url.toString() : '';
+          if (s) {
+            // If already absolute
+            try {
+              const u = new URL(s);
+              return u.pathname + (u.search || '');
+            } catch {
+              // If relative like "/api/...?...":
+              // try to build absolute using host from url.host
+              const host = Array.isArray(url.host) ? url.host.join('.') : String(url.host || '');
+              if (host) {
+                const u2 = new URL(`https://${host}${s.startsWith('/') ? '' : '/'}${s}`);
+                return u2.pathname + (u2.search || '');
+              }
+            }
+          }
+        } catch { /* ignore */ }
+
+        // 3) Fallback: build from path + query (supports array OR object)
+        const path = Array.isArray(url.path) ? '/' + url.path.join('/') : (url.pathname || '/');
+
+        // query can be array OR object in Postman
+        const q = url.query;
+
+        if (Array.isArray(q) && q.length) {
+          const qs = q
+            .filter(x => x && x.key)
+            .map(x => `${encodeURIComponent(x.key)}=${encodeURIComponent(x.value ?? '')}`)
+            .join('&');
+          return qs ? `${path}?${qs}` : path;
+        }
+
+        // If query is object: {a:1, b:2} or similar
+        if (q && typeof q === 'object') {
+          const entries = Object.entries(q)
+            .filter(([k]) => k)
+            .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ?? '')}`);
+          return entries.length ? `${path}?${entries.join('&')}` : path;
+        }
+
+        return path || '/';
+      }
+
+
+      function getPmRequestBody(pmReq) {
+        try {
+          const body = pmReq?.body;
+          if (!body) return '';
+          if (body.mode === 'raw') return body.raw || '';
+          return '';
+        } catch {
+          return '';
+        }
+      }
+
+
+      function stringifyMaybeJson(text) {
+        if (!text) return '';
+        const j = safeJsonParse(text);
+        return j ? JSON.stringify(j, null, 2) : text;
+      }
+
+
+      function responseDataMetaOnly(text) {
+        const j = safeJsonParse(text);
+        if (!j) return text;
+
+        const out = {
+          data: Object.prototype.hasOwnProperty.call(j, 'data') ? j.data : undefined,
+          error: Object.prototype.hasOwnProperty.call(j, 'error') ? j.error : undefined,
+          meta: Object.prototype.hasOwnProperty.call(j, 'meta') ? j.meta : undefined
+        };
+        Object.keys(out).forEach(k => out[k] === undefined && delete out[k]);
+
+        return JSON.stringify(out, null, 2);
+      }
+
+
+      function buildRawRequest({ method, url, headers, body }) {
+        const host = getHost(url);
+        const path = getPathWithQuery(url);
+
+        const headerText = formatRequestHeaders(headers);
+        const bodyText = body ? stringifyMaybeJson(body) : '';
+
+        return [
+          `${(method || 'GET').toUpperCase()} ${path || '/'} HTTP/1.1`,
+          host ? `Host: ${host}` : null,
+          headerText || null,
+          bodyText ? `\n${bodyText}` : null
+        ].filter(Boolean).join('\n');
+      }
+
+
+      function buildResponseBodyOnly({ bodyText }) {
+        return responseDataMetaOnly(bodyText || '');
+      }
+
+
+      function buildLogText() {
+        const title = pm.info.requestName || 'Main request';
+
+        const reqRaw = buildRawRequest({
+          method: pm.request.method,
+          url: pm.request.url,
+          headers: pm.request.headers,
+          body: getPmRequestBody(pm.request)
+        });
+
+        const resRaw = buildResponseBodyOnly({
+          bodyText: pm.response.text()
+        });
+
+        return [
+          `${title}\n`,
+          `[Request]\n\n${reqRaw}\n`,
+          `\n[Response]\n\n${resRaw}\n`
+        ].join('\n');
+      }
+
+
+      // ---- Render ----
+
+      (function renderMain() {
+        const allText = buildLogText();
+
+        const html = `
+      <div style="display:flex; gap:8px; align-items:center;
+      margin-bottom:8px;">
+        <button id="copyAllBtn">Copy all</button>
+        <span id="copyMsg" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size:12px;"></span>
+      </div>
+
+
+      <textarea id="allLogText" style="position:absolute; left:-9999px;
+      top:-9999px;">${esc(allText)}</textarea>
+
+
+      <pre style="margin:0; white-space:pre; font-family: ui-monospace,
+      SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px;
+      line-height: 1.35;">
+
+      ${esc(allText)}
+
+      </pre>
+
+
+      <script>
+        (function() {
+          const btn = document.getElementById('copyAllBtn');
+          const msg = document.getElementById('copyMsg');
+          const ta  = document.getElementById('allLogText');
+
+          function setMsg(t) {
+            msg.textContent = t || '';
+            if (t) setTimeout(() => { msg.textContent = ''; }, 1200);
+          }
+
+          btn.addEventListener('click', async () => {
+            try {
+              const text = ta.value || '';
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(text);
+                setMsg('Copied ✅');
+                return;
+              }
+              ta.focus(); ta.select();
+              const ok = document.execCommand('copy');
+              setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');
+            } catch (e) {
+              try {
+                ta.focus(); ta.select();
+                const ok = document.execCommand('copy');
+                setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');
+              } catch {
+                setMsg('Copy failed ❌');
+              }
+            }
+          });
+        })();
+      </script>
+        `;
+
+        pm.visualizer.set(html);
+      })();
+    language: text/javascript
+order: 2000

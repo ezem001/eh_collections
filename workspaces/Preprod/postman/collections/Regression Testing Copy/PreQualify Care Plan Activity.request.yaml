@@ -1,0 +1,373 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/care_plans/{{jobCareplanID}\
+  }/activities/prequalify"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"activity\": {\r
+
+    \        \"author\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"care_plan\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"care_plan\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobCareplanID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"detail\": {\r
+
+    \            \"kind\": \"service_request\",\r
+
+    \            \"product_reference\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"service\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"2a3bdbc7-98d7-4892-8f82-6572f67d3bc9\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"reason_code\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\":
+    \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                            \"code\": \"E10.9\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"reason_reference\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{jobConditionID}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"goal\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\":
+    \"eHealth/care_plan_activity_goals\",\r
+
+    \                            \"code\": \"patient_maintaince\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"quantity\": {\r
+
+    \                \"value\": 56,\r
+
+    \                \"system\": \"SERVICE_UNIT\",\r
+
+    \                \"code\": \"PIECE\"\r
+
+    \            },\r
+
+    \            \"scheduled_period\": {\r
+
+    \                \"start\": \"{{activityStartDate}}\",\r
+
+    \                \"end\": \"{{activityEndDate}}\"\r
+
+    \            },\r
+
+    \            \"location\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"division\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_division_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"performer\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"daily_amount\": {\r
+
+    \                \"value\": 1.0,\r
+
+    \                \"system\": \"SERVICE_UNIT\",\r
+
+    \                \"code\": \"PIECE\"\r
+
+    \            },\r
+
+    \            \"description\": \"Some activity description\",\r
+
+    \            \"do_not_perform\": false,\r
+
+    \            \"status\": \"scheduled\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"programs\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"medical_program\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"0eb268fa-ab21-4df9-8d58-1bc85e393533\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const carePlanStartDate = pm.globals.get('carePlanStartDate');\r
+
+      const carePlanDate = new Date(carePlanStartDate);\r
+
+      const getCarePlanEndDate = pm.globals.get(\"carePlanEndDate\");\r
+
+      const carePlanEndDate = new Date(getCarePlanEndDate);\r
+
+      \r
+
+      // Додаємо 1 день для activityStartDate\r
+
+      const activityStartDate = new Date(carePlanDate);\r
+
+      activityStartDate.setDate(activityStartDate.getDate() + 1);\r
+
+      \r
+
+      const activityEndDate = new Date(carePlanEndDate);\r
+
+      activityEndDate.setDate(activityEndDate.getDate() - 1);\r
+
+      \r
+
+      \r
+
+      // Конвертуємо у формат ISO 8601\r
+
+      const activityStartDateISO = activityStartDate.toISOString();\r
+
+      const activityEndISO = activityEndDate.toISOString();\r
+
+      \r
+
+      // Зберігаємо значення в глобальні змінні\r
+
+      pm.globals.set('activityStartDate', activityStartDateISO);\r
+
+      pm.globals.set('activityEndDate', activityEndISO);\r
+
+      \r
+
+      console.log(\"Activity Start Date:\", activityStartDateISO);\r
+
+      console.log(\"Activity End Date:\", activityEndISO);\r
+
+      \r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"PreQualify Care Plan Activity Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"PreQualify Care Plan Activity status is VALID\", function () {\r
+
+      \   const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });"
+    language: text/javascript
+order: 27000

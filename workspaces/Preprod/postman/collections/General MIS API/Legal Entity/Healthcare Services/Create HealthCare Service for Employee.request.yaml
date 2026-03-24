@@ -1,0 +1,36 @@
+$kind: http-request
+url: "{{host}}/api/healthcare_services"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"division_id\": \"2fe7d6e2-c772-4187-8c61-a7ef0b31d74f\",\r
+
+    \    \"speciality_type\": \"FAMILY_DOCTOR\",\r
+
+    \    \"providing_condition\": \"OUTPATIENT\",\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"HEALTHCARE_SERVICE_CATEGORIES\",\r
+
+    \                \"code\": \"MSP\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    }\r
+
+    }"
+order: 1000

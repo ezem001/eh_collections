@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{host}}/api/patients/f2faf5ae-07ad-4199-aa75-b668b2d70b35/episodes/1be6f\
+  0df-5daa-4c83-a202-9b10f5392e6a/conditions"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: code
+    value: A20
+    disabled: true
+  - key: onset_date_from
+    value: 1990-01-01
+    disabled: true
+  - key: onset_date_to
+    value: 2000-01-01
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 3000

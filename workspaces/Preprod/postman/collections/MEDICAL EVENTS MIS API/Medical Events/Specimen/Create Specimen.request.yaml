@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/specimens"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"signed_data\": \"{{specimen_signed_content}}\"\r
+
+    }"
+order: 2000

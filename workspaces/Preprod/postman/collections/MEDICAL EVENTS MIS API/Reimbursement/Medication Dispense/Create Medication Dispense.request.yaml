@@ -1,0 +1,102 @@
+$kind: http-request
+url: "{{host}}/api/pharmacy/medication_dispenses?code={{medication_req_confirma\
+  tion_code}}"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  code: "{{medication_req_confirmation_code}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"medication_dispense\": {\r
+
+    \        \"medication_request_id\": \"{{medication_req_id}}\",\r
+
+    \        \"dispensed_at\": \"{{dispensed_at}}\",\r
+
+    \        \"dispensed_by\": \"Іванов Іван Іванович\",\r
+
+    \        \"division_id\": \"{{user_division_id}}\",\r
+
+    \        \"medical_program_id\":
+    \"{{program_id_qualify_medication_request}}\",\r
+
+    \        \"dispense_details\": [\r
+
+    \            {\r
+
+    \                \"program_medication_id\":
+    \"{{program_medication_id_qualify_medication_request}}\",\r
+
+    \                \"medication_id\":
+    \"{{medication_id_qualify_medication_request}}\",\r
+
+    \                \"medication_qty\": 30.0,\r
+
+    \                \"sell_price\": {{sell_price_calc}},\r
+
+    \                \"sell_amount\": {{sell_amount_calc}},\r
+
+    \                \"discount_amount\": {{discount_amount_calc}}\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const now = new Date();\r
+
+      \r
+
+      // Форматуємо у вигляді YYYY-MM-DD\r
+
+      const formattedDate = now.toISOString().split('T')[0];\r
+
+      \r
+
+      // Записуємо у глобальну змінну Postman\r
+
+      pm.globals.set(\"dispensed_at\", formattedDate);\r
+
+      \r
+
+      // Для зручності виведемо в консоль\r
+
+      console.log(\"Global variable 'dispensed_at' set to:\", formattedDate);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      pm.test(\"Create Medication Dispense Response status code is 201\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(201);\r
+
+      \r
+
+      \    pm.globals.set('medication_dispense_id', resData.data.id)\r
+
+      \r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+order: 1000

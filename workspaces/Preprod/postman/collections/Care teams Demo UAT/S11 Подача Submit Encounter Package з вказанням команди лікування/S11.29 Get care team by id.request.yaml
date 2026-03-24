@@ -1,0 +1,9 @@
+$kind: http-request
+name: S11.29 Get care team by id
+url: https://api-demo.ehealth.gov.ua/api/care_teams/084bbbf7-3ae8-4c88-b496-59c95582693d
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 66000

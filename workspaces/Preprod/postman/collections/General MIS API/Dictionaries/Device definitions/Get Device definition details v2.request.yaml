@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/v2/device_definitions/0fa1e6cd-7066-4881-92a5-6d747a1128f7"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 2000

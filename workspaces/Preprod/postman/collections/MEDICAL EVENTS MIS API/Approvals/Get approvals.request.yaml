@@ -1,0 +1,34 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/approvals"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: granted_to
+    value: 7c3da506-804d-4550-8993-bf17f9ee0402
+    disabled: true
+  - key: granted_resources
+    value: 4e1085a4-fa48-4926-8e55-2e86e49c4934
+    disabled: true
+  - key: granted_resource_type
+    value: diagnostic_report
+    disabled: true
+  - key: reason
+    value: 7c3da506-804d-4550-8993-bf17f9ee0401
+    disabled: true
+  - key: access_level
+    value: read
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+order: 7000

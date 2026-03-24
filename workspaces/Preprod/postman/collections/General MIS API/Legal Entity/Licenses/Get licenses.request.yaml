@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host}}/api/licenses"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: id
+    value: d290f1ee-6c54-4b01-90e6-d701748f0851
+    disabled: true
+  - key: license_number
+    value: fd12344344
+    disabled: true
+  - key: type
+    value: PHARMACY_DRUGS
+    disabled: true
+  - key: is_primary
+    value: "true"
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 3000

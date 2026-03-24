@@ -1,0 +1,249 @@
+$kind: http-request
+url: http://localhost:3000/diagnostic-report-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"diagnostic_report\": {\r
+
+    \        \"id\": \"{{diagnostic_report_id}}\",\r
+
+    \        \"status\": \"final\",\r
+
+    \        \"code\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"service\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"351ba946-f6a5-4630-8ec3-07739d142c47\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"category\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\":
+    \"eHealth/diagnostic_report_categories\",\r
+
+    \                        \"code\": \"laboratory_procedure\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"effective_period\": {\r
+
+    \            \"start\": \"2026-02-02T10:00:00Z\",\r
+
+    \            \"end\": \"2026-02-10T10:00:00Z\"\r
+
+    \        },\r
+
+    \        \"issued\": \"2026-02-10T10:00:00Z\",\r
+
+    \        \"conclusion\": \"At risk of osteoporotic fracture\",\r
+
+    \        \"recorded_by\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"primary_source\": true,\r
+
+    \        \"performer\": [\r
+
+    \            {\r
+
+    \                \"reference\": {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{user_id}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"managing_organization\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"legal_entity\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_legal_entity}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"division\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"division\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_division_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"results_interpreter\": {\r
+
+    \            \"reference\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const diagnosticReportId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"diagnostic_report_id\", diagnosticReportId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create diagnostic report sign content', resData)\r
+
+      \r
+
+      pm.test(`Diagnostic report content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('diagnostic_report_signed_content',
+      resData.signed_content);\r
+
+      });"
+    language: text/javascript
+order: 1000

@@ -1,0 +1,9 @@
+$kind: http-request
+name: S11.33 Get observation by id
+url: https://api-demo.ehealth.gov.ua/api/patients/87a71a7b-a5b9-4e74-acff-013c03809a39/observations/1ba65dd5-9c84-4111-a7c7-9f934d41b3fd
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 76000

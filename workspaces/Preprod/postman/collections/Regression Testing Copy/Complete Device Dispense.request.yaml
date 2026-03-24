@@ -1,0 +1,1128 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/device_dispenses/{{JobDevic\
+  eDispenseID}}/actions/complete"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: '{"signed_data": "{{complete_device_dispense_signed_content}}"}'
+scripts:
+  - type: beforeRequest
+    code: "// // Отримуємо ContentForSign із глобальних змінних\r
+
+      // const contentForSign =
+      pm.globals.get('device_json_completed_to_sign');\r
+
+      \r
+
+      // if (!contentForSign) {\r
+
+      //     console.error(\"Error: ContentForSign is not set in global
+      variables.\");\r
+
+      // } else {\r
+
+      //     // Функція для надсилання контенту на підпис\r
+
+      //     function sendDataToSign(contentForSign) {\r
+
+      //         const localServerUrl =
+      'http://localhost:3000/complete-device-dispense-signed-content';\r
+
+      \r
+
+      //         const requestData = {\r
+
+      //             method: 'POST',\r
+
+      //             url: localServerUrl,\r
+
+      //             header: {\r
+
+      //                 'Content-Type': 'application/json',\r
+
+      //             },\r
+
+      //             body: {\r
+
+      //                 mode: 'raw',\r
+
+      //                 raw: contentForSign // Використовуємо JSON-рядок із
+      глобальних змінних\r
+
+      //             }\r
+
+      //         };\r
+
+      \r
+
+      //         // Відправляємо запит на локальний сервер\r
+
+      //         pm.sendRequest(requestData, function (err, res) {\r
+
+      //             if (err) {\r
+
+      //                 console.error('Error sending request to local server:',
+      err);\r
+
+      //             } else {\r
+
+      //                 console.log('Response from local server:',
+      res.json());\r
+
+      //                 const responseBody = res.json();\r
+
+      \r
+
+      //                 pm.test(`Complete Device Dispense. Response status is
+      200 ${JSON.stringify(responseBody, null, 2)}`, function () {\r
+
+      //                     pm.expect(res.code).to.eql(200);\r
+
+      //                     pm.expect(responseBody).to.have.property('signed_c\
+      ontent');\r
+
+      \r
+
+      //                     // Зберігаємо підписаний контент у глобальні
+      змінні\r
+
+      //                     pm.globals.set('complete_device_dispense_signed_co\
+      ntent', responseBody.signed_content);\r
+
+      //                 });\r
+
+      //             }\r
+
+      //         });\r
+
+      //     }\r
+
+      \r
+
+      //     // Викликаємо функцію з отриманими даними\r
+
+      //     sendDataToSign(contentForSign);\r
+
+      // }\r
+
+      \r
+
+      \r
+
+      // === 0) БЕРЕМО ЗМІННУ З ПОПЕРЕДНЬОГО ЗАПИТУ ===\r
+
+      const contentForSign = pm.globals.get('device_json_completed_to_sign');\r
+
+      \r
+
+      \r
+
+      console.log(contentForSign)\r
+
+      \r
+
+      if (!contentForSign) {\r
+
+      \    console.error(\"Error: ContentForSign is not set in global
+      variables.\");\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      // === 1) ШУКАЄМО reimbursement_amount З ОРИГІНАЛЬНИМ .0 ===\r
+
+      let match =
+      contentForSign.match(/\"reimbursement_amount\"\\s*:\\s*([0-9]+\\.[0-9]+)/\
+      );\r
+
+      \r
+
+      if (match) {\r
+
+      \    pm.globals.set(\"reimbursement_amount_raw\", match[1]);\r
+
+      \    console.log(\"Saved reimbursement_amount_raw:\", match[1]);\r
+
+      } else {\r
+
+      \    console.log(\"reimbursement_amount not found\");\r
+
+      }\r
+
+      \r
+
+      // === 2) Парсимо JSON ІЗ ГЛОБАЛЬНОЇ ЗМІННОЇ ===\r
+
+      const resData = JSON.parse(contentForSign);\r
+
+      const val = pm.globals.get(\"reimbursement_amount_raw\");\r
+
+      \r
+
+      // === 3) ГЕНЕРУЄМО details З ОРИГІНАЛЬНИМ 400.0 ===\r
+
+      const details = resData.details.map(d => `{\r
+
+      \    \"device\": ${JSON.stringify(d.device)},\r
+
+      \    \"discount_amount\": ${d.discount_amount},\r
+
+      \    \"program_device\": ${JSON.stringify(d.program_device)},\r
+
+      \    \"quantity\": ${JSON.stringify(d.quantity)},\r
+
+      \    \"reimbursement_amount\": ${val ? val : d.reimbursement_amount},\r
+
+      \    \"sell_price\": ${d.sell_price}\r
+
+      }`).join(\",\");\r
+
+      \r
+
+      // === 4) Коректна дата ===\r
+
+      const nowIsoString = new Date().toISOString().replace(/\\.\\d{3}Z$/,
+      '.000Z');\r
+
+      \r
+
+      // === 5) ФОРМУЄМО ФІНАЛЬНИЙ JSON ЯК STRING ===\r
+
+      const jsonCompleted = `{\r
+
+      \    \"based_on\": ${JSON.stringify(resData.based_on)},\r
+
+      \    \"details\": [${details}],\r
+
+      \    \"encounter\": ${JSON.stringify(resData.encounter)},\r
+
+      \    \"explanatory_letter\":
+      ${JSON.stringify(resData.explanatory_letter)},\r
+
+      \    \"external_performer\":
+      ${JSON.stringify(resData.external_performer)},\r
+
+      \    \"external_provider\":
+      ${JSON.stringify(resData.external_provider)},\r
+
+      \    \"id\": \"${resData.id}\",\r
+
+      \    \"inserted_at\": \"${resData.inserted_at}\",\r
+
+      \    \"location\": ${JSON.stringify(resData.location)},\r
+
+      \    \"note\": ${JSON.stringify(resData.note)},\r
+
+      \    \"part_of\": ${JSON.stringify(resData.part_of)},\r
+
+      \    \"payment_amount\": 2,\r
+
+      \    \"payment_id\": ${JSON.stringify(resData.payment_id)},\r
+
+      \    \"performer\": ${JSON.stringify(resData.performer)},\r
+
+      \    \"performer_legal_entity\":
+      ${JSON.stringify(resData.performer_legal_entity)},\r
+
+      \    \"primary_source\": ${resData.primary_source},\r
+
+      \    \"program\": ${JSON.stringify(resData.program)},\r
+
+      \    \"report_origin\": ${JSON.stringify(resData.report_origin)},\r
+
+      \    \"signed_content_links\":
+      ${JSON.stringify(resData.signed_content_links)},\r
+
+      \    \"status\": \"completed\",\r
+
+      \    \"status_reason\": ${JSON.stringify(resData.status_reason)},\r
+
+      \    \"subject\": ${JSON.stringify(resData.subject)},\r
+
+      \    \"supporting_info\": ${JSON.stringify(resData.supporting_info)},\r
+
+      \    \"updated_at\": \"${resData.updated_at}\",\r
+
+      \    \"when_handed_over\": \"${nowIsoString}\"\r
+
+      }`;\r
+
+      \r
+
+      console.log(\"FINAL JSON:\", jsonCompleted);\r
+
+      \r
+
+      // === 6) Відправка на локальний сервер ===\r
+
+      function sendDataToSign(content) {\r
+
+      \    const localServerUrl =
+      'http://localhost:3000/complete-device-dispense-signed-content';\r
+
+      \r
+
+      \    const requestData = {\r
+
+      \        method: 'POST',\r
+
+      \        url: localServerUrl,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: content\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    pm.sendRequest(requestData, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Error sending request:', err);\r
+
+      \        } else {\r
+
+      \            const responseBody = res.json();\r
+
+      \            console.log('Response:', responseBody);\r
+
+      \r
+
+      \            pm.test(`Response status is 200`, function () {\r
+
+      \                pm.expect(res.code).to.eql(200);\r
+
+      \                pm.expect(responseBody).to.have.property('signed_content\
+      ');\r
+
+      \            });\r
+
+      \r
+
+      \            pm.globals.set('complete_device_dispense_signed_content',
+      responseBody.signed_content);\r
+
+      \        }\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      sendDataToSign(jsonCompleted);\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "// // Helper function: Capitalize and format path segment to Title Case\r
+
+      // function formatEntityTitle(pathSegment) {\r
+
+      //     if (!pathSegment) return 'Job';\r
+
+      //     return pathSegment\r
+
+      //         .split('_')\r
+
+      //         .map(part => part.charAt(0).toUpperCase() + part.slice(1))\r
+
+      //         .join(' ');\r
+
+      // }\r
+
+      \r
+
+      // // Get dynamic entity name from URL path (e.g., 'encounters',
+      'device_dispenses')\r
+
+      // const resourceType = pm.request.url.path[3]; // Dynamically detects
+      resource\r
+
+      // const resourceLabel = formatEntityTitle(resourceType);\r
+
+      \r
+
+      // // 🔧 Display JSON in Visualizer\r
+
+      // function displayResponse(title, data) {\r
+
+      //     const html = `\r
+
+      //         <h1>${title}</h1>\r
+
+      //         <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      //     pm.visualizer.set(html);\r
+
+      // }\r
+
+      \r
+
+      // // Parse initial response\r
+
+      // const resBody = pm.response.text();\r
+
+      // const resData = JSON.parse(resBody);\r
+
+      // console.log(pm.request.url.path[3])\r
+
+      \r
+
+      // // ⛔ Show error if initial response has it\r
+
+      // if (resData && resData.error) {\r
+
+      //     displayResponse(`${resourceLabel} Response Error Details`,
+      resData.error);\r
+
+      // }\r
+
+      \r
+
+      // // Extract Job ID from href\r
+
+      // const href = resData.data.links[0].href;\r
+
+      // const jobId = href.split('/jobs/')[1];\r
+
+      // console.log(\"Extracted jobId:\", jobId);\r
+
+      \r
+
+      // // Init retry counter\r
+
+      // pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // // 🔄 Check job status recursively\r
+
+      // function checkJobStatus(jobId) {\r
+
+      //     const url = `${pm.globals.get('host')}/api/jobs/${jobId}`;\r
+
+      //     const maxRetries = 3;\r
+
+      \r
+
+      //     pm.sendRequest({\r
+
+      //         method: 'GET',\r
+
+      //         url: url,\r
+
+      //         header: {\r
+
+      //             'Content-Type': 'application/json',\r
+
+      //             'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      //             'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      //             'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      //         }\r
+
+      //     }, function (err, res) {\r
+
+      //         pm.test(`${resourceLabel} job check response is 200 or 303`,
+      function () {\r
+
+      //             pm.expect([200, 303]).to.include(res.code);\r
+
+      //         });\r
+
+      \r
+
+      //         if (err) {\r
+
+      //             displayResponse(`${resourceLabel} Job Request Error`, {
+      error: err.message });\r
+
+      //             return;\r
+
+      //         }\r
+
+      \r
+
+      //         const responseBody = res.json();\r
+
+      //         const jobStatus = responseBody.data.status;\r
+
+      //         console.log(`${resourceLabel} Job Status:`, jobStatus);\r
+
+      \r
+
+      //         if (jobStatus === 'processed') {\r
+
+      //             // ✅ Success\r
+
+      //             pm.test(`${resourceLabel} Job Processed (303 expected)`,
+      function () {\r
+
+      //                 pm.expect(res.code).to.eql(303);\r
+
+      //             });\r
+
+      \r
+
+      //             // Set global vars for result links (only the ID part)\r
+
+      //             const links = responseBody.data.links.reduce((acc, link) =>
+      {\r
+
+      //                 const parts = link.href.split('/');\r
+
+      //                 const id = parts[parts.length - 1]; // extract only the
+      last part (ID)\r
+
+      //                 acc[link.entity] = acc[link.entity] || [];\r
+
+      //                 acc[link.entity].push(id);\r
+
+      //                 return acc;\r
+
+      //             }, {});\r
+
+      \r
+
+      //             Object.entries(links).forEach(([entity, ids]) => {\r
+
+      //                 ids.forEach((id, index) => {\r
+
+      //                     const capitalizedEntity =
+      entity.charAt(0).toUpperCase() + entity.slice(1).replace('_', '');\r
+
+      //                     const globalName = ids.length === 1\r
+
+      //                         ? `job${capitalizedEntity}ID`\r
+
+      //                         : `job${capitalizedEntity}ID_${index + 1}`;\r
+
+      //                     pm.globals.set(globalName, id);\r
+
+      //                 });\r
+
+      //             });\r
+
+      \r
+
+      //             displayResponse(`${resourceLabel} Job Response Details`,
+      responseBody.data);\r
+
+      \r
+
+      //         } else {\r
+
+      //             // 🔁 Retry if not yet processed\r
+
+      //             let retryCount = parseInt(pm.environment.get('retryCount'))
+      || 0;\r
+
+      \r
+
+      //             if (retryCount < maxRetries) {\r
+
+      //                 retryCount++;\r
+
+      //                 pm.environment.set('retryCount', retryCount);\r
+
+      //                 console.log(`Retrying ${resourceLabel} job... Attempt
+      ${retryCount}`);\r
+
+      //                 setTimeout(() => checkJobStatus(jobId), 1000);\r
+
+      \r
+
+      //                 displayResponse(`${resourceLabel} Job Status Pending`,
+      responseBody.data);\r
+
+      //             } else {\r
+
+      //                 console.warn(`❌ Max retries reached for
+      ${resourceLabel} job.`);\r
+
+      //                 const finalTitle = responseBody.data.error\r
+
+      //                     ? `${resourceLabel} Job Error Details`\r
+
+      //                     : `Final ${resourceLabel} Job Status Check`;\r
+
+      //                 displayResponse(finalTitle, responseBody.data);\r
+
+      //             }\r
+
+      //         }\r
+
+      //     });\r
+
+      // }\r
+
+      \r
+
+      // // ▶️ Trigger job check\r
+
+      // checkJobStatus(jobId);\r
+
+      \r
+
+      /* =========================\r
+
+      \   Helpers: Restore / Flow guard\r
+
+      ========================= */\r
+
+      \r
+
+      function ensureFlowActive() {\r
+
+      \  return pm.environment.get(\"device_dispense_flow_active\") ===
+      \"true\"\r
+
+      \      && pm.environment.get(\"device_dispense_switched\") === \"true\";\r
+
+      }\r
+
+      \r
+
+      function restoreUserAndStop(reason) {\r
+
+      \  const KEYS = [\"access_token\", \"user_division_id\", \"user_id\"];\r
+
+      \r
+
+      \  KEYS.forEach((k) => {\r
+
+      \    const original = pm.environment.get(`original_${k}`);\r
+
+      \    if (original !== undefined) pm.environment.set(k, original);\r
+
+      \  });\r
+
+      \r
+
+      \  KEYS.forEach((k) => pm.environment.unset(`original_${k}`));\r
+
+      \r
+
+      \  pm.environment.unset(\"device_dispense_switched\");\r
+
+      \  pm.environment.unset(\"device_dispense_flow_active\");\r
+
+      \r
+
+      \  console.log(\"♻ Restored original user. Reason:\", reason ||
+      \"unknown\");\r
+
+      \  pm.execution.setNextRequest(null);\r
+
+      }\r
+
+      \r
+
+      /* =========================\r
+
+      \   Your code (enhanced with safe-guards + restore on fail)\r
+
+      ========================= */\r
+
+      \r
+
+      // Helper function: Capitalize and format path segment to Title Case\r
+
+      function formatEntityTitle(pathSegment) {\r
+
+      \  if (!pathSegment) return \"Job\";\r
+
+      \  return pathSegment\r
+
+      \    .split(\"_\")\r
+
+      \    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))\r
+
+      \    .join(\" \");\r
+
+      }\r
+
+      \r
+
+      // Get dynamic entity name from URL path (e.g., 'encounters',
+      'device_dispenses')\r
+
+      const resourceType = pm.request.url.path[3]; // Dynamically detects
+      resource\r
+
+      const resourceLabel = formatEntityTitle(resourceType);\r
+
+      \r
+
+      // 🔧 Display JSON in Visualizer\r
+
+      function displayResponse(title, data) {\r
+
+      \  const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \  pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      console.log(resourceType);\r
+
+      \r
+
+      /* ---------- Guard: expected PATCH response status ---------- */\r
+
+      /*\r
+
+      \  Тут важливо: у тебе PATCH повертає job link, тобто має бути JSON
+      body.\r
+
+      \  Найчастіше це 200/201/202. Якщо у тебе точно 200 — постав тільки 200.\r
+
+      */\r
+
+      const expectedInitialCodes = [200, 201, 202];\r
+
+      \r
+
+      if (ensureFlowActive() &&
+      !expectedInitialCodes.includes(pm.response.code)) {\r
+
+      \  // покажемо body, щоб було видно причину\r
+
+      \  displayResponse(`${resourceLabel} Unexpected response code`, {\r
+
+      \    status: pm.response.code,\r
+
+      \    body: pm.response.text(),\r
+
+      \  });\r
+
+      \r
+
+      \  restoreUserAndStop(`${resourceLabel} initial request failed with
+      ${pm.response.code}`);\r
+
+      \r
+
+      \  pm.test(`${resourceLabel} initial response must be
+      ${expectedInitialCodes.join(\" / \")}`, function () {\r
+
+      \    pm.expect.fail(`${resourceLabel} initial request failed with
+      ${pm.response.code}`);\r
+
+      \  });\r
+
+      \r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      /* ---------- Parse initial response safely ---------- */\r
+
+      let resData;\r
+
+      try {\r
+
+      \  const resBody = pm.response.text();\r
+
+      \  resData = JSON.parse(resBody);\r
+
+      } catch (e) {\r
+
+      \  displayResponse(`${resourceLabel} JSON parse error`, {\r
+
+      \    error: e.message,\r
+
+      \    raw: pm.response.text(),\r
+
+      \  });\r
+
+      \r
+
+      \  if (ensureFlowActive()) restoreUserAndStop(`${resourceLabel} response
+      is not valid JSON`);\r
+
+      \r
+
+      \  pm.test(`${resourceLabel} response must be valid JSON`, function () {\r
+
+      \    pm.expect.fail(e.message);\r
+
+      \  });\r
+
+      \r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      // ⛔ Show error if initial response has it\r
+
+      if (resData && resData.error) {\r
+
+      \  displayResponse(`${resourceLabel} Response Error Details`,
+      resData.error);\r
+
+      \r
+
+      \  if (ensureFlowActive()) {\r
+
+      \    restoreUserAndStop(`${resourceLabel} response contains error`);\r
+
+      \    pm.test(`${resourceLabel} must not return error`, function () {\r
+
+      \      pm.expect.fail(\"Response contains error\");\r
+
+      \    });\r
+
+      \    return;\r
+
+      \  }\r
+
+      }\r
+
+      \r
+
+      /* ---------- Extract Job ID from href safely ---------- */\r
+
+      let href, jobId;\r
+
+      try {\r
+
+      \  href = resData?.data?.links?.[0]?.href;\r
+
+      \  if (!href || !href.includes(\"/jobs/\")) throw new Error(\"No /jobs/
+      link in response\");\r
+
+      \  jobId = href.split(\"/jobs/\")[1];\r
+
+      \  if (!jobId) throw new Error(\"Job ID extraction failed\");\r
+
+      \  console.log(\"Extracted jobId:\", jobId);\r
+
+      } catch (e) {\r
+
+      \  displayResponse(`${resourceLabel} Missing job link`, {\r
+
+      \    error: e.message,\r
+
+      \    data: resData,\r
+
+      \  });\r
+
+      \r
+
+      \  if (ensureFlowActive()) restoreUserAndStop(`${resourceLabel}: cannot
+      extract job id`);\r
+
+      \r
+
+      \  pm.test(`${resourceLabel} must return job link`, function () {\r
+
+      \    pm.expect.fail(e.message);\r
+
+      \  });\r
+
+      \r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      // Init retry counter\r
+
+      pm.environment.set(\"retryCount\", 0);\r
+
+      \r
+
+      // 🔄 Check job status recursively\r
+
+      function checkJobStatus(jobId) {\r
+
+      \  const url = `${pm.globals.get(\"host\")}/api/jobs/${jobId}`;\r
+
+      \  const maxRetries = 3;\r
+
+      \r
+
+      \  pm.sendRequest(\r
+
+      \    {\r
+
+      \      method: \"GET\",\r
+
+      \      url: url,\r
+
+      \      header: {\r
+
+      \        \"Content-Type\": \"application/json\",\r
+
+      \        Authorization: `Bearer
+      ${pm.environment.get(\"access_token\")}`,\r
+
+      \        \"api-key\": `${pm.environment.get(\"mis_client_secret\")}`,\r
+
+      \        \"X-Custom-PSK\": `${pm.globals.get(\"x-custom-psk\")}`,\r
+
+      \      },\r
+
+      \    },\r
+
+      \    function (err, res) {\r
+
+      \      pm.test(`${resourceLabel} job check response is 200 or 303`,
+      function () {\r
+
+      \        pm.expect([200, 303]).to.include(res.code);\r
+
+      \      });\r
+
+      \r
+
+      \      if (err) {\r
+
+      \        displayResponse(`${resourceLabel} Job Request Error`, { error:
+      err.message });\r
+
+      \r
+
+      \        if (ensureFlowActive()) restoreUserAndStop(`${resourceLabel} job
+      request error: ${err.message}`);\r
+
+      \r
+
+      \        pm.test(`${resourceLabel} job request must not error`, function
+      () {\r
+
+      \          pm.expect.fail(err.message);\r
+
+      \        });\r
+
+      \r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      let responseBody;\r
+
+      \      try {\r
+
+      \        responseBody = res.json();\r
+
+      \      } catch (e) {\r
+
+      \        displayResponse(`${resourceLabel} Job JSON parse error`, {\r
+
+      \          error: e.message,\r
+
+      \          raw: res.text(),\r
+
+      \        });\r
+
+      \r
+
+      \        if (ensureFlowActive()) restoreUserAndStop(`${resourceLabel} job
+      response is not valid JSON`);\r
+
+      \r
+
+      \        pm.test(`${resourceLabel} job response must be valid JSON`,
+      function () {\r
+
+      \          pm.expect.fail(e.message);\r
+
+      \        });\r
+
+      \r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      const jobStatus = responseBody?.data?.status;\r
+
+      \      console.log(`${resourceLabel} Job Status:`, jobStatus);\r
+
+      \r
+
+      \      if (jobStatus === \"processed\") {\r
+
+      \        // ✅ Success\r
+
+      \        pm.test(`${resourceLabel} Job Processed (303 expected)`, function
+      () {\r
+
+      \          pm.expect(res.code).to.eql(303);\r
+
+      \        });\r
+
+      \r
+
+      \        // Set global vars for result links (only the ID part)\r
+
+      \        const links = (responseBody?.data?.links || []).reduce((acc,
+      link) => {\r
+
+      \          const parts = String(link.href || \"\").split(\"/\");\r
+
+      \          const id = parts[parts.length - 1]; // last part (ID)\r
+
+      \          if (!link.entity || !id) return acc;\r
+
+      \r
+
+      \          acc[link.entity] = acc[link.entity] || [];\r
+
+      \          acc[link.entity].push(id);\r
+
+      \          return acc;\r
+
+      \        }, {});\r
+
+      \r
+
+      \        Object.entries(links).forEach(([entity, ids]) => {\r
+
+      \          ids.forEach((id, index) => {\r
+
+      \            const capitalizedEntity =\r
+
+      \              entity.charAt(0).toUpperCase() +
+      entity.slice(1).replace(\"_\", \"\");\r
+
+      \            const globalName =\r
+
+      \              ids.length === 1 ? `job${capitalizedEntity}ID` :
+      `job${capitalizedEntity}ID_${index + 1}`;\r
+
+      \            pm.globals.set(globalName, id);\r
+
+      \          });\r
+
+      \        });\r
+
+      \r
+
+      \        displayResponse(`${resourceLabel} Job Response Details`,
+      responseBody.data);\r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      // 🔁 Retry if not yet processed\r
+
+      \      let retryCount = parseInt(pm.environment.get(\"retryCount\"), 10)
+      || 0;\r
+
+      \r
+
+      \      if (retryCount < maxRetries) {\r
+
+      \        retryCount++;\r
+
+      \        pm.environment.set(\"retryCount\", retryCount);\r
+
+      \        console.log(`Retrying ${resourceLabel} job... Attempt
+      ${retryCount}/${maxRetries}`);\r
+
+      \r
+
+      \        displayResponse(`${resourceLabel} Job Status Pending`,
+      responseBody.data);\r
+
+      \        setTimeout(() => checkJobStatus(jobId), 1000);\r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      // ❌ Max retries reached -> restore + stop\r
+
+      \      console.warn(`❌ Max retries reached for ${resourceLabel} job.`);\r
+
+      \      const finalTitle = responseBody?.data?.error\r
+
+      \        ? `${resourceLabel} Job Error Details`\r
+
+      \        : `Final ${resourceLabel} Job Status Check`;\r
+
+      \r
+
+      \      displayResponse(finalTitle, responseBody?.data || responseBody);\r
+
+      \r
+
+      \      if (ensureFlowActive()) {\r
+
+      \        restoreUserAndStop(`${resourceLabel} job not processed after
+      ${maxRetries} retries (status: ${jobStatus || \"unknown\"})`);\r
+
+      \      }\r
+
+      \r
+
+      \      pm.test(`${resourceLabel} job must reach processed`, function ()
+      {\r
+
+      \        pm.expect.fail(`Job not processed after ${maxRetries} retries
+      (status: ${jobStatus || \"unknown\"})`);\r
+
+      \      });\r
+
+      \    }\r
+
+      \  );\r
+
+      }\r
+
+      \r
+
+      // ▶️ Trigger job check\r
+
+      checkJobStatus(jobId);\r\n"
+    language: text/javascript
+order: 54000

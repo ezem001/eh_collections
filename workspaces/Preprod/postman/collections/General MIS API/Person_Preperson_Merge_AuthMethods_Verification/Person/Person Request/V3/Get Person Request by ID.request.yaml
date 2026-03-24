@@ -1,0 +1,146 @@
+$kind: http-request
+url: "{{host}}/api/v3/person_requests/{{Person_req_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: |
+      /******** Minimal Postman Visualizer log (request+response) + Copy ********/
+
+      // config
+      const MASK = true;
+      const SENSITIVE = new Set(['authorization', 'api-key', 'x-custom-psk', 'cookie']);
+      const DROP = new Set(['accept','accept-encoding','connection','content-type','postman-token','user-agent','content-length','host']);
+
+      const jparse = (t) => { try { return JSON.parse(t); } catch { return null; } };
+      const esc = (s) => String(s ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+
+      const headersObj = (h) => {
+        if (!h) return {};
+        if (typeof h?.toObject === 'function') return h.toObject();
+        if (Array.isArray(h)) return h.reduce((a,x)=>{ const k=(x?.key||x?.name||'')+''; if(k) a[k]=String(x?.value??''); return a; },{});
+        if (typeof h === 'object') return Object.fromEntries(Object.entries(h).map(([k,v])=>[k,String(v)]));
+        return {};
+      };
+
+      const mask = (k,v) => {
+        if (!MASK) return v;
+        const kk = String(k||'').toLowerCase().trim();
+        if (!SENSITIVE.has(kk)) return v;
+        if (kk === 'authorization') return 'Bearer ***';
+        const s = String(v ?? '');
+        return s ? `***…${s.slice(-6)}` : '***';
+      };
+
+      const fmtHeaders = (h) => {
+        const o = headersObj(h);
+        return Object.keys(o)
+          .filter(k => k && !DROP.has(String(k).toLowerCase().trim()))
+          .sort((a,b)=>a.toLowerCase().localeCompare(b.toLowerCase()))
+          .map(k => `${k}: ${mask(k,o[k])}`)
+          .join('\n');
+      };
+
+      const hostOf = (u) => {
+        if (!u) return '';
+        if (typeof u === 'string') { try { return new URL(u).host; } catch { return ''; } }
+        if (u.host) return Array.isArray(u.host) ? u.host.join('.') : String(u.host);
+        try { return new URL(u.toString()).host; } catch { return ''; }
+      };
+
+      const pathQ = (u) => {
+        if (!u) return '/';
+        const asStr = (x) => (x && typeof x.toString === 'function') ? x.toString() : '';
+        const host = (typeof u === 'object' && u?.host) ? (Array.isArray(u.host) ? u.host.join('.') : String(u.host||'')) : '';
+
+        // best effort: parse toString (keeps query)
+        try {
+          const s = typeof u === 'string' ? u : asStr(u);
+          if (s) {
+            try { const U = new URL(s); return U.pathname + (U.search || ''); } catch {}
+            if (host) { const U2 = new URL(`https://${host}${s.startsWith('/')?'':'/'}${s}`); return U2.pathname + (U2.search || ''); }
+          }
+        } catch {}
+
+        // fallback: path + query (array or object)
+        const p = Array.isArray(u.path) ? '/' + u.path.join('/') : (u.pathname || '/');
+        const q = u.query;
+        if (Array.isArray(q) && q.length) {
+          const qs = q.filter(x=>x?.key).map(x=>`${encodeURIComponent(x.key)}=${encodeURIComponent(x.value??'')}`).join('&');
+          return qs ? `${p}?${qs}` : p;
+        }
+        if (q && typeof q === 'object') {
+          const qs = Object.entries(q).filter(([k])=>k).map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v??'')}`).join('&');
+          return qs ? `${p}?${qs}` : p;
+        }
+        return p || '/';
+      };
+
+      const reqBody = (r) => (r?.body?.mode === 'raw' ? (r.body.raw || '') : '');
+
+      const maybeJson = (t) => {
+        if (!t) return '';
+        const j = jparse(t);
+        return j ? JSON.stringify(j, null, 2) : t;
+      };
+
+      const respSlice = (t) => {
+        const j = jparse(t);
+        if (!j) return t;
+        const out = {};
+        if ('data' in j) out.data = j.data;
+        if ('error' in j) out.error = j.error;
+        if ('meta' in j) out.meta = j.meta;
+        return JSON.stringify(out, null, 2);
+      };
+
+      const buildLog = () => {
+        const title = pm.info.requestName || 'Main request';
+        const u = pm.request.url;
+        const req = [
+          `${pm.request.method.toUpperCase()} ${pathQ(u) || '/'} HTTP/1.1`,
+          hostOf(u) ? `Host: ${hostOf(u)}` : null,
+          fmtHeaders(pm.request.headers) || null,
+          reqBody(pm.request) ? `\n${maybeJson(reqBody(pm.request))}` : null
+        ].filter(Boolean).join('\n');
+
+        const res = respSlice(pm.response.text());
+
+        return `${title}\n\n[Request]\n\n${req}\n\n[Response]\n\n${res}\n`;
+      };
+
+      // render
+      (() => {
+        const text = buildLog();
+        const html = `
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+        <button id="copyBtn">Copy</button>
+        <span id="m" style="font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-size:12px;"></span>
+      </div>
+      <textarea id="t" style="position:absolute;left:-9999px;top:-9999px;">${esc(text)}</textarea>
+      <pre style="margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.35;">${esc(text)}</pre>
+      <script>
+      (() => {
+        const btn=document.getElementById('copyBtn'), m=document.getElementById('m'), t=document.getElementById('t');
+        const msg=(x)=>{m.textContent=x||''; if(x) setTimeout(()=>m.textContent='',1200);};
+        btn.addEventListener('click', async () => {
+          try{
+            const v=t.value||'';
+            if(navigator.clipboard?.writeText){ await navigator.clipboard.writeText(v); return msg('Copied ✅'); }
+            t.focus(); t.select();
+            msg(document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌');
+          }catch(e){
+            try{ t.focus(); t.select(); msg(document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌'); }
+            catch{ msg('Copy failed ❌'); }
+          }
+        });
+      })();
+      </script>`;
+        pm.visualizer.set(html);
+      })();
+    language: text/javascript
+order: 8000

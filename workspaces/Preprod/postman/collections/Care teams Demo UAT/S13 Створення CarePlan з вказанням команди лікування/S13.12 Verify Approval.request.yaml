@@ -1,0 +1,54 @@
+$kind: http-request
+name: S13.12 Verify Approval
+url: https://api-demo.ehealth.gov.ua/api/patients/87a71a7b-a5b9-4e74-acff-013c03809a39/approvals/01dc8511-1598-4c61-a724-a32f2852ff69
+method: PATCH
+headers:
+  Authorization: ""
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+      "resources": [
+        {
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "care_plan"
+                }
+              ],
+              "text": ""
+            },
+            "value": "0ea17f7a-cd03-427c-a4a6-4528a9b10624"
+          }
+        }
+      ],
+      "granted_to": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "employee"
+              }
+            ]
+          },
+          "value": "325a8751-fe27-4c31-a0e5-e0f3dc0da5a8"
+        }
+      },
+      "access_level": "write"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 33000

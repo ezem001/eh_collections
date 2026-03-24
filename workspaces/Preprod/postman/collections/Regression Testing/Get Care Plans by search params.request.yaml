@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/care_plans?encounter_id={{e\
+  ncounter_extracted_id}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: period_date
+    value: 2018-08-02
+    disabled: true
+  - key: based_on
+    value: 7c3da506-804d-4550-8993-bf17f9ee0401
+    disabled: true
+  - key: part_of
+    value: 7c3da506-804d-4550-8993-bf17f9ee0401
+    disabled: true
+  - key: managing_organization_id
+    value: 80a9e15b-b71b-4caf-8f2e-ff247e8a5677
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: encounter_id
+    value: "{{encounter_extracted_id}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Care Plans by search params - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 22000

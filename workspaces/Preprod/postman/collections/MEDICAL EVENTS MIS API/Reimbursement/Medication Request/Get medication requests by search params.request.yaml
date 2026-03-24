@@ -1,0 +1,49 @@
+$kind: http-request
+url: "{{host}}/api/persons/{{patient_id_from_episode}}/medication_requests?lega\
+  l_entity_id={{user_legal_entity}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: legal_entity_id
+    value: "{{user_legal_entity}}"
+  - key: employee_id
+    value: 92bb524b-3994-43b4-9dd6-43c675a16ec3
+    disabled: true
+  - key: status
+    value: ACTIVE
+    disabled: true
+  - key: request_number
+    value: 0000-E9KX-H55A-TM68
+    disabled: true
+  - key: created_from
+    value: 2022-07-01
+    disabled: true
+  - key: created_to
+    value: 2022-08-31
+    disabled: true
+  - key: medication_id
+    value: fa6e0403-58e8-4173-b0e4-2135ad442459
+    disabled: true
+  - key: intent
+    value: order
+    disabled: true
+  - key: care_plan_id
+    value: 85750cc7-969b-4faf-a5de-1e5650f95f6b
+    disabled: true
+  - key: encounter_id
+    value: e6f6cde0-80fe-48e7-b4a0-cdf24aeb85db
+    disabled: true
+  - key: episode_id
+    value: 1e8f7a7f-68df-42ed-982c-4065f40400fa
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 14000

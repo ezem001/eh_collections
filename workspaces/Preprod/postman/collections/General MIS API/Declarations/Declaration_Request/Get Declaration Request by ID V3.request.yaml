@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/v3/declaration_requests/f7bbda01-daac-47f0-ac42-a6a41bf325af"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 5000

@@ -1,0 +1,34 @@
+$kind: http-request
+url: "{{host}}/api/healthcare_services?division_id=844ba08a-f670-4242-8cea-d859\
+  104fb6ea"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: speciality_type
+    value: ONCOLOGY
+    disabled: true
+  - key: providing_condition
+    value: INPATIENT
+    disabled: true
+  - key: category
+    value: MSP
+    disabled: true
+  - key: type
+    value: SALE
+    disabled: true
+  - key: status
+    value: ACTIVE
+    disabled: true
+  - key: page
+    value: ""
+    disabled: true
+  - key: page_size
+    value: "1000"
+    disabled: true
+  - key: division_id
+    value: 844ba08a-f670-4242-8cea-d859104fb6ea
+order: 6000

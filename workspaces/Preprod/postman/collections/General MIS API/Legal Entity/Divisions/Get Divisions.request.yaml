@@ -1,0 +1,691 @@
+$kind: http-request
+url: "{{host}}/api/divisions?ids=d290f1ee-6c54-4b01-90e6-d701748f0851&name=%D0%\
+  91%D0%BE%D1%80%D0%B8%D1%81%D0%BF%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B5%20\
+  %D0%B2%D1%96%D0%B4%D0%B4%D1%96%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F%20%D0%BA%D0%BB%D\
+  1%96%D0%BD%D1%96%D0%BA%D0%B8&legal_entity_id=d8b5f374-0f3c-46e6-baf1-21d97b4c\
+  9ff5&type=CLINIC&status=ACTIVE&page=2&page_size=50"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  ids: d290f1ee-6c54-4b01-90e6-d701748f0851
+  name: "%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BF%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA\
+    %D0%B5%20%D0%B2%D1%96%D0%B4%D0%B4%D1%96%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F%20%D0\
+    %BA%D0%BB%D1%96%D0%BD%D1%96%D0%BA%D0%B8"
+  legal_entity_id: d8b5f374-0f3c-46e6-baf1-21d97b4c9ff5
+  type: CLINIC
+  status: ACTIVE
+  page: "2"
+  page_size: "50"
+body:
+  type: json
+  content: "{\r
+
+    \    \"data\": [\r
+
+    \        {\r
+
+    \            \"addresses\": [\r
+
+    \                {\r
+
+    \                    \"apartment\": null,\r
+
+    \                    \"area\": \"ХАРКІВСЬКА\",\r
+
+    \                    \"building\": \"15\",\r
+
+    \                    \"country\": \"UA\",\r
+
+    \                    \"region\": \"ЧУГУЇВСЬКИЙ\",\r
+
+    \                    \"settlement\": \"ВЕЛИКА БАБКА\",\r
+
+    \                    \"settlement_id\":
+    \"7a438190-5b6f-4341-b25d-0b19f46c320f\",\r
+
+    \                    \"settlement_type\": \"VILLAGE\",\r
+
+    \                    \"street\": \"Ніжинська\",\r
+
+    \                    \"street_type\": \"STREET\",\r
+
+    \                    \"type\": \"RESIDENCE\",\r
+
+    \                    \"zip\": null\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"dls_id\": null,\r
+
+    \            \"dls_verified\": null,\r
+
+    \            \"email\": \"vyacheslav.syrskyy@ehealth.gov.ua\",\r
+
+    \            \"external_id\": null,\r
+
+    \            \"id\": \"f40ca1ea-e169-4db5-92ec-91d6269f3795\",\r
+
+    \            \"legal_entity_id\":
+    \"0dccb76f-3ed0-40f4-8f73-e95e2f91ea29\",\r
+
+    \            \"location\": {\r
+
+    \                \"latitude\": 50.447694,\r
+
+    \                \"longitude\": 30.540239\r
+
+    \            },\r
+
+    \            \"mountain_group\": false,\r
+
+    \            \"name\": \"Відділення МК\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"number\": \"+380443263534\",\r
+
+    \                    \"type\": \"MOBILE\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"status\": \"ACTIVE\",\r
+
+    \            \"type\": \"LICENSED_UNIT\",\r
+
+    \            \"working_hours\": {\r
+
+    \                \"fri\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"mon\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"sat\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"sun\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"thu\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"tue\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"wed\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"addresses\": [\r
+
+    \                {\r
+
+    \                    \"apartment\": \"23\",\r
+
+    \                    \"area\": \"ХАРКІВСЬКА\",\r
+
+    \                    \"building\": \"15\",\r
+
+    \                    \"country\": \"UA\",\r
+
+    \                    \"region\": null,\r
+
+    \                    \"settlement\": \"ЧУГУЇВ\",\r
+
+    \                    \"settlement_id\":
+    \"fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494\",\r
+
+    \                    \"settlement_type\": \"CITY\",\r
+
+    \                    \"street\": \"вул. Ніжинська\",\r
+
+    \                    \"street_type\": \"STREET\",\r
+
+    \                    \"type\": \"RESIDENCE\",\r
+
+    \                    \"zip\": \"02090\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"dls_id\": null,\r
+
+    \            \"dls_verified\": null,\r
+
+    \            \"email\": \"vyacheslav.syrskyy@ehealth.gov.ua\",\r
+
+    \            \"external_id\": \"3213213\",\r
+
+    \            \"id\": \"747cf1e8-58be-46eb-8987-7d4ffd392958\",\r
+
+    \            \"legal_entity_id\":
+    \"0dccb76f-3ed0-40f4-8f73-e95e2f91ea29\",\r
+
+    \            \"location\": {\r
+
+    \                \"latitude\": 50.447694,\r
+
+    \                \"longitude\": 30.540239\r
+
+    \            },\r
+
+    \            \"mountain_group\": false,\r
+
+    \            \"name\": \"Відділення МК\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"number\": \"+380443263534\",\r
+
+    \                    \"type\": \"MOBILE\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"status\": \"ACTIVE\",\r
+
+    \            \"type\": \"LICENSED_UNIT\",\r
+
+    \            \"working_hours\": {\r
+
+    \                \"fri\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"mon\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ],\r
+
+    \                    [\r
+
+    \                        \"14.00\",\r
+
+    \                        \"18.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"thu\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"tue\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"wed\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"12.00\"\r
+
+    \                    ]\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"addresses\": [\r
+
+    \                {\r
+
+    \                    \"apartment\": \"23\",\r
+
+    \                    \"area\": \"ХАРКІВСЬКА\",\r
+
+    \                    \"building\": \"15\",\r
+
+    \                    \"country\": \"UA\",\r
+
+    \                    \"region\": \"ЧУГУЇВСЬКИЙ\",\r
+
+    \                    \"settlement\": \"ВЕЛИКА БАБКА\",\r
+
+    \                    \"settlement_id\":
+    \"7a438190-5b6f-4341-b25d-0b19f46c320f\",\r
+
+    \                    \"settlement_type\": \"VILLAGE\",\r
+
+    \                    \"street\": \"вул. Ніжинська\",\r
+
+    \                    \"street_type\": \"STREET\",\r
+
+    \                    \"type\": \"RESIDENCE\",\r
+
+    \                    \"zip\": \"02090\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"dls_id\": null,\r
+
+    \            \"dls_verified\": null,\r
+
+    \            \"email\":
+    \"asdfghjklasdfghjkl@asdfghjklasdfghjkl.asdfghjklasdfghjklasdffghj.com\",\r
+
+    \            \"external_id\": \"3213213\",\r
+
+    \            \"id\": \"4e9d6d1d-9ab6-4315-8f15-b2bea126ed91\",\r
+
+    \            \"legal_entity_id\":
+    \"0dccb76f-3ed0-40f4-8f73-e95e2f91ea29\",\r
+
+    \            \"location\": {\r
+
+    \                \"latitude\": 49.3333333,\r
+
+    \                \"longitude\": 36.3333333\r
+
+    \            },\r
+
+    \            \"mountain_group\": false,\r
+
+    \            \"name\": \"Відділення для перевірки довжини електронної
+    пошти\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"number\": \"+380447777777\",\r
+
+    \                    \"type\": \"MOBILE\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"status\": \"ACTIVE\",\r
+
+    \            \"type\": \"LICENSED_UNIT\",\r
+
+    \            \"working_hours\": {\r
+
+    \                \"fri\": [\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"15.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"mon\": [\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"13.00\"\r
+
+    \                    ],\r
+
+    \                    [\r
+
+    \                        \"14.00\",\r
+
+    \                        \"20.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"thu\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"08.35\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"tue\": [\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"18.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"wed\": [\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"13.00\"\r
+
+    \                    ],\r
+
+    \                    [\r
+
+    \                        \"14.00\",\r
+
+    \                        \"20.00\"\r
+
+    \                    ]\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"addresses\": [\r
+
+    \                {\r
+
+    \                    \"apartment\": \"23\",\r
+
+    \                    \"area\": \"ХАРКІВСЬКА\",\r
+
+    \                    \"building\": \"15\",\r
+
+    \                    \"country\": \"UA\",\r
+
+    \                    \"region\": \"ЧУГУЇВСЬКИЙ\",\r
+
+    \                    \"settlement\": \"ВЕЛИКА БАБКА\",\r
+
+    \                    \"settlement_id\":
+    \"7a438190-5b6f-4341-b25d-0b19f46c320f\",\r
+
+    \                    \"settlement_type\": \"VILLAGE\",\r
+
+    \                    \"street\": \"вул. Ніжинська\",\r
+
+    \                    \"street_type\": \"STREET\",\r
+
+    \                    \"type\": \"RESIDENCE\",\r
+
+    \                    \"zip\": \"02090\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"dls_id\": null,\r
+
+    \            \"dls_verified\": null,\r
+
+    \            \"email\":
+    \"123456789QAZWSXEDCRFVTGBYHNUJMIKOLP.plokmijnuhbygvtfcrdxeszwaq#*&12345678\
+    900000000000000000000000000@gmail.com\",\r
+
+    \            \"external_id\": \"3213213\",\r
+
+    \            \"id\": \"6ad4fef7-8c4a-48c8-a0d5-bb86fc2b0804\",\r
+
+    \            \"legal_entity_id\":
+    \"0dccb76f-3ed0-40f4-8f73-e95e2f91ea29\",\r
+
+    \            \"location\": {\r
+
+    \                \"latitude\": 49.3333333,\r
+
+    \                \"longitude\": 36.3333333\r
+
+    \            },\r
+
+    \            \"mountain_group\": false,\r
+
+    \            \"name\": \"Відділення тест\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"number\": \"+380447777777\",\r
+
+    \                    \"type\": \"MOBILE\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"status\": \"ACTIVE\",\r
+
+    \            \"type\": \"LICENSED_UNIT\",\r
+
+    \            \"working_hours\": {\r
+
+    \                \"fri\": [\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"15.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"mon\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"22.00\"\r
+
+    \                    ],\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"21.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"thu\": [\r
+
+    \                    [\r
+
+    \                        \"08.00\",\r
+
+    \                        \"08.35\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"tue\": [\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"18.00\"\r
+
+    \                    ]\r
+
+    \                ],\r
+
+    \                \"wed\": [\r
+
+    \                    [\r
+
+    \                        \"09.00\",\r
+
+    \                        \"15.00\"\r
+
+    \                    ],\r
+
+    \                    [\r
+
+    \                        \"14.00\",\r
+
+    \                        \"20.00\"\r
+
+    \                    ]\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"meta\": {\r
+
+    \        \"code\": 200,\r
+
+    \        \"request_id\": \"6bda72d2-d463-4f56-91ee-3195caff87e1#2857\",\r
+
+    \        \"type\": \"list\",\r
+
+    \        \"url\": \"http://api-svc.il/api/divisions\"\r
+
+    \    },\r
+
+    \    \"paging\": {\r
+
+    \        \"page_number\": 1,\r
+
+    \        \"page_size\": 50,\r
+
+    \        \"total_entries\": 4,\r
+
+    \        \"total_pages\": 1\r
+
+    \    }\r
+
+    }"
+order: 5000

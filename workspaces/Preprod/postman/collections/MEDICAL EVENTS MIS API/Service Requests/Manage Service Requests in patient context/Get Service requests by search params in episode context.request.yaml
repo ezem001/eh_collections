@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/episodes/{{jobEpisodeID\
+  }}/service_requests"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custum-psk}}"
+queryParams:
+  - key: status
+    value: active
+    disabled: true
+  - key: requester_legal_entity
+    value: 0dccb76f-3ed0-40f4-8f73-e95e2f91ea29
+    disabled: true
+  - key: used_by_legal_entity
+    value: 4f8a300e-65a0-47c1-9265-1f92b70bf049
+    disabled: true
+  - key: code
+    value: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+  - key: care_plan_id
+    value: 8075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+order: 7000

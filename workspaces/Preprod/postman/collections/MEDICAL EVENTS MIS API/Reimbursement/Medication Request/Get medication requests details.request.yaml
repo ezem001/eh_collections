@@ -1,0 +1,149 @@
+$kind: http-request
+url: "{{host}}/api/persons/{{patient_id_from_episode}}/medication_requests/{{me\
+  dication_req_id}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "const responseData = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    console.log(title, data)\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      // Destructure necessary fields from responseData.data\r
+
+      const {\r
+
+      \    category,\r
+
+      \    context,\r
+
+      \    created_at,\r
+
+      \    dispense_valid_from,\r
+
+      \    dispense_valid_to,\r
+
+      \    division,\r
+
+      \    dosage_instruction,\r
+
+      \    employee,\r
+
+      \    ended_at,\r
+
+      \    id,\r
+
+      \    intent,\r
+
+      \    medical_program,\r
+
+      \    legal_entity,\r
+
+      \    medication_info,\r
+
+      \    person,\r
+
+      \    request_number,\r
+
+      \    started_at,\r
+
+      \    status\r
+
+      } = responseData.data;\r
+
+      \r
+
+      // Remove the `id` field from the `person` object\r
+
+      // if (person && person.id) {\r
+
+      //     delete person.id;\r
+
+      // }\r
+
+      \r
+
+      // Construct modified object with added reject_reason_code\r
+
+      const modifiedObject = {\r
+
+      \    category,\r
+
+      \    context,\r
+
+      \    created_at,\r
+
+      \    dispense_valid_from,\r
+
+      \    dispense_valid_to,\r
+
+      \    division,\r
+
+      \    dosage_instruction,\r
+
+      \    employee,\r
+
+      \    ended_at,\r
+
+      \    id,\r
+
+      \    intent,\r
+
+      \    medical_program,\r
+
+      \    legal_entity,\r
+
+      \    medication_info,\r
+
+      \    person,\r
+
+      \    request_number,\r
+
+      \    started_at,\r
+
+      \    status,\r
+
+      \    reject_reason_code: \"WRONG_SIGNATURE\"\r
+
+      };\r
+
+      \r
+
+      // Visualization\r
+
+      displayResponse(\"MR_reject_body\", modifiedObject)\r
+
+      \r
+
+      // Save the modified object to globals\r
+
+      pm.globals.set(\"modified_response_data\",
+      JSON.stringify(modifiedObject));\r
+
+      \r
+
+      // Log confirmation\r
+
+      console.log(\"Modified object set in globals:\", modifiedObject);"
+    language: text/javascript
+order: 4000

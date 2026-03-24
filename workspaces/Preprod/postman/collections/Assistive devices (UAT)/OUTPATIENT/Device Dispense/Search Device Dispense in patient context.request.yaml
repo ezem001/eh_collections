@@ -1,0 +1,49 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/d96867bc-f250-4625-873e-61714c43ff92/device_dispenses?origin_episode_id=d2329c20-d3de-48d7-a2ba-bce8884dd679&based_on=20be2b20-b365-4637-872d-4213a03e9151
+method: GET
+headers:
+  Authorization: Bearer {{physio_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: origin_episode_id
+    value: d2329c20-d3de-48d7-a2ba-bce8884dd679
+  - key: based_on
+    value: 76963d16-6258-48b8-ba2a-9685166c7826
+    disabled: true
+    description: S20.2
+  - key: encounter
+    value: 84f1f369-2e62-4671-8ce1-939c86972e85
+    disabled: true
+  - key: context_episode_id
+    value: d2329c20-d3de-48d7-a2ba-bce8884dd679
+    disabled: true
+  - key: based_on
+    value: 23f95e34-476c-47d2-af93-10413a4c754b
+    disabled: true
+    description: S13.1
+  - key: based_on
+    value: 20be2b20-b365-4637-872d-4213a03e9149
+    disabled: true
+    description: S19.1
+  - key: based_on
+    value: 20be2b20-b365-4637-872d-4213a03e9150
+    disabled: true
+    description: S19.2
+  - key: based_on
+    value: 20be2b20-b365-4637-872d-4213a03e9151
+    description: S20.1
+  - key: based_on
+    value: 20be2b20-b365-4637-872d-4213a03e9152
+    disabled: true
+    description: S20.3
+  - key: based_on
+    value: 623453dd-8357-4665-8c5f-184f268765f7
+    disabled: true
+    description: "19.5"
+  - key: based_on
+    value: 76963d16-6258-48b8-ba2a-9685166c7826
+    disabled: true
+    description: "20.2"
+order: 1000

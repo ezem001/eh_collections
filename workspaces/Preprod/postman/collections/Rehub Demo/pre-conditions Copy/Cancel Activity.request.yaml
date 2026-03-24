@@ -1,0 +1,49 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/care_plans/{{care_plan_id}}/activiti\
+  es/{{activity_id}}/actions/cancel"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+        "signed_data": "{{activity_base64}}"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: >-
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))};
+
+      activity = pm.environment.get("activity");
+
+      activity.detail.status_reason={
+          "coding":[
+              {
+                  "code":"entered_in_error",
+                  "system":"eHealth/care_plan_activity_cancel_reasons"
+              }
+          ]
+      };
+
+      var activity_base64 = b64EncodeUnicode(JSON.stringify(activity));
+
+      postman.setEnvironmentVariable("activity_base64", activity_base64);
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 14000

@@ -1,0 +1,72 @@
+$kind: http-request
+name: S1.19 Update person request v3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "person": {
+            "id": "1c5d19b3-de1a-471e-b49c-2329f904230d",
+            "names": [
+          {
+            "first_name": "Pavel",
+            "last_name": "Hang Mio",
+            "language": "en",
+            "no_last_name": false
+          }
+        ],
+            "birth_date": "1965-02-13",
+            "birth_country": "Україна",
+            "birth_settlement": "Харків",
+            "gender": "MALE",
+            "no_tax_id": null,
+            "email": "pavel@email.com",
+            "secret": "secret12",
+            "unzr": "19650213-12311",
+            "documents": [
+                {
+                    "type": "FOREIGN_PASSPORT",
+                    "number": "KA974826",
+                    "issued_by": "Poland",
+                    "issued_at": "2020-12-25",
+                    "issuing_country": "PL",
+                    "expiration_date": "2030-10-21"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "PL",                
+                    "settlement": "Wroclaw",
+                    "area": "Powiat Wroclawski",
+                    "region": "Malopolske wojewodztwo",
+                    "street": "Robotnicza",
+                    "building": "151/a",
+                    "apartment": "12/a",
+                    "zip": "14321"
+                }
+            ],        
+            "preferred_way_communication": "phone",
+            "emergency_contact": {
+                "first_name": "Kowalski",
+                "last_name": "Jan",
+
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+234953332255"
+                    }
+                ]
+            }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true,
+        "authorize_with": "c5ae6209-b6ce-4ce6-978c-ba3c4a7b3647"
+    } 
+order: 20000

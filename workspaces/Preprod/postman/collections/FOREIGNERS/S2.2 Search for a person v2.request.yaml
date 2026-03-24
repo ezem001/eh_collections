@@ -1,0 +1,44 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/v2/persons?first_name=Pavel&birth_date=1994-11-18&language=en&document_type=PASSPORT&document_number=КВ518584
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer QlhsUzN1QTd5dmxSR1FGREdEUFBSdz09
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: first_name
+    value: Pavel
+  - key: last_name
+    value: Kulchytska Novak
+    disabled: true
+  - key: birth_date
+    value: 1994-11-18
+  - key: language
+    value: en
+  - key: document_type
+    value: PASSPORT
+  - key: document_number
+    value: КВ518584
+  - key: phone_number
+    value: "%2B380635683462"
+    disabled: true
+  - key: tax_id
+    value: "3441708666"
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: |
+      tests["Status code is 200"] = responseCode.code === 200;
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data){
+          tests["Response contains declarations"] = jsonData.data.length >= 0;
+          var person_id = jsonData.data[0].id;
+          postman.setEnvironmentVariable("person_id", person_id);
+      } else {
+          tests["Response contains declarations"] = false;
+          postman.setEnvironmentVariable("person_id", "<<undefined>>");
+      }
+    language: text/javascript
+order: 30000

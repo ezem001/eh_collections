@@ -1,0 +1,36 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/declarations?page=1&page_size=50&legal_entity_id=12e5f827-13c3-4eeb-ab1d-ac3380a61e28
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{employee_access_token}}
+  X-Custom-PSK: "{{mis_dev_x_custom_psk}}"
+queryParams:
+  - key: status
+    value: active
+    disabled: true
+  - key: employee_id
+    value: 2a9c5fc1-46e2-44c1-bd7a-57d16046de0b
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+  - key: legal_entity_id
+    value: 12e5f827-13c3-4eeb-ab1d-ac3380a61e28
+scripts:
+  - type: afterResponse
+    code: |
+      tests["Status code is 200"] = responseCode.code === 200;
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data && jsonData.data.length > 0){
+          tests["Response contains declarations"] = jsonData.data.length >= 0;
+          var declaration_id = jsonData.data[0].id;
+          postman.setEnvironmentVariable("declaration_id", declaration_id);
+      } else {
+          tests["Response contains declarations"] = false;
+          postman.setEnvironmentVariable("declaration_id", "<<undefined>>");
+      }
+    language: text/javascript
+order: 2000

@@ -1,0 +1,20 @@
+$kind: http-request
+name: S5.2 Add care team participant
+url: https://api-demo.ehealth.gov.ua/api/care_teams/participants
+method: POST
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+      "role": "team_member",
+      "member_type": "careteam",
+      "member_id": "d6f20c8a-d893-43e9-8def-d781a414f90a",
+      "period_start": "2025-11-22",
+      "status": "active",
+      "care_team_id": "b694da7b-ede3-4893-86cc-2f8426278c0a"
+    }
+order: 2000

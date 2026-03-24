@@ -1,0 +1,89 @@
+$kind: http-request
+description: This method is used to search for care teams in the system.
+url: "{{host}}/api/care_teams/participants?care_team_id=a80065c3-3215-4ae9-a6db\
+  -2b4ec6d6a34d"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: role
+    value: care_manager
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: care_team_id
+    value: 49489869-47bf-416b-aa71-d0bdf91e96f8
+    disabled: true
+    description: active
+  - key: care_team_id
+    value: ed6fc426-69ca-46cf-82dd-b39c34e2cb18
+    disabled: true
+    description: active same le
+  - key: care_team_id
+    value: c2394c27-d3ac-4f71-b0b3-596e9bf415ab
+    disabled: true
+    description: no name same le
+  - key: care_team_id
+    value: 0ab4bfd0-6e15-4b55-99cd-c10fb4bef056
+    disabled: true
+    description: care team  entered_in_error
+  - key: care_team_id
+    value: 9ddbc3a2-657e-4fad-95ce-e7e0eb19d4b1
+    disabled: true
+    description: care team inactive
+  - key: care_team_id
+    value: a80065c3-3215-4ae9-a6db-2b4ec6d6a34d
+    description: without performer
+  - key: care_team_id
+    value: 4f5ba62a-f874-43af-9195-26eab7c97fed
+    disabled: true
+    description: without performer 2
+  - key: care_team_id
+    value: 9aaa6bdf-8b73-434c-817e-644695210680
+    disabled: true
+    description: with performer lead_surgeon
+  - key: care_team_id
+    value: 200765b6-c973-45d8-acf9-66d52f5d5378
+    disabled: true
+    description: PHC
+  - key: care_team_id
+    value: 3977177b-07d2-4cc2-be23-3df5b5c50576
+    disabled: true
+    description: |-
+      no user 1 5831c005-448c-4b8b-a96c-a6e2cfd7a1a0
+      a2dec326-af1f-4591-9de0-c4ab1d7a2383
+  - key: care_team_id
+    value: 14738e07-79b0-479f-ad80-5460a06c8684
+    disabled: true
+    description: |-
+      no user 2 5831c005-448c-4b8b-a96c-a6e2cfd7a1a0
+      a2dec326-af1f-4591-9de0-c4ab1d7a2383
+  - key: care_team_id
+    value: 1ba1ea4a-4db5-443e-8ead-84a577c49a0a
+    disabled: true
+  - key: care_team_id
+    value: e4d7a66b-3f0c-4776-940c-7dd2c93bd2b5
+    disabled: true
+  - key: care_team_id
+    value: 607b81ad-f5d2-4a8e-9c9b-2b514aa910ad
+    disabled: true
+  - key: care_team_id
+    value: 4c29451c-e0b3-43ea-8de3-ebf9e56ccd06
+    disabled: true
+  - key: null
+    value: null
+    disabled: true
+    description: |-
+      User is not allowed to create 
+      eedd89c1-2b7b-4159-9864-092b910048c6 IPA_ENDOCRINOLOGY
+order: 8000

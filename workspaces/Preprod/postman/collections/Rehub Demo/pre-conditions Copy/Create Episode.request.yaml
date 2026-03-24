@@ -1,0 +1,65 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/episodes"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+      "id": "{{episode_id}}",
+      "type": {
+        "system": "eHealth/episode_types",
+        "code": "PREVENTION"
+        },
+      "status": "active",
+      "name": "Хвороба просто",
+      "managing_organization": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "legal_entity"
+              }
+            ]
+          },
+          "value": "{{le_id}}"
+        }
+      },
+      "period": {
+        "start": "2024-08-18T14:40:16Z"
+      },
+      "care_manager": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "employee"
+              }
+            ]
+          },
+          "value": "{{employee_id}}"
+        }
+      }
+    }
+scripts:
+  - type: afterResponse
+    code: |
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+  - type: beforeRequest
+    code: |
+      var uuid = require('uuid');
+      var id = uuid.v4();
+      pm.environment.set("episode_id", id);
+    language: text/javascript
+order: 1000

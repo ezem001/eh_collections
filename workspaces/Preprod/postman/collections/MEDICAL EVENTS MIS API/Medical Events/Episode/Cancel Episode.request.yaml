@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{host}}/api/patients/b9d31a4f-6424-4aa2-a9cb-3701adb16b01/episodes/875c8\
+  194-fe8d-4944-83f6-efeddc4f8c9b/actions/cancel"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"explanatory_letter\": \"Епізод був відмінений у зв'язку з механічною
+    помилкою лікаря\",\r
+
+    \  \"status_reason\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"eHealth/cancellation_reasons\",\r
+
+    \        \"code\": \"typo\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"text\": \"Епізод з механічною помилкою\"\r
+
+    \  }\r
+
+    }"
+order: 9000

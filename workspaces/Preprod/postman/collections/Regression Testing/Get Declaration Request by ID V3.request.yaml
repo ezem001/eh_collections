@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/v3/declaration_requests/{{declaration_request_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Declaration Request by ID V3 - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 10000

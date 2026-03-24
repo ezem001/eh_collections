@@ -1,0 +1,18 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/oauth/user/apps?client_id=7aea1385-dd34-4a04-84bd-00ccfa673990&scope=app:read_pis
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
+  - key: Authorization
+    value: Bearer a1hybDVNKzMvRkp5ZHF6UWE0aHBKZz09
+queryParams:
+  client_id: 7aea1385-dd34-4a04-84bd-00ccfa673990
+  scope: app:read_pis
+examples: ./.resources/Determine available user approvals.resources/examples
+order: 5000

@@ -1,0 +1,32 @@
+$kind: http-request
+name: Approve Person Request V3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests/a5d2d01f-3701-41da-ad87-bd71571fb27c/actions/approve
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      tests["Status code is 409"] = responseCode.code === 409;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData && jsonData.data) {
+          var patient_sing_data = JSON.stringify(jsonData.data);
+          postman.setEnvironmentVariable("patient_sing_data", patient_sing_data);
+      } else {
+          postman.setEnvironmentVariable("patient_sing_data", "<<undefined>>");
+      }
+    language: text/javascript
+order: 1000

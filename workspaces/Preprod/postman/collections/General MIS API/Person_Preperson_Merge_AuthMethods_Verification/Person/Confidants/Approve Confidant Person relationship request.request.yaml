@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host}}/api/persons/0d5e5b40-3537-4917-826a-0f0aa0b5573c/confidant_perso\
+  n_relationship_requests/{{Create_confidant_relationship_id}}/actions/approve"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"verification_code\": 6335\r
+
+    }"
+order: 4000

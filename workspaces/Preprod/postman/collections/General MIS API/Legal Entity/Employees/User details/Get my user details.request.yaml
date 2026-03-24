@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{host}}/oauth/user"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  x-custom-psk: "{{x-custom-psk}}"
+settings:
+  disabledSystemHeaders: []
+order: 1000

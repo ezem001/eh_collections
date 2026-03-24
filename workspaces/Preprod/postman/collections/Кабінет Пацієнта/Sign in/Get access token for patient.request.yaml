@@ -1,0 +1,34 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/oauth/tokens/
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+body:
+  type: text
+  content: |-
+    {
+       "token":{
+          "grant_type":"authorization_code",
+          "code": "SEI0SDJNcjUvN2hXWDFaVkl0elRLdz09",
+          "client_id":"{{client_id}}",
+          "client_secret": "{{client_secret}}",
+          "redirect_uri": "https://pis_test.com/redirect"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: |
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+
+      const jsonData = pm.response.json();
+
+      const misCodeGrant = jsonData?.data?.value ?? "<<undefined>>";
+
+      pm.collectionVariables.set("pis_token", misCodeGrant);
+
+      console.log("pis_token set to:", misCodeGrant);
+    language: text/javascript
+order: 9000

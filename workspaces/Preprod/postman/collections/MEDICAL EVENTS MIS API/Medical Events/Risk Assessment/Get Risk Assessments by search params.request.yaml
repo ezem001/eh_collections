@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/risk_assessments?page=2&page_size=5\
+  0&code=R80&encounter_id=09dc3ed7-2169-45d8-8fa3-d918c6839bf9&episode_id=f48d1\
+  b6c-a021-4d6a-a5a4-aee93e152ecc&asserted_date_from=1990-01-01&asserted_date_t\
+  o=2000-01-01"
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: api-key
+    value: "{{mis_client_secret}}"
+  - key: Authorization
+    value: Bearer {{access_token}}
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  - key: ""
+    value: ""
+    disabled: true
+queryParams:
+  page: "2"
+  page_size: "50"
+  code: R80
+  encounter_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  episode_id: f48d1b6c-a021-4d6a-a5a4-aee93e152ecc
+  asserted_date_from: 1990-01-01
+  asserted_date_to: 2000-01-01
+order: 2000

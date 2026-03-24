@@ -1,0 +1,81 @@
+$kind: http-request
+name: S1.1-S1.10 Create person request v3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "person": {
+            "names": [
+          {
+            "first_name": "Надія",
+            "last_name": "Кульчицька-Новак",
+            "language": "uk",
+            "no_last_name": false
+          },
+          {
+            "first_name": "Nadiia",
+            "last_name": "Kulchytska-Novak",
+            "language": "en",
+            "no_last_name": false
+          }
+        ],
+            "birth_date": "1999-05-23",
+            "birth_country": "Польща",
+            "birth_settlement": "Вроцлав",
+            "gender": "FEMALE",
+            "no_tax_id": null,
+            "email": "nadiia@email.com",
+            "secret": "secret12",
+            "unzr": "19994376-12311",
+            "documents": [
+                {
+                    "type": "FOREIGN_PASSPORT",
+                    "number": "КC249021",
+                    "issued_by": "Poland",
+                    "issued_at": "2023-10-21",
+                    "issuing_country": "PL",
+                    "expiration_date": "2030-10-21"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "PL",                
+                    "settlement": "Wroclaw",
+                    "area": "Powiat Wroclawski",
+                    "region": "Malopolske wojewodztwo",
+                    "street": "Robotnicza",
+                    "building": "151/a",
+                    "apartment": "12/a",
+                    "zip": "14321"
+                }
+            ],
+            "authentication_methods": [
+                {
+                    "type": "OFFLINE"
+                }
+            ],
+            
+            "preferred_way_communication": "phone",
+            "emergency_contact": {
+                "first_name": "Kowalski",
+                "last_name": "Jan",
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+234953332255"
+                    }
+                ]
+            }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true
+    } 
+order: 3000

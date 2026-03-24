@@ -1,0 +1,311 @@
+$kind: http-request
+url: http://localhost:3000/create-care-plan-activity-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{care_plan_activity_id}}\",\r
+
+    \    \"author\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"care_plan\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"care_plan\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobCareplanID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"detail\": {\r
+
+    \        \"kind\": \"service_request\",\r
+
+    \        \"product_reference\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"service\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": \"\"\r
+
+    \                },\r
+
+    \                \"value\": \"2a3bdbc7-98d7-4892-8f82-6572f67d3bc9\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"reason_code\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                        \"code\": \"E10.9\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"reason_reference\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"condition\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{condition_extracted_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"goal\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/care_plan_activity_goals\",\r
+
+    \                        \"code\": \"patient_maintaince\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"quantity\": {\r
+
+    \            \"value\": 56,\r
+
+    \            \"system\": \"SERVICE_UNIT\",\r
+
+    \            \"code\": \"PIECE\"\r
+
+    \        },\r
+
+    \        \"scheduled_period\": {\r
+
+    \            \"start\": \"{{activityStartDate}}\",\r
+
+    \            \"end\": \"{{carePlanEndDate}}\"\r
+
+    \        },\r
+
+    \        \"location\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"division\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_division_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"performer\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"description\": \"Some activity description 123\",\r
+
+    \        \"do_not_perform\": false,\r
+
+    \        \"program\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"medical_program\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"0eb268fa-ab21-4df9-8d58-1bc85e393533\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"status\": \"scheduled\"\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const caraPlanActivityId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"care_plan_activity_id\", caraPlanActivityId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(`Care Plan Activity content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('care_plan_activity_signed_content',
+      resData.signed_content);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      // if(resData.signed_content){\r
+
+      //     pm.globals.set('care_plan_activity_signed_content',
+      resData.signed_content)\r
+
+      // }"
+    language: text/javascript
+order: 27000

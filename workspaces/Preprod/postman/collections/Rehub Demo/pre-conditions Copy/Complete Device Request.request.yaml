@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/device_requests/{{device_request_id}\
+  }/actions/complete"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: ""
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 31000

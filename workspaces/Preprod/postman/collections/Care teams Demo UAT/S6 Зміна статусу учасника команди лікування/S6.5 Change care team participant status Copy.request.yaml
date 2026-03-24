@@ -1,0 +1,16 @@
+$kind: http-request
+name: S6.5 Change care team participant status Copy
+url: https://api-demo.ehealth.gov.ua/api/care_teams/participants/811084fc-6caa-461f-b296-fb9878d9b492/actions/change_status
+method: PATCH
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+      "status": "entered_in_error",
+      "status_reason": "typo"
+    }
+order: 12000

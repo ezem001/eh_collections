@@ -1,0 +1,24 @@
+$kind: http-request
+name: S5.15 Get care team participants
+url: https://api-demo.ehealth.gov.ua/api/care_teams/participants?care_team_id=f4318ac5-32aa-4f6b-9252-28d0ec9dab51
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: role
+    value: care_manager
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "10"
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: care_team_id
+    value: f4318ac5-32aa-4f6b-9252-28d0ec9dab51
+order: 26000

@@ -1,0 +1,364 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/care_plans/{{jobCarePla\
+  nID}}/activities/prequalify"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"activity\": {\r
+
+    \        \"author\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"care_plan\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"care_plan\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobCarePlanID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"detail\": {\r
+
+    \            \"kind\": \"service_request\",\r
+
+    \            \"product_reference\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"service\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"40b2dfdf-7623-4fa5-bbfb-58a6b651ff0c\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"reason_code\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\":
+    \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                            \"code\": \"E00.0\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"reason_reference\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{jobConditionID}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"goal\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\":
+    \"eHealth/care_plan_activity_goals\",\r
+
+    \                            \"code\": \"patient_dynamics\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"quantity\": {\r
+
+    \                \"value\": 56,\r
+
+    \                \"system\": \"SERVICE_UNIT\",\r
+
+    \                \"code\": \"PIECE\"\r
+
+    \            },\r
+
+    \            \"scheduled_period\": {\r
+
+    \                \"start\": \"2026-02-20T10:45:16.000Z\",\r
+
+    \                \"end\": \"2026-02-24T11:00:00.000Z\"\r
+
+    \            },\r
+
+    \            \"location\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"division\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_division_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"performer\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"daily_amount\": {\r
+
+    \                \"value\": 1.0,\r
+
+    \                \"system\": \"SERVICE_UNIT\",\r
+
+    \                \"code\": \"PIECE\"\r
+
+    \            },\r
+
+    \            \"description\": \"Some activity description\",\r
+
+    \            \"do_not_perform\": false,\r
+
+    \            \"status\": \"scheduled\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"programs\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"medical_program\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"0eb268fa-ab21-4df9-8d58-1bc85e393533\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "// Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobConditionID');\r
+
+      \r
+
+      // Check if the URL is defined and contains the expected format\r
+
+      if (url && url.includes('conditions/')) {\r
+
+      \    // Extract the ID after 'conditions/'\r
+
+      \    const parts = url.split('conditions/');\r
+
+      \    if (parts.length > 1) {\r
+
+      \        const jobConditionID = parts[1];\r
+
+      \        \r
+
+      \        // Log the extracted ID to the console (for debugging purposes)\r
+
+      \        console.log('Extracted jobConditionID:', jobConditionID);\r
+
+      \        \r
+
+      \        // Optionally, set the extracted ID as an environment variable\r
+
+      \        pm.globals.set('condition_extracted_id', jobConditionID);\r
+
+      \    } else {\r
+
+      \        console.error('The URL does not contain the expected format.');\r
+
+      \    }\r
+
+      } else {\r
+
+      \    console.error('The global variable jobConditionID is not defined or
+      does not contain the expected format.');\r
+
+      }"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"PreQualify Care Plan Activity Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"PreQualify Care Plan Activity status is VALID\", function () {\r
+
+      \   const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });"
+    language: text/javascript
+order: 5000

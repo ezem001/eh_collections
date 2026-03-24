@@ -1,0 +1,166 @@
+$kind: http-request
+url: "{{host}}/api/pharmacy/medication_dispenses/{{medication_dispense_id}}/act\
+  ions/process"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"signed_medication_dispense\":
+    \"{{process_medication_dispense_signed_content}}\",\r
+
+    \  \"signed_content_encoding\": \"base64\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "// Отримуємо ContentForSign із глобальних змінних\r
+
+      const contentForSign = pm.globals.get('updated_dispense_data');\r
+
+      \r
+
+      if (!contentForSign) {\r
+
+      \    console.error(\"Error: ContentForSign is not set in global
+      variables.\");\r
+
+      } else {\r
+
+      \    // Функція для надсилання контенту на підпис\r
+
+      \    function sendDataToSign(contentForSign) {\r
+
+      \        const localServerUrl =
+      'http://localhost:3000/process-medication-dispene-signed-content';\r
+
+      \r
+
+      \        const requestData = {\r
+
+      \            method: 'POST',\r
+
+      \            url: localServerUrl,\r
+
+      \            header: {\r
+
+      \                'Content-Type': 'application/json',\r
+
+      \            },\r
+
+      \            body: {\r
+
+      \                mode: 'raw',\r
+
+      \                raw: contentForSign // Використовуємо JSON-рядок із
+      глобальних змінних\r
+
+      \            }\r
+
+      \        };\r
+
+      \r
+
+      \        // Відправляємо запит на локальний сервер\r
+
+      \        pm.sendRequest(requestData, function (err, res) {\r
+
+      \            if (err) {\r
+
+      \                console.error('Error sending request to local server:',
+      err);\r
+
+      \            } else {\r
+
+      \                console.log('Response from local server:', res.json());\r
+
+      \                const responseBody = res.json();\r
+
+      \r
+
+      \                pm.test(`Process Medication Dispense. Response status is
+      200 ${JSON.stringify(responseBody, null, 2)}`, function () {\r
+
+      \                    pm.expect(res.code).to.eql(200);\r
+
+      \                    pm.expect(responseBody).to.have.property('signed_con\
+      tent');\r
+
+      \r
+
+      \                    // Зберігаємо підписаний контент у глобальні змінні\r
+
+      \                    pm.globals.set('process_medication_dispense_signed_c\
+      ontent', responseBody.signed_content);\r
+
+      \                });\r
+
+      \            }\r
+
+      \        });\r
+
+      \    }\r
+
+      \r
+
+      \    // Викликаємо функцію з отриманими даними\r
+
+      \    sendDataToSign(contentForSign);\r
+
+      }\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      pm.test(\"Process Medication Dispense - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      \r
+
+      });\r
+
+      \r
+
+      // // Відновлюємо попередні значення після запиту\r
+
+      // const originalToken = pm.environment.get(\"original_access_token\");\r
+
+      // const originalDivision =
+      pm.environment.get(\"original_user_division_id\");\r
+
+      \r
+
+      // if (originalToken) {\r
+
+      //     pm.environment.set(\"access_token\", originalToken);\r
+
+      //     pm.environment.unset(\"original_access_token\");\r
+
+      // }\r
+
+      \r
+
+      // if (originalDivision) {\r
+
+      //     pm.environment.set(\"user_division_id\", originalDivision);\r
+
+      //     pm.environment.unset(\"original_user_division_id\");\r
+
+      // }\r
+
+      \r
+
+      // console.log(\"🔁 Environment restored to original user.\");"
+    language: text/javascript
+order: 43000

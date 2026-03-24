@@ -1,0 +1,81 @@
+$kind: http-request
+name: S1.9-S1.15 Create person request v3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "person": {
+            "names": [
+            {
+            "first_name": "Якуб",
+            "language": "uk",
+            "no_last_name": true
+          },
+          {
+            "first_name": "Jakub",
+            "last_name": "Kachynski",
+            "language": "en",
+            "no_last_name": false
+          }
+        ],
+            "birth_date": "1992-11-18",
+            "birth_country": "Польща",
+            "birth_settlement": "Вроцлав",
+            "gender": "MALE",
+            "no_tax_id": null,
+            "email": "jan@email.com",
+            "secret": "secret12",
+            "unzr": "23775592-92361",
+            "documents": [
+                {
+                    "type": "FOREIGN_PASSPORT",
+                    "number": "KA518584",
+                    "issued_by": "Poland",
+                    "issued_at": "2025-11-21",
+                    "issuing_country": "PL",
+                    "expiration_date": "2030-10-21"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "PL",                
+                    "settlement": "Wroclaw",
+                    "area": "Powiat Wroclawski",
+                    "region": "Malopolske wojewodztwo",
+                    "street": "Robotnicza",
+                    "building": "151/a",
+                    "apartment": "12/a",
+                    "zip": "14321"
+                }
+            ],
+            "authentication_methods": [
+                {
+                    "type": "OFFLINE"
+                }
+            ],
+            
+            "preferred_way_communication": "phone",
+            "emergency_contact": {
+                "first_name": "Ковальський",
+                "last_name": "Андрій",
+
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+380635683462"
+                    }
+                ]
+            }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true
+    } 
+order: 11000

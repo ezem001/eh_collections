@@ -1,0 +1,54 @@
+$kind: http-request
+url: "{{host}}/api/contracts/reimbursement?status=VERIFIED"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: id
+    value: e3b56386-6f79-4808-9819-b1e3fa29b282
+    disabled: true
+  - key: contractor_legal_entity_id
+    value: 69783dd1-0f15-4906-8b58-65b7f0d85cb3b
+    disabled: true
+  - key: edrpou
+    value: "3045422037"
+    disabled: true
+  - key: contractor_owner_id
+    value: b8daca1e-1165-4f1d-9b0a-9e97c0c0fe45
+    disabled: true
+  - key: nhs_signer_id
+    value: b075f148-7f93-4fc2-b2ec-2d81b19a9b7b
+    disabled: true
+  - key: status
+    value: VERIFIED
+  - key: is_suspended
+    value: "true"
+    disabled: true
+  - key: date_from_start_date
+    value: 2018-01-01
+    disabled: true
+  - key: date_to_start_date
+    value: 2019-01-01
+    disabled: true
+  - key: date_from_end_date
+    value: 2018-01-01
+    disabled: true
+  - key: date_to_end_date
+    value: 2019-01-01
+    disabled: true
+  - key: medical_program_id
+    value: 2075f148-7f93-4fc2-b2ec-2d81b19a9b7b
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "500"
+    disabled: true
+body:
+  type: json
+  content: ""
+order: 4000

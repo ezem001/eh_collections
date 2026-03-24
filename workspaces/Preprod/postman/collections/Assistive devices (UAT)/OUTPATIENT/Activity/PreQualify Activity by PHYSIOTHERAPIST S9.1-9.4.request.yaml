@@ -1,0 +1,114 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/d96867bc-f250-4625-873e-61714c43ff92/care_plans/36cb0c96-f71b-4f64-a1b2-a38ecacdea72/activities/prequalify
+method: POST
+headers:
+  Authorization: Bearer {{physio_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: >-
+    {
+        "activity": {
+            "author": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "employee"
+                            }
+                        ]
+                    },
+                    "value": "{{physio_employee_id}}"
+                }
+            },
+            "care_plan": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "care_plan"
+                            }
+                        ]
+                    },
+                    "value": "36cb0c96-f71b-4f64-a1b2-a38ecacdea72"
+                }
+            },
+            "detail": {
+                "kind": "device_request",
+                // "product_codeable_concept": {
+                //     "coding": [
+                //         // {
+                //         //     "system": "device_definition_classification_type",
+                //         //     "code": "30221" // S9.1
+                //         // }
+                //         {
+                //             "system": "eHealth/assistive_devices",
+                //             "code": "12_03_16"
+                //             //"code": "12_03" // S9.2
+                //         }
+                //     ]
+                // },
+                "product_reference": {
+                    "identifier": {
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "eHealth/resources",
+                                    "code": "device_definition"
+                                }
+                            ]
+                        },
+                        // "value": "aefba224-5d25-4e6d-8da6-cd324aef9c9c" // test strip old
+                        // "value": "3e41e5bd-3615-4911-9c70-d232c91728b8" // test strip new
+                        "value": "170a79b8-ac1b-47a2-97bb-311098eef95d" // assistive S9.3
+                        // "value": "24b4ffd0-9be2-4758-8cae-40e5fa62fcd5" //  S9.4
+                    }
+                },
+                "do_not_perform": false,
+                "status": "scheduled",
+                "quantity": {
+                    "value": 100,
+                    "system": "device_unit",
+                    "code": "piece"
+                },
+                "scheduled_period": {
+                    "start": "2024-12-02T18:45:16.000Z",
+                    "end": "2030-02-19T18:45:16.000Z"
+                },
+                "description": "Device rehab2 prescription"
+            }
+        },
+        "programs": [
+            {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "medical_program"
+                            }
+                        ]
+                    },
+                    "value": "d1f8be15-f9db-4c09-abf7-aa78a5a09b24"
+                }
+            },
+            {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "medical_program"
+                            }
+                        ]
+                    },
+                    "value": "0e26d6ca-b6c2-49d6-8d16-ca9635ea59ad"
+                }
+            }
+        ]
+    }
+order: 5000

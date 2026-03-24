@@ -1,0 +1,33 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/api/pis/declaration_requests
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: "{{client_secret}}"
+  - key: Authorization
+    value: Bearer {{pis_token}}
+body:
+  type: json
+  content: "{\r
+
+    \  \"employee_id\": \"ae844eda-3268-49fd-9f4d-22cb5a190cd4\",\r
+
+    \  \"division_id\": \"58041cc4-5570-43e3-b08a-2665cc0ff30c\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const jsonData = pm.response.json();\r
+
+      \    const declarationReqId = jsonData.data.id\r
+
+      \    pm.globals.set('pis_declaration_req_id', declarationReqId)\r
+
+      \    console.log(declarationReqId)"
+    language: text/javascript
+order: 1000

@@ -1,0 +1,85 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/service_requests/{{JobS\
+  ericeRequestID}}"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: >-
+      var jsonData = pm.response.json();
+
+
+      pm.test("Status is `recalled`", function () { 
+          (pm.expect(pm.response.json().data.status).to.equal(`recalled`)); 
+      });
+
+
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))
+      }
+
+
+      var jsonData = pm.response.json();
+
+      var requisition = jsonData.data.requisition;
+
+      pm.environment.set("requisition", requisition);
+
+
+      var jsonData = pm.response.json();
+
+
+      var recall_data = jsonData.data;
+
+      var cancel_data = jsonData.data;
+
+      var recall_reason = {
+          "coding": [
+            {
+              "system": "eHealth/service_request_recall_reasons",
+              "code": "default"
+            }
+          ]
+        };
+      var cancel_reason = {
+          "coding": [
+            {
+              "system": "eHealth/service_request_cancel_reasons",
+              "code": "default"
+            }
+          ]
+        };
+
+      recall_data.status_reason = recall_reason;
+
+      recall_data.explanatory_letter = 'Explanatory letter';
+
+      var recall_data_base64 = b64EncodeUnicode(JSON.stringify(recall_data));
+
+
+      pm.environment.set("recall_data_base64", recall_data_base64);
+
+
+      cancel_data.status_reason = cancel_reason;
+
+      cancel_data.explanatory_letter = 'Explanatory letter';
+
+      var cancel_data_base64 = b64EncodeUnicode(JSON.stringify(cancel_data));
+
+
+      pm.environment.set("cancel_data_base64", cancel_data_base64);
+
+
+      var jsonData = pm.response.json();
+
+      var requisition = jsonData.data.requisition;
+
+      pm.environment.set("requisition", requisition);
+    language: text/javascript
+order: 4000

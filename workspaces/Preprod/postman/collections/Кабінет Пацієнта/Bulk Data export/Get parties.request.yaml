@@ -1,0 +1,24 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/api/pis/bulk/parties?depth=1
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: dda8f27e3188f973e15b025bad084c04
+  - key: Authorization
+    value: "Bearer "
+    disabled: true
+queryParams:
+  - key: type
+    value: MSP
+    disabled: true
+  - key: name
+    value: ""
+    disabled: true
+  - key: depth
+    value: "1"
+order: 1000

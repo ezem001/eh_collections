@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{host_demo}}/api/persons/9d5f2b13-3ee7-4370-8ef2-7170d5e5d473/merged_per\
+  sons?status=DECLINED"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  status: DECLINED
+order: 7000

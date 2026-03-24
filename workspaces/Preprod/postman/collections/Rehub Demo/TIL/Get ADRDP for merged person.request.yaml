@@ -1,0 +1,25 @@
+$kind: http-request
+url: localhost:8081/min_sp/device_request_data_package
+method: POST
+headers:
+  Uxp-Client: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS
+  Uxp-Service: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS/get_device_request_data_package
+  Uxp-Transaction-Id: "{{Uxp-Transaction-Id}}"
+body:
+  type: json
+  content: |-
+    //e33bf0a0-cc08-4893-8d1f-a15390e684f7 -merged
+    //57595978-aaf9-48bd-96b5-9d40b91081ba - master
+    {
+        "requisition": "7245-4600-3439-5025",
+        "last_name": "Слободянюк",
+        "first_name": "Анатолій",
+        "second_name": "Олександрович",
+        "tax_id": "3022893616"
+    }
+scripts:
+  - type: beforeRequest
+    code: pm.environment.set("Uxp-Transaction-Id",
+      pm.variables.replaceIn('{{$guid}}'));
+    language: text/javascript
+order: 3000

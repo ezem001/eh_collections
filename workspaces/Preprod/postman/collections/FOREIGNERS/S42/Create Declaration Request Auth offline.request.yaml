@@ -1,0 +1,75 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/v3/declaration_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{employee_access_token}}
+  X-Custom-PSK: a1aa07c96f3f4d91870f923a53cc9aa8f23bbc01a8238d1c2c26d4299715a7e4
+body:
+  type: text
+  content: |-
+    {
+      "person_id": "b7e48546-df64-4c16-9fef-ec19f9134b1d",
+      "employee_id": "8d0b3ca4-2808-4718-9d3c-bf9f8499ae6d",
+      "division_id": "f37dc5a8-9c3a-4ac6-98fa-befc7063332b",
+      "authorize_with": "5da4c3e1-fdf3-4bda-acc8-33c99188f09a"
+    }
+scripts:
+  - type: beforeRequest
+    code: >
+      var current_step = environment["declaration_current_step"];
+
+      //According to business logic, phone number need to be verified in
+      Verification module.
+
+      var phone_number = '+380937404005'
+
+      // Генерирует случаиный инн/имя.
+
+      function makeRandom(regexp, n)
+
+      {
+          var text, possible, i;
+          if(regexp === "name")
+          {
+              text = "Test";
+              possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          else if(regexp === "tax")
+          {
+              text = "";
+              possible = "1234567890";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          else if(regexp === "mob")
+          {
+              text = "+380";
+              possible = "1234567890";
+              for(i=0; i < n; i++)
+              {
+                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+              }
+          }
+          return text;
+      }
+
+      //Присваиваем значения глобальным переменным
+
+
+      var randomName = makeRandom("name", 3);
+
+      postman.setEnvironmentVariable("declaration_first_name", randomName);
+
+      postman.setEnvironmentVariable("declaration_last_name", randomName);
+
+      postman.setEnvironmentVariable("declaration_second_name", randomName);
+    language: text/javascript
+order: 2000

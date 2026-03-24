@@ -1,0 +1,96 @@
+$kind: http-request
+url: "{{host}}/api/v2/dictionaries?name=eHealth/LOINC/observation_codes"
+method: GET
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: name
+    value: eHealth/ICD10/condition_codes
+    disabled: true
+  - key: name
+    value: eHealth/ICD10_AM/condition_codes
+    disabled: true
+  - key: name
+    value: POSITION
+    disabled: true
+  - key: name
+    value: SPECIALITY_TYPE
+    disabled: true
+  - key: name
+    value: DIVISION_TYPE
+    disabled: true
+  - key: name
+    value: HEALTHCARE_SERVICE_CATEGORIES
+    disabled: true
+  - key: name
+    value: LICENCE_TYPE
+    disabled: true
+  - key: name
+    value: specimen_types
+    disabled: true
+  - key: name
+    value: eHealth/observation_categories
+    disabled: true
+  - key: name
+    value: eHealth/LOINC/observation_codes
+  - key: name
+    value: specimen_statuses
+    disabled: true
+  - key: name
+    value: specimen_conditions
+    disabled: true
+  - key: name
+    value: eHealth/diagnostic_report_categories
+    disabled: true
+  - key: name
+    value: eHealth/procedure_status_reasons
+    disabled: true
+  - key: name
+    value: eHealth/resources
+    disabled: true
+  - key: name
+    value: eHealth/procedure_categories
+    disabled: true
+  - key: name
+    value: specimen_cancel_reasons
+    disabled: true
+  - key: name
+    value: DOCUMENT_RELATIONSHIP_TYPE
+    disabled: true
+  - key: name
+    value: DOCUMENT_TYPE_EXTENDED
+    disabled: true
+  - key: name
+    value: PROVIDING_CONDITION
+    disabled: true
+  - key: name
+    value: eHealth/care_plan_activity_goals
+    disabled: true
+  - key: name
+    value: eHealth/episode_types
+    disabled: true
+  - key: name
+    value: device_request_code_parameter
+    disabled: true
+  - key: name
+    value: eHealth/assistive_devices
+    disabled: true
+  - key: name
+    value: device_definition_classification_type
+    disabled: true
+  - key: name
+    value: eHealth/SNOMED/service_request_categories
+    disabled: true
+  - key: name
+    value: PARTY_VERIFICATION_STATUS_REASONS
+    disabled: true
+  - key: name
+    value: PERSONS_RELATIONSHIP_VERIFICATION_REASONS
+    disabled: true
+  - key: name
+    value: PERSON_VERIFICATION_STATUS_REASONS
+    disabled: true
+body:
+  type: json
+  content: ""
+order: 10000

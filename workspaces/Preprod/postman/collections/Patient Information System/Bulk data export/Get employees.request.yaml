@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{pis_host}}/api/pis/bulk/employees"
+method: GET
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+  Content-Type: application/json
+  api-key: "{{client_secret}}"
+queryParams:
+  - key: depth
+    value: "3"
+    disabled: true
+order: 5000

@@ -1,0 +1,117 @@
+$kind: http-request
+description: This method is used to change care team status.
+url: "{{host}}/api/care_teams/{{care_team_id}}/actions/change_status"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"status\": \"entered_in_error\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: |
+      pm.test("Change care team status handled", function () {
+          pm.response.to.have.status(200);
+
+          const response = pm.response.json();
+
+          if (!response?.data) {
+              console.error("❌ No data in response");
+              return;
+          }
+
+          const {
+              id,
+              status,
+              status_reason,
+              period_end
+          } = response.data;
+
+          // ------------------------------
+          //  Prepare backend payload
+          // ------------------------------
+          const updateData = {
+              id,
+              team_status: status
+          };
+
+          if (status === "entered_in_error") {
+              updateData.status_reason = status_reason ?? null;
+          }
+
+          if (status === "inactive") {
+              updateData.period_end = period_end ?? new Date().toISOString();
+          }
+
+          // suspended → тільки team_status (нічого не додаємо)
+
+          console.info("📤 Updating team status in backend:", updateData);
+
+          // ------------------------------
+          //  Send to backend
+          // ------------------------------
+          pm.sendRequest({
+              url: `http://localhost:3000/care-teams/${id}/status`,
+              method: "PATCH",
+              header: {
+                  "Content-Type": "application/json"
+              },
+              body: {
+                  mode: "raw",
+                  raw: JSON.stringify({
+                      data: updateData
+                  })
+              }
+          }, (err, res) => {
+              if (err) {
+                  console.error("❌ Backend error:", err);
+                  return;
+              }
+
+              console.log("✅ Team status updated:", res.json());
+          });
+      });
+    language: text/javascript
+  - type: beforeRequest
+    code: >
+      // Отримуємо статус з тіла запиту
+
+      let requestBody = pm.request.body.raw ? JSON.parse(pm.request.body.raw) :
+      {};
+
+      let status = requestBody.status;
+
+
+      // Створюємо копію об'єкту для модифікацій
+
+      let newBody = { ...requestBody };
+
+
+      if (status === "entered_in_error") {
+          // Додаємо поле status_reason
+          newBody.status_reason = "typo";
+      } else if (status === "inactive") {
+          // Додаємо поле period_end = сьогодні - 2 дні
+          let date = new Date();
+          date.setDate(date.getDate() - 2);
+
+          // Форматуємо дату у YYYY-MM-DD
+          let yyyy = date.getFullYear();
+          let mm = String(date.getMonth() + 1).padStart(2, '0'); // місяці з 0
+          let dd = String(date.getDate()).padStart(2, '0');
+          newBody.period_end = `${yyyy}-${mm}-${dd}`;
+      }
+
+
+      // Оновлюємо тіло запиту
+
+      pm.request.body.update(JSON.stringify(newBody));
+    language: text/javascript
+order: 6000

@@ -1,0 +1,489 @@
+$kind: http-request
+url: "{{host}}/api/v3/declaration_requests/{{declaration_request_id}}/actions/a\
+  pprove"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"verification_code\": 5265\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: >-
+      // -----------------------------
+
+      // ---- Config ----
+
+      // -----------------------------
+
+      const MASK_SENSITIVE = true;
+
+      const SENSITIVE_HEADERS = new Set([
+        'authorization', 'api-key', 'x-custom-psk', 'cookie'
+      ]);
+
+
+      const DROP_REQUEST_HEADERS = new Set([
+        'accept',
+        'accept-encoding',
+        'connection',
+        'content-type',
+        'postman-token',
+        'user-agent',
+        'content-length',
+        'host'
+      ]);
+
+
+      // -----------------------------
+
+      // ---- Helpers (log + render) ----
+
+      // -----------------------------
+
+      function esc(s) {
+        return String(s ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;');
+      }
+
+
+      function safeJsonParse(text) {
+        try { return JSON.parse(text); } catch { return null; }
+      }
+
+
+      function normalizeHeaders(headersObjOrArr) {
+        if (!headersObjOrArr) return {};
+        if (typeof headersObjOrArr?.toObject === 'function') return headersObjOrArr.toObject();
+
+        const out = {};
+        if (Array.isArray(headersObjOrArr)) {
+          headersObjOrArr.forEach(h => {
+            if (!h) return;
+            const k = (h.key || h.name || '').toString();
+            const v = (h.value ?? '').toString();
+            if (k) out[k] = v;
+          });
+          return out;
+        }
+
+        if (typeof headersObjOrArr === 'object') {
+          Object.keys(headersObjOrArr).forEach(k => out[k] = String(headersObjOrArr[k]));
+        }
+        return out;
+      }
+
+
+      function shouldDropHeader(k) {
+        const key = String(k || '').toLowerCase().trim();
+        if (!key) return true;
+        return DROP_REQUEST_HEADERS.has(key);
+      }
+
+
+      function maskHeaderValue(key, value) {
+        if (!MASK_SENSITIVE) return value;
+
+        const k = String(key || '').toLowerCase().trim();
+        if (!SENSITIVE_HEADERS.has(k)) return value;
+
+        if (k === 'authorization') return 'Bearer ***';
+        if (!value) return '***';
+
+        const tail = value.length > 6 ? value.slice(-6) : value;
+        return `***…${tail}`;
+      }
+
+
+      function formatRequestHeaders(headers) {
+        const obj = normalizeHeaders(headers);
+        const keys = Object.keys(obj)
+          .filter(k => !shouldDropHeader(k))
+          .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+        if (!keys.length) return '';
+        return keys.map(k => `${k}: ${maskHeaderValue(k, obj[k])}`).join('\n');
+      }
+
+
+      function getHost(url) {
+        if (!url) return '';
+        if (typeof url === 'string') {
+          try { return new URL(url).host; } catch { return ''; }
+        }
+        if (url.host) {
+          if (Array.isArray(url.host)) return url.host.join('.');
+          return String(url.host);
+        }
+        if (url.toString) {
+          try { return new URL(url.toString()).host; } catch { return ''; }
+        }
+        return '';
+      }
+
+
+      function getPathWithQuery(url) {
+        if (!url) return '/';
+
+        if (typeof url === 'string') {
+          try {
+            const u = new URL(url);
+            return u.pathname + (u.search || '');
+          } catch {
+            return url;
+          }
+        }
+
+        const path = Array.isArray(url.path) ? '/' + url.path.join('/') : (url.pathname || '/');
+
+        if (Array.isArray(url.query) && url.query.length) {
+          const qs = url.query
+            .filter(q => q && q.key)
+            .map(q => `${encodeURIComponent(q.key)}=${encodeURIComponent(q.value ?? '')}`)
+            .join('&');
+          return `${path}?${qs}`;
+        }
+
+        return path || '/';
+      }
+
+
+      function getPmRequestBody(pmReq) {
+        try {
+          const body = pmReq?.body;
+          if (!body) return '';
+          if (body.mode === 'raw') return body.raw || '';
+          return '';
+        } catch {
+          return '';
+        }
+      }
+
+
+      function stringifyMaybeJson(text) {
+        if (!text) return '';
+        const j = safeJsonParse(text);
+        return j ? JSON.stringify(j, null, 2) : text;
+      }
+
+
+      function responseDataMetaOnly(text) {
+        const j = safeJsonParse(text);
+        if (!j) return text;
+
+        const out = {
+          data: Object.prototype.hasOwnProperty.call(j, 'data') ? j.data : undefined,
+          error: Object.prototype.hasOwnProperty.call(j, 'error') ? j.error : undefined,
+          meta: Object.prototype.hasOwnProperty.call(j, 'meta') ? j.meta : undefined
+        };
+        Object.keys(out).forEach(k => out[k] === undefined && delete out[k]);
+
+        return JSON.stringify(out, null, 2);
+      }
+
+
+      function buildRawRequest({ method, url, headers, body }) {
+        const host = getHost(url);
+        const path = getPathWithQuery(url);
+
+        const headerText = formatRequestHeaders(headers);
+        const bodyText = body ? stringifyMaybeJson(body) : '';
+
+        return [
+          `${(method || 'GET').toUpperCase()} ${path || '/'} HTTP/1.1`,
+          host ? `Host: ${host}` : null,
+          headerText || null,
+          bodyText ? `\n${bodyText}` : null
+        ].filter(Boolean).join('\n');
+      }
+
+
+      function buildResponseBodyOnly({ bodyText }) {
+        return responseDataMetaOnly(bodyText || '');
+      }
+
+
+      function buildLogText() {
+        const title = pm.info.requestName || 'Main request';
+
+        const reqRaw = buildRawRequest({
+          method: pm.request.method,
+          url: pm.request.url,
+          headers: pm.request.headers,
+          body: getPmRequestBody(pm.request)
+        });
+
+        const resRaw = buildResponseBodyOnly({
+          bodyText: pm.response.text()
+        });
+
+        return [
+          `${title}\n`,
+          `[Request]\n\n${reqRaw}\n`,
+          `\n[Response]\n\n${resRaw}\n`
+        ].join('\n');
+      }
+
+
+      // --- Print-form helpers ---
+
+      function escapeAttr(s) {
+        // For iframe srcdoc="..."
+        return String(s ?? '')
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;");
+      }
+
+
+      function firstHtmlCandidate(...vals) {
+        for (const v of vals) {
+          if (typeof v !== 'string') continue;
+          const t = v.trim();
+          if (!t) continue;
+          // accept normal HTML and XHTML
+          if (t.startsWith('<') && (t.includes('<html') || t.startsWith('<!DOCTYPE') || t.startsWith('<?xml') || t.startsWith('<section') || t.startsWith('<div')))
+            return v;
+          // also accept if just starts with "<"
+          if (t.startsWith('<')) return v;
+        }
+        return null;
+      }
+
+
+      function extractHtmlFromResponse() {
+        const raw = pm.response.text();
+        const j = safeJsonParse(raw);
+        if (!j) return null;
+
+        const data = j.data || {};
+        const d2s = data.data_to_be_signed || {};
+
+        // Supports multiple API formats:
+        // 1) data.printout_form
+        // 2) data.printout_content
+        // 3) content
+        // 4) data.content
+        // + NEW:
+        // 5) data.data_to_be_signed.content
+        // 6) data.data_to_be_signed.printout_form
+        // 7) data.data_to_be_signed.printout_content
+        return firstHtmlCandidate(
+          data.printout_form,
+          data.printout_content,
+          j.content,
+          data.content,
+          d2s.content,
+          d2s.printout_form,
+          d2s.printout_content
+        );
+      }
+
+
+      // -----------------------------
+
+      // ---- Render BOTH: Print + Log ----
+
+      // -----------------------------
+
+      (function renderAll() {
+        const allText = buildLogText();
+
+        const htmlDoc = extractHtmlFromResponse();
+        const hasPrint = typeof htmlDoc === 'string' && htmlDoc.trim().startsWith('<');
+
+        const printPanel = hasPrint
+          ? `
+            <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px; flex-wrap:wrap;">
+              <button id="printBtn" style="padding:6px 10px; border:1px solid #d0d7de; background:#fff; border-radius:8px; cursor:pointer;">
+                Друк
+              </button>
+              <span style="color:#6b7280; font-size:12px;">Visualizer: <b>Print form</b> + Logs</span>
+            </div>
+
+            <iframe
+              id="printFrame"
+              style="width:100%; height:78vh; border:1px solid #d0d7de; border-radius:10px; background:white;"
+              srcdoc="${escapeAttr(htmlDoc)}"
+            ></iframe>
+          `
+          : `
+            <div style="padding:12px; border:1px solid #e5e7eb; border-radius:10px; background:#fff7ed;">
+              <div style="font-weight:700; margin-bottom:6px;">Print form not found in response</div>
+              <div style="color:#6b7280; font-size:12px;">
+                Expected one of:
+                <code>data.printout_form</code>, <code>data.printout_content</code>, <code>content</code>, <code>data.content</code>,
+                <code>data.data_to_be_signed.content</code>, <code>data.data_to_be_signed.printout_form</code>, <code>data.data_to_be_signed.printout_content</code>.
+              </div>
+            </div>
+          `;
+
+        const html = `
+      <style>
+        .wrap { display:flex; gap:12px; height: calc(100vh - 30px); }
+        .col { flex:1; min-width: 0; }
+        .card { border:1px solid #d0d7de; border-radius:12px; background:#fff; padding:10px; }
+        .title { font-weight:700; margin:0 0 10px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+        button { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+      </style>
+
+
+      <div class="wrap">
+        <!-- LEFT: Print form -->
+        <div class="col">
+          <div class="card">
+            <div class="title">Print form</div>
+            ${printPanel}
+          </div>
+        </div>
+
+        <!-- RIGHT: Logs -->
+        <div class="col">
+          <div class="card">
+            <div class="title">Request/Response log</div>
+
+            <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+              <button id="copyAllBtn">Copy all</button>
+              <span id="copyMsg" class="mono" style="font-size:12px;"></span>
+            </div>
+
+            <textarea id="allLogText" style="position:absolute; left:-9999px; top:-9999px;">${esc(allText)}</textarea>
+
+            <pre class="mono" style="margin:0; white-space:pre; font-size:12px; line-height:1.35; max-height: 78vh; overflow:auto;">${esc(allText)}</pre>
+          </div>
+        </div>
+      </div>
+
+
+      <script>
+        (function() {
+          const copyBtn = document.getElementById('copyAllBtn');
+          const msg = document.getElementById('copyMsg');
+          const ta  = document.getElementById('allLogText');
+
+          function setMsg(t) {
+            msg.textContent = t || '';
+            if (t) setTimeout(() => { msg.textContent = ''; }, 1200);
+          }
+
+          copyBtn.addEventListener('click', async () => {
+            try {
+              const text = ta.value || '';
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(text);
+                setMsg('Copied ✅');
+                return;
+              }
+              ta.focus(); ta.select();
+              const ok = document.execCommand('copy');
+              setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');
+            } catch (e) {
+              try {
+                ta.focus(); ta.select();
+                const ok = document.execCommand('copy');
+                setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');
+              } catch {
+                setMsg('Copy failed ❌');
+              }
+            }
+          });
+
+          const printBtn = document.getElementById('printBtn');
+          const iframe = document.getElementById('printFrame');
+          if (printBtn && iframe) {
+            printBtn.addEventListener('click', () => {
+              if (!iframe.contentWindow) return;
+              iframe.contentWindow.focus();
+              iframe.contentWindow.print();
+            });
+          }
+        })();
+      </script>
+
+      `;
+
+        pm.visualizer.set(html);
+      })();
+
+
+
+
+
+      const jsonData = pm.response.json();
+
+
+
+      function displayResponse(title, data) {
+          const html = `
+              <h1>${title}</h1>
+              <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          pm.visualizer.set(html);
+      }
+
+
+      if(jsonData.error){
+          logger.displayResponse('Error Approve Declaration Request Details', jsonData)
+      }
+
+
+
+
+      function sendDataToSign(dataToBeSigned) {
+          const localServerUrl = 'http://localhost:3000/receive-data';
+
+          const requestData = {
+              method: 'POST',
+              url: localServerUrl,
+              header: {
+                  'Content-Type': 'application/json',
+              },
+              body: {
+                  mode: 'raw',
+                  raw: JSON.stringify(dataToBeSigned) // Send the entire response or specific fields
+              }
+          };
+
+          // Send the request to the local server
+          pm.sendRequest(requestData, function (err, res) {
+              if (err) {
+                  console.error('Error sending request to local server:', err);
+              } else {
+                  console.log('Response from local server:', res.json());
+                  const responseBody = res.json();
+
+                  console.log(responseBody);
+
+                  pm.globals.set('declaration_signed_content', responseBody.signed_content)
+
+              //   displayResponse('Signed declaration data', responseBody);
+              }
+          });
+      }
+
+
+
+      pm.test(`Approve declaration request pass. Response status is
+      200  |  ${JSON.stringify(jsonData, null, 2)}`, function () {
+
+          pm.expect(pm.response.code).to.eql(200);
+
+          let dataToBeSigned = jsonData.data.data_to_be_signed;
+
+          dataToBeSigned.person.patient_signed = true;
+
+          console.log(dataToBeSigned.person.patient_signed)
+
+          sendDataToSign(dataToBeSigned);
+
+      })
+    language: text/javascript
+order: 2000

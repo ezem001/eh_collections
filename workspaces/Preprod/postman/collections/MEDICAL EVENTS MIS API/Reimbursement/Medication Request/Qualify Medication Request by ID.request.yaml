@@ -1,0 +1,137 @@
+$kind: http-request
+url: "{{host}}/api/medication_requests/{{medication_req_id}}/actions/qualify"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"division_id\": \"{{user_division_id}}\",\r
+
+    \  \"programs\": [\r
+
+    \    {\r
+
+    \      \"id\": \"b15d6bfa-66a4-40ba-9965-ef7712f48da9\"\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const res = pm.response.json();\r
+
+      \r
+
+      // --- Перевірки базових умов ---\r
+
+      pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Medication Request status is VALID\", () => {\r
+
+      \    const status = res.data?.[0]?.status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });\r
+
+      \r
+
+      // --- Визначаємо індекс participant ---\r
+
+      const participantIndex =
+      parseInt(pm.environment.get(\"participant_index\") || \"0\", 10);\r
+
+      const participant = res.data?.[0]?.participants?.[participantIndex];\r
+
+      \r
+
+      if (!participant) {\r
+
+      \    console.error(`❌ No participant found at index
+      ${participantIndex}`);\r
+
+      } else {\r
+
+      \    console.log(`✅ Using participant[${participantIndex}]`,
+      participant);\r
+
+      \r
+
+      \    // --- Збереження ідентифікаторів ---\r
+
+      \    pm.globals.set(\"program_id_qualify_medication_request\",
+      res.data[0].program_id);\r
+
+      \    pm.globals.set(\"medication_id_qualify_medication_request\",
+      participant.medication_id);\r
+
+      \    pm.globals.set(\"program_medication_id_qualify_medication_request\",
+      participant.id);\r
+
+      \r
+
+      \    // --- Отримання потрібних значень ---\r
+
+      \    const sellPrice = participant.consumer_price ?? 0;\r
+
+      \    const reimbursementAmount = participant.reimbursement_amount ?? 0;\r
+
+      \r
+
+      \    // --- Розрахунок суми продажу (якщо треба) ---\r
+
+      \    const sellAmount = sellPrice.toFixed(2);\r
+
+      \    const discountAmount = reimbursementAmount.toFixed(2);\r
+
+      \r
+
+      \    // --- Збереження у глобальні змінні для Create Medication Dispense
+      ---\r
+
+      \    pm.globals.set(\"sell_price_calc\", sellPrice.toFixed(2));\r
+
+      \    pm.globals.set(\"sell_amount_calc\", sellAmount);\r
+
+      \    pm.globals.set(\"discount_amount_calc\", discountAmount);\r
+
+      \r
+
+      \    console.info({\r
+
+      \        participantIndex,\r
+
+      \        sell_price_calc: sellPrice,\r
+
+      \        sell_amount_calc: sellAmount,\r
+
+      \        discount_amount_calc: discountAmount\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+order: 5000

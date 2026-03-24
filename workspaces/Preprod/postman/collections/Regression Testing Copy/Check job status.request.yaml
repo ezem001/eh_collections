@@ -1,0 +1,209 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/job/{{creatCompositionJobId}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: formdata
+  content: []
+scripts:
+  - type: afterResponse
+    code: "// // Розбираємо відповідь\r
+
+      // const resBody = pm.response.json();\r
+
+      \r
+
+      // // Перевіряємо статус-код\r
+
+      // pm.test(\"Status code is 200\", function () {\r
+
+      //     pm.response.to.have.status(200);\r
+
+      // });\r
+
+      \r
+
+      // // Перевіряємо статус DONE\r
+
+      // pm.test(\"Status is DONE\", function () {\r
+
+      //     pm.expect(resBody.data.status).to.eql(\"DONE\");\r
+
+      // });\r
+
+      \r
+
+      // // Якщо статус 200 і DONE, зберігаємо ID\r
+
+      // if (resBody.data.status === \"DONE\") {\r
+
+      //     // Знаходимо посилання на composition\r
+
+      //     const compositionLink = resBody.data.links.find(link =>
+      link.href.includes(\"composition/\"));\r
+
+      \r
+
+      //     if (compositionLink) {\r
+
+      //         // Витягуємо ID після composition/\r
+
+      //         const compositionId =
+      compositionLink.href.split(\"composition/\")[1];\r
+
+      \r
+
+      //         // Зберігаємо в глобальні змінні\r
+
+      //         pm.globals.set(\"JobCompositionID\", compositionId);\r
+
+      \r
+
+      //         // Виводимо для перевірки\r
+
+      //         console.log(\"Saved Composition ID:\", compositionId);\r
+
+      //     } else {\r
+
+      //         console.warn(\"No composition link found.\");\r
+
+      //     }\r
+
+      // }\r
+
+      \r
+
+      \r
+
+      // --- 1️⃣ Розбір відповіді ---\r
+
+      let resBody;\r
+
+      \r
+
+      console.log(pm.info.requestName)\r
+
+      try {\r
+
+      \    resBody = pm.response.json();\r
+
+      } catch (e) {\r
+
+      \    console.error(\"❌ Неможливо розпарсити JSON:\", e);\r
+
+      \    pm.execution.setNextRequest(pm.info.requestName);\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      // --- 2️⃣ Перевірки статусу коду ---\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // --- 3️⃣ Перевірки статусу виконання ---\r
+
+      pm.test(\"Status is DONE\", function () {\r
+
+      \    pm.expect(resBody.data.status).to.be.oneOf([\"DONE\", \"FAILED\",
+      \"ERROR\", \"PENDING\"]);\r
+
+      });\r
+
+      \r
+
+      // --- 4️⃣ Повторна логіка (до 5 спроб) ---\r
+
+      let retryCount = pm.globals.get(\"retryCount\") || 0;\r
+
+      retryCount = parseInt(retryCount);\r
+
+      \r
+
+      const status = resBody.data?.status;\r
+
+      \r
+
+      if (status !== \"DONE\" && retryCount < 5) {\r
+
+      \    retryCount++;\r
+
+      \    console.log(`⏳ Статус: ${status || \"невідомий\"}. Повтор через 3
+      секунди (#${retryCount})`);\r
+
+      \r
+
+      \    const wait = Date.now() + 3000;\r
+
+      \    while (Date.now() < wait) {} // блокує 3 секунди\r
+
+      \r
+
+      \    pm.globals.set(\"retryCount\", retryCount);\r
+
+      \    pm.execution.setNextRequest(pm.info.requestName);\r
+
+      \    return;\r
+
+      } else {\r
+
+      \    // Скидаємо лічильник, якщо DONE або досягнуто межу\r
+
+      \    pm.globals.set(\"retryCount\", 0);\r
+
+      }\r
+
+      \r
+
+      // --- 5️⃣ Якщо статус DONE — зберігаємо composition ID ---\r
+
+      if (status === \"DONE\") {\r
+
+      \    const compositionLink = resBody.data?.links?.find(link =>
+      link.href.includes(\"composition/\"));\r
+
+      \r
+
+      \    if (compositionLink) {\r
+
+      \        const compositionId =
+      compositionLink.href.split(\"composition/\")[1];\r
+
+      \        pm.globals.set(\"JobCompositionID\", compositionId);\r
+
+      \        console.log(\"✅ Saved Composition ID:\", compositionId);\r
+
+      \    } else {\r
+
+      \        console.warn(\"⚠️ No composition link found.\");\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      // --- 6️⃣ Якщо все завершено — переходимо до наступного запиту ---\r
+
+      if (status === \"DONE\") {\r
+
+      \    console.log(\"🎉 Job завершено успішно, переходимо до наступного
+      запиту.\");\r
+
+      \    // pm.execution.setNextRequest(\"Next request name\"); // <-- можеш
+      тут вказати назву наступного запиту\r
+
+      }\r\n"
+    language: text/javascript
+order: 85000

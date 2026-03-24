@@ -1,0 +1,101 @@
+$kind: http-request
+url: "{{host_demo}}/api/employees"
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+      "employee_request": {
+        "division_id": "747cf1e8-58be-46eb-8987-7d4ffd392958",
+        "legal_entity_id": "0aef3e63-2f65-40c3-9cfb-3a522698f90c",
+        "position": "P34",
+        "start_date": "2020-07-01",
+        "end_date": "2028-07-01",
+        "status": "NEW",
+        "employee_type": "SPECIALIST",
+        "party": {
+          "first_name": "Вячеслав",
+          "last_name": "Сирський",
+          "second_name": "Вікторович",
+          "birth_date": "1976-08-21",
+          "gender": "MALE",
+          "no_tax_id": false,
+          "tax_id": "2799207815",
+          "email": "vyacheslav.syrskyy@ehealth.gov.ua",
+          "documents": [
+            {
+              "type": "PASSPORT",
+              "number": "АА120518",
+              "issued_by": "Рокитнянським РВ ГУ МВС Київської області",
+              "issued_at": "2017-02-28"
+            }
+          ],
+          "phones": [
+            {
+              "type": "MOBILE",
+              "number": "+380675432635"
+            }
+          ],
+          "working_experience": 10,
+          "about_myself": "Закінчив всі можливі курси"
+        },
+        "specialist": {
+          "educations": [
+            {
+              "country": "UA",
+              "city": "Київ",
+              "institution_name": "Академія Богомольця",
+              "issued_date": "2017-02-28",
+              "diploma_number": "DD123543",
+              "degree": "MASTER",
+              "speciality": "Лікар-акушер-гінеколог"
+            }
+          ],
+          "qualifications": [
+            {
+              "type": "SPECIALIZATION",
+              "institution_name": "Академія Богомольця",
+              "speciality": "Акушер-гінеколог",
+              "issued_date": "2017-02-28",
+              "certificate_number": "2017-02-28",
+              "valid_to": "2027-02-28",
+              "additional_info": "додаткова інофрмація"
+            }
+          ],
+          "specialities": [
+            {
+              "speciality": "OBSTETRICS_AND_GYNECOLOGY",
+              "speciality_officio": true,
+              "level": "FIRST",
+              "qualification_type": "AWARDING",
+              "attestation_name": "Академія Богомольця",
+              "attestation_date": "2020-06-28",
+              "valid_to_date": "2027-02-28",
+              "certificate_number": "AB/21331"
+            }
+          ]
+        }
+      }
+    }
+scripts:
+  - type: afterResponse
+    code: >-
+      tests["Status code is 200"] = responseCode.code === 200;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData.data !== undefined){
+          var employee_request_id = jsonData.data.id;
+          postman.setEnvironmentVariable("employee_request_id_to_approve", employee_request_id);
+      } else {
+          postman.setEnvironmentVariable("employee_request_id_to_approve", "<<undefined>>");
+      }
+    language: text/javascript
+order: 5000

@@ -1,0 +1,14 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/api/pis/declaration_requests/{{pis_declaration_req_id}}
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: "{{client_secret}}"
+  - key: Authorization
+    value: Bearer {{pis_token}}
+order: 3000

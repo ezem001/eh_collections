@@ -1,0 +1,104 @@
+$kind: http-request
+url: "{{host}}/api/divisions"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "name": "_TEST_DIVISION_BULK",
+        "addresses": [
+            {
+                "apartment": "25",
+                "area": "АВТОНОМНА РЕСПУБЛІКА КРИМ",
+                "building": "15",
+                "country": "UA",
+                "region": "ЄВПАТОРІЯ",
+                "settlement": "ЗАОЗЕРНЕ",
+                "settlement_id": "6067b193-6e79-435c-a13b-e6b53e65cbdd",
+                "settlement_type": "SETTLEMENT",
+                "street": "вул. Ніжинська",
+                "street_type": "STREET",
+                "type": "RESIDENCE",
+                "zip": "02090"
+            }
+        ],
+        "phones": [
+            {
+                "type": "MOBILE",
+                "number": "+380447777777"
+            }
+        ],
+        "email": "outpatient.owner.le@gmail.com",
+        "working_hours": {
+            "mon": [
+                [
+                    "09.00",
+                    "13.00"
+                ],
+                [
+                    "14.00",
+                    "20.00"
+                ]
+            ],
+            "tue": [
+                [
+                    "09.00",
+                    "18.00"
+                ]
+            ],
+            "wed": [
+                [
+                    "09.00",
+                    "13.00"
+                ],
+                [
+                    "14.00",
+                    "20.00"
+                ]
+            ],
+            "thu": [
+                [
+                    "08.00",
+                    "08.35"
+                ]
+            ],
+            "fri": [
+                [
+                    "09.00",
+                    "15.00"
+                ]
+            ]
+        },
+        "type": "CLINIC",
+        "legal_entity_id": "69a8417a-aff1-48d8-b2e5-6290b309f97d",
+        "external_id": "3213213",
+        "location": {
+            "latitude": 45.1586,
+            "longitude": 33.2847
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData && jsonData.data) {
+          tests["Correct division status"] = jsonData.data.status === 'ACTIVE';
+          var division_id = jsonData.data.id;
+          postman.setEnvironmentVariable("division_id", division_id);
+      } else {
+          tests["Correct division status"] = false;
+          postman.setEnvironmentVariable("division_id", "<<undefined>>");
+      }
+
+      tests["working_hours"] = jsonData.data.working_hours;
+    language: text/javascript
+order: 1000

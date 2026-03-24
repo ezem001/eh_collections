@@ -1,0 +1,368 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \        \"attester\": [\r
+
+    \            {\r
+
+    \                \"mode\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"LEGAL\",\r
+
+    \                            \"system\": \"COMPOSITION_ATTESTER_MODES\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"party\": {\r
+
+    \                    \"display_value\": null,\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"code\": \"employee\",\r
+
+    \                                    \"system\": \"eHealth/resources\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"865a2e24-d1db-46ad-aff4-77b8e74fac60\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"author\": {\r
+
+    \            \"display_value\": null,\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"employee\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": \"string\"\r
+
+    \                },\r
+
+    \                \"value\": \"865a2e24-d1db-46ad-aff4-77b8e74fac60\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"category\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"code\": \"DRIVERS_GROUP2\",\r
+
+    \                    \"system\": \"COMPOSITION_CATEGORIES\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": null\r
+
+    \        },\r
+
+    \        \"context_episode_id\": \"a4af0f0a-37a0-46eb-817b-fae2701b095f\",\r
+
+    \        \"custodian\": {\r
+
+    \            \"display_value\": null,\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"legal_entity\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": \"string\"\r
+
+    \                },\r
+
+    \                \"value\": \"ee206b36-525c-4690-b7f1-a3702f069bdc\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"date\": \"2024-12-11T10:45:16.000000Z\",\r
+
+    \        \"encounter\": {\r
+
+    \            \"display_value\": null,\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"encounter\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": \"string\"\r
+
+    \                },\r
+
+    \                \"value\": \"0287dc50-0674-4da0-b5c6-d44fb48ae135\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"event\": [\r
+
+    \            {\r
+
+    \                \"code\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"DRIVERS_GROUP2_ADMIT\",\r
+
+    \                            \"system\": \"COMPOSITION_EVENTS\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"period\": {\r
+
+    \                    \"end\": \"2024-12-29T10:45:16Z\",\r
+
+    \                    \"start\": \"2024-12-11T10:45:16Z\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"explanatory_letter\": \"Comments about the reason to mark
+    composition in error\",\r
+
+    \        \"extension\": [],\r
+
+    \        \"id\": \"0d1c887c-e78e-4f93-bb32-46fd81521ebc\",\r
+
+    \        \"inform_with\": null,\r
+
+    \        \"relates_to\": [],\r
+
+    \        \"section\": [\r
+
+    \            {\r
+
+    \                \"author\": [\r
+
+    \                    {\r
+
+    \                        \"display_value\": null,\r
+
+    \                        \"identifier\": {\r
+
+    \                            \"type\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"code\": \"employee\",\r
+
+    \                                        \"system\": \"eHealth/resources\"\r
+
+    \                                    }\r
+
+    \                                ],\r
+
+    \                                \"text\": \"string\"\r
+
+    \                            },\r
+
+    \                            \"value\":
+    \"865a2e24-d1db-46ad-aff4-77b8e74fac60\"\r
+
+    \                        }\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"code\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\":
+    \"DRIVERS_DRIVERS_GROUP2_FREE_SECTION\",\r
+
+    \                            \"system\": \"COMPOSITION_SECTION_CODES\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"empty_reason\": null,\r
+
+    \                \"entry\": [\r
+
+    \                    {\r
+
+    \                        \"display_value\": null,\r
+
+    \                        \"identifier\": {\r
+
+    \                            \"type\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"code\": \"condition\",\r
+
+    \                                        \"system\": \"eHealth/resources\"\r
+
+    \                                    }\r
+
+    \                                ],\r
+
+    \                                \"text\": \"string\"\r
+
+    \                            },\r
+
+    \                            \"value\":
+    \"0287dc50-0674-4da0-b5c6-d44fb48ae135\"\r
+
+    \                        }\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"ordered_by\": null,\r
+
+    \                \"section\": [],\r
+
+    \                \"text\": null,\r
+
+    \                \"title\": \"DRIVERS_GROUP1_MAIN_SECTION\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"status\": \"ENTERED_IN_ERROR\",\r
+
+    \        \"status_reason\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"COMPOSITION_MARK_IN_ERROR_REASONS\",\r
+
+    \        \"code\": \"typo\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  },\r
+
+    \        \"title\": \"8910-8XT8-6H43-5KA6\",\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"code\": \"DRIVERS\",\r
+
+    \                    \"system\": \"COMPOSITION_TYPES\"\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"text\": null\r
+
+    \        }\r
+
+    \    }"
+order: 6000

@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/diagnostic_reports/?page=2&page_siz\
+  e=50&code=12345&encounter_id=09dc3ed7-2169-45d8-8fa3-d918c6839bf9&context_epi\
+  sode_id=09dc3ed7-2169-45d8-8fa3-d918c6839bf9&issued_from=1990-01-01&issued_to\
+  =2000-01-02"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  page: "2"
+  page_size: "50"
+  code: "12345"
+  encounter_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  context_episode_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  issued_from: 1990-01-01
+  issued_to: 2000-01-02
+order: 2000

@@ -1,0 +1,103 @@
+$kind: graphql-request
+name: Create Device Definition from Admin Panel
+url: https://admin.dev.edenlab.com.ua/graphql
+query: >-
+  mutation CreateDeviceDefinitionMutation($input: CreateDeviceDefinitionInput!)
+  {
+    createDeviceDefinition(input: $input) {
+      deviceDefinition {
+        id
+        __typename
+      }
+      __typename
+    }
+  }
+variables: |-
+  {
+    "input": {
+      "deviceNames": [
+        {
+          "type": "patient_reported",
+          "name": "Foooo"
+        }
+      ],
+      "description": "ААааа",
+      "partNumber": "34121231аа",
+      "classificationType": [
+        {
+          "system": "eHealth/resources",
+          "code": "device"
+        }
+      ],
+      "modelNumber": "Fooooo3",
+      "manufacturerName": "Oooof",
+      "manufacturerCountry": "AZ",
+      "parentId": "fe9d0b41-082d-4252-8ecf-dfb6d5af0638",
+      "note": "fff",
+      "packagingType": "unknown",
+      "packagingCount": 1,
+      "packagingUnit": "piece",
+      "properties": [
+        {
+          "type": {
+            "system": "device_request_code_parameter",
+            "code": "default"
+          },
+          "valueDecimal": 12.1
+        },
+        {
+          "type": {
+            "system": "device_request_code_parameter",
+            "code": "default"
+          },
+          "valueInteger": 10
+        },
+        {
+          "type": {
+            "system": "device_properties",
+            "code": "default"
+          },
+          "valueBoolean": false
+        },
+        {
+          "type": {
+            "system": "device_request_code_parameter",
+            "code": "default"
+          },
+          "valueString": "Myval is 12.1"
+        },
+        {
+          "type": {
+            "system": "device_request_code_parameter",
+            "code": "default"
+          },
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "Foo",
+                "code": "Auf"
+              }
+            ]
+          }
+        },
+        {
+          "type": {
+            "system": "device_request_code_parameter",
+            "code": "test_config_value"
+          },
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "Fooo",
+                "code": "Auf"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+headers:
+  Authorization: ""
+  Content-Type: application/json
+order: 38000

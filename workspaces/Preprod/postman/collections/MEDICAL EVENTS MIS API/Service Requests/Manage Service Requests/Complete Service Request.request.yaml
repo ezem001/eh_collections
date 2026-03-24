@@ -1,0 +1,66 @@
+$kind: http-request
+url: "{{host}}/api/service_requests/325afe09-14e6-40af-a3bc-2722a8ec2752/action\
+  s/complete"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+body:
+  type: text
+  content: "{\r
+
+    \  \"completed_with\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"diagnostic_report\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"73c6c4a7-aef8-4363-8f0c-479134f7356e\"\r
+
+    \    }\r
+
+    \  },\r
+
+    \  \"program_service\": {\r
+
+    \    \"identifier\": {\r
+
+    \      \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \          {\r
+
+    \            \"system\": \"eHealth/resources\",\r
+
+    \            \"code\": \"program_service\"\r
+
+    \          }\r
+
+    \        ]\r
+
+    \      },\r
+
+    \      \"value\": \"498b8a27-43a8-4123-8809-1a8239b32213\"\r
+
+    \    }\r
+
+    \  }\r
+
+    }"
+order: 4000

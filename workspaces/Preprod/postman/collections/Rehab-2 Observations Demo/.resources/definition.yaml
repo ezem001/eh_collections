@@ -1,0 +1,5 @@
+$kind: collection
+variables:
+  host_demo: https://api-demo.ehealth.gov.ua
+  mis_client_secret_demo: 30276e63617461a185ec
+  X-Custom-value_demo: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e

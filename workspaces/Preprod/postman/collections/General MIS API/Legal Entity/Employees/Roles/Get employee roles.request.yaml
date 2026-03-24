@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{host}}/api/employee_roles"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: healthcare_service_id
+    value: c4de7c6e-8c6e-4d4f-8843-6bc122977227
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: employee_id
+    value: "{{user_id}}"
+    disabled: true
+order: 3000

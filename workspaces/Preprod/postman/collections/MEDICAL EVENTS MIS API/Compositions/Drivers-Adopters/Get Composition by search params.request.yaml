@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/compositions/search?enc\
+  ounter_id={{encounter_extracted_id}}&title=8910-5KMP-HA35-M242"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+queryParams:
+  - key: encounter_id
+    value: "{{encounter_extracted_id}}"
+  - key: type
+    value: DRIVERS
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: title
+    value: 8910-5KMP-HA35-M242
+body:
+  type: text
+  content: ""
+order: 9000

@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/pharmacy/medication_requests/ffaa9aa5-75bb-4f3f-bbff-e40b464\
+  a08db/actions/block"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+body:
+  type: text
+  content: "{\r
+
+    \  \"block_reason\": \"перевищено норми відпуску\",\r
+
+    \  \"block_reason_code\": \"WRONG_QTY_DRUG\"\r
+
+    }"
+order: 11000

@@ -1,0 +1,115 @@
+$kind: http-request
+url: "{{host}}/api/device_requests/{{JobDeviceRequestID}}/actions/qualify"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "programs": [
+          {
+             "identifier":{
+                "type":{
+                   "coding":[
+                      {
+                         "system":"eHealth/resources",
+                         "code":"medical_program"
+                      }
+                   ]
+                },
+                "value":"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0"
+             }
+          }
+       ],
+       "location": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "division"
+                        }
+                    ]
+                },
+                "value": "{{user_division_id}}"
+            }
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Qualify Device Request Response status code is 200\", function
+      () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Qualify Device Request status is VALID\", function () {\r
+
+      \    const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      \r
+
+      \    pm.test(\"resData.data is an array\", function () {\r
+
+      \        pm.expect(Array.isArray(resData.data)).to.be.true;\r
+
+      \        const programId = resData.data[0].program_id;\r
+
+      \        console.info(programId)\r
+
+      \        pm.globals.set('program_id_qualify_device_request', programId);\r
+
+      \r
+
+      \        const deviceDefinitionId =
+      resData.data[0].participants[0].device_definition.id;\r
+
+      \        console.info(resData.data[0].participants[0].device_definition.i\
+      d)\r
+
+      \        pm.globals.set('device_definition_id_qualify_device_request',
+      deviceDefinitionId);\r
+
+      \r
+
+      \        // const medicationId =
+      resData.data[0].participants[0].medication_id;\r
+
+      \        // console.info(resData.data[0].participants[0].medication_id);\r
+
+      \        // pm.globals.set('medication_id_qualify_device_request',
+      medicationId);\r
+
+      \r
+
+      \        const porgramMedicationId = resData.data[0].participants[0].id;\r
+
+      \        console.info(resData.data[0].participants[0].id);\r
+
+      \        pm.globals.set('program_medication_id_qualify_device_request',
+      porgramMedicationId);\r
+
+      \    });\r
+
+      \r
+
+      });"
+    language: text/javascript
+order: 5000

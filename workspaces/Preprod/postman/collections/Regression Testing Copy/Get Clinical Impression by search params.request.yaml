@@ -1,0 +1,73 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/clinical_impressions?encoun\
+  ter_id={{jobEncounterID}}&episode_id={{jobEpisodeID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: encounter_id
+    value: "{{jobEncounterID}}"
+  - key: code
+    value: insulin_1
+    disabled: true
+  - key: status
+    value: completed
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: episode_id
+    value: "{{jobEpisodeID}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Clinical Impression by search params - PASS. Status code is
+      200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      \r
+
+      \    setTimeout(() => {\r
+
+      \        // Keys to restore\r
+
+      \        const keys = [\"access_token\", \"user_division_id\",
+      \"user_id\", \"user_legal_entity\"];\r
+
+      \r
+
+      \        // Restore saved values\r
+
+      \        keys.forEach(key => {\r
+
+      \            const original = pm.environment.get(`original_${key}`);\r
+
+      \            if (original !== undefined) {\r
+
+      \                pm.environment.set(key, original);\r
+
+      \            }\r
+
+      \        });\r
+
+      \r
+
+      \        // // Cleanup\r
+
+      \        keys.forEach(key => pm.environment.unset(`original_${key}`));\r
+
+      \r
+
+      \        console.log(\"♻ User credentials restored.\");\r
+
+      \    }, 5000)\r
+
+      });"
+    language: text/javascript
+order: 80000

@@ -1,0 +1,1625 @@
+$kind: http-request
+url: "{{host}}/api/v3/person_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "person": {
+            "names": [
+                {
+                    "first_name": "{{person_first_name}}",
+                    "last_name": "{{person_last_name}}",
+                    "language": "uk",
+                    "no_last_name": false
+                },
+                {
+                    "first_name": "{{en_person_first_name}}",
+                    "last_name": "{{en_person_last_name}}",
+                    "language": "en",
+                    "no_last_name": false
+                }
+            ],
+            "birth_date": "1988-11-25",
+            "birth_country": "Польща",
+            "birth_settlement": "Вроцлав",
+            "gender": "MALE",
+            "email": "test@mail.com",
+            "no_tax_id": null,
+            "secret": "secret",
+            "documents": [
+                {
+                    "type": "FOREIGN_PASSPORT",
+                    "number": "ЛО555687",
+                    "issued_by": "Poland",
+                    "issued_at": "2017-02-28",
+                    "expiration_date": "2027-02-28",
+                    "issuing_country": "PL"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "CZ",
+                    "settlement": "Wroclaw",
+                    "area": "Powiat Wroclawski",
+                    "region": "Malopolske wojewodztwo",
+                    "street": "Robotnicza",
+                    "building": "151/a",
+                    "apartment": "12/a",
+                    "zip": "14321"
+                }
+            ],
+            "phones": [
+                {
+                    "type": "MOBILE",
+                    "number": "+234953332256"
+                }
+            ],
+            "authentication_methods": [
+                {
+                    "type": "OTP",
+                    "phone_number": "+380502298393"
+                }
+            ],
+            "unzr": "19881125-02345",
+            "emergency_contact": {
+                "first_name": "Kovalski",
+                "last_name": "Jan",
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+380502298393"
+                    }
+                ]
+            }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true
+    }
+scripts:
+  - type: afterResponse
+    code: "// const { makeLogger } =
+      pm.require('@winter-zodiac-949553/login-display-response');\r
+
+      // const { displayResponse } = makeLogger(pm);\r
+
+      \r
+
+      // // displayResponse можеш не використовувати — просто лог буде\r
+
+      \r
+
+      \r
+
+      \r
+
+      function initLogger(pm) {\r
+
+      \    const MASK = true;\r
+
+      \    const SENSITIVE = new Set(['authorization', 'api-key',
+      'x-custom-psk', 'cookie']);\r
+
+      \    const DROP = new Set(['accept', 'accept-encoding', 'connection',
+      'content-type', 'postman-token', 'user-agent', 'content-length',
+      'host']);\r
+
+      \    const KEY = '__viz_sections__';\r
+
+      \r
+
+      \    const jparse = t => { try { return JSON.parse(t); } catch { return
+      null; } };\r
+
+      \    const esc = s => String(s ?? '').replaceAll('&',
+      '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');\r
+
+      \r
+
+      \    const headersObj = h => {\r
+
+      \        if (!h) return {};\r
+
+      \        if (h.toObject) return h.toObject();\r
+
+      \        if (Array.isArray(h)) return h.reduce((a, x) => { const k =
+      (x?.key || x?.name || '') + ''; if (k) a[k] = String(x?.value ?? '');
+      return a; }, {});\r
+
+      \        if (typeof h === 'object') return
+      Object.fromEntries(Object.entries(h).map(([k, v]) => [k, String(v)]));\r
+
+      \        return {};\r
+
+      \    };\r
+
+      \r
+
+      \    const mask = (k, v) => {\r
+
+      \        k = String(k || '').toLowerCase().trim();\r
+
+      \        if (!MASK || !SENSITIVE.has(k)) return v;\r
+
+      \        if (k === 'authorization') return 'Bearer ***';\r
+
+      \        v = String(v ?? '');\r
+
+      \        return v ? `***…${v.slice(-6)}` : '***';\r
+
+      \    };\r
+
+      \r
+
+      \    const fmtHeaders = h => Object.entries(headersObj(h))\r
+
+      \        .filter(([k]) => k &&
+      !DROP.has(String(k).toLowerCase().trim()))\r
+
+      \        .sort((a, b) =>
+      a[0].toLowerCase().localeCompare(b[0].toLowerCase()))\r
+
+      \        .map(([k, v]) => `${k}: ${mask(k, v)}`)\r
+
+      \        .join('\\n');\r
+
+      \r
+
+      \    const hostOf = u => {\r
+
+      \        if (!u) return '';\r
+
+      \        try { return new URL(typeof u === 'string' ? u :
+      u.toString()).host; }\r
+
+      \        catch { return Array.isArray(u?.host) ? u.host.join('.') :
+      String(u?.host || ''); }\r
+
+      \    };\r
+
+      \r
+
+      \    const pathQ = u => {\r
+
+      \        if (!u) return '/';\r
+
+      \        const host = hostOf(u);\r
+
+      \        try {\r
+
+      \            const s = typeof u === 'string' ? u : u.toString();\r
+
+      \            const abs = s.startsWith('http') ? s :
+      `https://${host}${s.startsWith('/') ? '' : '/'}${s}`;\r
+
+      \            const U = new URL(abs);\r
+
+      \            return U.pathname + (U.search || '');\r
+
+      \        } catch {\r
+
+      \            const p = Array.isArray(u?.path) ? '/' + u.path.join('/') :
+      (u?.pathname || '/');\r
+
+      \            const q = u?.query;\r
+
+      \            if (Array.isArray(q) && q.length) {\r
+
+      \                const qs = q.filter(x => x?.key).map(x =>
+      `${encodeURIComponent(x.key)}=${encodeURIComponent(x.value ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            if (q && typeof q === 'object') {\r
+
+      \                const qs = Object.entries(q).filter(([k]) => k).map(([k,
+      v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            return p || '/';\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    const maybeJson = t => { const j = jparse(t); return j ?
+      JSON.stringify(j, null, 2) : String(t ?? ''); };\r
+
+      \r
+
+      \    const respSlice = t => {\r
+
+      \        const j = jparse(t);\r
+
+      \        if (!j) return String(t ?? '');\r
+
+      \        const o = {};\r
+
+      \        if ('data' in j) o.data = j.data;\r
+
+      \        if ('error' in j) o.error = j.error;\r
+
+      \        if ('meta' in j) o.meta = j.meta;\r
+
+      \        return JSON.stringify(o, null, 2);\r
+
+      \    };\r
+
+      \r
+
+      \    const get = () => jparse(pm.variables.get(KEY)) || [];\r
+
+      \    const set = s => pm.variables.set(KEY, JSON.stringify(s));\r
+
+      \    const add = sec => { const s = get(); s.push(sec); set(s); };\r
+
+      \r
+
+      \    const buildText = () => get().map(sec => {\r
+
+      \        return
+      `${sec.title}\\n\\n[Request]\\n\\n${sec.req}\\n\\n[Response]\\n\\n${sec.r\
+      es}${sec.err ? `\\n\\n[Error]\\n\\n${sec.err}` : ''}\\n`;\r
+
+      \    }).join('\\n' + '-'.repeat(46) + '\\n\\n');\r
+
+      \r
+
+      \    // extra blocks (displayResponse + generatedJson) are rendered from
+      these globals\r
+
+      \    let __extraHtml = '';\r
+
+      \    let __genText = '';\r
+
+      \r
+
+      \    const render = () => {\r
+
+      \        const text = buildText();\r
+
+      \        pm.visualizer.set(`\r
+
+      <div
+      style=\"display:flex;gap:8px;align-items:center;margin-bottom:8px;\">\r
+
+      \  <button id=\"copyLogBtn\">Copy log</button>\r
+
+      \  ${__genText ? `<button id=\"copyGenBtn\">Copy Generated JSON</button>`
+      : ``}\r
+
+      \  <span id=\"m\"
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;\"></span>\r
+
+      </div>\r
+
+      \r
+
+      <textarea id=\"logTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(text)}</texta\
+      rea>\r
+
+      <textarea id=\"genTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(__genText ||
+      '')}</textarea>\r
+
+      \r
+
+      <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(text)}</pre>\r
+
+      \r
+
+      <div id=\"extra\" style=\"margin-top:10px;\">${__extraHtml || ''}</div>\r
+
+      \r
+
+      <script>\r
+
+      (() => {\r
+
+      \  const m = document.getElementById('m');\r
+
+      \  const logTa = document.getElementById('logTa');\r
+
+      \  const genTa = document.getElementById('genTa');\r
+
+      \r
+
+      \  const msg=(x)=>{m.textContent=x||''; if(x)
+      setTimeout(()=>m.textContent='',1200);};\r
+
+      \r
+
+      \  async function copyFrom(ta){\r
+
+      \    try{\r
+
+      \      const v = ta.value || '';\r
+
+      \      if(!v) return msg('Nothing to copy');\r
+
+      \      if(navigator.clipboard?.writeText){ await
+      navigator.clipboard.writeText(v); return msg('Copied ✅'); }\r
+
+      \      ta.focus(); ta.select();\r
+
+      \      msg(document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \    }catch(e){\r
+
+      \      try{ ta.focus(); ta.select(); msg(document.execCommand('copy') ?
+      'Copied ✅' : 'Copy failed ❌'); }\r
+
+      \      catch{ msg('Copy failed ❌'); }\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  document.getElementById('copyLogBtn').onclick = () =>
+      copyFrom(logTa);\r
+
+      const genBtn = document.getElementById('copyGenBtn');\r
+
+      if (genBtn) genBtn.onclick = () => copyFrom(genTa);\r
+
+      \r
+
+      })();\r
+
+      </script>\r
+
+      `);\r
+
+      \    };\r
+
+      \r
+
+      \    const rawReq = (method, url, headers, bodyRaw) => {\r
+
+      \        const u = url;\r
+
+      \        return [\r
+
+      \            `${String(method || 'GET').toUpperCase()} ${pathQ(u) || '/'}
+      HTTP/1.1`,\r
+
+      \            hostOf(u) ? `Host: ${hostOf(u)}` : null,\r
+
+      \            fmtHeaders(headers) || null,\r
+
+      \            bodyRaw ? `\\n${maybeJson(bodyRaw)}` : null\r
+
+      \        ].filter(Boolean).join('\\n');\r
+
+      \    };\r
+
+      \r
+
+      \    // ===== INIT MAIN (once) =====\r
+
+      \    set([]);\r
+
+      \    add({\r
+
+      \        title: pm.info.requestName || 'Main request',\r
+
+      \        req: rawReq(pm.request.method, pm.request.url,
+      pm.request.headers, pm.request.body?.mode === 'raw' ? pm.request.body.raw
+      : ''),\r
+
+      \        res: respSlice(pm.response.text())\r
+
+      \    });\r
+
+      \    render();\r
+
+      \r
+
+      \    // ===== Public API =====\r
+
+      \    const api = {\r
+
+      \r
+
+      \        // ---- extra block: generic (does NOT create
+      [Request]/[Response]) ----\r
+
+      \        displayResponse(title, data) {\r
+
+      \            const safe = esc(JSON.stringify(data ?? {}, null, 2));\r
+
+      \            const block = `\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">${esc(title || 'Result')}</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${safe}</pre>\r
+
+      </div>`;\r
+
+      \            __extraHtml = block + (__genText ?
+      __extraHtml.replace(/^[\\s\\S]*?<!--GEN-->/, '') : '');\r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        // ---- log section for pm.sendRequest (creates
+      [Request]/[Response]) ----\r
+
+      \        logSubRequest({ title, req, res, err }) {\r
+
+      \            const reqRaw = rawReq(\r
+
+      \                req?.method,\r
+
+      \                req?.url,\r
+
+      \                req?.header || req?.headers,\r
+
+      \                req?.body?.raw || (typeof req?.body === 'string' ?
+      req.body : '')\r
+
+      \            );\r
+
+      \r
+
+      \            let resText = '';\r
+
+      \            try { resText = res?.text?.() || ''; } catch { }\r
+
+      \            if (!resText) { try { const j = res?.json?.(); if (j) resText
+      = JSON.stringify(j); } catch { } }\r
+
+      \r
+
+      \            add({\r
+
+      \                title: title || 'Sub request',\r
+
+      \                req: reqRaw,\r
+
+      \                res: respSlice(resText),\r
+
+      \                err: err?.message || (err ? String(err) : '')\r
+
+      \            });\r
+
+      \r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        /**\r
+
+      \         * ---- Generated JSON block (separate, does NOT add sections)
+      ----\r
+
+      \         * Default: takes pm.response.json().data and applies
+      entered_in_error payload.\r
+
+      \         * You can override: showGeneratedJson(sourceObj)\r
+
+      \         */\r
+
+      \        showGeneratedJson(sourceObj) {\r
+
+      \            let parsed = sourceObj;\r
+
+      \            if (!parsed) {\r
+
+      \                try { parsed = pm.response.json(); } catch { parsed =
+      null; }\r
+
+      \            }\r
+
+      \r
+
+      \            let text = '';\r
+
+      \            if (!parsed || typeof parsed !== 'object') {\r
+
+      \                text = 'Response is not valid JSON — cannot generate
+      finalJson.';\r
+
+      \            } else if (!parsed.data || typeof parsed.data !== 'object')
+      {\r
+
+      \                text = 'Response JSON has no \"data\" object — cannot
+      generate finalJson.';\r
+
+      \            } else {\r
+
+      \                const resData = parsed.data;\r
+
+      \                const finalJson = {\r
+
+      \                    ...resData,\r
+
+      \                    status: 'new',\r
+
+      \                    status_reason: {\r
+
+      \                        coding: [{ system:
+      'eHealth/care_plan_cancel_reasons', code: 'entered_in_error' }]\r
+
+      \                    }\r
+
+      \                };\r
+
+      \                text = JSON.stringify(finalJson, null, 2);\r
+
+      \            }\r
+
+      \r
+
+      \            __genText = text;\r
+
+      \r
+
+      \            const genBlock = `\r
+
+      <!--GEN-->\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">Згенерований JSON</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(__genText)}</pr\
+      e>\r
+
+      </div>`;\r
+
+      \r
+
+      \            // append generated block AFTER other extra blocks (if any)\r
+
+      \            __extraHtml = (__extraHtml || '') + genBlock;\r
+
+      \            render();\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    return api;\r
+
+      }\r
+
+      \r
+
+      \r
+
+      const logger = initLogger(pm);\r
+
+      \r
+
+      // ===================== YOUR LOGIC BELOW =====================\r
+
+      \r
+
+      const resBody = pm.response.json();\r
+
+      \r
+
+      // Save id\r
+
+      if (resBody?.data?.id) {\r
+
+      \    pm.globals.set(\"Person_req_id\", resBody.data.id);\r
+
+      }\r
+
+      \r
+
+      // Function to handle each URL request\r
+
+      function processUrl(url, additionalData) {\r
+
+      \    console.log(url, 'urls loop');\r
+
+      \r
+
+      \    pm.sendRequest({\r
+
+      \        url,\r
+
+      \        method: 'PUT',\r
+
+      \        header: { 'Content-Type': 'image/jpeg' },\r
+
+      \        body: { mode: 'raw', raw: JSON.stringify(additionalData) }\r
+
+      \    }, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Request failed:', err);\r
+
+      \            logger.displayResponse('Request Error', { error: err.message,
+      url });\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        const contentType = res.headers.get('Content-Type') || '';\r
+
+      \        console.log('PUT Content-Type:', contentType);\r
+
+      \r
+
+      \        if (contentType.includes('text/plain')) {\r
+
+      \            const responseData = res.text();\r
+
+      \            // якщо хочеш показувати успіхи — розкоментуй:\r
+
+      \            logger.displayResponse('Document sign successful', { url,
+      response: responseData });\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        // unknown formats\r
+
+      \        const responseData = res.text();\r
+
+      \        logger.displayResponse('Unknown Response Format', { url,
+      contentType, response: responseData });\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      const resData = pm.response.json();\r
+
+      \r
+
+      // Extract URLs\r
+
+      const documents = resData?.urgent?.documents || [];\r
+
+      const urls = documents.map(doc => doc.url).filter(Boolean);\r
+
+      \r
+
+      const additionalData = { row: '0JTQvtC60YPQvNC10L3Rgg==' };\r
+
+      \r
+
+      // Process each URL\r
+
+      urls.forEach(url => processUrl(url, additionalData));\r
+
+      \r
+
+      // Tests + globals\r
+
+      pm.test(\"Create peson request v2 Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      \r
+
+      \    if (!resBody?.data?.id) throw new Error(\"Person Request: id not
+      found\");\r
+
+      \r
+
+      \    let requestBody = {};\r
+
+      \    try { requestBody = JSON.parse(pm.request.body.raw); } catch (e) {
+      }\r
+
+      \r
+
+      \    if (requestBody?.person?.id) {\r
+
+      \        pm.globals.set(\"UPDATE_PERSON_RESPONSE\",
+      JSON.stringify(resBody.data));\r
+
+      \        pm.globals.set(\"PERSON_OPERATION\", \"update\");\r
+
+      \    } else {\r
+
+      \        pm.globals.set(\"CREATE_PERSON_RESPONSE\",
+      JSON.stringify(resBody.data));\r
+
+      \        pm.globals.set(\"PERSON_OPERATION\", \"create\");\r
+
+      \    }\r
+
+      \r
+
+      \    pm.globals.set(\"PERSON_REQUEST_ID\", resBody.data.id);\r
+
+      });\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "function generateRandomTaxId() {\r
+
+      \    let taxId = '';\r
+
+      \    for (let i = 0; i < 10; i++) {\r
+
+      \        taxId += Math.floor(Math.random() * 10); // Generate a random
+      digit\r
+
+      \    }\r
+
+      \    return taxId;\r
+
+      }\r
+
+      \r
+
+      // Generate a random tax ID\r
+
+      const randomTaxId = generateRandomTaxId();\r
+
+      \r
+
+      // Set the random tax ID in an environment variable\r
+
+      pm.globals.set('person_tax_id', randomTaxId);\r
+
+      \r
+
+      // Optional: Log the generated tax ID for debugging\r
+
+      console.log('Generated tax ID:', randomTaxId);\r
+
+      \r
+
+      \r
+
+      // === 🧩 Зчитуємо body запиту ===\r
+
+      let rawBody = pm.request.body.raw;\r
+
+      let body = JSON.parse(rawBody);\r
+
+      \r
+
+      \r
+
+      let gender = body?.person?.gender?.toUpperCase() || \"MALE\"; // якщо не
+      задано — MALE\r
+
+      \r
+
+      // 💪 Чоловічі імена (100+)\r
+
+      const maleNames = [\r
+
+      \    \"Олександр\", \"Віктор\", \"Андрій\", \"Дмитро\", \"Іван\",
+      \"Сергій\", \"Микола\", \"Олег\", \"Петро\", \"Юрій\",\r
+
+      \    \"Богдан\", \"Володимир\", \"Роман\", \"Тарас\", \"Максим\",
+      \"Ігор\", \"Руслан\", \"Вадим\", \"Степан\", \"Антон\",\r
+
+      \    \"Василь\", \"Артур\", \"Євген\", \"Павло\", \"Михайло\",
+      \"Ярослав\", \"Леонід\", \"Артем\", \"Кирило\", \"Станіслав\",\r
+
+      \    \"Борис\", \"Денис\", \"Олексій\", \"Ростислав\", \"Любомир\",
+      \"Святослав\", \"Григорій\", \"Назар\", \"Федір\", \"Марко\",\r
+
+      \    \"Платон\", \"Валентин\", \"Данило\", \"Андріан\", \"Лука\",
+      \"Віталій\", \"Остап\", \"Тимофій\", \"Матвій\", \"Євгеній\",\r
+
+      \    \"Арсен\", \"Давид\", \"Леон\", \"Захар\", \"Омелян\", \"Пилип\",
+      \"Георгій\", \"Корній\", \"Тимур\", \"Мирослав\",\r
+
+      \    \"Даніїл\", \"Богуслав\", \"Радомир\", \"Тихон\", \"Єлисей\",
+      \"Святогор\", \"Родіон\", \"Анатолій\", \"Валерій\",\r
+
+      \    \"Костянтин\", \"Онуфрій\", \"Сава\", \"Яків\", \"Филип\",
+      \"Артемій\", \"Марк\", \"Адам\", \"Ренат\", \"Адріан\", \"Юліан\",\r
+
+      \    \"В’ячеслав\", \"Рустам\", \"Владислав\", \"Мирон\", \"Семен\",
+      \"Арсеній\", \"Єремій\", \"Фрол\", \"Гліб\", \"Тиміш\",\r
+
+      \    \"Ілля\", \"Зіновій\", \"Єрофій\", \"Авдій\", \"Агап\", \"Акакій\",
+      \"Альберт\", \"Анатолій\", \"Артемон\", \"Аскольд\",\r
+
+      \    \"Бенедикт\", \"Берест\", \"Божидар\", \"Братислав\", \"Валеріан\",
+      \"Варфоломій\", \"Велемир\", \"Венедикт\",\r
+
+      \    \"Веремій\", \"Видубич\", \"Віссаріон\", \"Влас\", \"Всеволод\",
+      \"Гаврило\", \"Галактіон\", \"Герман\", \"Гнат\",\r
+
+      \    \"Гордій\", \"Гостомисл\", \"Дем’ян\", \"Доброгост\", \"Добромир\",
+      \"Євлампій\", \"Єпіфан\", \"Ждан\", \"Златослав\",\r
+
+      \    \"Зосим\", \"Іларіон\", \"Інокентій\", \"Ісидор\", \"Казимир\",
+      \"Калистрат\", \"Карпо\", \"Клим\", \"Кузьма\",\r
+
+      \    \"Лаврентій\", \"Лонгин\", \"Любослав\", \"Макар\", \"Мануїл\",
+      \"Мефодій\", \"Модест\", \"Никифор\", \"Ніл\",\r
+
+      \    \"Октавіан\", \"Опанас\", \"Орест\", \"Осип\", \"Пантелеймон\",
+      \"Парфеній\", \"Прокіп\", \"Прохор\", \"Радослав\",\r
+
+      \    \"Ратибор\", \"Савелій\", \"Северин\", \"Сильвестр\", \"Созонт\",
+      \"Спиридон\", \"Тадеуш\", \"Твердислав\",\r
+
+      \    \"Терентій\", \"Трифон\", \"Устим\", \"Фадей\", \"Феофан\",
+      \"Феофіл\", \"Харитон\", \"Хома\", \"Цезар\",\r
+
+      \    \"Чеслав\", \"Ярема\", \"Яросвіт\", \"Яромир\", \"Алан\", \"Алекс\",
+      \"Алі\", \"Бен\", \"Богдан-Ярослав\", \"Бруно\", \"Вільям\", \"Генрі\",
+      \"Дамір\", \"Едвард\", \"Еміль\", \"Ерік\", \"Жан\", \"Ібрагім\",
+      \"Каміль\", \"Карл\", \"Кевін\", \"Лукас\", \"Майкл\", \"Мартін\",\r
+
+      \    \"Нік\", \"Ніколас\", \"Омар\", \"Раян\", \"Самуель\", \"Себастіан\",
+      \"Теодор\", \"Томас\", \"Фелікс\", \"Юсуф\",\r
+
+      \    \"Агафон\", \"Азарій\", \"Акінфій\", \"Аліпій\", \"Амвросій\",
+      \"Андронік\", \"Антип\", \"Арефій\", \"Аркадій\",\r
+
+      \    \"Афанасій\", \"Болеслав\", \"Валеріон\", \"Веніамін\", \"Владлен\",
+      \"Гедеон\", \"Глікерій\", \"Діонісій\",\r
+
+      \    \"Євдоким\", \"Єрофей\", \"Зиновій\", \"Іпатій\", \"Кипріан\",
+      \"Леонтій\", \"Мелетій\", \"Назарій\",\r
+
+      \    \"Порфирій\", \"Софроній\", \"Теофан\", \"Фотій\", \"Ювеналій\"\r
+
+      ];\r
+
+      \r
+
+      // 💃 Жіночі імена (100+)\r
+
+      const femaleNames = [\r
+
+      \    \"Олена\", \"Наталія\", \"Ірина\", \"Марина\", \"Тетяна\",
+      \"Світлана\", \"Анна\", \"Юлія\", \"Катерина\", \"Оксана\",\r
+
+      \    \"Вікторія\", \"Людмила\", \"Надія\", \"Галина\", \"Алла\", \"Інна\",
+      \"Лариса\", \"Ольга\", \"Марія\", \"Ніна\",\r
+
+      \    \"Зоряна\", \"Яна\", \"Дарина\", \"Анастасія\", \"Валентина\",
+      \"Єлизавета\", \"Софія\", \"Ксенія\", \"Лілія\", \"Вероніка\",\r
+
+      \    \"Олеся\", \"Аліна\", \"Ангеліна\", \"Леся\", \"Василина\",
+      \"Марта\", \"Юстина\", \"Злата\", \"Роксолана\", \"Мілана\",\r
+
+      \    \"Поліна\", \"Емілія\", \"Соломія\", \"Христина\", \"Орися\",
+      \"Владислава\", \"Мирослава\", \"Одарка\", \"Дарія\", \"Ілона\",\r
+
+      \    \"Любава\", \"Сніжана\", \"Ганна\", \"Єва\", \"Ярослава\",
+      \"Меланія\", \"Ліза\", \"Агата\", \"Стефанія\", \"Руслана\",\r
+
+      \    \"Валерія\", \"Неля\", \"Аделіна\", \"Каріна\", \"Олександра\",
+      \"Зінаїда\", \"Євдокія\", \"Раїса\", \"Маргарита\",\r
+
+      \    \"Лідія\", \"Уляна\", \"Елеонора\", \"Таїсія\", \"Віра\", \"Любов\",
+      \"Ніка\", \"Євгенія\", \"Ярина\", \"Пелагея\",\r
+
+      \    \"Тамара\", \"Сусанна\", \"Емма\", \"Аліса\", \"Лада\", \"Агнеса\",\r
+
+      \r
+
+      \    // традиційні та рідковживані\r
+
+      \    \"Августа\", \"Агафія\", \"Агрипина\", \"Аделаїда\", \"Акіліна\",
+      \"Алевтина\", \"Альбіна\", \"Амалія\",\r
+
+      \    \"Анастасія-Анна\", \"Антоніна\", \"Аполлінарія\", \"Аріадна\",
+      \"Аркадія\", \"Афанасія\", \"Бажана\",\r
+
+      \    \"Берегиня\", \"Богдана\", \"Божена\", \"Болеслава\", \"Варвара\",
+      \"Велеслава\", \"Веронія\",\r
+
+      \    \"Вишеслава\", \"Глафіра\", \"Горислава\", \"Дарослава\",
+      \"Добромила\", \"Домініка\",\r
+
+      \    \"Єфросинія\", \"Ждана\", \"Живослава\", \"Звенислава\",
+      \"Златослава\",\r
+
+      \    \"Іларія\", \"Ілларія\", \"Інеса\", \"Іоанна\", \"Ірена\",
+      \"Казимира\", \"Калина\",\r
+
+      \    \"Капітоліна\", \"Квітослава\", \"Клавдія\", \"Клементина\",
+      \"Корнелія\", \"Красимира\",\r
+
+      \    \"Лаврентія\", \"Леокадія\", \"Леоніла\", \"Лукерія\", \"Любомира\",
+      \"Магдалина\",\r
+
+      \    \"Мальвіна\", \"Маріанна\", \"Марцелла\", \"Милана-Зоря\",
+      \"Милислава\", \"Модеста\",\r
+
+      \    \"Надислава\", \"Нектарія\", \"Неоніла\", \"Олімпіада\", \"Павліна\",
+      \"Параскева\",\r
+
+      \    \"Платоніда\", \"Поліксена\", \"Радислава\", \"Ростислава\",
+      \"Святослава\",\r
+
+      \    \"Серафима\", \"Софронія\", \"Станіслава\", \"Текля\", \"Теодозія\",
+      \"Теофанія\",\r
+
+      \    \"Февронія\", \"Феодосія\", \"Феофіла\", \"Харитина\", \"Хівря\",
+      \"Цвітана\",\r
+
+      \    \"Чеслава\", \"Юліанна\", \"Явдоха\", \"Яромила\", \"Ясміна\",\r
+
+      \r
+
+      \    // сучасні / інтернаціональні\r
+
+      \    \"Ава\", \"Адріана\", \"Айла\", \"Аманда\", \"Аміна\", \"Аріана\",
+      \"Беатріс\", \"Белла\",\r
+
+      \    \"Бріана\", \"Віола\", \"Глорія\", \"Даяна\", \"Джулія\", \"Еліза\",
+      \"Елла\", \"Еллі\",\r
+
+      \    \"Естер\", \"Жасмін\", \"Ізабелла\", \"Каміла\", \"Кіра\", \"Лана\",
+      \"Леа\", \"Ліана\",\r
+
+      \    \"Лорен\", \"Майя\", \"Меліса\", \"Міа\", \"Наомі\", \"Нора\",
+      \"Олівія\", \"Пейдж\",\r
+
+      \    \"Ребекка\", \"Ріана\", \"Сабріна\", \"Сандра\", \"Селена\",
+      \"Сієна\", \"Скарлет\",\r
+
+      \    \"Стелла\", \"Тіффані\", \"Флора\", \"Хлоя\", \"Шарлотта\",
+      \"Еліна\",\r
+
+      \r
+
+      \    // церковні та історичні\r
+
+      \    \"Анфіса\", \"Васса\", \"Домна\", \"Єлисавета\", \"Зоя\", \"Іраїда\",
+      \"Кіраїя\",\r
+
+      \    \"Лікія\", \"Мавра\", \"Марфа\", \"Мелитина\", \"Нонна\",
+      \"Олімпія\",\r
+
+      \    \"Пелагія\", \"Рипсімія\", \"Саломія\", \"Фотинія\", \"Юстинія\"\r
+
+      ];\r
+
+      \r
+
+      \r
+
+      // 🧬 Прізвища — однакові для обох статей\r
+
+      const maleSurnames = [\r
+
+      \    // базові та найпопулярніші\r
+
+      \    \"Коваль\", \"Шевченко\", \"Мельник\", \"Бондар\", \"Ткачук\",
+      \"Кравчук\", \"Лисенко\", \"Савченко\", \"Романюк\", \"Ковальчук\",\r
+
+      \    \"Гриценко\", \"Мороз\", \"Петренко\", \"Козак\", \"Кушнір\",
+      \"Дмитренко\", \"Соловей\", \"Паламарчук\", \"Рябченко\", \"Кириленко\",\r
+
+      \    \"Волошин\", \"Гаврилюк\", \"Павленко\", \"Сидоренко\", \"Мартинюк\",
+      \"Іваненко\", \"Захарченко\", \"Яременко\", \"Литвин\", \"Кравець\",\r
+
+      \    \"Гуменюк\", \"Клименко\", \"Білик\", \"Павлюк\", \"Петрук\",
+      \"Семенюк\", \"Поліщук\", \"Тимошенко\", \"Коваленко\", \"Костюк\",\r
+
+      \    \"Мазур\", \"Шевчук\", \"Герасимчук\", \"Остапенко\", \"Харченко\",
+      \"Рибак\", \"Михайлюк\", \"Зінченко\", \"Гавриленко\", \"Тищенко\",\r
+
+      \r
+
+      \    // -енко\r
+
+      \    \"Мартиненко\", \"Тарасенко\", \"Кравченко\", \"Семенченко\",
+      \"Бондаренко\", \"Дяченко\", \"Назаренко\", \"Гончаренко\",\r
+
+      \    \"Литвиненко\", \"Шаповаленко\", \"Петрушенко\", \"Василенко\",
+      \"Захаренко\", \"Тимченко\", \"Кузьменко\", \"Герасименко\",\r
+
+      \    \"Даниленко\", \"Михайленко\", \"Гумененко\", \"Семененко\",
+      \"Савенко\", \"Романенко\", \"Олійниченко\", \"Біленко\",\r
+
+      \    \"Яковенко\", \"Лук’яненко\", \"Федоренко\", \"Маленко\",
+      \"Рудченко\", \"Скрипченко\", \"Біляченко\", \"Терещенко\",\r
+
+      \    \"Панченко\", \"Куценко\", \"Дорошенко\", \"Макаренко\",
+      \"Черненко\", \"Титаренко\", \"Савицьенко\", \"Довженко\",\r
+
+      \r
+
+      \    // -чук / -юк\r
+
+      \    \"Мельничук\", \"Козачук\", \"Іванчук\", \"Рябчук\", \"Гончарук\",
+      \"Сидорук\", \"Гнатюк\", \"Савчук\", \"Курилюк\",\r
+
+      \    \"Миронюк\", \"Кирилюк\", \"Романчук\", \"Семенчук\", \"Паламарюк\",
+      \"Бойчук\", \"Климчук\", \"Пилипчук\", \"Гринчук\",\r
+
+      \    \"Янчук\", \"Федчук\", \"Степанчук\", \"Юрчук\", \"Костючук\",
+      \"Демчук\", \"Захарчук\", \"Левчук\", \"Омельчук\", \"Гаврилюк\",\r
+
+      \r
+
+      \    // -ський / -цький\r
+
+      \    \"Козловський\", \"Левицький\", \"Стецький\", \"Яблонський\",
+      \"Потоцький\", \"Заблоцький\", \"Хмелецький\", \"Величковський\",\r
+
+      \    \"Малинівський\", \"Кобилянський\", \"Галицький\", \"Черкаський\",
+      \"Київський\", \"Волинський\", \"Подільський\",\r
+
+      \    \"Дністровський\", \"Берестецький\", \"Слобожанський\",
+      \"Лісовський\", \"Городецький\", \"Острозький\",\r
+
+      \r
+
+      \    // короткі та козацькі\r
+
+      \    \"Байрак\", \"Гайдук\", \"Шкурко\", \"Дяк\", \"Сотник\", \"Отаман\",
+      \"Осадчий\", \"Книш\", \"Бублик\", \"Прут\",\r
+
+      \    \"Кривда\", \"Зуб\", \"Чорний\", \"Білий\", \"Сивий\", \"Довгий\",
+      \"Малий\", \"Голуб\", \"Сокіл\", \"Орел\",\r
+
+      \    \"Вовк\", \"Заєць\", \"Лис\", \"Ведмідь\", \"Кіт\", \"Жук\",
+      \"Комар\", \"Скорик\", \"Буряк\", \"Капуста\",\r
+
+      \r
+
+      \    // ремісничі та побутові\r
+
+      \    \"Гончар\", \"Кушнір\", \"Шаповал\", \"Ковтун\", \"Стельмах\",
+      \"Пекар\", \"Пасічник\", \"Слюсар\", \"Муляр\",\r
+
+      \    \"Різник\", \"Котляр\", \"Кравець\", \"Чумак\", \"Дігтяр\",
+      \"Кравчук\", \"Мельниченко\", \"Тесля\",\r
+
+      \r
+
+      \    // рідковживані\r
+
+      \    \"Береза\", \"Верба\", \"Явір\", \"Дуб\", \"Калина\", \"Терен\",
+      \"Граб\", \"Лоза\", \"Осика\", \"Смерека\",\r
+
+      \    \"Чабан\", \"Тур\", \"Бугай\", \"Лелека\", \"Сич\", \"Шпак\",
+      \"Крук\", \"Чайка\", \"Журавель\", \"Перепел\",\r
+
+      \r
+
+      \    // західні\r
+
+      \    \"Федишин\", \"Козяр\", \"Гойда\", \"Бачинський\", \"Грицак\",
+      \"Петришин\", \"Мельникевич\", \"Кравців\",\r
+
+      \    \"Стефанишин\", \"Пилипишин\", \"Івасик\", \"Гарасимів\", \"Бойко\",
+      \"Дяків\", \"Костів\", \"Лесів\",\r
+
+      \r
+
+      \    // фінальний добір\r
+
+      \    \"Рудик\", \"Маляр\", \"Сапожник\", \"Копач\", \"Войтюк\", \"Котик\",
+      \"Пастух\", \"Дудник\", \"Бандурист\",\r
+
+      \    \"Лірник\", \"Трембач\", \"Кобзар\", \"Щербак\", \"Писар\",
+      \"Волинець\", \"Полтавець\", \"Гуцул\", \"Буковинець\"\r
+
+      ];\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      const femaleSurnames = maleSurnames; // не змінюються в українській\r
+
+      \r
+
+      // 🧾 По батькові (з урахуванням жіночих форм)\r
+
+      const maleSecondNames = [\r
+
+      \    // найпоширеніші\r
+
+      \    \"Іванович\", \"Петрович\", \"Дмитрович\", \"Олександрович\",
+      \"Сергійович\", \"Васильович\", \"Михайлович\",\r
+
+      \    \"Юрійович\", \"Ігорович\", \"Богданович\", \"Андрійович\",
+      \"Романович\", \"Володимирович\", \"Павлович\",\r
+
+      \    \"Ярославович\", \"Вікторович\", \"Валентинович\", \"Олегович\",
+      \"Григорович\", \"Леонідович\", \"Тарасович\",\r
+
+      \    \"Русланович\", \"Максимович\", \"Назарович\", \"Степанович\",
+      \"Данилович\", \"Артурович\", \"Віталійович\",\r
+
+      \    \"Миколайович\", \"Анатолійович\", \"Євгенович\", \"Мирославович\",
+      \"Станіславович\", \"Олексійович\",\r
+
+      \    \"Кирилович\", \"Маркович\", \"Федорович\", \"Святославович\",
+      \"Захарович\", \"Лук’янович\", \"Валерійович\",\r
+
+      \    \"В’ячеславович\", \"Георгійович\", \"Омелянович\", \"Тимофійович\",
+      \"Арсенович\", \"Филипович\", \"Глібович\",\r
+
+      \    \"Денисович\", \"Тихонович\", \"Остапович\",\r
+
+      \r
+
+      \    // від популярних імен\r
+
+      \    \"Антонович\", \"Борисович\", \"Владиславович\", \"Всеволодович\",
+      \"Гаврилович\", \"Геннадійович\",\r
+
+      \    \"Гордійович\", \"Давидович\", \"Єлисейович\", \"Єремійович\",
+      \"Зіновійович\", \"Ілліч\",\r
+
+      \    \"Костянтинович\", \"Лазарович\", \"Матвійович\", \"Модестович\",
+      \"Никифорович\", \"Платонович\",\r
+
+      \    \"Прохорович\", \"Радомирович\", \"Родіонович\", \"Савелійович\",
+      \"Семенович\", \"Тимурович\",\r
+
+      \    \"Федійович\", \"Юхимович\", \"Якович\", \"Яремович\",\r
+
+      \r
+
+      \    // рідкісні та церковні\r
+
+      \    \"Агафонович\", \"Акакійович\", \"Аліпійович\", \"Амвросійович\",
+      \"Андронікович\", \"Антипович\",\r
+
+      \    \"Аркадійович\", \"Афанасійович\", \"Варфоломійович\",
+      \"Веніамінович\", \"Віссаріонович\",\r
+
+      \    \"Галактіонович\", \"Германович\", \"Єпіфанович\", \"Інокентійович\",
+      \"Ісидорович\",\r
+
+      \    \"Кипріянович\", \"Леонтійович\", \"Лонгінович\", \"Макарійович\",
+      \"Мефодійович\",\r
+
+      \    \"Нектарійович\", \"Онуфрійович\", \"Парфенійович\",
+      \"Порфирійович\", \"Серафимович\",\r
+
+      \    \"Софронійович\", \"Спиридонович\", \"Феофанович\", \"Феофілович\",
+      \"Харитонович\",\r
+
+      \    \"Ювеналійович\",\r
+
+      \r
+
+      \    // козацькі / історичні\r
+
+      \    \"Богуславович\", \"Велемирович\", \"Добромирович\", \"Жданович\",
+      \"Златославович\",\r
+
+      \    \"Казимирович\", \"Любомирович\", \"Мстиславович\", \"Ратиборович\",
+      \"Святогорович\",\r
+
+      \    \"Твердиславович\", \"Яромирович\",\r
+
+      \r
+
+      \    // сучасні / інтернаціональні (українізовані)\r
+
+      \    \"Аланович\", \"Альбертович\", \"Алійович\", \"Бенович\",
+      \"Вільямович\", \"Генріхович\",\r
+
+      \    \"Дамирович\", \"Едвардович\", \"Емілівич\", \"Ерікович\",
+      \"Жанович\", \"Ібрагімович\",\r
+
+      \    \"Карлович\", \"Кевінович\", \"Леонович\", \"Лукашович\",
+      \"Майклович\", \"Мартінович\",\r
+
+      \    \"Ніколайович\", \"Омарович\", \"Робертович\", \"Самуїлович\",
+      \"Себастьянович\",\r
+
+      \    \"Теодорович\", \"Томасович\", \"Феліксович\", \"Юсуфович\",\r
+
+      \r
+
+      \    // додаткове масштабування\r
+
+      \    \"Абрамович\", \"Азарович\", \"Акінфійович\", \"Арефійович\",
+      \"Берестович\", \"Болеславович\",\r
+
+      \    \"Валеріанович\", \"Веремійович\", \"Гостомислович\",
+      \"Діонісійович\", \"Євдокимович\",\r
+
+      \    \"Захарійович\", \"Іпатійович\", \"Калистратович\", \"Климентович\",
+      \"Лаврентійович\",\r
+
+      \    \"Мануїлович\", \"Мелетійович\", \"Назарійович\", \"Октавіанович\",
+      \"Панкратович\",\r
+
+      \    \"Рустамович\", \"Сильвестрович\", \"Созонтович\", \"Тадеушович\",
+      \"Терентійович\",\r
+
+      \    \"Трифонович\", \"Фадейович\", \"Фотійович\", \"Хомович\",
+      \"Цезарович\", \"Чеславович\",\r
+
+      \r
+
+      \    // фінальні\r
+
+      \    \"Явдохимович\", \"Януарович\", \"Яросвітович\", \"Яромислович\",
+      \"Ярославич\"\r
+
+      ];\r
+
+      \r
+
+      \r
+
+      const femaleSecondNames = maleSecondNames.map(s => {\r
+
+      \    return s\r
+
+      \        .replace(\"ич\", \"івна\")   // загальна закономірність\r
+
+      \        .replace(\"йовівна\", \"ївна\") // винятки типу Тимофійович →
+      Тимофіївна\r
+
+      \        .replace(\"ьовівна\", \"ївна\") // Сергійович → Сергіївна\r
+
+      \        .replace(\"овівна\", \"івна\"); // Іванович → Іванівна\r
+
+      });\r
+
+      \r
+
+      \r
+
+      // === 🔄 Генерація випадкових значень ===\r
+
+      function randomItem(arr) {\r
+
+      \    return arr[Math.floor(Math.random() * arr.length)];\r
+
+      }\r
+
+      \r
+
+      let first_name, last_name, second_name;\r
+
+      \r
+
+      if (gender === \"FEMALE\") {\r
+
+      \    first_name = randomItem(femaleNames);\r
+
+      \    last_name = randomItem(femaleSurnames);\r
+
+      \    second_name = randomItem(femaleSecondNames);\r
+
+      } else {\r
+
+      \    first_name = randomItem(maleNames);\r
+
+      \    last_name = randomItem(maleSurnames);\r
+
+      \    second_name = randomItem(maleSecondNames);\r
+
+      }\r
+
+      \r
+
+      // Зберігаємо у глобальні змінні\r
+
+      pm.globals.set(\"person_first_name\", first_name);\r
+
+      pm.globals.set(\"person_last_name\", last_name);\r
+
+      pm.globals.set(\"person_second_name\", second_name);\r
+
+      \r
+
+      \r
+
+      // ✅ UA → Latin (KMU 55 / 2010). Works well for ПІБ.\r
+
+      // Rules: ь and apostrophe are not transliterated; Є/Ї/Й/Ю/Я have
+      positional variants.\r
+
+      function translitUaToLat(input = \"\") {\r
+
+      \  const map = {\r
+
+      \    \"а\":\"a\",\"б\":\"b\",\"в\":\"v\",\"г\":\"h\",\"ґ\":\"g\",\"д\":\"d\
+      \",\"е\":\"e\",\"ж\":\"zh\",\"з\":\"z\",\"и\":\"y\",\"і\":\"i\",\"ї\":\"i\
+      \",\r
+
+      \    \"й\":\"i\",\"к\":\"k\",\"л\":\"l\",\"м\":\"m\",\"н\":\"n\",\"о\":\"o\
+      \",\"п\":\"p\",\"р\":\"r\",\"с\":\"s\",\"т\":\"t\",\"у\":\"u\",\"ф\":\"f\
+      \",\r
+
+      \    \"х\":\"kh\",\"ц\":\"ts\",\"ч\":\"ch\",\"ш\":\"sh\",\"щ\":\"shch\",\
+      \"ю\":\"iu\",\"я\":\"ia\",\"є\":\"ie\"\r
+
+      \  };\r
+
+      \r
+
+      \  // Word boundary chars (treat hyphen as new word too)\r
+
+      \  const isBoundary = (ch) => ch == null || /\\s|[-–—/().,]/.test(ch);\r
+
+      \r
+
+      \  // apostrophes we may see in data\r
+
+      \  const isApostrophe = (ch) => ch === \"'\" || ch === \"’\" || ch ===
+      \"ʼ\" || ch === \"`\";\r
+
+      \r
+
+      \  let out = \"\";\r
+
+      \  for (let i = 0; i < input.length; i++) {\r
+
+      \    const ch = input[i];\r
+
+      \    const prev = input[i - 1];\r
+
+      \r
+
+      \    // ь + apostrophe are NOT output\r
+
+      \    if (ch === \"ь\" || ch === \"Ь\" || isApostrophe(ch)) continue;\r
+
+      \r
+
+      \    const lower = ch.toLowerCase();\r
+
+      \r
+
+      \    const atWordStart = isBoundary(prev) || isApostrophe(prev);\r
+
+      \r
+
+      \    // Positional variants at word start (or after apostrophe):\r
+
+      \    // Є: Ye/ie, Ї: Yi/i, Й: Y/i, Ю: Yu/iu, Я: Ya/ia\r
+
+      \    let mapped;\r
+
+      \    if (lower === \"є\") mapped = atWordStart ? \"ye\" : \"ie\";\r
+
+      \    else if (lower === \"ї\") mapped = atWordStart ? \"yi\" : \"i\";\r
+
+      \    else if (lower === \"й\") mapped = atWordStart ? \"y\" : \"i\";\r
+
+      \    else if (lower === \"ю\") mapped = atWordStart ? \"yu\" : \"iu\";\r
+
+      \    else if (lower === \"я\") mapped = atWordStart ? \"ya\" : \"ia\";\r
+
+      \    else mapped = map[lower];\r
+
+      \r
+
+      \    // If not a UA letter we know — keep as-is (spaces, hyphens, latin,
+      etc.)\r
+
+      \    if (!mapped) {\r
+
+      \      out += ch;\r
+
+      \      continue;\r
+
+      \    }\r
+
+      \r
+
+      \    // Preserve capitalization (for names it’s enough: TitleCase
+      mapping)\r
+
+      \    if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) {\r
+
+      \      mapped = mapped.charAt(0).toUpperCase() + mapped.slice(1);\r
+
+      \    }\r
+
+      \r
+
+      \    out += mapped;\r
+
+      \  }\r
+
+      \r
+
+      \  return out;\r
+
+      }\r
+
+      \r
+
+      // --- Example: build 2 name objects (uk + en) ---\r
+
+      const uk = {\r
+
+      \  first_name: pm.globals.get(\"person_first_name\"),\r
+
+      \  last_name: pm.globals.get(\"person_last_name\"),\r
+
+      \  second_name: pm.globals.get(\"person_second_name\"),\r
+
+      \  language: \"uk\",\r
+
+      \  no_last_name: false\r
+
+      };\r
+
+      \r
+
+      const en = {\r
+
+      \  first_name: translitUaToLat(uk.first_name),\r
+
+      \  last_name: translitUaToLat(uk.last_name),\r
+
+      \  second_name: translitUaToLat(uk.second_name),\r
+
+      \  language: \"en\",\r
+
+      \  no_last_name: uk.no_last_name\r
+
+      };\r
+
+      \r
+
+      // If no_last_name=true — you can blank last_name in both:\r
+
+      if (uk.no_last_name) {\r
+
+      \  uk.last_name = null;\r
+
+      \  en.last_name = null;\r
+
+      }\r
+
+      \r
+
+      // Зберігаємо у глобальні змінні\r
+
+      pm.globals.set(\"en_person_first_name\", en?.first_name);\r
+
+      pm.globals.set(\"en_person_last_name\", en?.last_name);\r
+
+      pm.globals.set(\"en_person_second_name\", en?.second_name);\r
+
+      \r
+
+      // quick log\r
+
+      console.log(\"👤 Gender:\", gender);\r
+
+      console.log(\"UK:\", uk);\r
+
+      console.log(\"EN:\", en);\r
+
+      \r
+
+      \r
+
+      \r
+
+      // --- Функція генерації номера документа за типом ---\r
+
+      function generateDocumentNumber(type) {\r
+
+      \    const cyrillicLetters = \"АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ\";\r
+
+      \r
+
+      \    function randomCyrillicLetter() {\r
+
+      \        return cyrillicLetters.charAt(Math.floor(Math.random() *
+      cyrillicLetters.length));\r
+
+      \    }\r
+
+      \r
+
+      \    function randomDigits(length) {\r
+
+      \        return Array.from({ length }, () => Math.floor(Math.random() *
+      10)).join('');\r
+
+      \    }\r
+
+      \r
+
+      \    switch (type) {\r
+
+      \        case \"NATIONAL_ID\":\r
+
+      \            // 9 цифр\r
+
+      \            return randomDigits(9);\r
+
+      \        case \"BIRTH_CERTIFICATE\":\r
+
+      \            // 2 кириличні літери + \"-\" + 6 цифр\r
+
+      \            return
+      `${randomCyrillicLetter()}-${randomCyrillicLetter()}${randomDigits(6)}`;\r
+
+      \        default:\r
+
+      \            // Для інших типів: 2 кириличні літери + 6 цифр\r
+
+      \            return
+      `${randomCyrillicLetter()}${randomCyrillicLetter()}${randomDigits(6)}`;\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      // --- Генеруємо номера для документів ---\r
+
+      body.person.documents.forEach(doc => {\r
+
+      \    const newNumber = generateDocumentNumber(doc.type);\r
+
+      \    doc.number = newNumber;\r
+
+      \r
+
+      \    // Зберігаємо у глобальні змінні по типу\r
+
+      \    pm.globals.set(`document_number_${doc.type}`, newNumber);\r
+
+      \    console.log(`Generated number for ${doc.type}:`, newNumber);\r
+
+      });"
+    language: text/javascript
+order: 2000

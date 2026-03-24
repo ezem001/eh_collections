@@ -1,0 +1,25 @@
+$kind: http-request
+name: 3.1.3 Get ADRDP by tax_id, dispensed by MIS(Sergiy)
+url: http://192.168.5.4:31234/min_sp/device_request_data_package
+method: POST
+headers:
+  Uxp-Client: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS
+  Uxp-Service: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS/get_device_request_data_package
+  Uxp-Transaction-Id: "{{Uxp-Transaction-Id}}"
+  Authorization: ""
+body:
+  type: json
+  content: |-
+    {
+        "requisition": "9028-5003-3966-6643",
+        "last_name": "Жук", 
+        "first_name": "Валентина",
+        "second_name": "Тимофіївна",
+        "tax_id": "3302107602"
+    }
+scripts:
+  - type: beforeRequest
+    code: pm.environment.set("Uxp-Transaction-Id",
+      pm.variables.replaceIn('{{$guid}}'));
+    language: text/javascript
+order: 7000

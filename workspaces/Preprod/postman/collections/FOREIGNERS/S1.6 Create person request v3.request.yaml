@@ -1,0 +1,90 @@
+$kind: http-request
+name: S1.6 Create person request v3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "person": {
+            "names": [
+          {
+            "first_name": "Leh",
+            "last_name": "Kachynski",
+            "language": "en",
+            "no_last_name": false
+          }
+        ],
+            "birth_date": "2025-11-18",
+            "birth_country": "Польща",
+            "birth_settlement": "Вроцлав",
+            "gender": "MALE",
+            "no_tax_id": null,
+            "email": "jan@email.com",
+            "secret": "secret12",
+            "unzr": "23755692-92361",
+            "documents": [
+                {
+                    "type": "FOREIGN_PASSPORT",
+                    "number": "KA823574",
+                    "issued_by": "Poland",
+                    "issued_at": "2025-11-21",
+                    "issuing_country": "PL",
+                    "expiration_date": "2030-10-21"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "PL",                
+                    "settlement": "Wroclaw",
+                    "area": "Powiat Wroclawski",
+                    "region": "Malopolske wojewodztwo",
+                    "street": "Robotnicza",
+                    "building": "151/a",
+                    "apartment": "12/a",
+                    "zip": "14321"
+                }
+            ],
+            "authentication_methods": [
+                {
+                    "type": "THIRD_PERSON",
+                    "value": "3bd56046-488c-47c7-83df-785acb4139b8",
+                    "alias": "mother"
+                }
+            ],
+            
+            "preferred_way_communication": "phone",
+            "emergency_contact": {
+                "first_name": "Ковальський",
+                "last_name": "Андрій",
+
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+380635683462"
+                    }
+                ]
+            },
+            "confidant_person": {
+          "person_id": "3bd56046-488c-47c7-83df-785acb4139b8",
+          "documents_relationship": [
+            {
+              "type": "BIRTH_CERTIFICATE",
+              "number": "АА120518",
+              "issued_by": "Рокитнянським РВ ГУ МВС Київської області",
+              "issued_at": "2025-11-28",
+              "active_to": "2030-08-19"
+            }
+          ]
+        }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true
+    } 
+order: 8000

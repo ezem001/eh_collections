@@ -1,0 +1,185 @@
+$kind: http-request
+url: "{{pis_host}}/oauth/nonce"
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+        "client_id": "{{client_id}}",
+        "client_secret": "{{client_secret}}"
+    }
+scripts:
+  - type: afterResponse
+    code: "// // Check if the response status is 200\r
+
+      // if (pm.response.code === 200) {\r
+
+      \r
+
+      //     // Extract data from the response\r
+
+      //     const responseJson = pm.response.json();\r
+
+      //     const token = responseJson.data.token;\r
+
+      \r
+
+      // console.log(token)\r
+
+      //     // Define the URL and the request details for the local server\r
+
+      //     const localServerUrl = 'http://localhost:3000/receive-data'; //
+      Replace with your local server endpoint\r
+
+      //     const requestData = {\r
+
+      //         method: 'POST',\r
+
+      //         url: localServerUrl,\r
+
+      //         header: {\r
+
+      //             'Content-Type': 'application/json'\r
+
+      //         },\r
+
+      //         body: {\r
+
+      //             mode: 'raw',\r
+
+      //             raw: JSON.stringify({\r
+
+      //                 jwt: token,\r
+
+      //             }) // Send the entire response or specific fields\r
+
+      //         }\r
+
+      //     };\r
+
+      \r
+
+      //     // Send the request to the local server\r
+
+      //     pm.sendRequest(requestData, function (err, res) {\r
+
+      \         \r
+
+      //         if (err) {\r
+
+      //             console.error('Error sending request to local server:',
+      err);\r
+
+      //         } else {\r
+
+      //             console.log('Response from local server:', res.json());\r
+
+      //             const responseBody = res.json();\r
+
+      \        \r
+
+      //             pm.globals.set('signed_content', responseBody.base64)\r
+
+      //         }\r
+
+      //     });\r
+
+      // } else {\r
+
+      //     console.log('Initial request failed');\r
+
+      // }\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: >
+      // var current_step = environment["declaration_current_step"];
+
+      // //According to business logic, phone number need to be verified in
+      Verification module.
+
+      // var phone_number = '+380937404005'
+
+      // // Генерирует случаиный инн/имя.
+
+      // function makeRandom(regexp, n)
+
+      // {
+
+      //     var text, possible, i;
+
+      //     if(regexp === "name")
+
+      //     {
+
+      //         text = "Тест";
+
+      //         possible = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЮЯ";
+
+      //         for(i=0; i < n; i++)
+
+      //         {
+
+      //             text += possible.charAt(Math.floor(Math.random() *
+      possible.length));
+
+      //         }
+
+      //     }
+
+      //     else if(regexp === "tax")
+
+      //     {
+
+      //         text = "";
+
+      //         possible = "1234567890";
+
+      //         for(i=0; i < n; i++)
+
+      //         {
+
+      //             text += possible.charAt(Math.floor(Math.random() *
+      possible.length));
+
+      //         }
+
+      //     }
+
+      //     else if(regexp === "mob")
+
+      //     {
+
+      //         text = "+380";
+
+      //         possible = "1234567890";
+
+      //         for(i=0; i < n; i++)
+
+      //         {
+
+      //             text += possible.charAt(Math.floor(Math.random() *
+      possible.length));
+
+      //         }
+
+      //     }
+
+      //     return text;
+
+      // }
+
+      // //Присваиваем значения глобальным переменным
+
+
+      // var randomName = makeRandom("name", 3);
+
+      // postman.setEnvironmentVariable("declaration_first_name", randomName);
+
+      // postman.setEnvironmentVariable("declaration_last_name", randomName);
+
+      // postman.setEnvironmentVariable("declaration_second_name", randomName);
+    language: text/javascript
+order: 3000

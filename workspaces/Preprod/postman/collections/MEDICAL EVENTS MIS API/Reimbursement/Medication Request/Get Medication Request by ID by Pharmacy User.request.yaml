@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/pharmacy/medication_requests/{{medication_req_request_number}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 8000

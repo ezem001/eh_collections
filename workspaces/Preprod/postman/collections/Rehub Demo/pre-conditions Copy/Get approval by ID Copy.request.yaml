@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/approvals/28253302-b387-4abe-857d-84\
+  afc2a459da"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: |-
+      var jsonData = JSON.parse(responseBody);
+      pm.environment.set("job_id", jsonData.data.id);
+    language: text/javascript
+order: 8000

@@ -1,0 +1,71 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/care_plans"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+        "signed_data": "{{care_plan_template64}}"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: |+
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))
+      };
+
+      var current_date = new Date();
+      pm.environment.set("current_date", current_date);
+
+      var period_start = new Date();
+      period_start.setHours(period_start.getHours() + 1);
+
+
+
+      pm.environment.set("care_plan_id", pm.variables.replaceIn('{{$guid}}'));
+
+
+      var care_plan_template = '{ "id": "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "category": { "coding": [ { "system": "eHealth/care_plan_categories", "code": "class_1" } ] }, "title": "Diabetics health plan", "description": "Some description of the care plan", "period": { "start": "2018-08-02T10:45:16.000Z", "end": "2018-08-02T11:00:00.000Z" }, "note": "Some notes", "intent": "order", "encounter": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "addresses": [ { "coding": [ { "system": "eHealth/ICPC2/condition_codes", "code": "A89" } ] } ], "author": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "terms_of_service": { "coding": [ { "system": "PROVIDING_CONDITION", "code": "FIELD" } ] }, "inform_with": { "auth_method_id": "cc949559-5dfe-420f-ac05-065e443b2cc6" }, "status": "new" }';
+      var  care_plan_template = JSON.parse(care_plan_template);
+
+      //VALUES
+
+
+      care_plan_template.id = pm.environment.get("care_plan_id");
+      care_plan_template.inform_with.auth_method_id=pm.environment.get("auth_method_id");
+      care_plan_template.encounter.identifier.value = pm.environment.get("encounter_id");
+      care_plan_template.author.identifier.value= pm.environment.get("employee_id");
+      care_plan_template.period.start= period_start;
+      care_plan_template.period.end= period_start;
+
+      /*service_request_template.occurrence_period.start= sr_period_start;
+
+      service_request_template.requester_legal_entity.identifier.value= pm.environment.get("le_id");
+      service_request_template.inform_with.auth_method_id='dc432248-a439-437a-8449-2f5f89701da0';
+      */
+
+      postman.setEnvironmentVariable("care_plan_template", JSON.stringify(care_plan_template));
+      care_plan_template64 = b64EncodeUnicode(JSON.stringify(care_plan_template));
+      postman.setEnvironmentVariable("care_plan_template64", care_plan_template64);
+
+
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 37000

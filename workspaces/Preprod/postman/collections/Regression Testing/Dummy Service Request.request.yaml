@@ -1,0 +1,199 @@
+$kind: http-request
+url: http://localhost:3000/create-service-request-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{service_request_id}}\",\r
+
+    \    \"status\": \"active\",\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"priority\": \"routine\",\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\":
+    \"eHealth/SNOMED/service_request_categories\",\r
+
+    \                \"code\": \"procedure\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"code\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"service\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"40b2dfdf-7623-4fa5-bbfb-58a6b651ff0c\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"context\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{encounter_extracted_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"occurrence_period\": {\r
+
+    \        \"start\": \"{{serviceRequestStartDate}}\",\r
+
+    \            \"end\": \"{{serviceRequestEndDate}}\"\r
+
+    \    },\r
+
+    \    \"requester_employee\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"requester_legal_entity\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"legal_entity\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_legal_entity}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"program\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"medical_program\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"0eb268fa-ab21-4df9-8d58-1bc85e393533\"\r
+
+    \        }\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const serviceRequestId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"service_request_id\", serviceRequestId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(`Service Request content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('service_request_signed_content',
+      resData.signed_content);\r
+
+      });"
+    language: text/javascript
+order: 32000

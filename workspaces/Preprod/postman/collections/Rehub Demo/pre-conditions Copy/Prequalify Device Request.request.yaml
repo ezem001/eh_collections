@@ -1,0 +1,164 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/device_requests/prequalify"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+        "programs": [
+            {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "medical_program"
+                            }
+                        ]
+                    },
+                    "value": "9183a36b-4d45-4244-9339-63d81cd08d9c"
+                }
+            }
+        ],
+        "device_request": {
+            "quantity": {
+                "value": 10,
+                "system": "device_unit",
+                "code": "piece"
+            },
+            "intent": "order",
+            "code": {
+                "coding": [
+                    {
+                        "system": "eHealth/assistive_devices",
+                        "code": "22_27_12"
+                    }
+                ]
+            },
+            "encounter": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "encounter"
+                            }
+                        ]
+                    },
+                    "value": "{{encounter_id}}"
+                }
+            },
+            "requester": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "employee"
+                            }
+                        ]
+                    },
+                    "value": "{{employee_id}}"
+                }
+            },
+            "authored_on": "{{current_date}}",
+            "occurrence_period": {
+                "start": "{{current_date}}",
+                "end": "2026-12-01T00:00:00Z"
+            }
+        }
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: >+
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))
+      };
+
+
+      var current_date = new Date();
+
+      pm.environment.set("current_date", current_date);
+
+
+      var period_start = new Date();
+
+      period_start.setHours(period_start.getHours() + 1);
+
+
+
+
+      pm.environment.set("device_request_id",
+      pm.variables.replaceIn('{{$guid}}'));
+
+
+
+      var device_request_template = '{ "id":
+      "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "intent": "order", "code": {
+      "coding": [ { "system": "device_definition_classification_type", "code":
+      "30221" } ] }, "encounter": { "identifier": { "type": { "coding": [ {
+      "system": "eHealth/resources", "code": "encounter" } ] }, "value":
+      "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "requester": { "identifier": {
+      "type": { "coding": [ { "system": "eHealth/resources", "code": "employee"
+      } ] }, "value": "b4a6d991-0bf7-476f-b3cf-bec83f044b1b" } }, "authored_on":
+      "2000-01-01T00:00:00.000Z", "occurrence_period": { "start":
+      "2000-01-01T00:00:00.000Z", "end": "2018-08-02T11:00:00.000Z" }, "status":
+      "active" }';
+
+      var  device_request_template = JSON.parse(device_request_template);
+
+
+      //VALUES
+
+
+
+      device_request_template.id = pm.environment.get("device_request_id");
+
+      device_request_template.code.coding[0].code="06_03_12";
+
+      device_request_template.code.coding[0].system="eHealth/assistive_devices";
+
+      device_request_template.requester.identifier.value=
+      pm.environment.get("employee_id");
+
+      device_request_template.encounter.identifier.value=
+      pm.environment.get("encounter_id");
+
+      device_request_template.occurrence_period.start= period_start;
+
+      device_request_template.authored_on= current_date ;
+
+      device_request_template.occurrence_period.end= period_start;
+
+
+
+      postman.setEnvironmentVariable("device_request_template",
+      device_request_template);
+
+      //device_request_template64 =
+      b64EncodeUnicode(JSON.stringify(device_request_template));
+
+      //postman.setEnvironmentVariable("device_request_template64",
+      device_request_template64);
+
+
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 19000

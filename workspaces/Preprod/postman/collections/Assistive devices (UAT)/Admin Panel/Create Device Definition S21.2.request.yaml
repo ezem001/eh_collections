@@ -1,0 +1,77 @@
+$kind: graphql-request
+name: Create Device Definition S21.2
+url: https://admin-demo.ehealth.gov.ua/graphql
+query: >-
+  mutation CreateDeviceDefinitionMutation($input: CreateDeviceDefinitionInput!)
+  {
+    createDeviceDefinition(input: $input) {
+      deviceDefinition {
+        id
+        __typename
+      }
+      __typename
+    }
+  }
+variables: |-
+  {
+      "input": {
+          "deviceNames": [
+              {
+                  "type": "registered",
+                  "name": "Протез - тест створення"
+              }
+          ],
+          "classificationType": [
+              {
+                  "system": "eHealth/assistive_products",
+                  "code": "12_03_16"
+              },
+              {
+                  "system": "eHealth/assistive_devices",
+                  "code": "12_03_16"
+              }
+          ],
+          "description": "Тест пристрою нової структури 3",
+          "partNumber": "#123-88f-006",
+          "modelNumber": "Xmodel-o6",
+          "manufacturerName": "Rheinmedical GMBH",
+          "manufacturerCountry": "AT",
+          "note": "Тест",
+          "packagingType": "unknown",
+          "packagingCount": 1,
+          "packagingUnit": "piece",
+          "properties": [
+              {
+                  "type": {
+                      "system": "device_request_code_parameter",
+                      "code": "height"
+                  },
+                  "valueString": "up_to_180"
+              },
+              {
+                  "type": {
+                      "system": "device_request_code_parameter",
+                      "code": "presence_of_an_anti-slip_device"
+                  },
+                  "valueBoolean": false
+              },
+              {
+                  "type": {
+                      "system": "device_request_code_parameter",
+                      "code": "number_of_supports"
+                  },
+                  "valueCodeableConcept": {
+                      "coding": [
+                          {
+                              "system": "eHealth/number_of_supports_values",
+                              "code": "1"
+                          }
+                      ]
+                  }
+              }
+          ]
+      }
+  }
+headers:
+  Authorization: ""
+order: 1000

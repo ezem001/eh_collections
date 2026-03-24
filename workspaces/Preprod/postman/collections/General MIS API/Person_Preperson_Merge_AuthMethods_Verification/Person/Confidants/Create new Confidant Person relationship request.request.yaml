@@ -1,0 +1,50 @@
+$kind: http-request
+url: "{{host}}/api/persons/0d5e5b40-3537-4917-826a-0f0aa0b5573c/confidant_perso\
+  n_relationship_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"confidant_person_id\": \"def7c55c-93f8-4969-8676-49f3b217ff19\",\r
+
+    \  \"documents_relationship\": [\r
+
+    \    {\r
+
+    \      \"type\": \"BIRTH_CERTIFICATE\",\r
+
+    \      \"number\": \"І-КЕ№132543\",\r
+
+    \      \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської області\",\r
+
+    \      \"issued_at\": \"2020-02-28\",\r
+
+    \      \"active_to\": \"2027-02-28\"\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      \    pm.globals.set(\"Create_confidant_relationship_id\",
+      resData.data.id);\r
+
+      });"
+    language: text/javascript
+order: 2000

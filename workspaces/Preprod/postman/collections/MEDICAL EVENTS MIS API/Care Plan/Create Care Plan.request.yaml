@@ -1,0 +1,2137 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/care_plans"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"signed_data\": \"{{care_plan_signed_content}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "// // ---- Utils ----\r
+
+      // const safeJson = (text) => {\r
+
+      //     try { return JSON.parse(text); } catch { return null; }\r
+
+      // };\r
+
+      \r
+
+      // const toTitle = (s) =>\r
+
+      //     (s ? String(s) : 'job')\r
+
+      //         .split('_')\r
+
+      //         .filter(Boolean)\r
+
+      //         .map(p => p.charAt(0).toUpperCase() + p.slice(1))\r
+
+      //         .join(' ');\r
+
+      \r
+
+      // const toEntityKey = (s) =>\r
+
+      //     String(s || '')\r
+
+      //         .trim()\r
+
+      //         .toLowerCase();\r
+
+      \r
+
+      // const toEntityLabel = (s) =>\r
+
+      //     String(s || '')\r
+
+      //         .trim()\r
+
+      //         .replaceAll('_', ' ')\r
+
+      //         .replace(/\\b\\w/g, (c) => c.toUpperCase())\r
+
+      //         .replaceAll(' ', ''); // \"clinical_impression\" ->
+      \"ClinicalImpression\"\r
+
+      \r
+
+      // function displayResponse(title, data) {\r
+
+      //     const html = `\r
+
+      //     <style>\r
+
+      //       body { font-family: ui-sans-serif, system-ui, -apple-system;
+      padding: 12px; }\r
+
+      //       h1 { font-size: 18px; margin: 0 0 10px; }\r
+
+      //       pre { background: #0b1020; color: #e6e6e6; padding: 12px;
+      border-radius: 10px; overflow:auto; }\r
+
+      //       .meta { color:#666; font-size:12px; margin-top:6px; }\r
+
+      //     </style>\r
+
+      //     <h1>${title}</h1>\r
+
+      //     <pre>${JSON.stringify(data ?? {}, null, 2)}</pre>\r
+
+      //     <div class=\"meta\">${new Date().toISOString()}</div>\r
+
+      //   `;\r
+
+      //     pm.visualizer.set(html);\r
+
+      // }\r
+
+      \r
+
+      // // ---- Determine resource label (avoid brittle path[3]) ----\r
+
+      // const pathParts = pm.request.url?.path || [];\r
+
+      // // try the old behavior first (index 3), otherwise pick last meaningful
+      segment\r
+
+      // const resourceType =\r
+
+      //     pathParts[3] ||\r
+
+      //     [...pathParts].reverse().find(p => p && p !== 'api') ||\r
+
+      //     'job';\r
+
+      \r
+
+      // const resourceLabel = toTitle(resourceType);\r
+
+      // console.log('resourceType:', resourceType);\r
+
+      \r
+
+      // // ---- Parse initial response safely ----\r
+
+      // const resData = safeJson(pm.response.text());\r
+
+      \r
+
+      // if (!resData) {\r
+
+      //     displayResponse(`${resourceLabel} Response Parse Error`, {\r
+
+      //         error: 'Response is not valid JSON',\r
+
+      //         rawSnippet: pm.response.text()?.slice(0, 500)\r
+
+      //     });\r
+
+      //     pm.globals.unset('ci_encounter');\r
+
+      //     throw new Error('Response is not valid JSON');\r
+
+      // }\r
+
+      \r
+
+      // // If API returned explicit error payload\r
+
+      // if (resData?.error) {\r
+
+      //     displayResponse(`${resourceLabel} Response Error Details`,
+      resData.error);\r
+
+      //     pm.globals.unset('ci_encounter');\r
+
+      //     // keep running? (original script continues). We'll stop to avoid
+      undefined access:\r
+
+      //     throw new Error('Initial response contains error');\r
+
+      // }\r
+
+      \r
+
+      // // ---- Extract jobId from href ----\r
+
+      // const href = resData?.data?.links?.[0]?.href;\r
+
+      // if (!href || !href.includes('/jobs/')) {\r
+
+      //     displayResponse(`${resourceLabel} Job Link Missing`, {\r
+
+      //         expected: 'res.data.links[0].href containing \"/jobs/\"',\r
+
+      //         got: href,\r
+
+      //         responseData: resData?.data\r
+
+      //     });\r
+
+      //     pm.globals.unset('ci_encounter');\r
+
+      //     throw new Error('Job href not found in response');\r
+
+      // }\r
+
+      \r
+
+      // const jobId = href.split('/jobs/')[1];\r
+
+      // console.log('Extracted jobId:', jobId);\r
+
+      // pm.globals.set(\"extracted_job_id\", jobId)\r
+
+      \r
+
+      // // ---- Retry control ----\r
+
+      // const MAX_RETRIES = 3;\r
+
+      // const RETRY_DELAY_MS = 1000;\r
+
+      // pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // // ---- Request builder ----\r
+
+      // function buildJobCheckRequest(jobId) {\r
+
+      //     const host = pm.globals.get('host');\r
+
+      //     if (!host) throw new Error('pm.globals.host is not set');\r
+
+      \r
+
+      //     return {\r
+
+      //         method: 'GET',\r
+
+      //         url: `${host}/api/jobs/${jobId}`,\r
+
+      //         header: {\r
+
+      //             'Content-Type': 'application/json',\r
+
+      //             'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      //             'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      //             'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      //         }\r
+
+      //     };\r
+
+      // }\r
+
+      \r
+
+      // // ---- Links -> globals (same naming logic) ----\r
+
+      // function writeLinksToGlobals(linksArray) {\r
+
+      //     const linksByEntity = (linksArray || []).reduce((acc, link) => {\r
+
+      //         const entity = toEntityKey(link?.entity);\r
+
+      //         const href = link?.href;\r
+
+      //         if (!entity || !href) return acc;\r
+
+      \r
+
+      //         const id = href.split('/').pop();\r
+
+      //         if (!id) return acc;\r
+
+      \r
+
+      //         acc[entity] = acc[entity] || [];\r
+
+      //         acc[entity].push(id);\r
+
+      //         return acc;\r
+
+      //     }, {});\r
+
+      \r
+
+      //     Object.entries(linksByEntity).forEach(([entity, ids]) => {\r
+
+      //         const entityLabel = toEntityLabel(entity); //
+      ClinicalImpression, Condition, etc.\r
+
+      \r
+
+      //         ids.forEach((id, idx) => {\r
+
+      //             const globalName = ids.length === 1\r
+
+      //                 ? `job${entityLabel}ID`\r
+
+      //                 : `job${entityLabel}ID_${idx + 1}`;\r
+
+      //             pm.globals.set(globalName, id);\r
+
+      //         });\r
+
+      //     });\r
+
+      \r
+
+      //     return linksByEntity;\r
+
+      // }\r
+
+      \r
+
+      // // ---- Poll job status ----\r
+
+      // function checkJobStatus(jobId) {\r
+
+      //     let req;\r
+
+      //     try {\r
+
+      //         req = buildJobCheckRequest(jobId);\r
+
+      //     } catch (e) {\r
+
+      //         displayResponse(`${resourceLabel} Job Config Error`, { error:
+      e.message });\r
+
+      //         return;\r
+
+      //     }\r
+
+      \r
+
+      //     pm.sendRequest(req, (err, res) => {\r
+
+      //         if (err) {\r
+
+      //             displayResponse(`${resourceLabel} Job Request Error`, {
+      error: err.message });\r
+
+      //             return;\r
+
+      //         }\r
+
+      \r
+
+      //         pm.test(`${resourceLabel} job check response is 200 or 303`, ()
+      => {\r
+
+      //             pm.expect([200, 303]).to.include(res.code);\r
+
+      //         });\r
+
+      \r
+
+      //         const body = res.json?.() || {};\r
+
+      //         const status = body?.data?.status;\r
+
+      //         console.log(`${resourceLabel} Job Status:`, status);\r
+
+      \r
+
+      //         if (status === 'processed') {\r
+
+      //             // success expectations (same)\r
+
+      //             pm.test(`${resourceLabel} Job Processed (303 expected)`, ()
+      => {\r
+
+      //                 pm.expect(res.code).to.eql(303);\r
+
+      //             });\r
+
+      \r
+
+      //             writeLinksToGlobals(body?.data?.links);\r
+
+      \r
+
+      //             // safe to db--------------------\r
+
+      \r
+
+      \        \r
+
+      //             // ----------------------------\r
+
+      \r
+
+      \r
+
+      //             displayResponse(`${resourceLabel} Job Response Details`,
+      body?.data);\r
+
+      \r
+
+      //             // Generate log in visualizer\r
+
+      //             logSubRequest({ title: 'Get job', req, res, err });\r
+
+      //             return;\r
+
+      //         }\r
+
+      \r
+
+      //         // retry path (same: up to MAX_RETRIES)\r
+
+      //         const retryCount = Number(pm.environment.get('retryCount')) ||
+      0;\r
+
+      \r
+
+      //         if (retryCount < MAX_RETRIES) {\r
+
+      //             const next = retryCount + 1;\r
+
+      //             pm.environment.set('retryCount', next);\r
+
+      //             console.log(`Retrying ${resourceLabel} job... Attempt
+      ${next}`);\r
+
+      \r
+
+      //             displayResponse(`${resourceLabel} Job Status Pending`,
+      body?.data);\r
+
+      //             setTimeout(() => checkJobStatus(jobId), RETRY_DELAY_MS);\r
+
+      //             return;\r
+
+      //         }\r
+
+      \r
+
+      //         console.warn(`❌ Max retries reached for ${resourceLabel}
+      job.`);\r
+
+      //         const finalTitle = body?.data?.error\r
+
+      //             ? `${resourceLabel} Job Error Details`\r
+
+      //             : `Final ${resourceLabel} Job Status Check`;\r
+
+      \r
+
+      //         displayResponse(finalTitle, body?.data);\r
+
+      //     });\r
+
+      // }\r
+
+      \r
+
+      // // ---- start ----\r
+
+      // checkJobStatus(jobId);\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // /***********************\r
+
+      //  * Minimal Visualizer HTTP Log (Notebook style)\r
+
+      //  * Fixes:\r
+
+      //  * - no duplicate request name (remove global header)\r
+
+      //  * - drop \"host\" header duplicate (keep only Host: line)\r
+
+      //  ***********************/\r
+
+      \r
+
+      // // ---- Config ----\r
+
+      // const MASK_SENSITIVE = true;\r
+
+      // const SENSITIVE_HEADERS = new Set([\r
+
+      //     'authorization', 'api-key', 'x-custom-psk', 'cookie'\r
+
+      // ]);\r
+
+      \r
+
+      // // Headers to drop from [Request]\r
+
+      // const DROP_REQUEST_HEADERS = new Set([\r
+
+      //     'accept',\r
+
+      //     'accept-encoding',\r
+
+      //     'connection',\r
+
+      //     'content-type',\r
+
+      //     'postman-token',\r
+
+      //     'user-agent',\r
+
+      //     'content-length',\r
+
+      //     'host' // <-- щоб не було дубля Host\r
+
+      // ]);\r
+
+      \r
+
+      // // ---- Helpers ----\r
+
+      // function esc(s) {\r
+
+      //     return String(s ?? '')\r
+
+      //         .replaceAll('&', '&amp;')\r
+
+      //         .replaceAll('<', '&lt;')\r
+
+      //         .replaceAll('>', '&gt;');\r
+
+      // }\r
+
+      \r
+
+      // function safeJsonParse(text) {\r
+
+      //     try { return JSON.parse(text); } catch { return null; }\r
+
+      // }\r
+
+      \r
+
+      // function normalizeHeaders(headersObjOrArr) {\r
+
+      //     const out = {};\r
+
+      //     if (!headersObjOrArr) return out;\r
+
+      \r
+
+      //     if (typeof headersObjOrArr?.toObject === 'function') {\r
+
+      //         return headersObjOrArr.toObject();\r
+
+      //     }\r
+
+      \r
+
+      //     if (Array.isArray(headersObjOrArr)) {\r
+
+      //         headersObjOrArr.forEach(h => {\r
+
+      //             if (!h) return;\r
+
+      //             const k = (h.key || h.name || '').toString();\r
+
+      //             const v = (h.value ?? '').toString();\r
+
+      //             if (k) out[k] = v;\r
+
+      //         });\r
+
+      //         return out;\r
+
+      //     }\r
+
+      \r
+
+      //     if (typeof headersObjOrArr === 'object') {\r
+
+      //         Object.keys(headersObjOrArr).forEach(k => out[k] =
+      String(headersObjOrArr[k]));\r
+
+      //     }\r
+
+      \r
+
+      //     return out;\r
+
+      // }\r
+
+      \r
+
+      // function shouldDropHeader(k) {\r
+
+      //     const key = String(k || '').toLowerCase().trim();\r
+
+      //     if (!key) return true;\r
+
+      //     return DROP_REQUEST_HEADERS.has(key);\r
+
+      // }\r
+
+      \r
+
+      // function maskHeaderValue(key, value) {\r
+
+      //     if (!MASK_SENSITIVE) return value;\r
+
+      \r
+
+      //     const k = String(key || '').toLowerCase().trim();\r
+
+      //     if (!SENSITIVE_HEADERS.has(k)) return value;\r
+
+      \r
+
+      //     if (k === 'authorization') return 'Bearer ***';\r
+
+      //     if (!value) return '***';\r
+
+      \r
+
+      //     const tail = value.length > 6 ? value.slice(-6) : value;\r
+
+      //     return `***…${tail}`;\r
+
+      // }\r
+
+      \r
+
+      // function formatRequestHeaders(headers) {\r
+
+      //     const obj = normalizeHeaders(headers);\r
+
+      //     const keys = Object.keys(obj)\r
+
+      //         .filter(k => !shouldDropHeader(k))\r
+
+      //         .sort((a, b) =>
+      a.toLowerCase().localeCompare(b.toLowerCase()));\r
+
+      \r
+
+      //     if (!keys.length) return '';\r
+
+      //     return keys.map(k => `${k}: ${maskHeaderValue(k,
+      obj[k])}`).join('\\n');\r
+
+      // }\r
+
+      \r
+
+      // function getHost(url) {\r
+
+      //     if (!url) return '';\r
+
+      //     if (typeof url === 'string') {\r
+
+      //         try { return new URL(url).host; } catch { return ''; }\r
+
+      //     }\r
+
+      //     if (url.host) {\r
+
+      //         if (Array.isArray(url.host)) return url.host.join('.');\r
+
+      //         return String(url.host);\r
+
+      //     }\r
+
+      //     if (url.toString) {\r
+
+      //         try { return new URL(url.toString()).host; } catch { return '';
+      }\r
+
+      //     }\r
+
+      //     return '';\r
+
+      // }\r
+
+      \r
+
+      // function getPathWithQuery(url) {\r
+
+      //     if (!url) return '/';\r
+
+      \r
+
+      //     if (typeof url === 'string') {\r
+
+      //         try {\r
+
+      //             const u = new URL(url);\r
+
+      //             return u.pathname + (u.search || '');\r
+
+      //         } catch {\r
+
+      //             return url;\r
+
+      //         }\r
+
+      //     }\r
+
+      \r
+
+      //     const path = Array.isArray(url.path) ? '/' + url.path.join('/') :
+      (url.pathname || '/');\r
+
+      \r
+
+      //     if (Array.isArray(url.query) && url.query.length) {\r
+
+      //         const qs = url.query\r
+
+      //             .filter(q => q && q.key)\r
+
+      //             .map(q =>
+      `${encodeURIComponent(q.key)}=${encodeURIComponent(q.value ?? '')}`)\r
+
+      //             .join('&');\r
+
+      //         return `${path}?${qs}`;\r
+
+      //     }\r
+
+      \r
+
+      //     return path || '/';\r
+
+      // }\r
+
+      \r
+
+      // function getPmRequestBody(pmReq) {\r
+
+      //     try {\r
+
+      //         const body = pmReq?.body;\r
+
+      //         if (!body) return '';\r
+
+      //         if (body.mode === 'raw') return body.raw || '';\r
+
+      //         return '';\r
+
+      //     } catch {\r
+
+      //         return '';\r
+
+      //     }\r
+
+      // }\r
+
+      \r
+
+      // function stringifyMaybeJson(text) {\r
+
+      //     if (!text) return '';\r
+
+      //     const j = safeJsonParse(text);\r
+
+      //     return j ? JSON.stringify(j, null, 2) : text;\r
+
+      // }\r
+
+      \r
+
+      // function responseDataMetaOnly(text) {\r
+
+      //     const j = safeJsonParse(text);\r
+
+      //     if (!j) return text;\r
+
+      \r
+
+      //     const out = {\r
+
+      //         data: Object.prototype.hasOwnProperty.call(j, 'data') ? j.data
+      : undefined,\r
+
+      //         error: Object.prototype.hasOwnProperty.call(j, 'error') ?
+      j.error : undefined,\r
+
+      //         meta: Object.prototype.hasOwnProperty.call(j, 'meta') ? j.meta
+      : undefined\r
+
+      //     };\r
+
+      //     Object.keys(out).forEach(k => out[k] === undefined && delete
+      out[k]);\r
+
+      \r
+
+      //     return JSON.stringify(out, null, 2);\r
+
+      // }\r
+
+      \r
+
+      // function buildRawRequest({ method, url, headers, body }) {\r
+
+      //     const host = getHost(url);\r
+
+      //     const path = getPathWithQuery(url);\r
+
+      \r
+
+      //     const headerText = formatRequestHeaders(headers);\r
+
+      //     const bodyText = body ? stringifyMaybeJson(body) : '';\r
+
+      \r
+
+      //     return [\r
+
+      //         `${(method || 'GET').toUpperCase()} ${path || '/'} HTTP/1.1`,\r
+
+      //         host ? `Host: ${host}` : null,\r
+
+      //         headerText || null,\r
+
+      //         bodyText ? `\\n${bodyText}` : null\r
+
+      //     ].filter(Boolean).join('\\n');\r
+
+      // }\r
+
+      \r
+
+      // // Response WITHOUT \"HTTP/1.1 200\"\r
+
+      // function buildRawResponseBodyOnly({ bodyText }) {\r
+
+      //     return responseDataMetaOnly(bodyText || '');\r
+
+      // }\r
+
+      \r
+
+      // // ---- Log storage ----\r
+
+      // const LOG_KEY = '__viz_http_sections__';\r
+
+      \r
+
+      // function getSections() {\r
+
+      //     const raw = pm.variables.get(LOG_KEY);\r
+
+      //     const parsed = raw ? safeJsonParse(raw) : null;\r
+
+      //     return Array.isArray(parsed) ? parsed : [];\r
+
+      // }\r
+
+      \r
+
+      // function setSections(sections) {\r
+
+      //     pm.variables.set(LOG_KEY, JSON.stringify(sections));\r
+
+      // }\r
+
+      \r
+
+      // function addSection(section) {\r
+
+      //     const sections = getSections();\r
+
+      //     sections.push(section);\r
+
+      //     setSections(sections);\r
+
+      // }\r
+
+      \r
+
+      // function buildAllLogText() {\r
+
+      //     const sections = getSections();\r
+
+      \r
+
+      //     // ❗️НЕ додаємо глобальний title зверху — щоб не дублювалось\r
+
+      //     return sections.map(sec => {\r
+
+      //         const parts = [];\r
+
+      //         parts.push(`${sec.title || 'Request'}\\n`);\r
+
+      \r
+
+      //         if (sec.requestRaw)
+      parts.push(`[Request]\\n\\n${sec.requestRaw}\\n`);\r
+
+      //         if (sec.responseRaw)
+      parts.push(`\\n[Response]\\n\\n${sec.responseRaw}\\n`);\r
+
+      //         if (sec.error) parts.push(`\\n[Error]\\n\\n${sec.error}\\n`);\r
+
+      \r
+
+      //         return parts.join('\\n');\r
+
+      //     }).join('\\n' + '-'.repeat(46) + '\\n\\n');\r
+
+      // }\r
+
+      \r
+
+      // function render() {\r
+
+      //     const allText = buildAllLogText();\r
+
+      \r
+
+      //     const html = `\r
+
+      // <div style=\"display:flex; gap:8px; align-items:center;
+      margin-bottom:8px;\">\r
+
+      //   <button id=\"copyAllBtn\">Copy all</button>\r
+
+      //   <span id=\"copyMsg\" style=\"font-family: ui-monospace,
+      SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size:12px;\"></span>\r
+
+      // </div>\r
+
+      \r
+
+      // <textarea id=\"allLogText\" style=\"position:absolute; left:-9999px;
+      top:-9999px;\">${esc(allText)}</textarea>\r
+
+      \r
+
+      // <pre style=\"margin:0; white-space:pre; font-family: ui-monospace,
+      SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px;
+      line-height: 1.35;\">\r
+
+      // ${esc(allText)}\r
+
+      // </pre>\r
+
+      \r
+
+      // <script>\r
+
+      //   (function() {\r
+
+      //     const btn = document.getElementById('copyAllBtn');\r
+
+      //     const msg = document.getElementById('copyMsg');\r
+
+      //     const ta  = document.getElementById('allLogText');\r
+
+      \r
+
+      //     function setMsg(t) {\r
+
+      //       msg.textContent = t || '';\r
+
+      //       if (t) setTimeout(() => { msg.textContent = ''; }, 1200);\r
+
+      //     }\r
+
+      \r
+
+      //     btn.addEventListener('click', async () => {\r
+
+      //       try {\r
+
+      //         const text = ta.value || '';\r
+
+      //         if (navigator.clipboard && navigator.clipboard.writeText) {\r
+
+      //           await navigator.clipboard.writeText(text);\r
+
+      //           setMsg('Copied ✅');\r
+
+      //           return;\r
+
+      //         }\r
+
+      //         ta.focus(); ta.select();\r
+
+      //         const ok = document.execCommand('copy');\r
+
+      //         setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      //       } catch (e) {\r
+
+      //         try {\r
+
+      //           ta.focus(); ta.select();\r
+
+      //           const ok = document.execCommand('copy');\r
+
+      //           setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      //         } catch {\r
+
+      //           setMsg('Copy failed ❌');\r
+
+      //         }\r
+
+      //       }\r
+
+      //     });\r
+
+      //   })();\r
+
+      // </script>\r
+
+      //   `;\r
+
+      \r
+
+      //     pm.visualizer.set(html);\r
+
+      // }\r
+
+      \r
+
+      // /**\r
+
+      //  * Log a pm.sendRequest call\r
+
+      //  * logSubRequest({ title, req, res, err })\r
+
+      //  */\r
+
+      // function logSubRequest({ title, req, res, err }) {\r
+
+      //     const requestRaw = buildRawRequest({\r
+
+      //         method: req?.method,\r
+
+      //         url: req?.url,\r
+
+      //         headers: req?.header || req?.headers,\r
+
+      //         body: req?.body?.raw || (typeof req?.body === 'string' ?
+      req.body : '')\r
+
+      //     });\r
+
+      \r
+
+      //     let resText = '';\r
+
+      //     try { resText = res?.text?.() || ''; } catch { }\r
+
+      //     if (!resText) {\r
+
+      //         try {\r
+
+      //             const j = res?.json?.();\r
+
+      //             if (j) resText = JSON.stringify(j);\r
+
+      //         } catch { }\r
+
+      //     }\r
+
+      \r
+
+      //     const responseRaw = res ? buildRawResponseBodyOnly({ bodyText:
+      resText }) : '';\r
+
+      \r
+
+      //     addSection({\r
+
+      //         title,\r
+
+      //         requestRaw,\r
+
+      //         responseRaw,\r
+
+      //         error: err?.message || (err ? String(err) : '')\r
+
+      //     });\r
+
+      \r
+
+      //     render();\r
+
+      // }\r
+
+      \r
+
+      // // ---- MAIN request log (current request) ----\r
+
+      // (function logMain() {\r
+
+      //     setSections([]);\r
+
+      \r
+
+      //     const mainReqRaw = buildRawRequest({\r
+
+      //         method: pm.request.method,\r
+
+      //         url: pm.request.url,\r
+
+      //         headers: pm.request.headers,\r
+
+      //         body: getPmRequestBody(pm.request)\r
+
+      //     });\r
+
+      \r
+
+      //     const mainResRaw = buildRawResponseBodyOnly({\r
+
+      //         bodyText: pm.response.text()\r
+
+      //     });\r
+
+      \r
+
+      //     addSection({\r
+
+      //         title: pm.info.requestName || 'Main request',\r
+
+      //         requestRaw: mainReqRaw,\r
+
+      //         responseRaw: mainResRaw\r
+
+      //     });\r
+
+      \r
+
+      //     render();\r
+
+      // })();\r
+
+      \r
+
+      // // make function available for your pm.sendRequest code\r
+
+      // this.logSubRequest = logSubRequest;\r
+
+      \r
+
+      \r
+
+      \r
+
+      function initLogger(pm) {\r
+
+      \    const MASK = true;\r
+
+      \    const SENSITIVE = new Set(['authorization', 'api-key',
+      'x-custom-psk', 'cookie']);\r
+
+      \    const DROP = new Set(['accept', 'accept-encoding', 'connection',
+      'content-type', 'postman-token', 'user-agent', 'content-length',
+      'host']);\r
+
+      \    const KEY = '__viz_sections__';\r
+
+      \r
+
+      \    const jparse = t => { try { return JSON.parse(t); } catch { return
+      null; } };\r
+
+      \    const esc = s => String(s ?? '').replaceAll('&',
+      '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');\r
+
+      \r
+
+      \    const headersObj = h => {\r
+
+      \        if (!h) return {};\r
+
+      \        if (h.toObject) return h.toObject();\r
+
+      \        if (Array.isArray(h)) return h.reduce((a, x) => { const k =
+      (x?.key || x?.name || '') + ''; if (k) a[k] = String(x?.value ?? '');
+      return a; }, {});\r
+
+      \        if (typeof h === 'object') return
+      Object.fromEntries(Object.entries(h).map(([k, v]) => [k, String(v)]));\r
+
+      \        return {};\r
+
+      \    };\r
+
+      \r
+
+      \    const mask = (k, v) => {\r
+
+      \        k = String(k || '').toLowerCase().trim();\r
+
+      \        if (!MASK || !SENSITIVE.has(k)) return v;\r
+
+      \        if (k === 'authorization') return 'Bearer ***';\r
+
+      \        v = String(v ?? '');\r
+
+      \        return v ? `***…${v.slice(-6)}` : '***';\r
+
+      \    };\r
+
+      \r
+
+      \    const fmtHeaders = h => Object.entries(headersObj(h))\r
+
+      \        .filter(([k]) => k &&
+      !DROP.has(String(k).toLowerCase().trim()))\r
+
+      \        .sort((a, b) =>
+      a[0].toLowerCase().localeCompare(b[0].toLowerCase()))\r
+
+      \        .map(([k, v]) => `${k}: ${mask(k, v)}`)\r
+
+      \        .join('\\n');\r
+
+      \r
+
+      \    const hostOf = u => {\r
+
+      \        if (!u) return '';\r
+
+      \        try { return new URL(typeof u === 'string' ? u :
+      u.toString()).host; }\r
+
+      \        catch { return Array.isArray(u?.host) ? u.host.join('.') :
+      String(u?.host || ''); }\r
+
+      \    };\r
+
+      \r
+
+      \    const pathQ = u => {\r
+
+      \        if (!u) return '/';\r
+
+      \        const host = hostOf(u);\r
+
+      \        try {\r
+
+      \            const s = typeof u === 'string' ? u : u.toString();\r
+
+      \            const abs = s.startsWith('http') ? s :
+      `https://${host}${s.startsWith('/') ? '' : '/'}${s}`;\r
+
+      \            const U = new URL(abs);\r
+
+      \            return U.pathname + (U.search || '');\r
+
+      \        } catch {\r
+
+      \            const p = Array.isArray(u?.path) ? '/' + u.path.join('/') :
+      (u?.pathname || '/');\r
+
+      \            const q = u?.query;\r
+
+      \            if (Array.isArray(q) && q.length) {\r
+
+      \                const qs = q.filter(x => x?.key).map(x =>
+      `${encodeURIComponent(x.key)}=${encodeURIComponent(x.value ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            if (q && typeof q === 'object') {\r
+
+      \                const qs = Object.entries(q).filter(([k]) => k).map(([k,
+      v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            return p || '/';\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    const maybeJson = t => { const j = jparse(t); return j ?
+      JSON.stringify(j, null, 2) : String(t ?? ''); };\r
+
+      \r
+
+      \    const respSlice = t => {\r
+
+      \        const j = jparse(t);\r
+
+      \        if (!j) return String(t ?? '');\r
+
+      \        const o = {};\r
+
+      \        if ('data' in j) o.data = j.data;\r
+
+      \        if ('error' in j) o.error = j.error;\r
+
+      \        if ('meta' in j) o.meta = j.meta;\r
+
+      \        return JSON.stringify(o, null, 2);\r
+
+      \    };\r
+
+      \r
+
+      \    const get = () => jparse(pm.variables.get(KEY)) || [];\r
+
+      \    const set = s => pm.variables.set(KEY, JSON.stringify(s));\r
+
+      \    const add = sec => { const s = get(); s.push(sec); set(s); };\r
+
+      \r
+
+      \    const buildText = () => get().map(sec => {\r
+
+      \        return
+      `${sec.title}\\n\\n[Request]\\n\\n${sec.req}\\n\\n[Response]\\n\\n${sec.r\
+      es}${sec.err ? `\\n\\n[Error]\\n\\n${sec.err}` : ''}\\n`;\r
+
+      \    }).join('\\n' + '-'.repeat(46) + '\\n\\n');\r
+
+      \r
+
+      \    // extra blocks (displayResponse + generatedJson) are rendered from
+      these globals\r
+
+      \    let __extraHtml = '';\r
+
+      \    let __genText = '';\r
+
+      \r
+
+      \    const render = () => {\r
+
+      \        const text = buildText();\r
+
+      \        pm.visualizer.set(`\r
+
+      <div
+      style=\"display:flex;gap:8px;align-items:center;margin-bottom:8px;\">\r
+
+      \  <button id=\"copyLogBtn\">Copy log</button>\r
+
+      \  ${__genText ? `<button id=\"copyGenBtn\">Copy Generated JSON</button>`
+      : ``}\r
+
+      \  <span id=\"m\"
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;\"></span>\r
+
+      </div>\r
+
+      \r
+
+      <textarea id=\"logTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(text)}</texta\
+      rea>\r
+
+      <textarea id=\"genTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(__genText ||
+      '')}</textarea>\r
+
+      \r
+
+      <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(text)}</pre>\r
+
+      \r
+
+      <div id=\"extra\" style=\"margin-top:10px;\">${__extraHtml || ''}</div>\r
+
+      \r
+
+      <script>\r
+
+      (() => {\r
+
+      \  const m = document.getElementById('m');\r
+
+      \  const logTa = document.getElementById('logTa');\r
+
+      \  const genTa = document.getElementById('genTa');\r
+
+      \r
+
+      \  const msg=(x)=>{m.textContent=x||''; if(x)
+      setTimeout(()=>m.textContent='',1200);};\r
+
+      \r
+
+      \  async function copyFrom(ta){\r
+
+      \    try{\r
+
+      \      const v = ta.value || '';\r
+
+      \      if(!v) return msg('Nothing to copy');\r
+
+      \      if(navigator.clipboard?.writeText){ await
+      navigator.clipboard.writeText(v); return msg('Copied ✅'); }\r
+
+      \      ta.focus(); ta.select();\r
+
+      \      msg(document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \    }catch(e){\r
+
+      \      try{ ta.focus(); ta.select(); msg(document.execCommand('copy') ?
+      'Copied ✅' : 'Copy failed ❌'); }\r
+
+      \      catch{ msg('Copy failed ❌'); }\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  document.getElementById('copyLogBtn').onclick = () =>
+      copyFrom(logTa);\r
+
+      const genBtn = document.getElementById('copyGenBtn');\r
+
+      if (genBtn) genBtn.onclick = () => copyFrom(genTa);\r
+
+      \r
+
+      })();\r
+
+      </script>\r
+
+      `);\r
+
+      \    };\r
+
+      \r
+
+      \    const rawReq = (method, url, headers, bodyRaw) => {\r
+
+      \        const u = url;\r
+
+      \        return [\r
+
+      \            `${String(method || 'GET').toUpperCase()} ${pathQ(u) || '/'}
+      HTTP/1.1`,\r
+
+      \            hostOf(u) ? `Host: ${hostOf(u)}` : null,\r
+
+      \            fmtHeaders(headers) || null,\r
+
+      \            bodyRaw ? `\\n${maybeJson(bodyRaw)}` : null\r
+
+      \        ].filter(Boolean).join('\\n');\r
+
+      \    };\r
+
+      \r
+
+      \    // ===== INIT MAIN (once) =====\r
+
+      \    set([]);\r
+
+      \    add({\r
+
+      \        title: pm.info.requestName || 'Main request',\r
+
+      \        req: rawReq(pm.request.method, pm.request.url,
+      pm.request.headers, pm.request.body?.mode === 'raw' ? pm.request.body.raw
+      : ''),\r
+
+      \        res: respSlice(pm.response.text())\r
+
+      \    });\r
+
+      \    render();\r
+
+      \r
+
+      \    // ===== Public API =====\r
+
+      \    const api = {\r
+
+      \r
+
+      \        // ---- extra block: generic (does NOT create
+      [Request]/[Response]) ----\r
+
+      \        displayResponse(title, data) {\r
+
+      \            const safe = esc(JSON.stringify(data ?? {}, null, 2));\r
+
+      \            const block = `\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">${esc(title || 'Result')}</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${safe}</pre>\r
+
+      </div>`;\r
+
+      \            __extraHtml = block + (__genText ?
+      __extraHtml.replace(/^[\\s\\S]*?<!--GEN-->/, '') : '');\r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        // ---- log section for pm.sendRequest (creates
+      [Request]/[Response]) ----\r
+
+      \        logSubRequest({ title, req, res, err }) {\r
+
+      \            const reqRaw = rawReq(\r
+
+      \                req?.method,\r
+
+      \                req?.url,\r
+
+      \                req?.header || req?.headers,\r
+
+      \                req?.body?.raw || (typeof req?.body === 'string' ?
+      req.body : '')\r
+
+      \            );\r
+
+      \r
+
+      \            let resText = '';\r
+
+      \            try { resText = res?.text?.() || ''; } catch { }\r
+
+      \            if (!resText) { try { const j = res?.json?.(); if (j) resText
+      = JSON.stringify(j); } catch { } }\r
+
+      \r
+
+      \            add({\r
+
+      \                title: title || 'Sub request',\r
+
+      \                req: reqRaw,\r
+
+      \                res: respSlice(resText),\r
+
+      \                err: err?.message || (err ? String(err) : '')\r
+
+      \            });\r
+
+      \r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        /**\r
+
+      \         * ---- Generated JSON block (separate, does NOT add sections)
+      ----\r
+
+      \         * Default: takes pm.response.json().data and applies
+      entered_in_error payload.\r
+
+      \         * You can override: showGeneratedJson(sourceObj)\r
+
+      \         */\r
+
+      \        showGeneratedJson(sourceObj) {\r
+
+      \            let parsed = sourceObj;\r
+
+      \            if (!parsed) {\r
+
+      \                try { parsed = pm.response.json(); } catch { parsed =
+      null; }\r
+
+      \            }\r
+
+      \r
+
+      \            let text = '';\r
+
+      \            if (!parsed || typeof parsed !== 'object') {\r
+
+      \                text = 'Response is not valid JSON — cannot generate
+      finalJson.';\r
+
+      \            } else if (!parsed.data || typeof parsed.data !== 'object')
+      {\r
+
+      \                text = 'Response JSON has no \"data\" object — cannot
+      generate finalJson.';\r
+
+      \            } else {\r
+
+      \                const resData = parsed.data;\r
+
+      \                const finalJson = {\r
+
+      \                    ...resData,\r
+
+      \                    status: 'new',\r
+
+      \                    status_reason: {\r
+
+      \                        coding: [{ system:
+      'eHealth/care_plan_cancel_reasons', code: 'entered_in_error' }]\r
+
+      \                    }\r
+
+      \                };\r
+
+      \                text = JSON.stringify(finalJson, null, 2);\r
+
+      \            }\r
+
+      \r
+
+      \            __genText = text;\r
+
+      \r
+
+      \            const genBlock = `\r
+
+      <!--GEN-->\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">Згенерований JSON</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(__genText)}</pr\
+      e>\r
+
+      </div>`;\r
+
+      \r
+
+      \            // append generated block AFTER other extra blocks (if any)\r
+
+      \            __extraHtml = (__extraHtml || '') + genBlock;\r
+
+      \            render();\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    return api;\r
+
+      }\r
+
+      \r
+
+      \r
+
+      const logger = initLogger(pm)\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      /**\r
+
+      \ * Modern Postman script (2026): same logic, cleaner + safer\r
+
+      \ * - Retries job status up to 3 times with 1s delay\r
+
+      \ * - Writes job entity IDs to globals (job{Entity}ID / job{Entity}ID_2
+      ...)\r
+
+      \ * - Extra globals for PHC doctor if ci_encounter flag is set\r
+
+      \ * - Visualizer output for error/pending/success\r
+
+      \ */\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // ---- Utils ----\r
+
+      const safeJson = (text) => {\r
+
+      \    try { return JSON.parse(text); } catch { return null; }\r
+
+      };\r
+
+      \r
+
+      const toTitle = (s) =>\r
+
+      \    (s ? String(s) : 'job')\r
+
+      \        .split('_')\r
+
+      \        .filter(Boolean)\r
+
+      \        .map(p => p.charAt(0).toUpperCase() + p.slice(1))\r
+
+      \        .join(' ');\r
+
+      \r
+
+      const toEntityKey = (s) =>\r
+
+      \    String(s || '')\r
+
+      \        .trim()\r
+
+      \        .toLowerCase();\r
+
+      \r
+
+      const toEntityLabel = (s) =>\r
+
+      \    String(s || '')\r
+
+      \        .trim()\r
+
+      \        .replaceAll('_', ' ')\r
+
+      \        .replace(/\\b\\w/g, (c) => c.toUpperCase())\r
+
+      \        .replaceAll(' ', ''); // \"clinical_impression\" ->
+      \"ClinicalImpression\"\r
+
+      \r
+
+      // function displayResponse(title, data) {\r
+
+      //     const html = `\r
+
+      //     <style>\r
+
+      //       body { font-family: ui-sans-serif, system-ui, -apple-system;
+      padding: 12px; }\r
+
+      //       h1 { font-size: 18px; margin: 0 0 10px; }\r
+
+      //       pre { background: #0b1020; color: #e6e6e6; padding: 12px;
+      border-radius: 10px; overflow:auto; }\r
+
+      //       .meta { color:#666; font-size:12px; margin-top:6px; }\r
+
+      //     </style>\r
+
+      //     <h1>${title}</h1>\r
+
+      //     <pre>${JSON.stringify(data ?? {}, null, 2)}</pre>\r
+
+      //     <div class=\"meta\">${new Date().toISOString()}</div>\r
+
+      //   `;\r
+
+      //     pm.visualizer.set(html);\r
+
+      // }\r
+
+      \r
+
+      // ---- Determine resource label (avoid brittle path[3]) ----\r
+
+      const pathParts = pm.request.url?.path || [];\r
+
+      // try the old behavior first (index 3), otherwise pick last meaningful
+      segment\r
+
+      const resourceType =\r
+
+      \    pathParts[3] ||\r
+
+      \    [...pathParts].reverse().find(p => p && p !== 'api') ||\r
+
+      \    'job';\r
+
+      \r
+
+      const resourceLabel = toTitle(resourceType);\r
+
+      console.log('resourceType:', resourceType);\r
+
+      \r
+
+      // ---- Parse initial response safely ----\r
+
+      const resData = safeJson(pm.response.text());\r
+
+      \r
+
+      if (!resData) {\r
+
+      \    logger.displayResponse(`${resourceLabel} Response Parse Error`, {\r
+
+      \        error: 'Response is not valid JSON',\r
+
+      \        rawSnippet: pm.response.text()?.slice(0, 500)\r
+
+      \    });\r
+
+      \    pm.globals.unset('ci_encounter');\r
+
+      \    throw new Error('Response is not valid JSON');\r
+
+      }\r
+
+      \r
+
+      // If API returned explicit error payload\r
+
+      if (resData?.error) {\r
+
+      \    logger.displayResponse(`${resourceLabel} Response Error Details`,
+      resData.error);\r
+
+      \    pm.globals.unset('ci_encounter');\r
+
+      \    // keep running? (original script continues). We'll stop to avoid
+      undefined access:\r
+
+      \    throw new Error('Initial response contains error');\r
+
+      }\r
+
+      \r
+
+      // ---- Extract jobId from href ----\r
+
+      const href = resData?.data?.links?.[0]?.href;\r
+
+      if (!href || !href.includes('/jobs/')) {\r
+
+      \    logger.displayResponse(`${resourceLabel} Job Link Missing`, {\r
+
+      \        expected: 'res.data.links[0].href containing \"/jobs/\"',\r
+
+      \        got: href,\r
+
+      \        responseData: resData?.data\r
+
+      \    });\r
+
+      \    pm.globals.unset('ci_encounter');\r
+
+      \    throw new Error('Job href not found in response');\r
+
+      }\r
+
+      \r
+
+      const jobId = href.split('/jobs/')[1];\r
+
+      console.log('Extracted jobId:', jobId);\r
+
+      pm.globals.set(\"extracted_job_id\", jobId)\r
+
+      \r
+
+      // ---- Retry control ----\r
+
+      const MAX_RETRIES = 3;\r
+
+      const RETRY_DELAY_MS = 1000;\r
+
+      pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // ---- Request builder ----\r
+
+      function buildJobCheckRequest(jobId) {\r
+
+      \    const host = pm.globals.get('host');\r
+
+      \    if (!host) throw new Error('pm.globals.host is not set');\r
+
+      \r
+
+      \    return {\r
+
+      \        method: 'GET',\r
+
+      \        url: `${host}/api/jobs/${jobId}`,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \            'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \        }\r
+
+      \    };\r
+
+      }\r
+
+      \r
+
+      // ---- Links -> globals (same naming logic) ----\r
+
+      function writeLinksToGlobals(linksArray) {\r
+
+      \    const linksByEntity = (linksArray || []).reduce((acc, link) => {\r
+
+      \        const entity = toEntityKey(link?.entity);\r
+
+      \        const href = link?.href;\r
+
+      \        if (!entity || !href) return acc;\r
+
+      \r
+
+      \        const id = href.split('/').pop();\r
+
+      \        if (!id) return acc;\r
+
+      \r
+
+      \        acc[entity] = acc[entity] || [];\r
+
+      \        acc[entity].push(id);\r
+
+      \        return acc;\r
+
+      \    }, {});\r
+
+      \r
+
+      \    Object.entries(linksByEntity).forEach(([entity, ids]) => {\r
+
+      \        const entityLabel = toEntityLabel(entity); // ClinicalImpression,
+      Condition, etc.\r
+
+      \r
+
+      \        ids.forEach((id, idx) => {\r
+
+      \            const globalName = ids.length === 1\r
+
+      \                ? `job${entityLabel}ID`\r
+
+      \                : `job${entityLabel}ID_${idx + 1}`;\r
+
+      \            pm.globals.set(globalName, id);\r
+
+      \        });\r
+
+      \    });\r
+
+      \r
+
+      \r
+
+      \    return linksByEntity;\r
+
+      }\r
+
+      \r
+
+      // ---- Poll job status ----\r
+
+      function checkJobStatus(jobId) {\r
+
+      \    let req;\r
+
+      \    try {\r
+
+      \        req = buildJobCheckRequest(jobId);\r
+
+      \    } catch (e) {\r
+
+      \        logger.displayResponse(`${resourceLabel} Job Config Error`, {
+      error: e.message });\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    pm.sendRequest(req, (err, res) => {\r
+
+      \        if (err) {\r
+
+      \            logger.displayResponse(`${resourceLabel} Job Request Error`,
+      { error: err.message });\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        pm.test(`${resourceLabel} job check response is 200 or 303`, ()
+      => {\r
+
+      \            pm.expect([200, 303]).to.include(res.code);\r
+
+      \        });\r
+
+      \r
+
+      \        const body = res.json?.() || {};\r
+
+      \        const status = body?.data?.status;\r
+
+      \        console.log(`${resourceLabel} Job Status:`, status);\r
+
+      \r
+
+      \        if (status === 'processed') {\r
+
+      \            // success expectations (same)\r
+
+      \            pm.test(`${resourceLabel} Job Processed (200 expected)`, ()
+      => {\r
+
+      \                pm.expect(res.code).to.eql(200);\r
+
+      \            });\r
+
+      \r
+
+      \            writeLinksToGlobals(body?.data?.links);\r
+
+      \r
+
+      \         \r
+
+      \            // ----------------------------\r
+
+      \r
+
+      \r
+
+      \            logger.displayResponse(`${resourceLabel} Job Response
+      Details`, body?.data);\r
+
+      \r
+
+      \            // Generate log in visualizer\r
+
+      \            logger.logSubRequest({ title: 'Get job', req, res, err });\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        // retry path (same: up to MAX_RETRIES)\r
+
+      \        const retryCount = Number(pm.environment.get('retryCount')) ||
+      0;\r
+
+      \r
+
+      \        if (retryCount < MAX_RETRIES) {\r
+
+      \            const next = retryCount + 1;\r
+
+      \            pm.environment.set('retryCount', next);\r
+
+      \            console.log(`Retrying ${resourceLabel} job... Attempt
+      ${next}`);\r
+
+      \r
+
+      \            logger.displayResponse(`${resourceLabel} Job Status Pending`,
+      body?.data);\r
+
+      \            setTimeout(() => checkJobStatus(jobId), RETRY_DELAY_MS);\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        console.warn(`❌ Max retries reached for ${resourceLabel}
+      job.`);\r
+
+      \        const finalTitle = body?.data?.error\r
+
+      \            ? `${resourceLabel} Job Error Details`\r
+
+      \            : `Final ${resourceLabel} Job Status Check`;\r
+
+      \        logger.logSubRequest({ title: 'Get job', req, res, err });\r
+
+      \        logger.displayResponse(finalTitle, body?.data);\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      // ---- start ----\r
+
+      checkJobStatus(jobId);"
+    language: text/javascript
+order: 5000

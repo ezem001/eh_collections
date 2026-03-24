@@ -1,0 +1,30 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/api/pis/authentication_method_requests
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
+  - key: Authorization
+    value: Bearer cUdFVWJjTVVVNTkzOEUxVXVza1p2dz09
+body:
+  type: json
+  content: "{\r
+
+    \    \"authentication_method\": {\r
+
+    \        \"type\": \"OTP\",\r
+
+    \        \"phone_number\": \"+380666602234\",\r
+
+    \        \"alias\": \"husband\"\r
+
+    \    }\r
+
+    }"
+examples: ./.resources/Create authentication method request.resources/examples
+order: 1000

@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/care_plans/{{care_plan_id}}/activiti\
+  es/{{activity_id}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: ""
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: |-
+      var jsonData = JSON.parse(responseBody);
+      var activity=jsonData.data;
+      pm.environment.set("activity", activity);
+    language: text/javascript
+order: 36000

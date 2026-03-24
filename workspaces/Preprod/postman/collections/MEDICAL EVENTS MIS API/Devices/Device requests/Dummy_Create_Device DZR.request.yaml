@@ -1,0 +1,497 @@
+$kind: http-request
+url: http://localhost:3000/create-device-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{dummy_device_request_id}}\",\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobEncounterID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"requester\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"authored_on\": \"2026-03-19T11:10:16.000000+00:00\",\r
+
+    \    \"occurrence_period\": {\r
+
+    \        \"start\": \"2026-03-20T11:00:00.000Z\",\r
+
+    \        \"end\": \"2026-04-14T08:05:00.000Z\"\r
+
+    \    },\r
+
+    \    \"code\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"eHealth/assistive_devices\",\r
+
+    \                \"code\": \"06_12_12\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"quantity\": {\r
+
+    \        \"system\": \"device_unit\",\r
+
+    \        \"code\": \"piece\",\r
+
+    \        \"value\": 10\r
+
+    \    },\r
+
+    \    \"parameter\": [],\r
+
+    \    \"status\": \"active\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const deviceRequestId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"dummy_device_request_id\", deviceRequestId);\r
+
+      \r
+
+      \r
+
+      let reqBody = pm.request.body?.raw ? JSON.parse(pm.request.body.raw) :
+      {};\r
+
+      let deviceCode = reqBody.code?.coding?.[0]?.code;\r
+
+      const apiKey = pm.environment.get(\"mis_client_secret\");\r
+
+      const xCustomPSK = pm.globals.get(\"x-custom-psk\");\r
+
+      const host = pm.globals.get(\"host\");\r
+
+      \r
+
+      \r
+
+      if (!deviceCode) {\r
+
+      \    console.log(\"❌ Не знайдено device code у запиті.\");\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      pm.globals.set(\"device_code_coding_code\")\r
+
+      console.log(\"📌 Device code:\", deviceCode);\r
+
+      \r
+
+      // ----------------------------------------\r
+
+      // Хелпер для sendRequest у форматі Promise\r
+
+      // ----------------------------------------\r
+
+      function doRequest(options) {\r
+
+      \    return new Promise((resolve, reject) => {\r
+
+      \        pm.sendRequest(options, (err, res) => {\r
+
+      \            if (err) reject(err);\r
+
+      \            else resolve(res);\r
+
+      \        });\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      \r
+
+      (async () => {\r
+
+      \    try {\r
+
+      \        //
+      ---------------------------------------------------------------\r
+
+      \        // 2. Отримуємо DEVICE_REQUIRED_PARAMETERS для конкретного
+      deviceCode\r
+
+      \        //
+      ---------------------------------------------------------------\r
+
+      \        const configRes = await doRequest({\r
+
+      \            url:
+      `${host}/api/devices_configurations?is_active=true&page_size=200`,\r
+
+      \            method: \"GET\",\r
+
+      \            header: {\r
+
+      \                \"X-Custom-PSK\": `${xCustomPSK}`,\r
+
+      \                \"api-key\": `${apiKey}`\r
+
+      \            }\r
+
+      \        });\r
+
+      \r
+
+      \        const configItems = configRes.json().data || [];\r
+
+      \r
+
+      \        const cfg = configItems.find(i => i.code === deviceCode);\r
+
+      \        if (!cfg) {\r
+
+      \            console.log(\"❌ Не знайдено конфігурацію для коду:\",
+      deviceCode);\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        const requiredParams =\r
+
+      \            cfg.settings?.DEVICE_REQUIRED_PARAMETERS?.[0]?.check || [];\r
+
+      \r
+
+      \        console.log(\"🔎 Required parameters:\", requiredParams);\r
+
+      \r
+
+      \        // Масив кодів параметрів\r
+
+      \        const parameterCodes = requiredParams.map(p => p.code);\r
+
+      \r
+
+      \        //
+      ----------------------------------------------------------------\r
+
+      \        // 3. Отримуємо device_parameters_configurations та шукаємо
+      параметри\r
+
+      \        //
+      ----------------------------------------------------------------\r
+
+      \        const paramRes = await doRequest({\r
+
+      \            url:
+      `${host}/api/device_parameters_configurations?is_active=true&page_size=10\
+      0`,\r
+
+      \            method: \"GET\",\r
+
+      \            header: {\r
+
+      \                \"X-Custom-PSK\": xCustomPSK,\r
+
+      \                \"api-key\": apiKey\r
+
+      \            }\r
+
+      \        });\r
+
+      \r
+
+      \        const paramItems = paramRes.json().data || [];\r
+
+      \r
+
+      \        // Фінальний масив parameter[]\r
+
+      \        let finalParameters = [];\r
+
+      \r
+
+      \        for (let code of parameterCodes) {\r
+
+      \            const paramCfg = paramItems.find(p => p.code === code);\r
+
+      \            if (!paramCfg) continue;\r
+
+      \r
+
+      \            let dataType =\r
+
+      \                paramCfg.settings?.DEVICE_PARAMETER_DATA_TYPE?.check;\r
+
+      \r
+
+      \            let dictionaryName =\r
+
+      \                paramCfg.settings?.DEVICE_PARAMETER_DICTIONARY?.check;\r
+
+      \r
+
+      \            console.log(`📘 Параметр ${code}: type=${dataType},
+      dict=${dictionaryName}`);\r
+
+      \r
+
+      \            let value = null;\r
+
+      \r
+
+      \            // ----------------------------------------\r
+
+      \            // 4. Якщо boolean → false\r
+
+      \            // ----------------------------------------\r
+
+      \            if (dataType === \"boolean\") {\r
+
+      \                value = { value_boolean: false };\r
+
+      \            }\r
+
+      \r
+
+      \            // ----------------------------------------\r
+
+      \            // 5. Якщо codeable_concept → потрібно отримати перше
+      значення словника\r
+
+      \            // ----------------------------------------\r
+
+      \            else if (dataType === \"codeable_concept\" && dictionaryName)
+      {\r
+
+      \                const dictRes = await doRequest({\r
+
+      \                    url:
+      `${host}/api/v2/dictionaries?name=${dictionaryName}`,\r
+
+      \                    method: \"GET\",\r
+
+      \                    header: {\r
+
+      \                        \"X-Custom-PSK\": xCustomPSK,\r
+
+      \                        \"api-key\": apiKey\r
+
+      \                    }\r
+
+      \                });\r
+
+      \r
+
+      \                const values = dictRes.json().data?.[0]?.values || [];\r
+
+      \r
+
+      \                const firstValue = values?.[0];\r
+
+      \r
+
+      \                if (!firstValue) {\r
+
+      \                    console.log(`⚠️ Словник ${dictionaryName}
+      порожній`);\r
+
+      \                    continue;\r
+
+      \                }\r
+
+      \r
+
+      \                value = {\r
+
+      \                    value_codeable_concept: {\r
+
+      \                        coding: [\r
+
+      \                            {\r
+
+      \                                code: firstValue.code,\r
+
+      \                                system: dictionaryName\r
+
+      \                            }\r
+
+      \                        ],\r
+
+      \                        text: firstValue.description || \"\"\r
+
+      \                    }\r
+
+      \                };\r
+
+      \            }\r
+
+      \r
+
+      \            // ----------------------------------------\r
+
+      \            // 6. Формуємо фінальний об'єкт parameter[]\r
+
+      \            // ----------------------------------------\r
+
+      \            if (value) {\r
+
+      \                finalParameters.push({\r
+
+      \                    code: {\r
+
+      \                        coding: [\r
+
+      \                            {\r
+
+      \                                code: code,\r
+
+      \                                system:
+      \"device_request_code_parameter\"\r
+
+      \                            }\r
+
+      \                        ]\r
+
+      \                    },\r
+
+      \                    ...value\r
+
+      \                });\r
+
+      \            }\r
+
+      \        }\r
+
+      \r
+
+      \        console.log(\"✅ FINISHED PARAMETERS:\",
+      JSON.stringify(finalParameters));\r
+
+      \r
+
+      \        //
+      ----------------------------------------------------------------\r
+
+      \        // 🔥 7. ВСТАВЛЯЄМО finalParameters у BODY ЗАПИТУ\r
+
+      \        //
+      ----------------------------------------------------------------\r
+
+      \r
+
+      \        reqBody.parameter = finalParameters;\r
+
+      \        setTimeout(() => {\r
+
+      \            pm.request.body.update({\r
+
+      \                mode: \"raw\",\r
+
+      \                raw: JSON.stringify(reqBody),\r
+
+      \                options: { raw: { language: \"json\" } }\r
+
+      \            });\r
+
+      \            console.log(\"✅ REQUEST BODY UPDATED after timeout\");\r
+
+      \        }, 50);\r
+
+      \r
+
+      \        console.log(\"✅ REQUEST BODY UPDATED:\",
+      JSON.stringify(reqBody));\r
+
+      \    } catch (e) {\r
+
+      \        console.log(\"❌ ERROR:\", e);\r
+
+      \    }\r
+
+      })();\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(`Device Request content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('device_request_signed_content',
+      resData.signed_content);\r
+
+      });"
+    language: text/javascript
+order: 3000

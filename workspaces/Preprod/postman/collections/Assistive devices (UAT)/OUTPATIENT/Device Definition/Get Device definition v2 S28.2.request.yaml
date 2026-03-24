@@ -1,0 +1,9 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/v2/device_definitions/aefba224-5d25-4e6d-8da6-cd324aef9c9c
+method: GET
+headers:
+  Authorization: Bearer {{physio_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 8000

@@ -1,0 +1,38 @@
+$kind: http-request
+description: >-
+  This method must be used to create additional licenses for legal entity
+  (`is_primary=false`) in the system.
+
+
+  Primary license must be added with `Create/Update Legal Entity V2` method.
+url: "{{host}}/api/licenses"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"type\": \"PHARMACY\",\r
+
+    \  \"license_number\": \"fd121443\",\r
+
+    \  \"issued_by\": \"Кваліфікацйна комісія\",\r
+
+    \  \"issued_date\": \"2023-11-17\",\r
+
+    \  \"expiry_date\": \"2024-11-17\",\r
+
+    \  \"active_from_date\": \"2023-11-17\",\r
+
+    \  \"what_licensed\": \"реалізація наркотичних засобів\",\r
+
+    \  \"order_no\": \"ВА45234\",\r
+
+    \  \"is_primary\": false\r
+
+    }"
+order: 1000

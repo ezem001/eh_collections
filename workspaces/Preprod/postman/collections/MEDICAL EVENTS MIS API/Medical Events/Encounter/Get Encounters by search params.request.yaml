@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host}}/api/patients/f2faf5ae-07ad-4199-aa75-b668b2d70b35/encounters?epi\
+  sode_id=1be6f0df-5daa-4c83-a202-9b10f5392e6a"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: date_from
+    value: 2022-10-20
+    disabled: true
+  - key: date_to
+    value: 2022-10-30
+    disabled: true
+  - key: episode_id
+    value: 1be6f0df-5daa-4c83-a202-9b10f5392e6a
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+    disabled: true
+order: 2000

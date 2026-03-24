@@ -1,0 +1,37 @@
+$kind: http-request
+name: S10.5 Update Episode
+url: https://api-demo.ehealth.gov.ua/api/patients/87a71a7b-a5b9-4e74-acff-013c03809a39/episodes/daa0deb4-362c-4d40-8c1c-e3b39bb62bea
+method: PATCH
+headers:
+  Authorization: ""
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+        "part_of": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "episode_of_care"
+                        }
+                    ]
+                },
+                "value": "29d9e5fe-d7f8-4f48-8654-bcc7663d9c86"
+            }
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 12000

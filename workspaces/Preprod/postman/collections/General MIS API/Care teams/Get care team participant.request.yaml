@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:3000/care-teams/33980c8f-4a3d-4b66-8688-07a1f20c7558/participants/85bf77d3-13dd-4790-864a-03b653798328
+method: GET
+order: 2000

@@ -1,0 +1,22 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/oauth/nonce
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+  - key: api-key
+    value: 83550c00774bb2151a95c1b00d16af1f
+    disabled: true
+  - key: Authorization
+    value: Bearer alo1UVpIZWtPN3JFanptY0Zwb0QwUT09
+    disabled: true
+body:
+  type: json
+  content: |-
+    {
+        "client_id": "{{client_id}}",
+        "client_secret": "{{client_secret}}"
+    }
+order: 2000

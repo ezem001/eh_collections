@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/care_plans/{{jobCareplanID}\
+  }/activities"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  x-custom-psk: "{{x-custom-psk}}"
+queryParams:
+  - key: author
+    value: 9183a36b-4d45-4244-9339-63d81cd08d9c
+    disabled: true
+  - key: kind
+    value: service_request
+    disabled: true
+  - key: status
+    value: scheduled
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "5"
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Care Plan activities - PASS. Status code is 200\", function
+      () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 30000

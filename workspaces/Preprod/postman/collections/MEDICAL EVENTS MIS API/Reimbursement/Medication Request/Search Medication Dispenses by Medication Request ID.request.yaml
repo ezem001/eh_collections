@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/persons/db725f9b-241c-4b24-8dc1-76ebcb458773/medication_requ\
+  ests/5759911c-b6c8-42b7-bfaa-5a332b674d0f/medication_dispenses?page=1&page_si\
+  ze=10"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+queryParams:
+  - key: status
+    value: PROCESSED
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "10"
+order: 16000

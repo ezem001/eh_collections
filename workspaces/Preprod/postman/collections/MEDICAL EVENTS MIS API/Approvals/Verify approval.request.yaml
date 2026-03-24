@@ -1,0 +1,552 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/approvals/{{jobApprovalID}}"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r\n  \"code\": 1152\r\n}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Verify Approval is 200\", function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      function initLogger(pm) {\r
+
+      \    const MASK = true;\r
+
+      \    const SENSITIVE = new Set(['authorization', 'api-key',
+      'x-custom-psk', 'cookie']);\r
+
+      \    const DROP = new Set(['accept', 'accept-encoding', 'connection',
+      'content-type', 'postman-token', 'user-agent', 'content-length',
+      'host']);\r
+
+      \    const KEY = '__viz_sections__';\r
+
+      \r
+
+      \    const jparse = t => { try { return JSON.parse(t); } catch { return
+      null; } };\r
+
+      \    const esc = s => String(s ?? '').replaceAll('&',
+      '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');\r
+
+      \r
+
+      \    const headersObj = h => {\r
+
+      \        if (!h) return {};\r
+
+      \        if (h.toObject) return h.toObject();\r
+
+      \        if (Array.isArray(h)) return h.reduce((a, x) => { const k =
+      (x?.key || x?.name || '') + ''; if (k) a[k] = String(x?.value ?? '');
+      return a; }, {});\r
+
+      \        if (typeof h === 'object') return
+      Object.fromEntries(Object.entries(h).map(([k, v]) => [k, String(v)]));\r
+
+      \        return {};\r
+
+      \    };\r
+
+      \r
+
+      \    const mask = (k, v) => {\r
+
+      \        k = String(k || '').toLowerCase().trim();\r
+
+      \        if (!MASK || !SENSITIVE.has(k)) return v;\r
+
+      \        if (k === 'authorization') return 'Bearer ***';\r
+
+      \        v = String(v ?? '');\r
+
+      \        return v ? `***…${v.slice(-6)}` : '***';\r
+
+      \    };\r
+
+      \r
+
+      \    const fmtHeaders = h => Object.entries(headersObj(h))\r
+
+      \        .filter(([k]) => k &&
+      !DROP.has(String(k).toLowerCase().trim()))\r
+
+      \        .sort((a, b) =>
+      a[0].toLowerCase().localeCompare(b[0].toLowerCase()))\r
+
+      \        .map(([k, v]) => `${k}: ${mask(k, v)}`)\r
+
+      \        .join('\\n');\r
+
+      \r
+
+      \    const hostOf = u => {\r
+
+      \        if (!u) return '';\r
+
+      \        try { return new URL(typeof u === 'string' ? u :
+      u.toString()).host; }\r
+
+      \        catch { return Array.isArray(u?.host) ? u.host.join('.') :
+      String(u?.host || ''); }\r
+
+      \    };\r
+
+      \r
+
+      \    const pathQ = u => {\r
+
+      \        if (!u) return '/';\r
+
+      \        const host = hostOf(u);\r
+
+      \        try {\r
+
+      \            const s = typeof u === 'string' ? u : u.toString();\r
+
+      \            const abs = s.startsWith('http') ? s :
+      `https://${host}${s.startsWith('/') ? '' : '/'}${s}`;\r
+
+      \            const U = new URL(abs);\r
+
+      \            return U.pathname + (U.search || '');\r
+
+      \        } catch {\r
+
+      \            const p = Array.isArray(u?.path) ? '/' + u.path.join('/') :
+      (u?.pathname || '/');\r
+
+      \            const q = u?.query;\r
+
+      \            if (Array.isArray(q) && q.length) {\r
+
+      \                const qs = q.filter(x => x?.key).map(x =>
+      `${encodeURIComponent(x.key)}=${encodeURIComponent(x.value ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            if (q && typeof q === 'object') {\r
+
+      \                const qs = Object.entries(q).filter(([k]) => k).map(([k,
+      v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ??
+      '')}`).join('&');\r
+
+      \                return qs ? `${p}?${qs}` : p;\r
+
+      \            }\r
+
+      \            return p || '/';\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    const maybeJson = t => { const j = jparse(t); return j ?
+      JSON.stringify(j, null, 2) : String(t ?? ''); };\r
+
+      \r
+
+      \    const respSlice = t => {\r
+
+      \        const j = jparse(t);\r
+
+      \        if (!j) return String(t ?? '');\r
+
+      \        const o = {};\r
+
+      \        if ('data' in j) o.data = j.data;\r
+
+      \        if ('error' in j) o.error = j.error;\r
+
+      \        if ('meta' in j) o.meta = j.meta;\r
+
+      \        return JSON.stringify(o, null, 2);\r
+
+      \    };\r
+
+      \r
+
+      \    const get = () => jparse(pm.variables.get(KEY)) || [];\r
+
+      \    const set = s => pm.variables.set(KEY, JSON.stringify(s));\r
+
+      \    const add = sec => { const s = get(); s.push(sec); set(s); };\r
+
+      \r
+
+      \    const buildText = () => get().map(sec => {\r
+
+      \        return
+      `${sec.title}\\n\\n[Request]\\n\\n${sec.req}\\n\\n[Response]\\n\\n${sec.r\
+      es}${sec.err ? `\\n\\n[Error]\\n\\n${sec.err}` : ''}\\n`;\r
+
+      \    }).join('\\n' + '-'.repeat(46) + '\\n\\n');\r
+
+      \r
+
+      \    // extra blocks (displayResponse + generatedJson) are rendered from
+      these globals\r
+
+      \    let __extraHtml = '';\r
+
+      \    let __genText = '';\r
+
+      \r
+
+      \    const render = () => {\r
+
+      \        const text = buildText();\r
+
+      \        pm.visualizer.set(`\r
+
+      <div
+      style=\"display:flex;gap:8px;align-items:center;margin-bottom:8px;\">\r
+
+      \  <button id=\"copyLogBtn\">Copy log</button>\r
+
+      \  ${__genText ? `<button id=\"copyGenBtn\">Copy Generated JSON</button>`
+      : ``}\r
+
+      \  <span id=\"m\"
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;\"></span>\r
+
+      </div>\r
+
+      \r
+
+      <textarea id=\"logTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(text)}</texta\
+      rea>\r
+
+      <textarea id=\"genTa\"
+      style=\"position:absolute;left:-9999px;top:-9999px;\">${esc(__genText ||
+      '')}</textarea>\r
+
+      \r
+
+      <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(text)}</pre>\r
+
+      \r
+
+      <div id=\"extra\" style=\"margin-top:10px;\">${__extraHtml || ''}</div>\r
+
+      \r
+
+      <script>\r
+
+      (() => {\r
+
+      \  const m = document.getElementById('m');\r
+
+      \  const logTa = document.getElementById('logTa');\r
+
+      \  const genTa = document.getElementById('genTa');\r
+
+      \r
+
+      \  const msg=(x)=>{m.textContent=x||''; if(x)
+      setTimeout(()=>m.textContent='',1200);};\r
+
+      \r
+
+      \  async function copyFrom(ta){\r
+
+      \    try{\r
+
+      \      const v = ta.value || '';\r
+
+      \      if(!v) return msg('Nothing to copy');\r
+
+      \      if(navigator.clipboard?.writeText){ await
+      navigator.clipboard.writeText(v); return msg('Copied ✅'); }\r
+
+      \      ta.focus(); ta.select();\r
+
+      \      msg(document.execCommand('copy') ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \    }catch(e){\r
+
+      \      try{ ta.focus(); ta.select(); msg(document.execCommand('copy') ?
+      'Copied ✅' : 'Copy failed ❌'); }\r
+
+      \      catch{ msg('Copy failed ❌'); }\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  document.getElementById('copyLogBtn').onclick = () =>
+      copyFrom(logTa);\r
+
+      const genBtn = document.getElementById('copyGenBtn');\r
+
+      if (genBtn) genBtn.onclick = () => copyFrom(genTa);\r
+
+      \r
+
+      })();\r
+
+      </script>\r
+
+      `);\r
+
+      \    };\r
+
+      \r
+
+      \    const rawReq = (method, url, headers, bodyRaw) => {\r
+
+      \        const u = url;\r
+
+      \        return [\r
+
+      \            `${String(method || 'GET').toUpperCase()} ${pathQ(u) || '/'}
+      HTTP/1.1`,\r
+
+      \            hostOf(u) ? `Host: ${hostOf(u)}` : null,\r
+
+      \            fmtHeaders(headers) || null,\r
+
+      \            bodyRaw ? `\\n${maybeJson(bodyRaw)}` : null\r
+
+      \        ].filter(Boolean).join('\\n');\r
+
+      \    };\r
+
+      \r
+
+      \    // ===== INIT MAIN (once) =====\r
+
+      \    set([]);\r
+
+      \    add({\r
+
+      \        title: pm.info.requestName || 'Main request',\r
+
+      \        req: rawReq(pm.request.method, pm.request.url,
+      pm.request.headers, pm.request.body?.mode === 'raw' ? pm.request.body.raw
+      : ''),\r
+
+      \        res: respSlice(pm.response.text())\r
+
+      \    });\r
+
+      \    render();\r
+
+      \r
+
+      \    // ===== Public API =====\r
+
+      \    const api = {\r
+
+      \r
+
+      \        // ---- extra block: generic (does NOT create
+      [Request]/[Response]) ----\r
+
+      \        displayResponse(title, data) {\r
+
+      \            const safe = esc(JSON.stringify(data ?? {}, null, 2));\r
+
+      \            const block = `\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">${esc(title || 'Result')}</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${safe}</pre>\r
+
+      </div>`;\r
+
+      \            __extraHtml = block + (__genText ?
+      __extraHtml.replace(/^[\\s\\S]*?<!--GEN-->/, '') : '');\r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        // ---- log section for pm.sendRequest (creates
+      [Request]/[Response]) ----\r
+
+      \        logSubRequest({ title, req, res, err }) {\r
+
+      \            const reqRaw = rawReq(\r
+
+      \                req?.method,\r
+
+      \                req?.url,\r
+
+      \                req?.header || req?.headers,\r
+
+      \                req?.body?.raw || (typeof req?.body === 'string' ?
+      req.body : '')\r
+
+      \            );\r
+
+      \r
+
+      \            let resText = '';\r
+
+      \            try { resText = res?.text?.() || ''; } catch { }\r
+
+      \            if (!resText) { try { const j = res?.json?.(); if (j) resText
+      = JSON.stringify(j); } catch { } }\r
+
+      \r
+
+      \            add({\r
+
+      \                title: title || 'Sub request',\r
+
+      \                req: reqRaw,\r
+
+      \                res: respSlice(resText),\r
+
+      \                err: err?.message || (err ? String(err) : '')\r
+
+      \            });\r
+
+      \r
+
+      \            render();\r
+
+      \        },\r
+
+      \r
+
+      \        /**\r
+
+      \         * ---- Generated JSON block (separate, does NOT add sections)
+      ----\r
+
+      \         * Default: takes pm.response.json().data and applies
+      entered_in_error payload.\r
+
+      \         * You can override: showGeneratedJson(sourceObj)\r
+
+      \         */\r
+
+      \        showGeneratedJson(sourceObj) {\r
+
+      \            let parsed = sourceObj;\r
+
+      \            if (!parsed) {\r
+
+      \                try { parsed = pm.response.json(); } catch { parsed =
+      null; }\r
+
+      \            }\r
+
+      \r
+
+      \            let text = '';\r
+
+      \            if (!parsed || typeof parsed !== 'object') {\r
+
+      \                text = 'Response is not valid JSON — cannot generate
+      finalJson.';\r
+
+      \            } else if (!parsed.data || typeof parsed.data !== 'object')
+      {\r
+
+      \                text = 'Response JSON has no \"data\" object — cannot
+      generate finalJson.';\r
+
+      \            } else {\r
+
+      \                const resData = parsed.data;\r
+
+      \                const finalJson = {\r
+
+      \                    ...resData,\r
+
+      \                    status: 'new',\r
+
+      \                    status_reason: {\r
+
+      \                        coding: [{ system:
+      'eHealth/care_plan_cancel_reasons', code: 'entered_in_error' }]\r
+
+      \                    }\r
+
+      \                };\r
+
+      \                text = JSON.stringify(finalJson, null, 2);\r
+
+      \            }\r
+
+      \r
+
+      \            __genText = text;\r
+
+      \r
+
+      \            const genBlock = `\r
+
+      <!--GEN-->\r
+
+      <div style=\"margin-top:10px;\">\r
+
+      \  <div
+      style=\"font-family:ui-monospace,Menlo,Monaco,Consolas,monospace;font-siz\
+      e:12px;margin-bottom:6px;\">Згенерований JSON</div>\r
+
+      \  <pre
+      style=\"margin:0;white-space:pre;font-family:ui-monospace,Menlo,Monaco,Co\
+      nsolas,monospace;font-size:12px;line-height:1.35;\">${esc(__genText)}</pr\
+      e>\r
+
+      </div>`;\r
+
+      \r
+
+      \            // append generated block AFTER other extra blocks (if any)\r
+
+      \            __extraHtml = (__extraHtml || '') + genBlock;\r
+
+      \            render();\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    return api;\r
+
+      }\r
+
+      \r
+
+      const logger = initLogger(pm);\r\n"
+    language: text/javascript
+order: 5000

@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/job/{{creatCompositionJobId}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: formdata
+  content: []
+order: 6000

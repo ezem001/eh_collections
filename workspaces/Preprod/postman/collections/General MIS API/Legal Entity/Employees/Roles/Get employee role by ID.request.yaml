@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/employee_roles/0dccb76f-3ed0-40f4-8f73-e95e2f91ea29"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 4000

@@ -1,0 +1,38 @@
+$kind: http-request
+description: >-
+  This method must be used to update additional license (`is_primary=false`) for
+  legal entity in the system.
+
+
+  Primary license must be updated with `Create/Update Legal Entity V2` method.
+url: "{{host_demo}}/api/licenses/id"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: "{\r
+
+    \  \"type\": \"MSP\",\r
+
+    \  \"license_number\": \"fd123443\",\r
+
+    \  \"issued_by\": \"Кваліфікацйна комісія\",\r
+
+    \  \"issued_date\": \"2022-02-28\",\r
+
+    \  \"expiry_date\": \"2026-02-28\",\r
+
+    \  \"active_from_date\": \"2022-02-28\",\r
+
+    \  \"what_licensed\": \"реалізація наркотичних засобів\",\r
+
+    \  \"order_no\": \"ВА43234\",\r
+
+    \  \"is_primary\": false\r
+
+    }"
+order: 2000

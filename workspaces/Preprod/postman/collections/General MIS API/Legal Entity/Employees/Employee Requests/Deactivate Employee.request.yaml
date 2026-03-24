@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host_demo}}/api/employees/b1030af6-c36d-4d99-96ff-293fc2d8bccd/actions/\
+  deactivate"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 5000

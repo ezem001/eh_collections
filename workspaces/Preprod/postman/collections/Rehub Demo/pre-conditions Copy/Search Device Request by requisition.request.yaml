@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{host}}/api/device_requests?requisition=0627-3567-8851-1441"
+method: GET
+headers:
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+queryParams:
+  requisition: 0627-3567-8851-1441
+scripts:
+  - type: afterResponse
+    code: |-
+      
+      pm.test("OK", function () { 
+          (pm.expect(pm.response.json().data.status_code).to.not.equal(200)); 
+      });
+
+
+      var jsonData = JSON.parse(responseBody);
+      var device_request=jsonData.data;
+      pm.environment.set("device_request", device_request);
+    language: text/javascript
+order: 28000

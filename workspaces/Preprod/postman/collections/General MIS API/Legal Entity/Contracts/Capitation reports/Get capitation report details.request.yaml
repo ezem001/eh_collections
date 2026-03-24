@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/capitation_report_details?edrpou=34056008&report_id=role-138\
+  0df72-275a-11e7-93ae-92361f002671"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  edrpou: "34056008"
+  report_id: role-1380df72-275a-11e7-93ae-92361f002671
+body:
+  type: json
+  content: ""
+order: 2000

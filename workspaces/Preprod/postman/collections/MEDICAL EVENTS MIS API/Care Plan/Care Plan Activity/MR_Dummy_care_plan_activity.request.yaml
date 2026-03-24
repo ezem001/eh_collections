@@ -1,0 +1,301 @@
+$kind: http-request
+url: http://localhost:3000/create-care-plan-activity-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{care_plan_activity_id}}\",\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"care_plan\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"care_plan\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobCarePlanID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"detail\": {\r
+
+    \        \"kind\": \"medication_request\",\r
+
+    \        \"product_reference\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"medication\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": \"Тестовий текст\"\r
+
+    \                },\r
+
+    \                \"value\": \"0fc636fb-6810-4538-840c-8b38fc63e2f2\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"reason_code\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                        \"code\": \"E10.9\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"reason_reference\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"condition\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{jobConditionID_1}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"goal\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/care_plan_activity_goals\",\r
+
+    \                        \"code\": \"sympthoms\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"quantity\": {\r
+
+    \            \"code\": \"ML\",\r
+
+    \            \"system\": \"MEDICATION_UNIT\",\r
+
+    \            \"value\": 10\r
+
+    \        },\r
+
+    \        \"scheduled_period\": {\r
+
+    \            \"start\": \"2026-02-22T10:00:00.000Z\",\r
+
+    \            \"end\": \"2026-02-26T10:05:00.000Z\"\r
+
+    \        },\r
+
+    \        \"location\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"division\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_division_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"performer\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"daily_amount\": {\r
+
+    \            \"code\": \"ML\",\r
+
+    \            \"system\": \"MEDICATION_UNIT\",\r
+
+    \            \"value\": 10.0\r
+
+    \        },\r
+
+    \        \"description\": \"Some activity description 123\",\r
+
+    \        \"do_not_perform\": false,\r
+
+    \        \"program\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"medical_program\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"cda113e4-b8dd-4ec4-a878-3d1c7eae49da\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"status\": \"scheduled\"\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const caraPlanActivityId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"care_plan_activity_id\", caraPlanActivityId);"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = JSON.parse(responseBody);\r
+
+      \r
+
+      if(resData.signed_content){\r
+
+      \    pm.globals.set('care_plan_activity_signed_content',
+      resData.signed_content)\r
+
+      }"
+    language: text/javascript
+order: 4000

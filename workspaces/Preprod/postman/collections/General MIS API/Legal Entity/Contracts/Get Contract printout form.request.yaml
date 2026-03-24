@@ -1,0 +1,268 @@
+$kind: http-request
+url: "{{host}}/api/contracts/reimbursement/b41f9bdc-58f2-4112-8368-768d43dc1e14\
+  /printout_content"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "// let html;\r
+
+      \r
+
+      // try {\r
+
+      //     const resData = pm.response.json();\r
+
+      \r
+
+      //     if (\r
+
+      //         resData &&\r
+
+      //         resData.data &&\r
+
+      //         typeof resData.data.printout_content === 'string'\r
+
+      //     ) {\r
+
+      //         html = resData.data.printout_content;\r
+
+      \r
+
+      //         // Візуалізувати в окремій вкладці\r
+
+      //         pm.visualizer.set(html);\r
+
+      \r
+
+      //         // Декодуємо escape-послідовності\r
+
+      //         const decodedHtml = html\r
+
+      //             .replace(/\\\\n/g, \"\\n\")\r
+
+      //             .replace(/\\\\\"/g, '\"')\r
+
+      //             .replace(/\\\\'/g, \"'\")\r
+
+      //             .replace(/\\\\\\\\/g, \"\\\\\");\r
+
+      \r
+
+      //         console.log(\"Decoded HTML:\", decodedHtml);\r
+
+      \r
+
+      //         // Відправляємо розкодований HTML на локальний сервер\r
+
+      //         pm.sendRequest({\r
+
+      //             url:
+      \"http://localhost:3000/save-html/contract_printout_content\",\r
+
+      //             method: \"POST\",\r
+
+      //             header: {\r
+
+      //                 \"Content-Type\": \"text/plain\"\r
+
+      //             },\r
+
+      //             body: {\r
+
+      //                 mode: \"raw\",\r
+
+      //                 raw: decodedHtml\r
+
+      //             }\r
+
+      //         }, function (err, res) {\r
+
+      //             if (err) {\r
+
+      //                 console.error(\"Error sending HTML to server:\",
+      err);\r
+
+      //             } else {\r
+
+      //                 console.log(\"Server response:\", res.text());\r
+
+      //             }\r
+
+      //         });\r
+
+      \r
+
+      //     } else {\r
+
+      //         console.warn(\"printout_content not found or not a string\");\r
+
+      //         pm.visualizer.set(`<h3>⚠️ printout_content not
+      available</h3>`);\r
+
+      //     }\r
+
+      // } catch (e) {\r
+
+      //     console.error(\"Failed to parse response JSON or render
+      template:\", e.message);\r
+
+      //     pm.visualizer.set(`<h3>❌ Error parsing response or
+      rendering</h3><pre>${e.message}</pre>`);\r
+
+      // }\r
+
+      \r
+
+      (function () {\r
+
+      \    function safeJsonParse(text) {\r
+
+      \        try { return JSON.parse(text); } catch (e) { return null; }\r
+
+      \    }\r
+
+      \r
+
+      \    function escapeHtml(s) {\r
+
+      \        return String(s)\r
+
+      \            .replace(/&/g, \"&amp;\")\r
+
+      \            .replace(/</g, \"&lt;\")\r
+
+      \            .replace(/>/g, \"&gt;\")\r
+
+      \            .replace(/\"/g, \"&quot;\")\r
+
+      \            .replace(/'/g, \"&#39;\");\r
+
+      \    }\r
+
+      \r
+
+      \    function escapeAttr(s) {\r
+
+      \        return String(s).replace(/&/g, \"&amp;\").replace(/\"/g,
+      \"&quot;\");\r
+
+      \    }\r
+
+      \r
+
+      \    const raw = pm.response.text();\r
+
+      \    const json = safeJsonParse(raw);\r
+
+      \r
+
+      \    if (!json || !json.data || typeof json.data.printout_content !==
+      \"string\") {\r
+
+      \        pm.visualizer.set(`\r
+
+      \        <div style=\"font-family: system-ui; padding: 12px;\">\r
+
+      \            <h3>Printout content not found</h3>\r
+
+      \            <pre>${escapeHtml(raw).slice(0, 8000)}</pre>\r
+
+      \        </div>\r
+
+      \        `);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    let htmlString = json.data.printout_content;\r
+
+      \r
+
+      \    const srcdocAttr = escapeAttr(htmlString);\r
+
+      \    const id = json.data.id ? escapeHtml(json.data.id) : \"\";\r
+
+      \r
+
+      \    const wrapper = `\r
+
+      \    <div style=\"font-family: system-ui, padding: 10px;\">\r
+
+      \        <div style=\"margin-bottom:10px;\">\r
+
+      \            <button id=\"printBtn\"\r
+
+      \                style=\"padding:6px 10px; border:1px solid #d0d7de;
+      background:#fff; border-radius:8px; cursor:pointer;\">\r
+
+      \                Друк\r
+
+      \            </button>\r
+
+      \            <span style=\"margin-left:10px; font-size:12px;
+      color:#6b7280;\">\r
+
+      \                id: <b>${id}</b>\r
+
+      \            </span>\r
+
+      \        </div>\r
+
+      \r
+
+      \        <iframe\r
+
+      \            id=\"printFrame\"\r
+
+      \            style=\"width:100%; height:85vh; border:1px solid #d0d7de;
+      border-radius:10px; background:white;\"\r
+
+      \            srcdoc=\"${srcdocAttr}\">\r
+
+      \        </iframe>\r
+
+      \r
+
+      \        <script>\r
+
+      \            (function () {\r
+
+      \                const iframe = document.getElementById('printFrame');\r
+
+      \                const printBtn = document.getElementById('printBtn');\r
+
+      \r
+
+      \                printBtn.onclick = function () {\r
+
+      \                    if (!iframe.contentWindow) return;\r
+
+      \                    iframe.contentWindow.focus();\r
+
+      \                    iframe.contentWindow.print();\r
+
+      \                };\r
+
+      \            })();\r
+
+      \        </script>\r
+
+      \    </div>\r
+
+      \    `;\r
+
+      \r
+
+      \    pm.visualizer.set(wrapper);\r
+
+      })();\r\n"
+    language: text/javascript
+order: 5000

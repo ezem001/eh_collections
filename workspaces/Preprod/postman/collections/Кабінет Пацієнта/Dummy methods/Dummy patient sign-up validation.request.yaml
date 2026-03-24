@@ -1,0 +1,154 @@
+$kind: http-request
+url: https://ehealth.edenlabllc.com/dummy/pis/sign-up_validation
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"person\": {\r
+
+    \    \"first_name\": \"Другий \",\r
+
+    \    \"last_name\": \"Тестувальник\",\r
+
+    \    \"second_name\": \"Рнокпп\",\r
+
+    \    \"birth_date\": \"1992-07-05\",\r
+
+    \    \"birth_country\": \"Україна\",\r
+
+    \    \"birth_settlement\": \"Вінниця\",\r
+
+    \    \"gender\": \"MALE\",\r
+
+    \    \"email\": \"email@example.com\",\r
+
+    \    \"no_tax_id\": false,\r
+
+    \    \"tax_id\": \"4180000002\",\r
+
+    \    \"secret\": \"secret\",\r
+
+    \    \"documents\": [\r
+
+    \      {\r
+
+    \        \"type\": \"PASSPORT\",\r
+
+    \        \"number\": \"АА120522\",\r
+
+    \        \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської області\",\r
+
+    \        \"issued_at\": \"2017-02-28\",\r
+
+    \        \"expiration_date\": \"2027-02-28\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"addresses\": [\r
+
+    \      {\r
+
+    \        \"type\": \"RESIDENCE\",\r
+
+    \        \"country\": \"UA\",\r
+
+    \        \"area\": \"Житомирська\",\r
+
+    \        \"region\": \"Бердичівський\",\r
+
+    \        \"settlement\": \"Київ\",\r
+
+    \        \"settlement_type\": \"CITY\",\r
+
+    \        \"settlement_id\": \"b075f148-7f93-4fc2-b2ec-2d81b19a9b7b\",\r
+
+    \        \"street_type\": \"STREET\",\r
+
+    \        \"street\": \"вул. Ніжинська\",\r
+
+    \        \"building\": \"15\",\r
+
+    \        \"apartment\": \"23\",\r
+
+    \        \"zip\": \"02090\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"phones\": [\r
+
+    \      {\r
+
+    \        \"type\": \"MOBILE\",\r
+
+    \        \"number\": \"+380503410870\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"authentication_methods\": [\r
+
+    \      {\r
+
+    \        \"type\": \"OTP\",\r
+
+    \        \"phone_number\": \"+380506994387\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"unzr\": \"19920705-00011\",\r
+
+    \    \"emergency_contact\": {\r
+
+    \      \"first_name\": \"Петро\",\r
+
+    \      \"last_name\": \"Іванов\",\r
+
+    \      \"second_name\": \"Миколайович\",\r
+
+    \      \"phones\": [\r
+
+    \        {\r
+
+    \          \"type\": \"MOBILE\",\r
+
+    \          \"number\": \"+380503410870\"\r
+
+    \        }\r
+
+    \      ]\r
+
+    \    },\r
+
+    \    \"preferred_way_communication\": \"email\"\r
+
+    \  },\r
+
+    \  \"patient_signed\": true,\r
+
+    \  \"process_disclosure_data_consent\": true,\r
+
+    \  \"jwt\":
+    \"eyJhbGciOiJSUzUxMiIsImtpZCI6IktyWFJrYnpuVUV3MnJMUzdJeXZ1U0dlUkxHSFNlNGlfT\
+    0JRa0JVNUJHcGsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJ0cnVzdGVkLWNsaWVudCIsImV4cCI6M\
+    TcxNzU4NDQ0OCwiaWF0IjoxNzE3NTgzNTQ4LCJpc3MiOiJFSGVhbHRoIiwianRpIjoiNmFiODQy\
+    Y2ItMjI4MS00MjY3LTg0MzktMGE1NmNlZWQyMzU5IiwibmJmIjoxNzE3NTgzNTQ3LCJub25jZSI\
+    6ImNmNmQwN2MzLWNiNzAtNDU0Yi1iZWZlLTllMWY1OWUwNGM3ZCIsInN1YiI6ImNmNmQwN2MzLW\
+    NiNzAtNDU0Yi1iZWZlLTllMWY1OWUwNGM3ZCIsInR5cCI6ImFjY2VzcyJ9.K4O16qhfudrrMR24\
+    lo33jJ6fscMyWsiGtYWPuBWrtjcHqxjIm2yWJW4lTbKFKQSvFaVMLirzVPLwbtsADA-bdNyFGML\
+    N9tNbcSS_q1l5Nn2C2wNHNUMtQYAmCwEL6rCCFsXnulSj8HM6PA-faTPDpRMlyWbqhlNYf9H9UD\
+    e_syg3NWmStHOFAx1cyo3TTnIl50ZmXSPshWplw5FoscPRJJTtEcEfjhTRgMYnlR08MGBJgoqzN\
+    KSbWyU_RcsLnCZG0ZsQXeMMpKhu-DRmI7JKl0NjaeLzzP8T8pyO65CDzphPK4OSMCEHRTxVLaQ2\
+    FpBM0s4Ici7N9o5DFU_gMcHhIA\"\r
+
+    }"
+order: 2000

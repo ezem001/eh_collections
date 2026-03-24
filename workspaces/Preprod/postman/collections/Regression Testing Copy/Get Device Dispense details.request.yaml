@@ -1,0 +1,591 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/device_dispenses/{{JobDevic\
+  eDispenseID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: "// const resData = pm.response.json().data;\r
+
+      \r
+
+      // pm.test(\"Get Device Dispense details - PASS. Status code is 200\",
+      function () {\r
+
+      //     pm.response.to.have.status(200);\r
+
+      //     pm.globals.set(\"device_json_completed_to_sign\",
+      JSON.stringify(resData));\r
+
+      \r
+
+      //     console.log(resData)\r
+
+      \r
+
+      //     // Отримання поточної дати у форматі 2018-08-02T10:45:16.000Z\r
+
+      //     const nowIsoString = new
+      Date().toISOString().replace(/\\.\\d{3}Z$/, '.000Z');\r
+
+      \r
+
+      //     // Варіант 1: Complete Device Dispense\r
+
+      //     const jsonCompleted = {\r
+
+      //         ...resData,\r
+
+      //         status: \"completed\",\r
+
+      //         payment_amount: 2,\r
+
+      //         when_handed_over: nowIsoString\r
+
+      //     };\r
+
+      \r
+
+      //     // Варіант 2: Mark in error Device dispense\r
+
+      //     const jsonError = {\r
+
+      //         ...resData,\r
+
+      //         status: \"entered_in_error\",\r
+
+      //         status_reason: {\r
+
+      //             coding: [\r
+
+      //                 {\r
+
+      //                     system:
+      \"device_dispense_mark_in_error_reasons\",\r
+
+      //                     code: \"entered_in_error\"\r
+
+      //                 }\r
+
+      //             ]\r
+
+      //         }\r
+
+      //     };\r
+
+      \r
+
+      //     pm.visualizer.set(`\r
+
+      //   <style>\r
+
+      //     .container {\r
+
+      //       display: flex;\r
+
+      //       flex-wrap: wrap;\r
+
+      //       gap: 20px;\r
+
+      //     }\r
+
+      //     .block {\r
+
+      //       flex: 1 1 45%;\r
+
+      //       min-width: 300px;\r
+
+      //     }\r
+
+      //     pre {\r
+
+      //       background-color: #f6f8fa;\r
+
+      //       padding: 16px;\r
+
+      //       border-radius: 5px;\r
+
+      //       font-family: monospace;\r
+
+      //       white-space: pre-wrap;\r
+
+      //       max-height: 500px;\r
+
+      //       overflow: auto;\r
+
+      //     }\r
+
+      //     button {\r
+
+      //       margin: 10px 0;\r
+
+      //       padding: 5px 10px;\r
+
+      //       border-radius: 4px;\r
+
+      //       border: 1px solid #ccc;\r
+
+      //       background-color: #e0e0e0;\r
+
+      //       cursor: pointer;\r
+
+      //     }\r
+
+      //     button:hover {\r
+
+      //       background-color: #d0d0d0;\r
+
+      //     }\r
+
+      //     h3 {\r
+
+      //       margin-bottom: 5px;\r
+
+      //     }\r
+
+      //   </style>\r
+
+      \r
+
+      //   <div class=\"container\">\r
+
+      //     <div class=\"block\">\r
+
+      //       <h3>JSON для <u>завершення</u> DeviceDispense</h3>\r
+
+      //       <button onclick=\"copyToClipboard('json1')\">Скопіювати JSON
+      (completed)</button>\r
+
+      //       <pre id=\"json1\">{{jsonCompleted}}</pre>\r
+
+      //     </div>\r
+
+      //     <div class=\"block\">\r
+
+      //       <h3>JSON для <u>помилкового</u> DeviceDispense</h3>\r
+
+      //       <button onclick=\"copyToClipboard('json2')\">Скопіювати JSON
+      (entered_in_error)</button>\r
+
+      //       <pre id=\"json2\">{{jsonError}}</pre>\r
+
+      //     </div>\r
+
+      //   </div>\r
+
+      \r
+
+      //   <script>\r
+
+      //     function copyToClipboard(id) {\r
+
+      //       const text = document.getElementById(id).innerText;\r
+
+      //       const textArea = document.createElement('textarea');\r
+
+      //       textArea.value = text;\r
+
+      //       document.body.appendChild(textArea);\r
+
+      //       textArea.select();\r
+
+      //       try {\r
+
+      //         document.execCommand('copy');\r
+
+      //         alert('JSON скопійовано!');\r
+
+      //       } catch (err) {\r
+
+      //         alert('Помилка копіювання: ' + err);\r
+
+      //       }\r
+
+      //       document.body.removeChild(textArea);\r
+
+      //     }\r
+
+      //   </script>\r
+
+      // `, {\r
+
+      //         jsonCompleted: JSON.stringify(jsonCompleted, null, 2),\r
+
+      //         jsonError: JSON.stringify(jsonError, null, 2)\r
+
+      //     });\r
+
+      \r
+
+      // });\r
+
+      \r
+
+      \r
+
+      \r
+
+      /* =========================\r
+
+      \   Helpers: Restore / Flow guard\r
+
+      ========================= */\r
+
+      \r
+
+      function ensureFlowActive() {\r
+
+      \  return pm.environment.get(\"device_dispense_flow_active\") ===
+      \"true\"\r
+
+      \      && pm.environment.get(\"device_dispense_switched\") === \"true\";\r
+
+      }\r
+
+      \r
+
+      function restoreUserAndStop(reason) {\r
+
+      \  const KEYS = [\"access_token\", \"user_division_id\", \"user_id\"];\r
+
+      \r
+
+      \  KEYS.forEach((k) => {\r
+
+      \    const original = pm.environment.get(`original_${k}`);\r
+
+      \    if (original !== undefined) pm.environment.set(k, original);\r
+
+      \  });\r
+
+      \r
+
+      \  KEYS.forEach((k) => pm.environment.unset(`original_${k}`));\r
+
+      \r
+
+      \  pm.environment.unset(\"device_dispense_switched\");\r
+
+      \  pm.environment.unset(\"device_dispense_flow_active\");\r
+
+      \r
+
+      \  console.log(\"♻ Restored original user. Reason:\", reason ||
+      \"unknown\");\r
+
+      \  pm.execution.setNextRequest(null);\r
+
+      }\r
+
+      \r
+
+      /* =========================\r
+
+      \   Guard: restore on non-200 (only when flow active)\r
+
+      ========================= */\r
+
+      \r
+
+      if (ensureFlowActive() && pm.response.code !== 200) {\r
+
+      \  // покажемо помилку як є, щоб було видно причину\r
+
+      \  try {\r
+
+      \    pm.visualizer.set(`\r
+
+      \      <h2>❌ Get Device Dispense details failed</h2>\r
+
+      \      <p>Status: <b>${pm.response.code}</b></p>\r
+
+      \      <pre>${pm.response.text()}</pre>\r
+
+      \    `);\r
+
+      \  } catch (e) {}\r
+
+      \r
+
+      \  restoreUserAndStop(`Get Device Dispense details failed with
+      ${pm.response.code}`);\r
+
+      \r
+
+      \  pm.test(\"Get Device Dispense details - expected 200\", function () {\r
+
+      \    pm.expect.fail(`Get Device Dispense details failed with
+      ${pm.response.code}`);\r
+
+      \  });\r
+
+      \r
+
+      \  // важливо: виходимо, щоб не виконувати код нижче\r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      /* =========================\r
+
+      \   Your logic (with safe JSON parse)\r
+
+      ========================= */\r
+
+      \r
+
+      let resData;\r
+
+      try {\r
+
+      \  resData = pm.response.json().data;\r
+
+      } catch (e) {\r
+
+      \  pm.visualizer.set(`\r
+
+      \    <h2>❌ JSON parse error</h2>\r
+
+      \    <pre>${String(e.message)}</pre>\r
+
+      \    <pre>${pm.response.text()}</pre>\r
+
+      \  `);\r
+
+      \r
+
+      \  if (ensureFlowActive()) restoreUserAndStop(\"Get details response is
+      not valid JSON\");\r
+
+      \r
+
+      \  pm.test(\"Get Device Dispense details - response must be valid JSON\",
+      function () {\r
+
+      \    pm.expect.fail(e.message);\r
+
+      \  });\r
+
+      \r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      pm.test(\"Get Device Dispense details - PASS. Status code is 200\",
+      function () {\r
+
+      \  pm.response.to.have.status(200);\r
+
+      \r
+
+      \  if (!resData) {\r
+
+      \    if (ensureFlowActive()) restoreUserAndStop(\"Get details:
+      response.data is empty\");\r
+
+      \r
+
+      \    pm.expect.fail(\"Response has no data\");\r
+
+      \  }\r
+
+      \r
+
+      \  pm.globals.set(\"device_json_completed_to_sign\",
+      JSON.stringify(resData));\r
+
+      \  console.log(resData);\r
+
+      \r
+
+      \  // Поточна дата у форматі 2018-08-02T10:45:16.000Z\r
+
+      \  const nowIsoString = new Date().toISOString().replace(/\\.\\d{3}Z$/,
+      \".000Z\");\r
+
+      \r
+
+      \  // Варіант 1: Complete Device Dispense\r
+
+      \  const jsonCompleted = {\r
+
+      \    ...resData,\r
+
+      \    status: \"completed\",\r
+
+      \    payment_amount: 2,\r
+
+      \    when_handed_over: nowIsoString,\r
+
+      \  };\r
+
+      \r
+
+      \  // Варіант 2: Mark in error Device dispense\r
+
+      \  const jsonError = {\r
+
+      \    ...resData,\r
+
+      \    status: \"entered_in_error\",\r
+
+      \    status_reason: {\r
+
+      \      coding: [\r
+
+      \        {\r
+
+      \          system: \"device_dispense_mark_in_error_reasons\",\r
+
+      \          code: \"entered_in_error\",\r
+
+      \        },\r
+
+      \      ],\r
+
+      \    },\r
+
+      \  };\r
+
+      \r
+
+      \  pm.visualizer.set(\r
+
+      \    `\r
+
+      \  <style>\r
+
+      \    .container { display: flex; flex-wrap: wrap; gap: 20px; }\r
+
+      \    .block { flex: 1 1 45%; min-width: 300px; }\r
+
+      \    pre {\r
+
+      \      background-color: #f6f8fa;\r
+
+      \      padding: 16px;\r
+
+      \      border-radius: 5px;\r
+
+      \      font-family: monospace;\r
+
+      \      white-space: pre-wrap;\r
+
+      \      max-height: 500px;\r
+
+      \      overflow: auto;\r
+
+      \    }\r
+
+      \    button {\r
+
+      \      margin: 10px 0;\r
+
+      \      padding: 5px 10px;\r
+
+      \      border-radius: 4px;\r
+
+      \      border: 1px solid #ccc;\r
+
+      \      background-color: #e0e0e0;\r
+
+      \      cursor: pointer;\r
+
+      \    }\r
+
+      \    button:hover { background-color: #d0d0d0; }\r
+
+      \    h3 { margin-bottom: 5px; }\r
+
+      \  </style>\r
+
+      \r
+
+      \  <div class=\"container\">\r
+
+      \    <div class=\"block\">\r
+
+      \      <h3>JSON для <u>завершення</u> DeviceDispense</h3>\r
+
+      \      <button onclick=\"copyToClipboard('json1')\">Скопіювати JSON
+      (completed)</button>\r
+
+      \      <pre id=\"json1\">{{jsonCompleted}}</pre>\r
+
+      \    </div>\r
+
+      \    <div class=\"block\">\r
+
+      \      <h3>JSON для <u>помилкового</u> DeviceDispense</h3>\r
+
+      \      <button onclick=\"copyToClipboard('json2')\">Скопіювати JSON
+      (entered_in_error)</button>\r
+
+      \      <pre id=\"json2\">{{jsonError}}</pre>\r
+
+      \    </div>\r
+
+      \  </div>\r
+
+      \r
+
+      \  <script>\r
+
+      \    function copyToClipboard(id) {\r
+
+      \      const text = document.getElementById(id).innerText;\r
+
+      \      const textArea = document.createElement('textarea');\r
+
+      \      textArea.value = text;\r
+
+      \      document.body.appendChild(textArea);\r
+
+      \      textArea.select();\r
+
+      \      try {\r
+
+      \        document.execCommand('copy');\r
+
+      \        alert('JSON скопійовано!');\r
+
+      \      } catch (err) {\r
+
+      \        alert('Помилка копіювання: ' + err);\r
+
+      \      }\r
+
+      \      document.body.removeChild(textArea);\r
+
+      \    }\r
+
+      \  </script>\r
+
+      `,\r
+
+      \    {\r
+
+      \      jsonCompleted: JSON.stringify(jsonCompleted, null, 2),\r
+
+      \      jsonError: JSON.stringify(jsonError, null, 2),\r
+
+      \    }\r
+
+      \  );\r
+
+      });\r\n"
+    language: text/javascript
+order: 53000

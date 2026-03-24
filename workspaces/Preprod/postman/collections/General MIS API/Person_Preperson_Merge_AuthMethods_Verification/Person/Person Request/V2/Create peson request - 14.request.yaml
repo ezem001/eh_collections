@@ -1,0 +1,377 @@
+$kind: http-request
+name: Create peson request < 14
+url: "{{host}}/api/v2/person_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"person\": {\r
+
+    \        \"first_name\": \"Іванна\",\r
+
+    \        \"last_name\": \"Тарасенко\",\r
+
+    \        \"second_name\": \"Чотирнадцять\",\r
+
+    \        \"birth_date\": \"2010-09-05\",\r
+
+    \        \"birth_country\": \"Україна\",\r
+
+    \        \"birth_settlement\": \"Київ\",\r
+
+    \        \"gender\": \"FEMALE\",\r
+
+    \        \"email\": \"mail@gmail.com\",\r
+
+    \        \"no_tax_id\": false,\r
+
+    \        \"tax_id\": \"{{person_tax_id}}\",\r
+
+    \        \"secret\": \"secret\",\r
+
+    \        \"documents\": [\r
+
+    \            {\r
+
+    \                \"type\": \"BIRTH_CERTIFICATE\",\r
+
+    \                \"number\": \"І-БК535231\",\r
+
+    \                \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                \"issued_at\": \"2020-05-16\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"addresses\": [\r
+
+    \            {\r
+
+    \                \"type\": \"RESIDENCE\",\r
+
+    \                \"apartment\": \"45Б\",\r
+
+    \                \"area\": \"КИЇВСЬКА\",\r
+
+    \                \"region\": \"Києво-Свят0шинський\",\r
+
+    \                \"building\": \"15\",\r
+
+    \                \"country\": \"IT\",\r
+
+    \                \"settlement\": \"ЧУГУЇВ\",\r
+
+    \                \"settlement_id\":
+    \"fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494\",\r
+
+    \                \"settlement_type\": \"CITY\",\r
+
+    \                \"street\": \"Г0голя\",\r
+
+    \                \"street_type\": \"STREET\",\r
+
+    \                \"zip\": \"02115\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"phones\": [\r
+
+    \            {\r
+
+    \                \"type\": \"MOBILE\",\r
+
+    \                \"number\": \"+380634390602\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"authentication_methods\": [\r
+
+    \            {\r
+
+    \                \"type\": \"THIRD_PERSON\",\r
+
+    \                \"value\": \"421c3318-f783-4883-a030-f0c63aa7e0bf\",\r
+
+    \                \"alias\": \"father\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"unzr\": \"20200515-00011\",\r
+
+    \        \"emergency_contact\": {\r
+
+    \            \"first_name\": \"Володимир\",\r
+
+    \            \"last_name\": \"Петренко\",\r
+
+    \            \"second_name\": \"Іванівнович\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"type\": \"MOBILE\",\r
+
+    \                    \"number\": \"+380634390340\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"confidant_person\": {\r
+
+    \            \"person_id\": \"421c3318-f783-4883-a030-f0c63aa7e0bf\",\r
+
+    \            \"documents_relationship\": [\r
+
+    \                {\r
+
+    \                    \"type\": \"BIRTH_CERTIFICATE\",\r
+
+    \                    \"number\": \"І-БК535231\",\r
+
+    \                    \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                    \"issued_at\": \"2020-05-16\",\r
+
+    \                    \"active_to\": \"2027-02-28\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"patient_signed\": false,\r
+
+    \    \"process_disclosure_data_consent\": true\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resBody = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      if (resBody.data.id) {\r
+
+      \    const personReqId = resBody.data.id\r
+
+      \    console.log(personReqId)\r
+
+      \    pm.globals.set(\"Person_req_id\", personReqId);\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // Function to handle each URL request\r
+
+      function processUrl(url, additionalData) {\r
+
+      \    console.log(url, 'urls loop');\r
+
+      \   \r
+
+      \    pm.sendRequest({\r
+
+      \        url: url,\r
+
+      \        method: 'PUT',\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'image/jpeg'\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify(additionalData) // Include additional
+      data in the body\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Request failed:', err);\r
+
+      \            displayResponse('Request Error', { error: err.message });\r
+
+      \        } else {\r
+
+      \            let responseData;\r
+
+      \r
+
+      \            // Check content type to determine how to parse the
+      response\r
+
+      \            const contentType = res.headers.get('Content-Type');\r
+
+      \            console.log(contentType)\r
+
+      \            if (contentType && contentType.includes('text/plain')) {\r
+
+      \                try {\r
+
+      \                     // Handle TEXT response if needed\r
+
+      \                responseData = res.text(); // Get response as text\r
+
+      \                displayResponse('Document sign successful', { response:
+      responseData });\r
+
+      \                } catch (e) {\r
+
+      \                    console.error('JSON parsing error:', e);\r
+
+      \                    displayResponse('Parsing Error', { error: 'Failed to
+      parse JSON' });\r
+
+      \                    return;\r
+
+      \                }\r
+
+      \                // displayResponse('Document sign successful',
+      responseData);\r
+
+      \            } else {\r
+
+      \                // Handle other response types if needed\r
+
+      \                responseData = res.text(); // Default to text for unknown
+      formats\r
+
+      \                displayResponse('Unknown Response Format', { response:
+      responseData });\r
+
+      \            }\r
+
+      \        }\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      const resData = pm.response.json();\r
+
+      \r
+
+      // Extract URLs from the documents array in the response\r
+
+      const documents = resData.urgent.documents;\r
+
+      const urls = documents.map(doc => doc.url);\r
+
+      \r
+
+      const additionalData = {\r
+
+      \    row: '0JTQvtC60YPQvNC10L3Rgg=='\r
+
+      };\r
+
+      \r
+
+      // Process each URL from the documents array\r
+
+      urls.forEach(url => {\r
+
+      \    processUrl(url, additionalData);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Create peson request v2 Status code is 201\", function () {\r
+
+      \  pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "function generateRandomTaxId() {\r
+
+      \    let taxId = '';\r
+
+      \    for (let i = 0; i < 10; i++) {\r
+
+      \        taxId += Math.floor(Math.random() * 10); // Generate a random
+      digit\r
+
+      \    }\r
+
+      \    return taxId;\r
+
+      }\r
+
+      \r
+
+      // Generate a random tax ID\r
+
+      const randomTaxId = generateRandomTaxId();\r
+
+      \r
+
+      // Set the random tax ID in an environment variable\r
+
+      pm.globals.set('person_tax_id', randomTaxId);\r
+
+      \r
+
+      // Optional: Log the generated tax ID for debugging\r
+
+      console.log('Generated tax ID:', randomTaxId);"
+    language: text/javascript
+order: 2000

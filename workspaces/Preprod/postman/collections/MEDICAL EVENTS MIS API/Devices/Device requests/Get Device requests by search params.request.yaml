@@ -1,0 +1,52 @@
+$kind: http-request
+url: "{{host}}/api/patients/patient_id/device_requests"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: status
+    value: active
+    disabled: true
+  - key: code
+    value: "30222"
+    disabled: true
+  - key: code_reference
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: requester_legal_entity
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: requester
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: encounter
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: program
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: context_episode_id
+    value: ef30f210-5328-4f48-bfe6-c7150d4737a6
+    disabled: true
+  - key: based_on
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: priority
+    value: low
+    disabled: true
+  - key: performer
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: authored_on_from
+    value: 2020-01-01T00%3A00%3A00.000Z
+    disabled: true
+  - key: authored_on_to
+    value: 2021-01-01T00%3A00%3A00.000Z
+    disabled: true
+body:
+  type: text
+  content: ""
+order: 7000

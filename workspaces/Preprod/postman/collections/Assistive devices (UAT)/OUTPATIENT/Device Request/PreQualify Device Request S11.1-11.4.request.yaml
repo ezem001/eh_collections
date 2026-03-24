@@ -1,0 +1,115 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/d96867bc-f250-4625-873e-61714c43ff92/device_requests/prequalify
+method: POST
+headers:
+  - key: Authorization
+    value: Bearer {{physio_access_token}}
+    description: PHYSIOTHERAPIST
+  - key: api-key
+    value: ef7d48ecfc233d6af088
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: >-
+    {
+        "device_request": {
+            "intent": "order",
+            "encounter": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "encounter"
+                            }
+                        ]
+                    },
+                    "value": "ff54f50a-5746-4b84-b793-8c0f9c8ee1da"
+                }
+            },
+            "requester": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "employee"
+                            }
+                        ]
+                    },
+                    "value": "1a2970ae-25fa-4fea-9ccb-9511978521b4"
+                }
+            },
+            "authored_on": "2024-12-02T08:04:07.000Z",
+            "occurrence_period": {
+                "start": "2024-12-02T08:04:07.000Z",
+                "end": "2024-12-30T10:26:24Z"
+            },
+            // "code": {
+            //     "coding": [
+            //         // {
+            //         //     "system": "device_definition_classification_type",
+            //         //     "code": "30221" // S11.1
+            //         // }
+            //         {
+            //             "system": "eHealth/assistive_devices",
+            //             "code": "12_03_16"
+            //             // "code": "12_03" // S11.2
+            //         }
+            //     ]
+            // },
+            "code_reference": {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "device_definition"
+                            }
+                        ]
+                    },
+                    // "value": "aefba224-5d25-4e6d-8da6-cd324aef9c9c" // test strip old
+                    // "value": "3e41e5bd-3615-4911-9c70-d232c91728b8" // test strip new
+                    // "value": "170a79b8-ac1b-47a2-97bb-311098eef95d" // assistive S11.3
+                    "value": "24b4ffd0-9be2-4758-8cae-40e5fa62fcd5" //  S11.4
+                }
+            },
+            "quantity": {
+                "system": "device_unit",
+                "code": "piece",
+                "value": 10
+            }
+        },
+        "programs": [
+            {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "medical_program"
+                            }
+                        ]
+                    },
+                    "value": "d1f8be15-f9db-4c09-abf7-aa78a5a09b24"
+                }
+            },
+            {
+                "identifier": {
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "eHealth/resources",
+                                "code": "medical_program"
+                            }
+                        ]
+                    },
+                    "value": "0e26d6ca-b6c2-49d6-8d16-ca9635ea59ad"
+                }
+            }
+        ]
+    }
+order: 1000

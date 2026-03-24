@@ -1,0 +1,33 @@
+$kind: http-request
+url: "{{host}}/api/patients/f2faf5ae-07ad-4199-aa75-b668b2d70b35/episodes/approved"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: period_from
+    value: 2022-05-01
+    disabled: true
+  - key: period_to
+    value: 2022-06-20
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: |+
+      tests["Route works"] = responseCode.code === 200;
+
+
+
+    language: text/javascript
+order: 5000

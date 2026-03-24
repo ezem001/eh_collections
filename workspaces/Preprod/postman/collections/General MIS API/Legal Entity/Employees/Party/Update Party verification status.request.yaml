@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{host}}/api/parties/66c7e6c1-22ed-4542-a48b-c08faa5d9a3e/verification"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"dracs_death\": {\r
+
+    \    \"verification_status\": \"VERIFIED\",\r
+
+    \    \"verification_reason\": \"MANUAL_NOT_CONFIRMED\",\r
+
+    \    \"verification_comment\": \"Смерть не підтверджена\"\r
+
+    \  }\r
+
+    }"
+order: 1000

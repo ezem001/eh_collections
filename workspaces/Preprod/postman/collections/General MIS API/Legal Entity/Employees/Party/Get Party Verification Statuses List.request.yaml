@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{host}}/api/parties/verifications"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: verification_status
+    value: VERIFIED
+    disabled: true
+  - key: page_size
+    value: null
+    disabled: true
+  - key: status
+    value: null
+    disabled: true
+  - key: division_id
+    value: null
+    disabled: true
+  - key: page
+    value: null
+    disabled: true
+order: 3000

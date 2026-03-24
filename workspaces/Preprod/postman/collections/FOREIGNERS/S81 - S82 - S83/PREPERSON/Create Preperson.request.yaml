@@ -1,0 +1,31 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/prepersons
+method: POST
+headers:
+  Authorization: Bearer {{employee_access_token}}
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  X-Custom-PSK: a1aa07c96f3f4d91870f923a53cc9aa8f23bbc01a8238d1c2c26d4299715a7e4
+body:
+  type: json
+  content: |-
+    {
+        "external_id": "123123123.123123123.123",
+        "first_name": "Тест",
+        "second_name": "Тест",
+        "last_name": "Тест",
+        "gender": "MALE",
+        "birth_date": "1965-04-13",
+        "emergency_contact": {
+            "first_name": "Мама",
+            "last_name": "Мама",
+            "second_name": "Миколайович",
+            "phones": [
+                {
+                    "type": "MOBILE",
+                    "number": "+380503410870"
+                }
+            ]
+        }
+    }
+order: 1000

@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{host}}/api/person_requests/{{Person_req_id}}/actions/reject"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+order: 7000

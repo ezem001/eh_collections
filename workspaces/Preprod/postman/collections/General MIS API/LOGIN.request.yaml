@@ -1,0 +1,1933 @@
+$kind: http-request
+description: >-
+  1. У Google Sheets натисни **Extensions → Apps Script**.
+      
+  2. Видали весь код у редакторі.
+      
+  3. Встав цей код:
+      
+
+  ```
+
+  function doPost(e) {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const { email, newPassword } = JSON.parse(e.postData.contents);
+    if (!email || !newPassword) {
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing email or newPassword" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    const data = sheet.getDataRange().getValues();
+    const headers = data[0];
+    const emailIdx = headers.indexOf("email");
+    const pwdNewIdx = headers.indexOf("password_new");
+    if (emailIdx === -1 || pwdNewIdx === -1) {
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: "Missing required columns" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    let updated = false;
+    for (let i = 1; i < data.length; i++) {
+      if ((data[i][emailIdx] || "").toLowerCase() === email.toLowerCase()) {
+        sheet.getRange(i + 1, pwdNewIdx + 1).setValue(newPassword);
+        updated = true;
+        break;
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify({ success: true, updated }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+   ```
+
+  ---
+
+
+  ### ✅ Крок 2. Опублікуй Apps Script як Web App
+
+
+  1. У меню натисни **Deploy → New deployment**
+      
+  2. У полі **Select type** обери **Web app**
+      
+  3. Укажи:
+      
+      - **Execute as:** _Me_
+          
+      - **Who has access:** _Anyone_
+
+          
+  4. Натисни **Deploy**
+      
+  5. Дозволь скрипту доступ (Authorize)
+      
+  6. Отримаєш **Web App URL** (щось типу  
+      `https://script.google.com/macros/s/AKfycbx.../exec`)
+url: https://auth-preprod.ehealth.gov.ua/auth/login
+method: POST
+headers:
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+body:
+  type: json
+  content: "{\r
+
+    \    \"token\": {\r
+
+    \        \"grant_type\": \"password\",\r
+
+    \        \"email\": \"{{user_email}}\",\r
+
+    \        \"password\": \"{{user_password}}\",\r
+
+    \        \"client_id\": \"e2e1d2c8-9bac-43c6-adef-83239940b30a\",\r
+
+    \        \"scope\": \"app:authorize\"\r
+
+    \    }\r
+
+    }\r\n"
+scripts:
+  - type: afterResponse
+    code: "const { displayResponse, renderVisualLog } =
+      pm.require('@winter-zodiac-949553/login-display-response');\r
+
+      \r
+
+      let preRequestLogs = [];\r
+
+      try {\r
+
+      \    const rawLogs = pm.globals.get(\"pre_request_logs\");\r
+
+      \    if (rawLogs) preRequestLogs = JSON.parse(rawLogs);\r
+
+      } catch (e) {\r
+
+      \    preRequestLogs = [\"Помилка парсингу pre_request_logs\"];\r
+
+      }\r
+
+      \r
+
+      // Формуємо текст для відображення\r
+
+      const logsText = preRequestLogs.length\r
+
+      \    ? preRequestLogs.join(\"\\n\")\r
+
+      \    : \"🔸 Немає логів із pre-request.\";\r
+
+      \r
+
+      console.info(logsText)\r
+
+      \r
+
+      pm.test(\"Status code is 201\", () => {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      let jsonData;\r
+
+      \r
+
+      try {\r
+
+      \    jsonData = pm.response.json();\r
+
+      } catch (e) {\r
+
+      \    displayResponse('Error parsing login response', 'Invalid JSON
+      format', e, logsText);\r
+
+      \    renderVisualLog();\r
+
+      \    return;\r
+
+      }\r
+
+      const expired =
+      jsonData?.error?.message?.toLowerCase().includes(\"expired\") ||
+      jsonData?.data?.message?.toLowerCase().includes(\"expired\");\r
+
+      console.warn(\"Password expired\", expired)\r
+
+      console.warn(\"Password expired\", jsonData?.error?.message)\r
+
+      \r
+
+      const userIsFound = pm.environment.get(\"user_is_found_in_sheet\");\r
+
+      // if (userIsFound === false) {\r
+
+      //   displayResponse(\r
+
+      //     \"User not found in Sheet\",\r
+
+      //     \"⛔️ Користувач не знайдений у таблиці — оновлення пароля
+      пропущено.\",\r
+
+      //     { user_is_found_in_sheet: userIsFound },\r
+
+      //     logsText\r
+
+      //   );\r
+
+      //   renderVisualLog();\r
+
+      //   return; // 💥 Зупиняємо весь процес\r
+
+      // }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      if (expired && userIsFound) {\r
+
+      \  console.log(\"🔴 Password expired detected. Running password change
+      flow...\");\r
+
+      \r
+
+      \  const userEmail = pm.environment.get(\"user_email\");\r
+
+      \  const userPassword = pm.environment.get(\"user_password\");\r
+
+      \r
+
+      \  const appsScriptUrl =
+      \"https://script.google.com/macros/s/AKfycbxVqHpf7tUlCJu9dxTJb05qGvreZ2EN\
+      mS3gGv5o9N9zd7CioSgjgQTviZ2Fru138gYU/exec\";\r
+
+      \r
+
+      \  const newPassword = `${Math.floor(Math.random() * 100000)}@Azxcvbnm`;\r
+
+      \r
+
+      \  // 🔐 резерв старого пароля (для дебагу/відкату/Sheet)\r
+
+      \  pm.environment.set(\"reserve_old_password\", userPassword);\r
+
+      \r
+
+      \  // Step 1: Отримуємо токен для зміни пароля\r
+
+      \  pm.sendRequest({\r
+
+      \    url: \"https://auth-preprod.ehealth.gov.ua/auth/login\",\r
+
+      \    method: \"POST\",\r
+
+      \    header: { \"Content-Type\": \"application/json\" },\r
+
+      \    body: {\r
+
+      \      mode: \"raw\",\r
+
+      \      raw: JSON.stringify({\r
+
+      \        token: {\r
+
+      \          grant_type: \"change_password\",\r
+
+      \          email: userEmail,\r
+
+      \          password: userPassword,\r
+
+      \          client_id: \"e2e1d2c8-9bac-43c6-adef-83239940b30a\",\r
+
+      \          scope: \"user:change_password\"\r
+
+      \        }\r
+
+      \      })\r
+
+      \    }\r
+
+      \  }, (err, res) => {\r
+
+      \    if (err) {\r
+
+      \      console.error(\"❌ Login(change_password) network error:\", err);\r
+
+      \      return displayResponse(\"Change Password Error\", \"Login step
+      failed\", err, logsText);\r
+
+      \    }\r
+
+      \r
+
+      \    console.log(\"ℹ️ Login(change_password) status:\", res.code);\r
+
+      \    let data = null;\r
+
+      \    try { data = res.json(); } catch (e) {\r
+
+      \      console.error(\"❌ Login(change_password) invalid JSON:\",
+      res.text());\r
+
+      \      return displayResponse(\"Change Password Error\", \"Invalid JSON\",
+      res.text(), logsText);\r
+
+      \    }\r
+
+      \r
+
+      \    const token = data?.data?.value;\r
+
+      \    if (!token) {\r
+
+      \      console.error(\"❌ No token returned:\", data);\r
+
+      \      return displayResponse(\"Change Password Error\", \"No token
+      returned\", data, logsText);\r
+
+      \    }\r
+
+      \r
+
+      \    pm.environment.set(\"change_password_token\", token);\r
+
+      \    console.log(\"✅ change_password_token отримано.\");\r
+
+      \r
+
+      \    // Step 2: Надсилаємо новий пароль\r
+
+      \    pm.sendRequest({\r
+
+      \      url:
+      \"https://auth-preprod.ehealth.gov.ua/oauth/users/actions/update_password\
+      \",\r
+
+      \      method: \"POST\",\r
+
+      \      header: {\r
+
+      \        \"Authorization\": `Bearer ${token}`,\r
+
+      \        \"Content-Type\": \"application/json\"\r
+
+      \      },\r
+
+      \      body: { mode: \"raw\", raw: JSON.stringify({ user: { password:
+      newPassword } }) }\r
+
+      \    }, (err2, res2) => {\r
+
+      \      if (err2) {\r
+
+      \        console.error(\"❌ update_password network error:\", err2);\r
+
+      \        return displayResponse(\"Password Update Failed\", \"Network
+      error\", err2, logsText);\r
+
+      \      }\r
+
+      \r
+
+      \      console.log(\"ℹ️ update_password status:\", res2.code);\r
+
+      \      const raw2 = res2.text();\r
+
+      \      console.log(\"ℹ️ update_password body:\", raw2);\r
+
+      \r
+
+      \      // ✅ ВАЖЛИВО: вважаємо успіхом тільки 200/201/204 (підлаштуй якщо у
+      вас інше)\r
+
+      \      const ok = [200, 201, 204].includes(res2.code);\r
+
+      \      if (!ok) {\r
+
+      \        // не перетираємо пароль в env, якщо бек не прийняв\r
+
+      \        return displayResponse(\"Password Update Failed\",\r
+
+      \          `update_password failed (HTTP ${res2.code})`,\r
+
+      \          raw2,\r
+
+      \          logsText\r
+
+      \        );\r
+
+      \      }\r
+
+      \r
+
+      \      // ТІЛЬКИ ТУТ оновлюємо пароль у середовищі\r
+
+      \      pm.environment.set(\"user_password\", newPassword);\r
+
+      \      console.log(\"✅ Новий пароль збережено у середовищі:\",
+      newPassword);\r
+
+      \r
+
+      \      // Step 3: Оновлення Google Sheet + дебаг відповіді\r
+
+      \      pm.sendRequest({\r
+
+      \        url: appsScriptUrl,\r
+
+      \        method: \"POST\",\r
+
+      \        header: { \"Content-Type\": \"application/json\" },\r
+
+      \        body: {\r
+
+      \          mode: \"raw\",\r
+
+      \          raw: JSON.stringify({\r
+
+      \            email: userEmail,\r
+
+      \            passwordCurrent:
+      pm.environment.get(\"reserve_old_password\"), // <-- старий\r
+
+      \            newPassword: newPassword,\r
+
+      \            gid: 0\r
+
+      \          })\r
+
+      \        }\r
+
+      \      }, (err3, res3) => {\r
+
+      \        if (err3) {\r
+
+      \          console.warn(\"⚠️ Помилка оновлення таблиці (network):\",
+      err3);\r
+
+      \        } else {\r
+
+      \          console.log(\"ℹ️ Sheet update status:\", res3.code);\r
+
+      \          console.log(\"ℹ️ Sheet update body:\", res3.text());\r
+
+      \r
+
+      \          if (![200, 201, 204].includes(res3.code)) {\r
+
+      \            console.warn(\"⚠️ Таблиця не оновилась (HTTP не OK).\");\r
+
+      \          } else {\r
+
+      \            console.log(\"🟢 Пароль змінено та (ймовірно) оновлено у
+      таблиці.\");\r
+
+      \          }\r
+
+      \        }\r
+
+      \      });\r
+
+      \r
+
+      \      displayResponse(\"Password Changed\",\r
+
+      \        `Пароль успішно оновлено для ${userEmail}`,\r
+
+      \        { newPassword },\r
+
+      \        logsText\r
+
+      \      );\r
+
+      \      renderVisualLog();\r
+
+      \    });\r
+
+      \  });\r
+
+      \r
+
+      \  return;\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      if (jsonData.error) {\r
+
+      \    displayResponse('Error on step LOGIN', jsonData.error.message,
+      jsonData.error, logsText);\r
+
+      \    renderVisualLog();\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      \r
+
+      if (jsonData.data && jsonData.data.value) {\r
+
+      \    const access_token = jsonData.data.value;\r
+
+      \    // const refresh_token = jsonData.data.details.refresh_token;\r
+
+      \    pm.environment.set(\"access_token\", access_token);\r
+
+      \    console.log(\"login res refresh_token\",
+      jsonData.data.details.refresh_token)\r
+
+      \    // pm.environment.set(\"refresh_token\", refresh_token);\r
+
+      } else {\r
+
+      \    displayResponse('Login response error', 'Access token not found',
+      jsonData, logsText);\r
+
+      \    renderVisualLog();\r
+
+      \    return;\r
+
+      }\r
+
+      \r
+
+      // ----------------------- Authorize ---------------------------\r
+
+      const le = pm.environment.get('user_legal_entity');\r
+
+      const redirect = pm.environment.get('user_redirect_uri');\r
+
+      const scopes = pm.environment.get('user_scopes');\r
+
+      const apiKey = pm.environment.get('mis_client_secret');\r
+
+      const clientSecret = pm.environment.get('client_secret');\r
+
+      const XCustomPSK = pm.globals.get('x-custom-psk');\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url: `${pm.globals.get('host')}/oauth/apps/authorize`,\r
+
+      \    method: 'POST',\r
+
+      \    header: {\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \        'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \        'X-Custom-PSK': XCustomPSK\r
+
+      \    },\r
+
+      \    body: {\r
+
+      \        mode: 'raw',\r
+
+      \        raw: JSON.stringify({\r
+
+      \            \"app\": {\r
+
+      \                \"client_id\": le,\r
+
+      \                \"redirect_uri\": redirect,\r
+
+      \                \"scope\": scopes\r
+
+      \            }\r
+
+      \        })\r
+
+      \    }\r
+
+      }, (err, res) => {\r
+
+      \    if (err) {\r
+
+      \        displayResponse('Authorize request failed', 'Network or
+      connection error', err, logsText);\r
+
+      \        renderVisualLog();\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // Обробка статусів, що означають помилку\r
+
+      \    if (![201, 302].includes(res.code)) {\r
+
+      \        let responseBody;\r
+
+      \        try {\r
+
+      \            responseBody = res.json();\r
+
+      \        } catch {\r
+
+      \            responseBody = res.text();\r
+
+      \        }\r
+
+      \r
+
+      \        // Якщо є поле error.message - відобразити його, інакше код
+      статусу\r
+
+      \        const errorMessage = responseBody?.error?.message || `Unexpected
+      status code: ${res.code}`;\r
+
+      \        displayResponse('Authorize response error', errorMessage,
+      responseBody, logsText);\r
+
+      \        renderVisualLog();\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // Обробка відсутності Location заголовку\r
+
+      \    const locationHeader = res.headers.get('Location');\r
+
+      \    if (!locationHeader) {\r
+
+      \        displayResponse('Authorize error', 'Missing Location header in
+      response', res, logsText);\r
+
+      \        renderVisualLog();\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // Витягування коду з Location\r
+
+      \    const match = locationHeader.match(/[?&]code=([^&]+)/);\r
+
+      \    if (!match) {\r
+
+      \        displayResponse('Authorize error', 'No \"code\" parameter found
+      in Location header', locationHeader, logsText);\r
+
+      \        renderVisualLog();\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const code = match[1];\r
+
+      \    console.info(\"user code\", typeof code)\r
+
+      \    pm.environment.set(\"user_code\", code);\r
+
+      \r
+
+      \r
+
+      \r
+
+      \    // ----------------------- Exchange grant token
+      ---------------------------\r
+
+      \    pm.sendRequest({\r
+
+      \        url: `${pm.globals.get('host')}/oauth/tokens`,\r
+
+      \        method: 'POST',\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'api-key': `${apiKey}`,\r
+
+      \            'X-Custom-PSK': `${XCustomPSK}`\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify({\r
+
+      \                \"token\": {\r
+
+      \                    \"grant_type\": \"authorization_code\",\r
+
+      \                    \"code\": `${pm.environment.get(\"user_code\")}`,\r
+
+      \                    \"client_id\": `${le}`,\r
+
+      \                    \"client_secret\": `${clientSecret}`,\r
+
+      \                    \"redirect_uri\": `${redirect}`\r
+
+      \                }\r
+
+      \            })\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            displayResponse('Token exchange failed', 'Network or request
+      error', err, logsText);\r
+
+      \            renderVisualLog();\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        let subrequestData;\r
+
+      \        try {\r
+
+      \            subrequestData = res.json();\r
+
+      \        } catch (e) {\r
+
+      \            displayResponse('JSON parsing error', 'Could not parse token
+      response', res.text(), logsText);\r
+
+      \            renderVisualLog();\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        // 🔴 Обробка HTTP помилки з тілом, яке містить .error.message\r
+
+      \        if (res.code !== 200 && res.code !== 201) {\r
+
+      \            const message = subrequestData?.error?.message || `Unexpected
+      status code: ${res.code}`;\r
+
+      \            displayResponse('Token exchange error', message,
+      subrequestData, logsText);\r
+
+      \            renderVisualLog();\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        if (subrequestData.data && subrequestData.data.value) {\r
+
+      \            const access_token = subrequestData.data.value;\r
+
+      \            const refresh_token =
+      subrequestData.data.details.refresh_token;\r
+
+      \r
+
+      \            console.info(\"Exchange grant token refresh_token\",
+      subrequestData.data.details.refresh_token)\r
+
+      \            pm.environment.set(\"access_token\", access_token);\r
+
+      \            pm.environment.set(\"refresh_token\", refresh_token);\r
+
+      \r
+
+      \            console.log(\"Saved access_token:\",
+      pm.environment.get(\"access_token\"));\r
+
+      \            console.log(\"Saved refresh_token:\",
+      pm.environment.get(\"refresh_token\"));\r
+
+      \r
+
+      \            const prevEmployeeType =
+      pm.environment.get(\"employee_type\");\r
+
+      \            const prevEmployeeSpecialty =
+      pm.environment.get(\"employee_specialty\");\r
+
+      \r
+
+      \r
+
+      \            setTimeout(()=>{\r
+
+      \                 fetchEmployee(access_token, subrequestData.data);\r
+
+      \            }, 3000)\r
+
+      \r
+
+      //             setTimeout(() => {\r
+
+      //                 getEmployeeTypeAndSpeciality(access_token, function
+      (type, speciality, leInfo, divisionInfo, partyIfno, employeePosition) {\r
+
+      //                     const finalType = type || prevEmployeeType;\r
+
+      //                     const finalSpeciality = speciality ||
+      prevEmployeeSpecialty;\r
+
+      \r
+
+      //                     console.log(\"finalSpeciality\", finalSpeciality)\r
+
+      \r
+
+      //                     const { le_type, le_name, le_edrpou } = leInfo ||
+      {};\r
+
+      //                     const { division_id, division_name } = divisionInfo
+      || {};\r
+
+      //                     const { party_id, employee_last_name,
+      employee_first_name, employee_second_name, party_verification_status } =
+      partyIfno || {};\r
+
+      \r
+
+      //                     // ⚡️ Універсальний стиль для карток (однаковий
+      розмір)\r
+
+      //                     const cardStyle = `\r
+
+      //   flex: 1 1 300px;\r
+
+      //   background: #ffffff;\r
+
+      //   border: 1px solid #e0e6ed;\r
+
+      //   border-radius: 12px;\r
+
+      //   padding: 14px 18px;\r
+
+      //   box-shadow: 0 3px 6px rgba(0,0,0,0.05);\r
+
+      //   font-family: 'Segoe UI', Roboto, sans-serif;\r
+
+      //   color: #333;\r
+
+      //   min-width: 260px;\r
+
+      //   max-width: 100%;\r
+
+      //   display: flex;\r
+
+      //   flex-direction: column;\r
+
+      //   justify-content: space-between;\r
+
+      // `;\r
+
+      \r
+
+      //                     // 🔹 Legal Entity\r
+
+      //                     const leHtml = `\r
+
+      // <div style=\"${cardStyle}\">\r
+
+      //   <div style=\"font-weight:600; color:#0056b3; margin-bottom:8px;
+      font-size:15px;\">\r
+
+      //     🏛️ Legal Entity Info\r
+
+      //   </div>\r
+
+      //   <div>• <b>Type:</b> ${le_type ||
+      pm.environment.get('le_type')}</div>\r
+
+      //   <div>• <b>Name:</b> ${le_name ||
+      pm.environment.get('le_name')}</div>\r
+
+      //   <div>• <b>EDRPOU:</b> ${le_edrpou ||
+      pm.environment.get('le_edrpou')}</div>\r
+
+      //   </div>\r
+
+      //  `;\r
+
+      \r
+
+      //                     // 🔹 Division\r
+
+      //                     const divisionHtml = `\r
+
+      //   <div style=\"${cardStyle}\">\r
+
+      //   <div style=\"font-weight:600; color:#007a3d; margin-bottom:8px;
+      font-size:15px;\">\r
+
+      //     🏥 Division Info\r
+
+      //   </div>\r
+
+      //   <div>• <b>ID:</b> ${division_id ||
+      pm.environment.get('division_id')}</div>\r
+
+      //   <div>• <b>Name:</b> ${division_name ||
+      pm.environment.get('division_name')}</div>\r
+
+      //    </div>\r
+
+      //   `;\r
+
+      \r
+
+      //                     // 🔹 Party\r
+
+      //                     const partyHtml = `\r
+
+      //    <div style=\"${cardStyle}\">\r
+
+      //   <div style=\"font-weight:600; color:#8c6b00; margin-bottom:8px;
+      font-size:15px;\">\r
+
+      //     👤 Party Info\r
+
+      //   </div>\r
+
+      //   <div>• ${employee_last_name ||
+      pm.environment.get('employee_last_name')} \r
+
+      //   ${employee_first_name || pm.environment.get('employee_first_name')}
+      \r
+
+      //   ${employee_second_name ||
+      pm.environment.get('employee_second_name')}</div>\r
+
+      //   <div>• <b>ID:</b> ${party_id ||
+      pm.environment.get('party_id')}</div>\r
+
+      //   <div>• <b>Verification:</b> ${party_verification_status ||
+      pm.environment.get('party_verification_status')}</div>\r
+
+      //   </div>\r
+
+      //  `;\r
+
+      \r
+
+      //                     // 🔹 Short Legal Entity\r
+
+      //                     const shortLeHtml = `\r
+
+      //  <div style=\"${cardStyle}\">\r
+
+      //   <div style=\"font-weight:600; color:#0056b3; margin-bottom:8px;
+      font-size:15px;\">\r
+
+      //     🏛️ Legal Entity Info\r
+
+      //   </div>\r
+
+      //   <div>• <b>Name:</b> ${le_name ||
+      pm.environment.get('le_name')}</div>\r
+
+      //   <div>• <b>EDRPOU:</b> ${le_edrpou ||
+      pm.environment.get('le_edrpou')}</div>\r
+
+      //   </div>\r
+
+      //   `;\r
+
+      \r
+
+      //                     const msg = finalSpeciality\r
+
+      //                         ? `<div style=\"\r
+
+      //     font-family:'Segoe UI', Roboto, sans-serif;\r
+
+      //     color:#333;\r
+
+      //     line-height:1.6;\r
+
+      //     display:flex;\r
+
+      //     flex-direction:column;\r
+
+      //     gap:18px;\r
+
+      //   \">\r
+
+      //   <div style=\"\r
+
+      //       display:flex;\r
+
+      //       justify-content:space-between;\r
+
+      //       flex-wrap:wrap;\r
+
+      //       gap:18px;\r
+
+      //     \">\r
+
+      //   <div style=\"${cardStyle}\">\r
+
+      //         <div style=\"font-weight:600; color:#444; margin-bottom:8px;
+      font-size:15px;\">\r
+
+      //           ✅ Authorization Info\r
+
+      //         </div>\r
+
+      //         <div><b>You authorized as a:</b> ${finalType} </div>\r
+
+      //         <div><b>Speciality:</b> ${finalSpeciality} | <b>Position:</b>
+      ${employeePosition || pm.environment.get('employee_position')}</div>\r
+
+      //       </div>\r
+
+      //       ${partyHtml}\r
+
+      //     </div>\r
+
+      //     <div style=\"\r
+
+      //       display:flex;\r
+
+      //       justify-content:space-between;\r
+
+      //       flex-wrap:wrap;\r
+
+      //       gap:18px;\r
+
+      //     \">\r
+
+      //       ${leHtml}\r
+
+      //       ${divisionHtml}\r
+
+      //     </div>\r
+
+      //     </div>`\r
+
+      \r
+
+      //                         : `<div style=\"\r
+
+      //     font-family:'Segoe UI', Roboto, sans-serif;\r
+
+      //     color:#333;\r
+
+      //     line-height:1.6;\r
+
+      //   \">\r
+
+      //     <strong>You authorized as:</strong> ${finalType}_${le_type ||
+      ''}<br><br>${shortLeHtml}\r
+
+      //   </div>`;\r
+
+      \r
+
+      \r
+
+      //                     displayResponse('Authorization Successful', msg,
+      subrequestData.data, logsText);\r
+
+      //                     renderVisualLog();\r
+
+      //                 });\r
+
+      //             }, 3000)\r
+
+      \r
+
+      \r
+
+      \        } else {\r
+
+      \            displayResponse('Token exchange error', 'No token data found
+      in response', subrequestData, logsText);\r
+
+      \            renderVisualLog();\r
+
+      \        }\r
+
+      \    });\r
+
+      \r
+
+      });\r
+
+      \r
+
+      \r
+
+      // ----------------------- Fetch Employee Type & Speciality
+      ---------------------------\r
+
+      const employeeId = pm.environment.get('user_id') ||
+      pm.environment.get('owner_id');\r
+
+      function fetchEmployee(access_token, dataFromExchange) {\r
+
+      \    const url =
+      `${pm.globals.get('host')}/api/employees/${employeeId}`;\r
+
+      \    const headers = {\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \        'api-key': apiKey,\r
+
+      \        'X-Custom-PSK': XCustomPSK,\r
+
+      \        'Authorization': `Bearer ${access_token}`\r
+
+      \    };\r
+
+      \r
+
+      \    pm.sendRequest({ url, method: 'GET', header: headers }, (err, res) =>
+      {\r
+
+      \        if (err) return handleError('Employee fetch error', err);\r
+
+      \r
+
+      \        let body;\r
+
+      \        try { body = res.json(); } catch { return handleError('Employee
+      fetch parsing error', res.text()); }\r
+
+      \r
+
+      \        if (res.code !== 200) return handleError(`Employee fetch failed
+      (${res.code})`, body?.error?.message, body);\r
+
+      \r
+
+      \        const { employee_type, position, legal_entity = {}, division =
+      {}, party = {} } = body.data ?? {};\r
+
+      \r
+
+      \        console.info(\"divisions\", division)\r
+
+      \r
+
+      \        // 🧩 Збереження у середовище\r
+
+      \        setEnv({\r
+
+      \            employee_position: position,\r
+
+      \            le_type: legal_entity?.type,\r
+
+      \            le_name: legal_entity?.name,\r
+
+      \            le_edrpou: legal_entity?.edrpou,\r
+
+      \            user_division_id: division?.id,\r
+
+      \            division_name: division?.name,\r
+
+      \            party_id: party?.id,\r
+
+      \            employee_last_name: party?.last_name,\r
+
+      \            employee_first_name: party?.first_name,\r
+
+      \            employee_second_name: party?.second_name,\r
+
+      \            party_verification_status: party?.verification_status\r
+
+      \        });\r
+
+      \r
+
+      \        const typeKey = employee_type?.toLowerCase();\r
+
+      \        const specialities = body.data?.[typeKey]?.specialities ?? [];\r
+
+      \        const officio = specialities.filter(s => s.speciality_officio);\r
+
+      \        const speciality = officio.map(s => s.speciality).join(', ') ||
+      null;\r
+
+      \r
+
+      \        if (speciality) pm.environment.set('employee_specialty',
+      speciality);\r
+
+      \        pm.environment.set('employee_type', `${employee_type}${speciality
+      ? '' : `_${legal_entity.type}`}`);\r
+
+      \r
+
+      \        displayEmployeeInfo(employee_type, speciality, legal_entity,
+      division, party, position, dataFromExchange);\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      // ----------------------- Display Employee Info
+      ---------------------------\r
+
+      function displayEmployeeInfo(type, speciality, leInfo, divisionInfo,
+      partyInfo, position, dataFromExchange) {\r
+
+      \    const prevType = pm.environment.get('employee_type');\r
+
+      \    const prevSpec = pm.environment.get('employee_specialty');\r
+
+      \r
+
+      \    const finalType = type || prevType;\r
+
+      \    const finalSpec = speciality || prevSpec;\r
+
+      \r
+
+      \    const { le_type, le_name, le_edrpou } = leInfo || {};\r
+
+      \    const { id:division_id, name:division_name } = divisionInfo || {};\r
+
+      \    const { party_id, employee_last_name, employee_first_name,
+      employee_second_name, party_verification_status } = partyInfo || {};\r
+
+      \r
+
+      \    const cardStyle = `\r
+
+      \        flex:1 1 300px;\r
+
+      \        background:#fff;\r
+
+      \        border:1px solid #e0e6ed;\r
+
+      \        border-radius:12px;\r
+
+      \        padding:14px 18px;\r
+
+      \        box-shadow:0 3px 6px rgba(0,0,0,0.05);\r
+
+      \        font-family:'Segoe UI', Roboto, sans-serif;\r
+
+      \        color:#333;\r
+
+      \        min-width:260px;\r
+
+      \        max-width:100%;\r
+
+      \        display:flex;\r
+
+      \        flex-direction:column;\r
+
+      \        justify-content:space-between;\r
+
+      \    `;\r
+
+      \r
+
+      \    const leHtml = `<div style=\"${cardStyle}\">\r
+
+      \        <div
+      style=\"font-weight:600;color:#0056b3;margin-bottom:8px;font-size:15px;\"\
+      >🏛️ Legal Entity Info</div>\r
+
+      \        <div>• <b>Type:</b> ${le_type ||
+      pm.environment.get('le_type')}</div>\r
+
+      \        <div>• <b>Name:</b> ${le_name ||
+      pm.environment.get('le_name')}</div>\r
+
+      \        <div>• <b>EDRPOU:</b> ${le_edrpou ||
+      pm.environment.get('le_edrpou')}</div>\r
+
+      \    </div>`;\r
+
+      \r
+
+      \    const divisionHtml = `<div style=\"${cardStyle}\">\r
+
+      \        <div
+      style=\"font-weight:600;color:#007a3d;margin-bottom:8px;font-size:15px;\"\
+      >🏥 Division Info</div>\r
+
+      \        <div>• <b>ID:</b> ${division_id ||
+      pm.environment.get('user_division_id')}</div>\r
+
+      \        <div>• <b>Name:</b> ${division_name ||
+      pm.environment.get('division_name')}</div>\r
+
+      \    </div>`;\r
+
+      \r
+
+      \    const partyHtml = `<div style=\"${cardStyle}\">\r
+
+      \        <div
+      style=\"font-weight:600;color:#8c6b00;margin-bottom:8px;font-size:15px;\"\
+      >👤 Party Info</div>\r
+
+      \        <div>• ${employee_last_name ||
+      pm.environment.get('employee_last_name')} ${employee_first_name ||
+      pm.environment.get('employee_first_name')} ${employee_second_name ||
+      pm.environment.get('employee_second_name')}</div>\r
+
+      \        <div>• <b>ID:</b> ${party_id ||
+      pm.environment.get('party_id')}</div>\r
+
+      \        <div>• <b>Verification:</b> ${party_verification_status ||
+      pm.environment.get('party_verification_status')}</div>\r
+
+      \    </div>`;\r
+
+      \r
+
+      \    const msg = finalSpec\r
+
+      \        ? `<div style=\"font-family:'Segoe UI',
+      Roboto,sans-serif;color:#333;line-height:1.6;display:flex;flex-direction:\
+      column;gap:18px;\">\r
+
+      \            <div
+      style=\"display:flex;justify-content:space-between;flex-wrap:wrap;gap:18p\
+      x;\">\r
+
+      \                <div style=\"${cardStyle}\">\r
+
+      \                    <div
+      style=\"font-weight:600;color:#444;margin-bottom:8px;font-size:15px;\">✅
+      Authorization Info</div>\r
+
+      \                    <div><b>You authorized as:</b> ${finalType}</div>\r
+
+      \                    <div><b>Speciality:</b> ${finalSpec} |
+      <b>Position:</b> ${position ||
+      pm.environment.get('employee_position')}</div>\r
+
+      \                </div>\r
+
+      \                ${partyHtml}\r
+
+      \            </div>\r
+
+      \            <div
+      style=\"display:flex;justify-content:space-between;flex-wrap:wrap;gap:18p\
+      x;\">\r
+
+      \                ${leHtml}${divisionHtml}\r
+
+      \            </div>\r
+
+      \        </div>`\r
+
+      \        : `<div style=\"font-family:'Segoe UI',
+      Roboto,sans-serif;color:#333;line-height:1.6;\">\r
+
+      \            <strong>You authorized as:</strong> ${finalType}_${le_type ||
+      pm.environment.get(\"le_type\")}<br><br>${leHtml}\r
+
+      \        </div>`;\r
+
+      \r
+
+      \    displayResponse('Authorization Successful', msg, dataFromExchange,
+      logsText);\r
+
+      \    renderVisualLog();\r
+
+      }\r
+
+      \r
+
+      // ----------------------- Helper Functions ---------------------------\r
+
+      function handleError(title, message, data = null) {\r
+
+      \    displayResponse(title, message, data, logsText);\r
+
+      \    renderVisualLog();\r
+
+      }\r
+
+      \r
+
+      function setEnv(obj) {\r
+
+      \    Object.entries(obj).forEach(([key, val]) => {\r
+
+      \        if (val !== undefined && val !== null) pm.environment.set(key,
+      val);\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // // ----------------------- Get Employee Type & Speciality
+      ---------------------------\r
+
+      // const employeeId = pm.environment.get('user_id') ||
+      pm.environment.get('owner_id');\r
+
+      \r
+
+      // const getEmployeeTypeAndSpeciality = (access_token, callback) => {\r
+
+      //     const url =
+      `${pm.globals.get('host')}/api/employees/${employeeId}`;\r
+
+      //     const headers = {\r
+
+      //         'Content-Type': 'application/json',\r
+
+      //         'api-key': apiKey,\r
+
+      //         'X-Custom-PSK': XCustomPSK,\r
+
+      //         'Authorization': `Bearer ${access_token ||
+      pm.environment.get(\"access_token\")}`\r
+
+      //     };\r
+
+      \r
+
+      //     pm.sendRequest({ url, method: 'GET', header: headers }, (err, res)
+      => {\r
+
+      //         if (err) return handleError('Employee fetch error', err);\r
+
+      \r
+
+      //         let body;\r
+
+      //         try { body = res.json(); }\r
+
+      //         catch { return handleError('Employee fetch parsing error',
+      res.text()); }\r
+
+      \r
+
+      //         if (res.code !== 200)\r
+
+      //             return handleError(`Employee fetch failed (${res.code})`,
+      body?.error?.message, body);\r
+
+      \r
+
+      //         const data = body?.data ?? {};\r
+
+      //         const { employee_type, position, legal_entity = {}, division =
+      {}, party = {} } = data;\r
+
+      \r
+
+      //         // 🧩 Збереження у середовище\r
+
+      //         setEnv({\r
+
+      //             employee_position: position,\r
+
+      //             le_type: legal_entity.type,\r
+
+      //             le_name: legal_entity.name,\r
+
+      //             le_edrpou: legal_entity.edrpou,\r
+
+      //             user_division_id: division?.id,\r
+
+      //             division_name: division?.name,\r
+
+      //             party_id: party.id,\r
+
+      //             employee_last_name: party.last_name,\r
+
+      //             employee_first_name: party.first_name,\r
+
+      //             employee_second_name: party.second_name,\r
+
+      //             party_verification_status: party.verification_status\r
+
+      //         });\r
+
+      \r
+
+      //         // 🎯 Визначення спеціальності\r
+
+      //         const typeKey = employee_type?.toLowerCase();\r
+
+      //         const specialities = data?.[typeKey]?.specialities ?? [];\r
+
+      //         const officio = specialities.filter(s =>
+      s.speciality_officio);\r
+
+      //         const speciality = officio.map(s => s.speciality).join(', ') ||
+      null;\r
+
+      \r
+
+      //         if (speciality) pm.environment.set('employee_specialty',
+      speciality);\r
+
+      //         pm.environment.set('employee_type',
+      `${employee_type}${speciality ? '' : `_${legal_entity.type}`}`);\r
+
+      \r
+
+      //         displayResponse(\r
+
+      //             'Employee fetch success',\r
+
+      //             speciality\r
+
+      //                 ? `Employee type: ${employee_type}, Speciality(ies):
+      ${speciality}`\r
+
+      //                 : `Employee type: ${employee_type} (no officio
+      speciality)`,\r
+
+      //             { employee_type, speciality }, logsText\r
+
+      //         );\r
+
+      //         renderVisualLog();\r
+
+      \r
+
+      //         callback(employee_type, speciality, legal_entity, division,
+      party, position);\r
+
+      //     });\r
+
+      // };\r
+
+      \r
+
+      // // ----------------------- Helper Functions
+      ---------------------------\r
+
+      // function handleError(title, message, data = null) {\r
+
+      //     displayResponse(title, message, data, logsText);\r
+
+      //     renderVisualLog();\r
+
+      //     return callback(null, null, null);\r
+
+      // }\r
+
+      \r
+
+      // function setEnv(obj) {\r
+
+      //     Object.entries(obj).forEach(([key, val]) => {\r
+
+      //         if (val !== undefined && val !== null) pm.environment.set(key,
+      val);\r
+
+      //     });\r
+
+      // }"
+    language: text/javascript
+    packages:
+      "@winter-zodiac-949553/login-display-response":
+        id: 019a10d5-f9a5-78e7-a9fc-c27f8777bab5
+  - type: beforeRequest
+    code: "// --- Зберігаємо оригінальні функції ---\r
+
+      const originalLog = console.log;\r
+
+      const originalWarn = console.warn;\r
+
+      \r
+
+      // --- Ініціалізуємо буфер ---\r
+
+      let logBuffer = [];\r
+
+      \r
+
+      // --- Перевизначаємо console.log ---\r
+
+      console.log = function (...args) {\r
+
+      \    const message = args.map(a => (typeof a === 'object' ?
+      JSON.stringify(a) : String(a))).join(' ');\r
+
+      \    logBuffer.push(`[LOG] ${message}`);\r
+
+      \    originalLog.apply(console, args);\r
+
+      \    pm.globals.set(\"pre_request_logs\", JSON.stringify(logBuffer));\r
+
+      };\r
+
+      \r
+
+      // --- Перевизначаємо console.warn ---\r
+
+      console.warn = function (...args) {\r
+
+      \    const message = args.map(a => (typeof a === 'object' ?
+      JSON.stringify(a) : String(a))).join(' ');\r
+
+      \    logBuffer.push(`[WARN] ${message}`);\r
+
+      \    originalWarn.apply(console, args);\r
+
+      \    pm.globals.set(\"pre_request_logs\", JSON.stringify(logBuffer));\r
+
+      };\r
+
+      \r
+
+      \r
+
+      const env = pm.environment;\r
+
+      const userEmail = env.get(\"user_email\");\r
+
+      const userPassword = env.get(\"user_password\");\r
+
+      \r
+
+      const appsScriptUrl =
+      \"https://script.google.com/macros/s/AKfycbxULij6ZUCiVu3HFV6kui3UjWfXyrLp\
+      PDlJvVrde1AkO0OoXTEHEK2285cNWjB21kEt/exec\";\r
+
+      \r
+
+      const sheetUrl =
+      \"https://docs.google.com/spreadsheets/d/1wF-lW634BOEyBT7j7xNVay-T2wbs4ba\
+      CLenihJAtgYA/edit?gid=0#gid=0\";\r
+
+      \r
+
+      \r
+
+      // перевірки\r
+
+      if (!sheetUrl) throw new Error(\"Google Sheet URL відсутній у
+      скрипті.\");\r
+
+      if (!userEmail) throw new Error(\"Environment variable 'user_email'
+      відсутня.\");\r
+
+      \r
+
+      // Витягуємо sheetId та gid\r
+
+      const sheetIdMatch = sheetUrl.match(/\\/d\\/([a-zA-Z0-9-_]+)/);\r
+
+      if (!sheetIdMatch) throw new Error(\"Невірний формат sheetUrl.\");\r
+
+      const sheetId = sheetIdMatch[1];\r
+
+      const gidMatch = sheetUrl.match(/gid=(\\d+)/);\r
+
+      const gid = gidMatch ? parseInt(gidMatch[1], 10) : 0;\r
+
+      \r
+
+      // URL CSV конкретного аркуша\r
+
+      const csvUrl =
+      `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gi\
+      d=${gid}`;\r
+
+      \r
+
+      // Простий CSV-парсер\r
+
+      function parseCSV(csvText) {\r
+
+      \    const lines = csvText.split(/\\r?\\n/).filter(Boolean);\r
+
+      \    if (lines.length === 0) return { headers: [], rows: [] };\r
+
+      \    const headers = lines[0].split(\",\").map(h =>
+      h.trim().replace(/(^\"|\"$)/g, \"\").toLowerCase());\r
+
+      \    const rows = lines.slice(1).map(line => line.split(\",\").map(c =>
+      c.trim().replace(/(^\"|\"$)/g, \"\")));\r
+
+      \    return { headers, rows };\r
+
+      }\r
+
+      \r
+
+      // Отримуємо дані з CSV\r
+
+      pm.sendRequest({ url: csvUrl, method: \"GET\", timeout: 10000 }, (err,
+      res) => {\r
+
+      \    if (err || !res || res.code >= 400) {\r
+
+      \        console.warn(\"Не вдалося отримати CSV із Google Sheet;
+      environment залишено без змін.\", err || res && res.code);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const csv = res.text();\r
+
+      \    const { headers, rows } = parseCSV(csv);\r
+
+      \r
+
+      \    const emailIdx = headers.indexOf(\"email\");\r
+
+      \    const pwdCurrIdx = headers.indexOf(\"password_current\");\r
+
+      \    const pwdNewIdx = headers.indexOf(\"password_new\");\r
+
+      \r
+
+      \    if (emailIdx === -1 || pwdCurrIdx === -1 || pwdNewIdx === -1) {\r
+
+      \        console.warn(\"У таблиці відсутні required columns (email,
+      password_current, password_new). Environment не змінено.\");\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // Знаходимо рядок з потрібним email\r
+
+      \    let found = null;\r
+
+      \    for (let r = 0; r < rows.length; r++) {\r
+
+      \        const row = rows[r];\r
+
+      \        const emailCell = (row[emailIdx] ||
+      \"\").toString().toLowerCase();\r
+
+      \        if (emailCell === userEmail.toLowerCase()) {\r
+
+      \            found = row;\r
+
+      \            break;\r
+
+      \        }\r
+
+      \    }\r
+
+      \r
+
+      \    if (!found) {\r
+
+      \        console.log(`Користувач ${userEmail} не знайдено на цьому аркуші
+      (gid=${gid}).`);\r
+
+      \        pm.environment.set(\"user_is_found_in_sheet\", false)\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    pm.environment.set(\"user_is_found_in_sheet\", true);\r
+
+      \r
+
+      \    const passwordCurrent = (found[pwdCurrIdx] || \"\").toString();\r
+
+      \    const passwordNew = (found[pwdNewIdx] || \"\").toString();\r
+
+      \r
+
+      \    // ---------- Логіка ----------\r
+
+      \    // 1) Якщо user_password === password_current\r
+
+      \    if (userPassword === passwordCurrent) {\r
+
+      \        if (passwordNew) {\r
+
+      \            env.set(\"user_password\", passwordNew);\r
+
+      \            console.log(\"user_password співпадає з password_current, але
+      є password_new — оновлено user_password.\");\r
+
+      \        } else {\r
+
+      \            console.log(\"user_password співпадає з password_current —
+      нічого не робимо.\");\r
+
+      \        }\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // 2) Якщо password_new відрізняється від user_password → оновлюємо
+      user_password\r
+
+      \    if (passwordNew && userPassword !== passwordNew) {\r
+
+      \        env.set(\"user_password\", passwordNew);\r
+
+      \        console.log(\"password_new відрізняється від user_password —
+      оновлено user_password із password_new.\");\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    // 3) Якщо user_password не відповідає password_new → це \"ручне
+      значення\", записуємо його у password_new\r
+
+      \    if (userPassword !== passwordNew) {\r
+
+      \        console.log(\"Ручне значення user_password відрізняється від
+      password_new — оновлюємо password_new у таблиці...\");\r
+
+      \        pm.sendRequest({\r
+
+      \            url: appsScriptUrl,\r
+
+      \            method: \"POST\",\r
+
+      \            header: { \"Content-Type\": \"application/json\" },\r
+
+      \            body: {\r
+
+      \                mode: \"raw\",\r
+
+      \                raw: JSON.stringify({\r
+
+      \                    email: userEmail,\r
+
+      \                    newPassword: userPassword,\r
+
+      \                    gid: gid\r
+
+      \                })\r
+
+      \            }\r
+
+      \        }, (updateErr, updateRes) => {\r
+
+      \            if (updateErr || !updateRes) {\r
+
+      \                console.warn(\"Помилка при оновленні таблиці:\",
+      updateErr);\r
+
+      \            } else {\r
+
+      \                try {\r
+
+      \                    const body = updateRes.json ? updateRes.json() :
+      JSON.parse(updateRes.text());\r
+
+      \                    console.log(\"Результат оновлення sheet:\", body);\r
+
+      \                } catch (e) {\r
+
+      \                    console.log(\"Результат оновлення sheet (raw):\",
+      updateRes.text());\r
+
+      \                }\r
+
+      \            }\r
+
+      \        });\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    console.log(\"Немає дій (user_password співпадає з
+      password_new).\");\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 10000

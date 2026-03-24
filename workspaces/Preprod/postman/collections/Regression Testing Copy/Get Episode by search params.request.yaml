@@ -1,0 +1,36 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/episodes?managing_organizat\
+  ion_id={{user_legal_entity}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: period_from
+    value: 2022-05-01
+    disabled: true
+  - key: period_to
+    value: 2022-06-20
+    disabled: true
+  - key: status
+    value: active
+    disabled: true
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+scripts:
+  - type: afterResponse
+    code: >-
+      pm.test("Get Episode by search params - PASS. Status code is 200",
+      function () {
+          pm.response.to.have.status(200);
+      });
+    language: text/javascript
+order: 17000

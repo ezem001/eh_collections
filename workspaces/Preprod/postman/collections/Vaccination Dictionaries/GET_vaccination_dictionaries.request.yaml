@@ -1,0 +1,20 @@
+$kind: http-request
+url: https://api.medzakupivli.com/vaccination/2.1/series/?access_token=jsmgmdrqhiuiwvilbfteedlz
+method: GET
+headers:
+  - key: Authorization
+    value: SR7I5oZ9G0QzbQ1PVag2vg72
+    disabled: true
+queryParams:
+  access_token: jsmgmdrqhiuiwvilbfteedlz
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 1000

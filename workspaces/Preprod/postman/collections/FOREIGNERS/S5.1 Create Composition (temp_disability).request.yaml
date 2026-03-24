@@ -1,0 +1,108 @@
+$kind: http-request
+name: S5.1 Create Composition (temp_disability)
+url: https://api-demo.ehealth.gov.ua/api/patients/composition
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: ""
+  api-key: 30276e63617461a185ec
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+      "category": {
+        "coding": [
+          {
+            "system": "COMPOSITION_CATEGORIES",
+            "code": "FAMILY_CARE"
+          }
+        ]
+      },
+      "type": {
+        "coding": [
+          {
+            "system": "COMPOSITION_TYPES",
+            "code": "TEMP_DISABILITY"
+          }
+        ]
+      },
+      "event": [
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "COMPOSITION_EVENTS",
+                "code": "COMPOSITION_VALIDITY_PERIOD"
+              }
+            ]
+          },
+          "period": {
+            "start": "2025-12-09T21:45:16Z",
+            "end": "2025-12-11T10:45:16Z"
+          }
+        }
+      ],
+      "subject": {
+        "type": {
+          "coding": [
+            {
+              "system": "eHealth/resources",
+              "code": "person"
+            }
+          ],
+          "text": "string"
+        },
+        "value": "8901cb64-c823-49db-9ff5-02e01429efb2"
+      },
+      "encounter": {
+        "type": {
+          "coding": [
+            {
+              "system": "eHealth/resources",
+              "code": "encounter"
+            }
+          ],
+          "text": "string"
+        },
+        "value": "0c3b0d75-5c48-4147-abd8-f99fe340348a"
+      },
+      "author": {
+        "type": {
+          "coding": [
+            {
+              "system": "eHealth/resources",
+              "code": "employee"
+            }
+          ],
+          "text": "string"
+        },
+        "value": "b60fad18-db1d-42fd-96a0-1329b28aad22"
+      },
+      "section": {
+        "focus": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "person"
+              }
+            ],
+            "text": "string"
+          },
+          "value": "6f41ac80-045a-4be3-ad79-7bde06f27f0a"
+        }
+      },
+      "extension": []
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      var jsonData = JSON.parse(responseBody);
+
+
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 33000

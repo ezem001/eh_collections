@@ -1,0 +1,17 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/device_requests?requisition=9028-5003-3966-6643
+method: GET
+headers:
+  Authorization: Bearer {{pharm_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: requisition
+    value: 0840-4045-3374-3253
+    disabled: true
+    description: S19.3
+  - key: requisition
+    value: 9028-5003-3966-6643
+    description: S19.5
+order: 3000

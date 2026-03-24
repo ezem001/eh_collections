@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/compositions"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+        "signed_data": "{{composition_signed_content}}"
+    }
+order: 5000

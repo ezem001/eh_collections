@@ -1,0 +1,300 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/device_requests/prequalify"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"device_request\": {\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"quantity\": {\r
+
+    \      \"value\": 50,\r
+
+    \      \"system\": \"device_unit\",\r
+
+    \      \"code\": \"piece\"\r
+
+    \    },\r
+
+    \    \"code\": {\r
+
+    \      \"coding\": [\r
+
+    \        {\r
+
+    \          \"system\": \"device_definition_classification_type\",\r
+
+    \          \"code\": \"30221\"\r
+
+    \        }\r
+
+    \      ]\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \      \"identifier\": {\r
+
+    \        \"type\": {\r
+
+    \          \"coding\": [\r
+
+    \            {\r
+
+    \              \"system\": \"eHealth/resources\",\r
+
+    \              \"code\": \"encounter\"\r
+
+    \            }\r
+
+    \          ]\r
+
+    \        },\r
+
+    \        \"value\": \"{{encounter_extracted_id}}\"\r
+
+    \      }\r
+
+    \    },\r
+
+    \    \"requester\": {\r
+
+    \      \"identifier\": {\r
+
+    \        \"type\": {\r
+
+    \          \"coding\": [\r
+
+    \            {\r
+
+    \              \"system\": \"eHealth/resources\",\r
+
+    \              \"code\": \"employee\"\r
+
+    \            }\r
+
+    \          ]\r
+
+    \        },\r
+
+    \        \"value\": \"{{user_id}}\"\r
+
+    \      }\r
+
+    \    },\r
+
+    \    \"authored_on\": \"{{deviceRequestAuthoredOn}}\",\r
+
+    \    \"occurrence_period\": {\r
+
+    \      \"start\": \"{{deviceRequestStartedAt}}\",\r
+
+    \      \"end\": \"{{deviceRequestEndAt}}\"\r
+
+    \    },\r
+
+    \    \"performer\": {\r
+
+    \      \"identifier\": {\r
+
+    \        \"type\": {\r
+
+    \          \"coding\": [\r
+
+    \            {\r
+
+    \              \"system\": \"eHealth/resources\",\r
+
+    \              \"code\": \"legal_entity\"\r
+
+    \            }\r
+
+    \          ]\r
+
+    \        },\r
+
+    \        \"value\": \"{{user_legal_entity}}\"\r
+
+    \      }\r
+
+    \    }\r
+
+    \  },\r
+
+    \  \"programs\": [\r
+
+    \    {\r
+
+    \      \"identifier\": {\r
+
+    \        \"type\": {\r
+
+    \          \"coding\": [\r
+
+    \            {\r
+
+    \              \"system\": \"eHealth/resources\",\r
+
+    \              \"code\": \"medical_program\"\r
+
+    \            }\r
+
+    \          ]\r
+
+    \        },\r
+
+    \        \"value\": \"af8ba0d3-1520-4a01-8156-22065e96fd9a\"\r
+
+    \      }\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "// Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      \r
+
+      // Check if the URL is defined and contains the expected format\r
+
+      if (url && url.includes('encounters/')) {\r
+
+      \    // Extract the ID after 'encounters/'\r
+
+      \    const parts = url.split('encounters/');\r
+
+      \    if (parts.length > 1) {\r
+
+      \        const jobEncounterID = parts[1];\r
+
+      \        \r
+
+      \        // Log the extracted ID to the console (for debugging purposes)\r
+
+      \        console.log('Extracted jobEncounterID:', jobEncounterID);\r
+
+      \        \r
+
+      \        // Optionally, set the extracted ID as an environment variable\r
+
+      \        pm.globals.set('encounter_extracted_id', jobEncounterID);\r
+
+      \    } else {\r
+
+      \        console.error('The URL does not contain the expected format.');\r
+
+      \    }\r
+
+      } else {\r
+
+      \    console.error('The global variable jobEncounterID is not defined or
+      does not contain the expected format.');\r
+
+      }\r
+
+      \r
+
+      \r
+
+      // Отримуємо encounter_start_date з глобальних змінних\r
+
+      const encounterPeriodes = new
+      Date(pm.globals.get('encounter_start_date'));\r
+
+      \r
+
+      // Обчислюємо deviceRequestStartedAt (на день більше за
+      encounter_start_date)\r
+
+      const deviceRequestStartedAt = new Date(encounterPeriodes);\r
+
+      deviceRequestStartedAt.setDate(deviceRequestStartedAt.getDate() + 1);\r
+
+      \r
+
+      // Обчислюємо deviceRequestEndAt (на 5 днів більше ніж
+      deviceRequestStartedAt)\r
+
+      const deviceRequestEndAt = new Date(deviceRequestStartedAt);\r
+
+      deviceRequestEndAt.setDate(deviceRequestEndAt.getDate() + 5);\r
+
+      \r
+
+      // Обчислюємо deviceRequestAuthoredOn (вчора відносно сьогоднішньої
+      дати)\r
+
+      const today = new Date();\r
+
+      const deviceRequestAuthoredOn = new Date(today);\r
+
+      deviceRequestAuthoredOn.setDate(deviceRequestAuthoredOn.getDate() - 1);\r
+
+      \r
+
+      // Функція для форматування дати у форматі ISO 8601 (з T00:00:00.000Z)\r
+
+      const formatISODate = (date) => date.toISOString();\r
+
+      \r
+
+      // Зберігаємо у глобальні змінні\r
+
+      pm.globals.set('deviceRequestStartedAt',
+      formatISODate(deviceRequestStartedAt));\r
+
+      pm.globals.set('deviceRequestEndAt', formatISODate(deviceRequestEndAt));\r
+
+      pm.globals.set('deviceRequestAuthoredOn',
+      formatISODate(deviceRequestAuthoredOn));\r
+
+      \r
+
+      console.log(\"Device Request Started At:\",
+      formatISODate(deviceRequestStartedAt));\r
+
+      console.log(\"Device Request End At:\",
+      formatISODate(deviceRequestEndAt));\r
+
+      console.log(\"Device Request Authored On:\",
+      formatISODate(deviceRequestAuthoredOn));\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"PreQualify Device request Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"PreQualify Device request status is VALID\", function () {\r
+
+      \    const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 43000

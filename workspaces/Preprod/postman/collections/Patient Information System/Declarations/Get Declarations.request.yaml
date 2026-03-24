@@ -1,0 +1,35 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/api/pis/declarations?page=1&page_size=50
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: 83550c00774bb2151a95c1b00d16af1f
+  - key: Authorization
+    value: Bearer
+      eyJhbGciOiJSUzUxMiIsImtpZCI6IkV4U043R0dLRW43VVctb3pHMlBhWFBXWVdCUjFJZDBnMWFhSUZxc0lmSGciLCJ0eXAiOiJKV1QifQ.eyJhY2Nlc3NfdHlwZSI6IkJST0tFUiIsImFwcF9pZCI6Ijc4YmUzNmY3LWY1NTUtNGY1Yi04ZDAzLWEzMDcwNjQ1NmFlZCIsImFwcGxpY2FudF9wZXJzb25faWQiOiJjNzNmMGQyYy04OThjLTQ2N2YtODBkZi02ZmM5YjE4ZjJiMjUiLCJhcHBsaWNhbnRfdXNlcl9pZCI6ImU3ZTVhMDlhLTA4NGItNDc3NC04ZTNhLTY1ZmQ0ZmI4YWNjNyIsImF1ZCI6IkVIZWFsdGgiLCJjbGllbnRfaWQiOiI2ZTM5Y2UyZS01MjBiLTQ5MDUtODkwZi03ZmM2OWFjZmU4NWMiLCJleHAiOjE3NTE0NTAyNjMsImdyYW50X3R5cGUiOiJhdXRob3JpemF0aW9uX2NvZGUiLCJpYXQiOjE3NTEzNjM4NjMsImlzcyI6IkVIZWFsdGgiLCJqdGkiOiJlMzM4OTJiMS0xODlkLTQ4MjYtOGMxOC0xY2YyYTkzMWI4NzkiLCJuYmYiOjE3NTEzNjM4NjIsInBlcnNvbl9pZCI6ImM3M2YwZDJjLTg5OGMtNDY3Zi04MGRmLTZmYzliMThmMmIyNSIsInJlZGlyZWN0X3VyaSI6Imh0dHBzOi8vcGlzX3Rlc3QuY29tL3JlZGlyZWN0IiwicmVmcmVzaF90b2tlbiI6IlduQlhWME5CT0ZBMlNsWllTRU4wV2tVNVNsaGlRVDA5Iiwic2NvcGUiOiJhcHA6ZGVsZXRlX3BpcyBhcHA6cmVhZF9waXMgYXV0aGVudGljYXRpb25fbWV0aG9kOmRlYWN0aXZhdGVfcGlzIGF1dGhlbnRpY2F0aW9uX21ldGhvZDpyZWFkX3BpcyBhdXRoZW50aWNhdGlvbl9tZXRob2Q6d3JpdGVfcGlzIGF1dGhlbnRpY2F0aW9uX21ldGhvZF9yZXF1ZXN0OndyaXRlX3BpcyBjb25maWRhbnRfcGVyc29uOmxvZ2luIGNvbmZpZGFudF9wZXJzb246c2lnbl91cCBkZWNsYXJhdGlvbjpkZXRhaWxzX3BpcyBkZWNsYXJhdGlvbjpyZWFkX3BpcyBkZWNsYXJhdGlvbjp0ZXJtaW5hdGVfcGlzIGRlY2xhcmF0aW9uX3JlcXVlc3Q6ZGV0YWlsc19waXMgZGVjbGFyYXRpb25fcmVxdWVzdDpyZWFkX3BpcyBkZWNsYXJhdGlvbl9yZXF1ZXN0OnJlamVjdF9waXMgZGVjbGFyYXRpb25fcmVxdWVzdDpzaWduX3BpcyBkZWNsYXJhdGlvbl9yZXF1ZXN0OndyaXRlX3BpcyBwZXJzb246ZGV0YWlsc19waXMgcGVyc29uX2RvY3VtZW50czp3cml0ZV9waXMgcGVyc29uX3JlcXVlc3Q6ZGV0YWlsc19waXMgcGVyc29uX3JlcXVlc3Q6cmVhZF9waXMgcGVyc29uX3JlcXVlc3Q6cmVqZWN0X3BpcyBwZXJzb25fcmVxdWVzdDp3cml0ZV9waXMgcGVyc29uX3ZlcmlmaWNhdGlvbjpkZXRhaWxzX3BpcyIsInN1YiI6ImU3ZTVhMDlhLTA4NGItNDc3NC04ZTNhLTY1ZmQ0ZmI4YWNjNyIsInR5cCI6ImFjY2Vzc190b2tlbiJ9.EBRJEorPqH6_My3MVqsCASuRMWu7_NkKy7P4Mf3lfZO0Nj9i6xwimff8jN1FUywnr2fCuBWlnKaHyqXWpcfEzR05Ea_GrEK1ga4EaXuXOVvyXx5J2fjIJDgcRcXuyfhNS0UPDJnJ21v1pP49a1XNZgzpxs3HJTH3wuyWwY_IZF495Nh2CG3kZ8J4ykBlSxT3SG7v87CARrZXFf1mbXVRBTnq2m8vHg4boGhSD9hlPnoMNoiFBcQTv2gm4hiSBl632EM4G5qRdYT6lZDMXsMLpC0EsgBfFkmxKVypfeE0q4rBBNglTtjHeGxLaHO98W1J0VW1C0FEmsVvZEig9XzZ0Q
+queryParams:
+  - key: status
+    value: active
+    disabled: true
+  - key: start_date_from
+    value: 2022-08-19
+    disabled: true
+  - key: start_date_to
+    value: 2023-08-19
+    disabled: true
+  - key: end_date_from
+    value: 2023-09-19
+    disabled: true
+  - key: end_date_to
+    value: 2023-10-19
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+order: 3000

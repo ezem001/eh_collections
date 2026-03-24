@@ -1,0 +1,169 @@
+$kind: http-example
+request:
+  url: https://api-demo.ehealth.gov.ua/api/patients/d96867bc-f250-4625-873e-61714c43ff92/care_plans/36cb0c96-f71b-4f64-a1b2-a38ecacdea72
+  method: GET
+  headers:
+    Authorization: Bearer {{physio_access_token}}
+    api-key: ef7d48ecfc233d6af088
+    Content-Type: application/json
+    X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Date: Mon, 02 Dec 2024 18:32:45 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Cache-Control: max-age=0, private, must-revalidate
+    Content-Encoding: gzip
+    via: kong/2.8.1
+    x-kong-proxy-latency: "94"
+    x-kong-upstream-latency: "18"
+    x-request-id: f4a9be43-3edb-4858-a45f-26b79cb2e81e#415
+    CF-Cache-Status: DYNAMIC
+    Server: cloudflare
+    CF-RAY: 8ebd66c46b045a68-VIE
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: >-
+      {
+          "data": {
+              "addresses": [
+                  {
+                      "coding": [
+                          {
+                              "code": "F04.00",
+                              "system": "eHealth/ICD10_AM/condition_codes"
+                          }
+                      ],
+                      "text": null
+                  }
+              ],
+              "author": {
+                  "display_value": "Богдан Васильович Польов",
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "employee",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "31c8f0fd-a6ae-4ce9-8b61-1418f4b014fa"
+                  }
+              },
+              "based_on": null,
+              "category": {
+                  "coding": [
+                      {
+                          "code": "class_25",
+                          "system": "eHealth/care_plan_categories"
+                      }
+                  ],
+                  "text": null
+              },
+              "contributor": [],
+              "description": null,
+              "encounter": {
+                  "display_value": null,
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "encounter",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "ff54f50a-5746-4b84-b793-8c0f9c8ee6dc"
+                  }
+              },
+              "id": "36cb0c96-f71b-4f64-a1b2-a38ecacdea72",
+              "inserted_at": "2024-12-02T13:02:06.350000Z",
+              "inserted_by": "561b39da-9146-4788-b480-9d697a22a542",
+              "intent": "order",
+              "managing_organization": {
+                  "display_value": "ТАТАРЕНКО СЕРГІЙ ОЛЕКСАНДРОВИЧ",
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "legal_entity",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "ac81d69f-e712-4b18-b9d5-83c2a87018e1"
+                  }
+              },
+              "note": null,
+              "part_of": null,
+              "period": {
+                  "end": "2031-12-02T11:00:00Z",
+                  "start": "2024-12-02T05:27:13Z"
+              },
+              "requisition": "2591-9558-5323-5641",
+              "status": "active",
+              "status_history": [
+                  {
+                      "inserted_at": "2024-12-02T13:02:06.350000Z",
+                      "inserted_by": "561b39da-9146-4788-b480-9d697a22a542",
+                      "status": "new",
+                      "status_reason": null
+                  },
+                  {
+                      "inserted_at": "2024-12-02T16:19:55.585000Z",
+                      "inserted_by": "a42cd826-ef08-430a-91f0-b95b8c8818c0",
+                      "status": "active",
+                      "status_reason": null
+                  }
+              ],
+              "status_reason": null,
+              "subject": {
+                  "display_value": null,
+                  "identifier": {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "patient",
+                                  "system": "eHealth/resources"
+                              }
+                          ],
+                          "text": null
+                      },
+                      "value": "d96867bc-f250-4625-873e-61714c43ff92"
+                  }
+              },
+              "supporting_info": [],
+              "terms_of_service": {
+                  "coding": [
+                      {
+                          "code": "OUTPATIENT",
+                          "system": "PROVIDING_CONDITION"
+                      }
+                  ],
+                  "text": null
+              },
+              "title": "Test Rehab health plan",
+              "updated_at": "2024-12-02T16:19:55.585000Z",
+              "updated_by": "a42cd826-ef08-430a-91f0-b95b8c8818c0"
+          },
+          "meta": {
+              "code": 200,
+              "type": "object",
+              "url": "http://api-medical-events.me.svc.cluster.local/api/patients/d96867bc-f250-4625-873e-61714c43ff92/care_plans/36cb0c96-f71b-4f64-a1b2-a38ecacdea72",
+              "request_id": "f4a9be43-3edb-4858-a45f-26b79cb2e81e#415"
+          },
+          "urgent": {
+              "informing_method_current": {
+                  "type": "OFFLINE"
+              }
+          }
+      }
+order: 1000

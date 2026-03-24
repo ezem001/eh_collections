@@ -1,0 +1,16 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/api/pis/apps
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer M2c3QUlWTXpvUGpuSktld00zQjVpQT09
+  X-Custom-PSK: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+  api-key: 83550c00774bb2151a95c1b00d16af1f
+queryParams:
+  - key: client_id
+    value: 4145e737-35b5-4778-a56f-dbcdd9ca7412
+    disabled: true
+  - key: client_name
+    value: PisTestPreprod
+    disabled: true
+order: 16000

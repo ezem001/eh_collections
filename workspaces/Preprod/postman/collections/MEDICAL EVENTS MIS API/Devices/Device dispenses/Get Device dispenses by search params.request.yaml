@@ -1,0 +1,51 @@
+$kind: http-request
+url: "{{host}}/api/device_dispenses?based_on={{JobDeviceRequestID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: based_on
+    value: "{{JobDeviceRequestID}}"
+  - key: location
+    value: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+  - key: performer
+    value: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+  - key: status
+    value: completed
+    disabled: true
+  - key: when_handed_over_from
+    value: 2023-08-02T10%3A45%3A16.000Z
+    disabled: true
+  - key: when_handed_over_to
+    value: 2023-08-02T10%3A45%3A16.000Z
+    disabled: true
+  - key: part_of
+    value: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+  - key: device
+    value: 9075e0e2
+    disabled: true
+  - key: performer_legal_entity
+    value: "{{user_legal_entity}}"
+    disabled: true
+  - key: inserted_at_from
+    value: 2023-08-02T10%3A45%3A16.000Z
+    disabled: true
+  - key: inserted_at_to
+    value: 2023-08-02T10%3A45%3A16.000Z
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+body:
+  type: text
+  content: ""
+order: 7000

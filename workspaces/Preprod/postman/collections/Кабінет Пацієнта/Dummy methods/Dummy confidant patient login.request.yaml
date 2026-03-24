@@ -1,0 +1,23 @@
+$kind: http-request
+url: https://ehealth.edenlabllc.com/dummy/pis/confidant/login
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"last_name\": \"Прокопенко\",\r
+
+    \  \"given_name\": \"Василь Іванович\",\r
+
+    \  \"document\":  {\r
+
+    \    \"number\": \"АА380000\",\r
+
+    \    \"type\": \"BIRTH_CERTIFICATE\"\r
+
+    }\r
+
+    }"
+order: 1000

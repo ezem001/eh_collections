@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{host}}/api/persons/b33942e4-0f4c-4329-984e-a1cb60f07060/authentication_\
+  methods"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: beforeRequest
+    code: pm.environment.set("patient_id","47966250-3d12-4724-9160-2c409a1750ec")
+    language: text/javascript
+order: 1000

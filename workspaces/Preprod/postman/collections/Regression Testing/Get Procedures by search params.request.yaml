@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/procedures?managing_organiz\
+  ation_id={{user_legal_entity}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+queryParams:
+  - key: episode_id
+    value: ef30f210-5328-4f48-bfe6-c7150d4737a6
+    disabled: true
+  - key: status
+    value: completed
+    disabled: true
+  - key: based_on
+    value: ef30f210-5328-4f48-bfe6-c7150d4737a6
+    disabled: true
+  - key: code
+    value: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+  - key: managing_organization_id
+    value: "{{user_legal_entity}}"
+  - key: encounter_id
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Procedures by search params - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 54000

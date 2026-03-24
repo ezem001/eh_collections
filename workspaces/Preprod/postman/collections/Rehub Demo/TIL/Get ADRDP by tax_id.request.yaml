@@ -1,0 +1,23 @@
+$kind: http-request
+url: localhost:8081/min_sp/device_request_data_package
+method: POST
+headers:
+  Uxp-Client: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS
+  Uxp-Service: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS/get_device_request_data_package
+  Uxp-Transaction-Id: "{{Uxp-Transaction-Id}}"
+body:
+  type: json
+  content: |-
+    {
+        "requisition": "8847-9991-9841-5850",
+        "last_name": "Сминтина",
+        "first_name": "ЕдуардЛеон",
+        "second_name": "Терентійович",
+        "tax_id": "2880370410"
+    }
+scripts:
+  - type: beforeRequest
+    code: pm.environment.set("Uxp-Transaction-Id",
+      pm.variables.replaceIn('{{$guid}}'));
+    language: text/javascript
+order: 1000

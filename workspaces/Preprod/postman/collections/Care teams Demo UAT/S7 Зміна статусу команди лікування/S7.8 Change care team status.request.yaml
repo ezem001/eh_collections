@@ -1,0 +1,15 @@
+$kind: http-request
+name: S7.8 Change care team status
+url: https://api-demo.ehealth.gov.ua/api/care_teams/3ea908a6-5eaa-4e83-a57f-0992d4cde0eb/actions/change_status
+method: PATCH
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+      "status": "inactive"
+    }
+order: 18000

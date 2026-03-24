@@ -1,0 +1,30 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/device_requests/{{JobDevice\
+  RequestID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  x-custom-psk: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Device Request details - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      const data = pm.response.json();\r
+
+      \r
+
+      pm.globals.set(\"device_req_requisition\", data?.data?.requisition)\r
+
+      pm.globals.set(\"device_req_verification_code\",
+      data?.urgent?.verification_code)"
+    language: text/javascript
+order: 50000

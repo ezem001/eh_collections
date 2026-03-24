@@ -1,0 +1,78 @@
+$kind: http-request
+name: S1.19 Create person request v3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "person": {
+            "id": "8e83755e-a297-4d3f-94c8-56c8c767fc2c",
+            "names": [
+          {
+            "first_name": "Stefan",
+            "last_name": "Hang Mio",
+            "language": "en",
+            "no_last_name": false
+          },
+          {
+            "first_name": "Степан",
+            "last_name": "Ханг Міо",
+            "language": "uk",
+            "no_last_name": false
+          }
+        ],
+            "birth_date": "1985-04-16",
+            "birth_country": "Україна",
+            "birth_settlement": "Харків",
+            "gender": "MALE",
+            "no_tax_id": null,
+            "email": "pavel@email.com",
+            "secret": "secret12",
+            "unzr": "19650213-12311",
+            "documents": [
+                {
+                    "type": "FOREIGN_PASSPORT",
+                    "number": "KA753126",
+                    "issued_by": "Poland",
+                    "issued_at": "2020-12-25",
+                    "issuing_country": "PL",
+                    "expiration_date": "2030-10-21"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "PL",                
+                    "settlement": "Wroclaw",
+                    "area": "Powiat Wroclawski",
+                    "region": "Malopolske wojewodztwo",
+                    "street": "Robotnicza",
+                    "building": "151/a",
+                    "apartment": "12/a",
+                    "zip": "14321"
+                }
+            ],
+            "preferred_way_communication": "phone",
+            "emergency_contact": {
+                "first_name": "Kowalski",
+                "last_name": "Jan",
+
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+234953332255"
+                    }
+                ]
+            }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true,
+        "authorize_with": "4cbc9f35-dc84-4b2c-9342-6b400941789f"
+    } 
+order: 19000

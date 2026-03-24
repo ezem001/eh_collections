@@ -1,0 +1,46 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/v2/persons?first_name=Nadi'a-Mariia&birth_date=1999-05-23&language=en
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer QlhsUzN1QTd5dmxSR1FGREdEUFBSdz09
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: first_name
+    value: Nadi'a-Mariia
+  - key: last_name
+    value: Kulchytska Novak
+    disabled: true
+  - key: birth_date
+    value: 1999-05-23
+  - key: tax_id
+    value: "3441207222"
+    disabled: true
+  - key: language
+    value: en
+  - key: document_type
+    value: FOREIGN_PASSPORT
+    disabled: true
+  - key: document_number
+    value: "135490219877"
+    disabled: true
+  - key: ""
+    value: ""
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: |
+      tests["Status code is 200"] = responseCode.code === 200;
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data){
+          tests["Response contains declarations"] = jsonData.data.length >= 0;
+          var person_id = jsonData.data[0].id;
+          postman.setEnvironmentVariable("person_id", person_id);
+      } else {
+          tests["Response contains declarations"] = false;
+          postman.setEnvironmentVariable("person_id", "<<undefined>>");
+      }
+    language: text/javascript
+order: 29000

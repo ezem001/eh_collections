@@ -1,0 +1,9 @@
+$kind: http-request
+name: S13.13 Get care plan by id
+url: https://api-demo.ehealth.gov.ua/api/patients/87a71a7b-a5b9-4e74-acff-013c03809a39/care_plans/d425a8ee-ac0d-4391-8ecd-168ec7173a66
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 35000

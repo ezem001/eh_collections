@@ -1,0 +1,53 @@
+$kind: graphql-request
+name: DeviceParametersConfigurations query
+url: https://admin-demo.ehealth.gov.ua/graphql
+query: >-
+  query DeviceParametersConfigurations($filter:
+  DeviceParametersConfigurationFilter, $orderBy:
+  DeviceParametersConfigurationOrderBy, $first: Int, $last: Int, $before:
+  String, $after: String, $skip: Boolean = false) {
+    deviceParametersConfigurations(first: $first, filter: $filter, orderBy: $orderBy, before: $before, after: $after, last: $last) @skip(if: $skip) {
+      nodes {
+        config {
+          deviceParameterDataType {
+            check
+            __typename
+          }
+          deviceParameterDictionary {
+            check
+            __typename
+          }
+          __typename
+        }
+        parameter
+        parameterCodeSystem
+        __typename
+      }
+      pageInfo {
+        ...PageInfo
+        __typename
+      }
+      __typename
+    }
+  }
+
+
+  fragment PageInfo on PageInfo {
+    endCursor
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    __typename
+  }
+variables: |-
+  {
+          "skip": false,
+          "filter": {
+              "parameter": "height",
+              "parameterCodeSystem": "device_request_code_parameter"
+          },
+          "first": 100
+      }
+headers:
+  Authorization: ""
+order: 8000

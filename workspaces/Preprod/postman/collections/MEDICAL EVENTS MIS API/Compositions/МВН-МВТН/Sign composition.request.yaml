@@ -1,0 +1,79 @@
+$kind: http-request
+url: "{{host}}/api/patients/composition/{{JobCompositionID}}/sign"
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"data\": \"{{composition_signed_content}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: |
+      const resData = pm.response.json();
+
+
+      pm.test("Sign Composition - PASS. Status code is 200", function () {
+          pm.response.to.have.status(200);
+
+          const resId = resData.data?.id;
+          pm.globals.set('creatCompositionJobId', resId)
+
+      });
+    language: text/javascript
+  - type: beforeRequest
+    code: >-
+      // Отримуємо ContentForSign із глобальних змінних
+
+      const contentForSign = pm.globals.get('ContentForSign');
+
+
+      if (!contentForSign) {
+          console.error("Error: ContentForSign is not set in global variables.");
+      } else {
+          // Функція для надсилання контенту на підпис
+          function sendDataToSign(contentForSign) {
+              const localServerUrl = 'http://localhost:3000/create-composition-signed-content';
+
+              const requestData = {
+                  method: 'POST',
+                  url: localServerUrl,
+                  header: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: {
+                      mode: 'raw',
+                      raw: contentForSign // Використовуємо JSON-рядок із глобальних змінних
+                  }
+              };
+
+              // Відправляємо запит на локальний сервер
+              pm.sendRequest(requestData, function (err, res) {
+                  if (err) {
+                      console.error('Error sending request to local server:', err);
+                  } else {
+                      console.log('Response from local server:', res.json());
+                      const responseBody = res.json();
+
+                      pm.test(`Sign Composition content. Response status is 200 ${JSON.stringify(responseBody, null, 2)}`, function () {
+                          pm.expect(res.code).to.eql(200);
+                          pm.expect(responseBody).to.have.property('signed_content');
+
+                          // Зберігаємо підписаний контент у глобальні змінні
+                          pm.globals.set('composition_signed_content', responseBody.signed_content);
+                      });
+                  }
+              });
+          }
+
+          // Викликаємо функцію з отриманими даними
+          sendDataToSign(contentForSign);
+      }
+    language: text/javascript
+order: 5000

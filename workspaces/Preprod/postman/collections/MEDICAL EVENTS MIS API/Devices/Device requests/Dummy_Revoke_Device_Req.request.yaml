@@ -1,0 +1,266 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"authored_on\": \"2023-09-18T00:00:00Z\",\r
+
+    \    \"code\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"code\": \"30221\",\r
+
+    \                \"system\": \"device_definition_classification_type\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"text\": null\r
+
+    \    },\r
+
+    \    \"dispense_valid_to\": \"2023-10-20T06:49:39Z\",\r
+
+    \    \"encounter\": {\r
+
+    \        \"display_value\": \"null\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"encounter\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"55d9fc87-6047-4491-b75d-9fbf396c56ca\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \      \"id\": \"cf4bfc12-61f3-4130-a933-db21e6ceddd1\",\r
+
+    \        \"inserted_at\": \"2023-09-20T06:49:39.291000Z\",\r
+
+    \        \"intent\": \"order\",\r
+
+    \        \"note\": \"Some notes\",\r
+
+    \        \"occurrence_period\": {\r
+
+    \            \"end\": \"2023-09-19T12:00:00Z\",\r
+
+    \            \"start\": \"2023-09-18T00:00:00Z\"\r
+
+    \        },\r
+
+    \    \"program\": {\r
+
+    \        \"display_value\": \"Медичні вироби для визначення рівня глюкози в
+    крові\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"medical_program\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"quantity\": {\r
+
+    \        \"code\": \"piece\",\r
+
+    \        \"system\": \"device_unit\",\r
+
+    \        \"unit\": \"шт\",\r
+
+    \        \"value\": 10\r
+
+    \    },\r
+
+    \    \"reason\": [\r
+
+    \        {\r
+
+    \            \"display_value\": \"null\",\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"condition\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"55d9fc87-6047-4491-b75d-9fbf396c56ca\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"requester\": {\r
+
+    \        \"display_value\": \"Сергій Вікторович Куриленко\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"employee\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"04871d57-0e76-451d-a529-c9cd60e69ddc\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"requester_legal_entity\": {\r
+
+    \        \"display_value\": \"СИРСЬКИЙ ВЯЧЕСЛАВ ВІКТОРОВИЧ\",\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"legal_entity\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"0dccb76f-3ed0-40f4-8f73-e95e2f91ea29\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"requisition\": \"3066-3453-1223-1111\",\r
+
+    \    \"status\": \"revoked\",\r
+
+    \    \"status_reason\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"device_request_revoke_reasons\",\r
+
+    \                \"code\": \"entered_in_error\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"subject\": {\r
+
+    \        \"display_value\": null,\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"patient\",\r
+
+    \                        \"system\": \"eHealth/resources\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": null\r
+
+    \            },\r
+
+    \            \"value\": \"735f9ff7-b328-4455-8634-43776de540c5\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"updated_at\": \"2023-09-20T06:49:39.291000Z\"\r
+
+    }"
+order: 11000

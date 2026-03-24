@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/observations/{{jobObservati\
+  onID}}"
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: api-key
+    value: "{{mis_client_secret}}"
+  - key: Authorization
+    value: Bearer {{access_token}}
+  - key: X-Custom-PSK
+    value: "{{x-custom-psk}}"
+  - key: ""
+    value: ""
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Observation by id - PASS. Status code is 200\", function ()
+      {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 74000

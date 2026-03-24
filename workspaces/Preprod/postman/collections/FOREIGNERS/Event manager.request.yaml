@@ -1,0 +1,39 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/events/?date=2025-12-10T17%3A00%3A00&date_to=2025-12-10T20%3A00%3A00&event_type=StatusChangeEvent&entity_type=Person&page=1&page_size=50
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{employee_access_token}}
+  X-Custom-PSK: "{{mis_dev_x_custom_psk}}"
+queryParams:
+  - key: date
+    value: 2025-12-10T17%3A00%3A00
+  - key: date_to
+    value: 2025-12-10T20%3A00%3A00
+  - key: event_type
+    value: StatusChangeEvent
+  - key: entity_type
+    value: Person
+  - key: attribute_name
+    value: status
+    disabled: true
+  - key: new_value
+    value: COMPLETED
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+  - key: birth_certificate
+    value: 1-Бk535231
+    disabled: true
+  - key: phone_number
+    value: "%2B380683403787"
+    disabled: true
+  - key: tax_id
+    value: "00000000"
+    disabled: true
+  - key: language
+    value: uk
+    disabled: true
+order: 18000

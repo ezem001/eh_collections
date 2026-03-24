@@ -1,0 +1,27 @@
+# Use this workspace to collaborate
+workspace:
+  id: e22310ff-b753-4fe1-8b82-8a1bb56811e1
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+cloudResources:
+  collections:
+    ../postman/collections/Rehab-2 Observations Demo: 15381251-0999e1b4-34d3-49ff-b393-2ad09c2d225f
+    ../postman/collections/Rehub Demo: 15381251-2c525523-d5b4-49c3-aabb-4fa79a9b6f76
+    ../postman/collections/General MIS API: 15381251-45ab4ce2-71fb-4594-ac19-66cf57c855b3
+    ../postman/collections/Vaccination Dictionaries: 15381251-49770bd4-e8a1-42c1-b452-7c9757d8a0e2
+    ../postman/collections/export collection: 15381251-4ecbbfe3-43fe-4c3a-bba4-c21c31f37622
+    ../postman/collections/Care teams Demo UAT: 15381251-6097b067-e895-471c-98d7-5d399df2bd28
+    ../postman/collections/Regression Testing Copy: 15381251-6e445784-b693-4ced-841a-05eb6edf8d94
+    ../postman/collections/Assistive devices (UAT): 15381251-80c87131-f14e-4aba-aed2-d49f8e49b330
+    ../postman/collections/FOREIGNERS: 15381251-94efb15d-4456-41f1-a6ef-399b5277f2e6
+    ../postman/collections/foreigners: 15381251-9a1be2d8-3905-4910-be58-f52cddf1e3f9
+    ../postman/collections/Regression Testing: 15381251-d68fe88e-e4ec-4df9-8147-ff243a52b72b
+    ../postman/collections/Patient Information System: 15381251-d8a596c1-93e9-470a-810e-03d414de193c
+    ../postman/collections/Кабінет Пацієнта: 15381251-ecf03c49-f12d-4ff7-8673-287aabe81a89
+    ../postman/collections/MEDICAL EVENTS MIS API: 15381251-f1942ad8-872c-4074-9caf-1d5c789d17d4
+
+# All resources in the `postman/` folder are automatically registered in Local View.
+# Point to additional files outside the `postman/` folder to register them individually. Example:
+#localResources:
+#  collections:
+#    - ../tests/E2E Test Collection/

@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/uaddresses/settlements/7a438190-5b6f-4341-b25d-0b19f46c320f"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 1000

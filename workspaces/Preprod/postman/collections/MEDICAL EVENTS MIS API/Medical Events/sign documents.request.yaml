@@ -1,0 +1,27 @@
+$kind: http-request
+url: https://storage-preprod-01.ehealth.gov.ua/person-requests/9a/1d/4b/89/17/9a38f87b-1d93-4bd0-89df-17683f6d62ae/person_request_person.BIRTH_CERTIFICATE.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=7200&X-Amz-SignedHeaders=host&X-Amz-Credential=wnv4Y3pMhwiaF7Eq%2F20260216%2Fs3-preprod%2Fs3%2Faws4_request&X-Amz-Date=20260216T140317Z&X-Amz-Signature=76d08822c8774ba465be1f2fa2e5c7b4c9e7f552a55a29a3cc3058629a2800db
+method: PUT
+headers:
+  Content-Type: image/jpeg
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: X-Amz-Algorithm
+    value: AWS4-HMAC-SHA256
+  - key: X-Amz-Expires
+    value: "7200"
+  - key: X-Amz-SignedHeaders
+    value: host
+  - key: ""
+    value: ""
+    disabled: true
+  - key: X-Amz-Credential
+    value: wnv4Y3pMhwiaF7Eq%2F20260216%2Fs3-preprod%2Fs3%2Faws4_request
+  - key: X-Amz-Date
+    value: 20260216T140317Z
+  - key: X-Amz-Signature
+    value: 76d08822c8774ba465be1f2fa2e5c7b4c9e7f552a55a29a3cc3058629a2800db
+body:
+  type: file
+  content:
+    src: postman-cloud:///1f10b40d-5217-4c30-bfbd-f3688b7a40ab
+order: 21000

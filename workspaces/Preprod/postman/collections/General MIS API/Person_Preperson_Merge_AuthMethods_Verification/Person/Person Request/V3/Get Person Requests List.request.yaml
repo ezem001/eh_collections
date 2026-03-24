@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host}}/api/person_requests?page=1&page_size=500"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: status
+    value: CANCELLED
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "500"
+order: 9000

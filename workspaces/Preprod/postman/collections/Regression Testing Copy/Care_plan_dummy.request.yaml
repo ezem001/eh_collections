@@ -1,0 +1,205 @@
+$kind: http-request
+url: http://localhost:3000/create-care-plan-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{care_plan_id}}\",\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"eHealth/care_plan_categories\",\r
+
+    \                \"code\": \"class_19\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"title\": \"План Лікуваня\",\r
+
+    \    \"description\": \"123\",\r
+
+    \    \"period\": {\r
+
+    \        \"start\": \"{{carePlanStartDate}}\",\r
+
+    \        \"end\": \"{{carePlanEndDate}}\"\r
+
+    \    },\r
+
+    \    \"note\": \"123\",\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobEncounterID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"addresses\": [\r
+
+    \        {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/ICPC2/condition_codes\",\r
+
+    \                    \"code\": \"S14\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"terms_of_service\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"PROVIDING_CONDITION\",\r
+
+    \                \"code\": \"OUTPATIENT\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"status\": \"new\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const carePlanId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"care_plan_id\", carePlanId);\r
+
+      \r
+
+      const encounterPeriodes = pm.globals.get('encounter_start_date');\r
+
+      const encounterDate = new Date(encounterPeriodes);\r
+
+      \r
+
+      // Додаємо 1 день для carePlanStartDate\r
+
+      const carePlanStartDate = new Date(encounterDate);\r
+
+      carePlanStartDate.setDate(carePlanStartDate.getDate() + 1);\r
+
+      \r
+
+      // Додаємо 10 днів для carePlanEndDate\r
+
+      const carePlanEndDate = new Date(carePlanStartDate);\r
+
+      carePlanEndDate.setDate(carePlanEndDate.getDate() + 10);\r
+
+      \r
+
+      // Конвертуємо у формат ISO 8601\r
+
+      const carePlanStartDateISO = carePlanStartDate.toISOString();\r
+
+      const carePlanEndDateISO = carePlanEndDate.toISOString();\r
+
+      \r
+
+      // Зберігаємо значення в глобальні змінні\r
+
+      pm.globals.set('carePlanStartDate', carePlanStartDateISO);\r
+
+      pm.globals.set('carePlanEndDate', carePlanEndDateISO);\r
+
+      \r
+
+      console.log(\"Care Plan Start Date:\", carePlanStartDateISO);\r
+
+      console.log(\"Care Plan End Date:\", carePlanEndDateISO);\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      pm.test(`Care Plan content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('care_plan_signed_content', resData.signed_content);\r
+
+      });"
+    language: text/javascript
+order: 20000

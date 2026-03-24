@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/care_plans/{{jobCareplanID}\
+  }/activities/{{JobActivityID}}"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  x-custom-psk: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Care Plan Activity by ID - PASS. Status code is 200\",
+      function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 30000

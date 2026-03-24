@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{host_demo}}/api/employee_requests?id=d290f1ee-6c54-4b01-90e6-d701748f08\
+  51&edrpou=341086&legal_entity_name=%D0%9B%D0%B8%D0%BC%D0%B8%D1%87%20%D0%9C%D0\
+  %B5%D0%B4%D1%96%D0%BA%D0%B0%D0%BB&no_tax_id=true&status=NEW&page=2&page_size=\
+  50"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  id: d290f1ee-6c54-4b01-90e6-d701748f0851
+  edrpou: "341086"
+  legal_entity_name: "%D0%9B%D0%B8%D0%BC%D0%B8%D1%87%20%D0%9C%D0%B5%D0%B4%D1%96%D0%BA%D0%B0%D0%BB"
+  no_tax_id: "true"
+  status: NEW
+  page: "2"
+  page_size: "50"
+order: 7000

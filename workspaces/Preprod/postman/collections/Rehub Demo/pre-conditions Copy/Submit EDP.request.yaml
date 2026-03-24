@@ -1,0 +1,126 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/encounter_package"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+        "visit": {
+            "id": "{{visit_id}}",
+            "period": {
+                "start": "{{visit_period_start}}",
+                "end": "{{current_date}}"
+            }
+        },
+        "signed_data": "{{encounter_package_base64}}"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: |+
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))
+      };
+
+      var current_date = new Date();
+      pm.environment.set("current_date", current_date);
+
+      var visit_period_start = new Date();
+      visit_period_start.setHours(visit_period_start.getHours() - 1);
+      pm.environment.set("visit_period_start", visit_period_start);
+
+
+      pm.environment.set("encounter_id", pm.variables.replaceIn('{{$guid}}'));
+      pm.environment.set("condition_id", pm.variables.replaceIn('{{$guid}}'));
+      pm.environment.set("observation_id", pm.variables.replaceIn('{{$guid}}'));
+      pm.environment.set("immunization_id", pm.variables.replaceIn('{{$guid}}'));
+      pm.environment.set("visit_id", pm.variables.replaceIn('{{$guid}}'));
+      pm.environment.set("diagnostic_report_id", pm.variables.replaceIn('{{$guid}}'));
+      pm.environment.set("procedure_id", pm.variables.replaceIn('{{$guid}}'));
+
+
+      var encounter_package_template = '{ "encounter": { "id": "7f5ba82b-708c-46c4-b7d4-5d648a7c20ee", "status": "finished", "period": { "start": "2024-02-26T10:40:16Z", "end": "2024-02-26T10:41:16Z" }, "actions": [ { "coding": [ { "system": "eHealth/ICPC2/actions", "code": "T47" } ] }, { "coding": [ { "system": "eHealth/ICPC2/actions", "code": "T50" } ] } ], "reasons": [ { "coding": [ { "system": "eHealth/ICPC2/reasons", "code": "A02" } ] }, { "coding": [ { "system": "eHealth/ICPC2/reasons", "code": "D09" } ] } ], "visit": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "visit" } ] }, "value": "fa7d40ae-a830-4f9e-b3ce-e8c506b928a5" } }, "episode": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "episode" } ] }, "value": "5100cd6e-368b-4334-bff4-c1b79f587eb3" } }, "class": { "system": "eHealth/encounter_classes", "code": "PHC" }, "type": { "coding": [ { "system": "eHealth/encounter_types", "code": "service_delivery_location" } ] }, "performer": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ] }, "value": "e44f1246-044f-4d45-bab5-ec516349e7c4" } }, "prescriptions": "", "division": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "division" } ] }, "value": "cb875211-efc7-418c-865e-fa33f9f75cdc" } }, "diagnoses": [ { "condition": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "condition" } ] }, "value": "341c8d8e-1f30-4ce0-a7dc-bfdc9ddab446" } }, "role": { "coding": [ { "system": "eHealth/diagnosis_roles", "code": "primary" } ] }, "rank": 1 } ] }, "conditions": [ { "id": "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "primary_source": true, "asserter": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ], "text": "" }, "value": "97d57238-ffbe-4335-92ea-28d4de117ea2" } }, "context": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "code": { "coding": [ { "system": "eHealth/ICPC2/condition_codes", "code": "A89" } ] }, "clinical_status": "active", "verification_status": "confirmed", "severity": { "coding": [ { "system": "eHealth/condition_severities", "code": "mild" } ] }, "body_sites": [ { "coding": [ { "system": "eHealth/body_sites", "code": "head" } ] } ], "onset_date": "2018-10-08T09:46:37.694Z", "asserted_date": "2018-10-08T09:46:37.694Z", "stage": { "summary": { "coding": [ { "system": "eHealth/condition_stages", "code": "default_condition_stage" } ] } } } ], "observations": [ { "id": "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "status": "valid", "categories": [ { "coding": [ { "system": "eHealth/observation_categories", "code": "vital-signs" } ] } ], "code": { "coding": [ { "system": "eHealth/LOINC/observation_codes", "code": "94500-6" } ] }, "effective_date_time": "2018-08-02T10:45:16.000Z", "issued": "2018-08-02T10:45:16.000Z", "primary_source": true, "performer": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ], "text": "Галина Олександрівна" }, "value": "97d57238-ffbe-4335-92ea-28d4de117ea2" } }, "interpretation": { "coding": [ { "system": "eHealth/observation_interpretations", "code": "abnormal" } ] }, "comment": "Some comment", "body_site": { "coding": [ { "system": "eHealth/body_sites", "code": "head" } ] }, "method": { "coding": [ { "system": "eHealth/observation_methods", "code": "anamnesis" } ] }, "value_quantity": { "value": 0, "comparator": ">", "unit": "ug/L", "system": "eHealth/ucum/units", "code": "ug/L" }, "reference_ranges": [ { "low": { "value": 0, "comparator": ">", "unit": "ug/L", "system": "eHealth/ucum/units", "code": "ug/L" }, "high": { "value": 0, "comparator": "<", "unit": "ug/L", "system": "eHealth/ucum/units", "code": "ug/L" }, "type": { "coding": [ { "system": "eHealth/reference_range_types", "code": "default_reference_range" } ] }, "applies_to": [ { "coding": [ { "system": "eHealth/reference_range_applications", "code": "default_reference_range_application" } ] } ], "age": { "low": { "value": 18, "comparator": ">", "unit": "year" }, "high": { "value": 35, "comparator": "<", "unit": "year" } }, "text": "Some text" } ], "context": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } } } ], "immunizations": [ { "id": "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "status": "completed", "not_given": false, "vaccine_code": { "coding": [ { "system": "eHealth/vaccine_codes", "code": "HepAHepB" } ] }, "explanation": { "reasons": [ { "coding": [ { "system": "eHealth/reason_explanations", "code": "default" } ], "text": "Планове за календарем щеплень" } ] }, "context": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "date": "2018-10-08T09:46:37.694Z", "primary_source": true, "performer": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ], "text": "Галина Олександрівна" }, "value": "97d57238-ffbe-4335-92ea-28d4de117ea2" } }, "manufacturer": "VacinePro Manufacturer", "lot_number": "AAJN11K", "expiration_date": "2018-10-08T09:46:37.694Z", "site": { "coding": [ { "system": "eHealth/immunization_body_sites", "code": "oral" } ] }, "route": { "coding": [ { "system": "eHealth/vaccination_routes", "code": "intradermal" } ] }, "dose_quantity": { "value": 18, "unit": "MG", "system": "eHealth/immunization_dosage_units", "code": "MG" }, "vaccination_protocols": [ { "dose_sequence": 1, "description": "Vaccination Protocol Sequence 1", "authority": { "coding": [ { "system": "eHealth/vaccination_authorities", "code": "MoH" } ] }, "series": "Vaccination Series 1", "series_doses": 2, "target_diseases": [ { "coding": [ { "system": "eHealth/vaccination_target_diseases", "code": "Diphtheria" } ] } ] } ] } ], "diagnostic_reports": [ { "id": "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "status": "final", "code": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "service" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "category": [ { "coding": [ { "system": "eHealth/diagnostic_report_categories", "code": "laboratory_procedure" } ] } ], "effective_period": { "start": "2018-08-02T10:45:16.000Z", "end": "2018-08-02T11:00:00.000Z" }, "issued": "2018-10-08T09:46:37.694Z", "conclusion": "At risk of osteoporotic fracture", "conclusion_code": { "coding": [ { "system": "eHealth/ICD10_AM/condition_codes", "code": "H04.2" } ] }, "recorded_by": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "encounter": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "managing_organization": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "legal_entity" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "primary_source": true, "performer": { "reference": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ], "text": "Галина Олександрівна" }, "value": "97d57238-ffbe-4335-92ea-28d4de117ea2" } } } } ], "procedures":[ { "id": "90a9e15b-b71b-4caf-8f2e-ff247e8a5600", "status": "completed", "code": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "service" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "encounter": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "encounter" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "performed_date_time": "2018-08-02T10:45:16.000Z", "recorded_by": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "primary_source": true, "performer": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "employee" } ], "text": "Галина Олександрівна" }, "value": "97d57238-ffbe-4335-92ea-28d4de117ea2" } }, "managing_organization": { "identifier": { "type": { "coding": [ { "system": "eHealth/resources", "code": "legal_entity" } ] }, "value": "9183a36b-4d45-4244-9339-63d81cd08d9c" } }, "outcome": { "coding": [ { "system": "eHealth/procedure_outcomes", "code": "default_value" } ] }, "note": "Додаткова інформація по процедурі", "category": { "coding": [ { "system": "eHealth/procedure_categories", "code": "procedure" } ] }, "paper_referral": { "requisition": "1111-2222-3333-4444", "requester_legal_entity_name": "Some clinic", "requester_legal_entity_edrpou": "12345678", "requester_employee_name": "John", "service_request_date": "2018-10-08", "note": "Some notes" } } ] }';
+      var encounter_package_template = JSON.parse(encounter_package_template);
+
+      //VALUES
+
+      //Encounter
+      encounter_package_template.encounter.id = pm.environment.get("encounter_id");
+      encounter_package_template.encounter.status = "finished";
+      encounter_package_template.encounter.period.start = visit_period_start;
+      encounter_package_template.encounter.period.end = current_date;
+      encounter_package_template.encounter.actions[0].coding[0].code = "T50";
+      encounter_package_template.encounter.actions[1].coding[0].code = "Z44";
+      encounter_package_template.encounter.reasons[0].coding[0].code = "A02";
+      encounter_package_template.encounter.reasons[1].coding[0].code = "D09";
+      encounter_package_template.encounter.visit.identifier.value = pm.environment.get("visit_id");
+      encounter_package_template.encounter.episode.identifier.value = pm.environment.get("episode_id");
+      encounter_package_template.encounter.class.code = "PHC";
+      encounter_package_template.encounter.type.coding[0].code = "service_delivery_location";
+      encounter_package_template.encounter.performer.identifier.value = pm.environment.get("employee_id");
+      encounter_package_template.encounter.division.identifier.value = pm.environment.get("division_id");
+      encounter_package_template.encounter.diagnoses[0].condition.identifier.value = pm.environment.get("condition_id");
+
+      //condition
+      encounter_package_template.conditions[0].id = pm.environment.get("condition_id");
+      encounter_package_template.conditions[0].onset_date = current_date;
+      encounter_package_template.conditions[0].asserted_date = current_date;
+      encounter_package_template.conditions[0].context.identifier.value = pm.environment.get("encounter_id");
+      encounter_package_template.conditions[0].asserter.identifier.value = pm.environment.get("employee_id");
+
+      //observation
+      encounter_package_template.observations[0].id = pm.environment.get("observation_id");;
+      encounter_package_template.observations[0].issued = current_date;
+      encounter_package_template.observations[0].context.identifier.value = pm.environment.get("encounter_id");;
+      encounter_package_template.observations[0].performer.identifier.value= pm.environment.get("employee_id");
+
+
+      //immunization
+      encounter_package_template.immunizations[0].id = pm.environment.get("immunization_id");
+      encounter_package_template.immunizations[0].date = current_date;
+      encounter_package_template.immunizations[0].context.identifier.value = pm.environment.get("encounter_id");
+      encounter_package_template.immunizations[0].performer.identifier.value= pm.environment.get("employee_id");
+
+      //diagnostic report
+      encounter_package_template.diagnostic_reports[0].id = pm.environment.get("diagnostic_report_id");
+      encounter_package_template.diagnostic_reports[0].issued=current_date;
+      encounter_package_template.diagnostic_reports[0].effective_period.end=current_date;
+      encounter_package_template.diagnostic_reports[0].code.identifier.value = "46170c72-a3ac-4c3e-8bdf-13612ed90c74";
+      encounter_package_template.diagnostic_reports[0].encounter.identifier.value = pm.environment.get("encounter_id");
+      encounter_package_template.diagnostic_reports[0].recorded_by.identifier.value= pm.environment.get("employee_id");
+      encounter_package_template.diagnostic_reports[0].managing_organization.identifier.value= pm.environment.get("le_id");
+      encounter_package_template.diagnostic_reports[0].performer.reference.identifier.value= pm.environment.get("employee_id");
+
+      //procedure
+      encounter_package_template.procedures[0].id = pm.environment.get("procedure_id");
+      encounter_package_template.procedures[0].code.identifier.value = "0fccaafa-fe30-4302-9c5f-add84dad6304";
+      encounter_package_template.procedures[0].encounter.identifier.value = pm.environment.get("encounter_id");
+      encounter_package_template.procedures[0].recorded_by.identifier.value= pm.environment.get("employee_id");
+      encounter_package_template.procedures[0].managing_organization.identifier.value= pm.environment.get("le_id");
+      encounter_package_template.procedures[0].performer.identifier.value= pm.environment.get("employee_id");
+
+
+      postman.setEnvironmentVariable("encounter_package", JSON.stringify(encounter_package_template));
+      var encounter_package_base64 = b64EncodeUnicode(JSON.stringify(encounter_package_template));
+      postman.setEnvironmentVariable("encounter_package_base64", encounter_package_base64);
+
+
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 2000

@@ -1,0 +1,233 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/api/pis/person
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: Bearer
+      eyJhbGciOiJSUzUxMiIsImtpZCI6IkV4U043R0dLRW43VVctb3pHMlBhWFBXWVdCUjFJZDBnMWFhSUZxc0lmSGciLCJ0eXAiOiJKV1QifQ.eyJhY2Nlc3NfdHlwZSI6IkJST0tFUiIsImFwcF9pZCI6IjA0NWM2Yzk5LTZjN2EtNGQ4Yi04OWQzLWM2N2E1ZDFhNDg3NyIsImFwcGxpY2FudF9wZXJzb25faWQiOiI5ODBkYzNhZi1hODNmLTRmMTItYTA4MS05ZGFiNzlhYTAzNzkiLCJhcHBsaWNhbnRfdXNlcl9pZCI6ImQxZjcwODE5LTI5YTYtNDQ4NC05YTJlLTI3ZjNlMjk4NDhjMCIsImF1ZCI6IkVIZWFsdGgiLCJjbGllbnRfaWQiOiI2ZTM5Y2UyZS01MjBiLTQ5MDUtODkwZi03ZmM2OWFjZmU4NWMiLCJleHAiOjE3NjM4MTAzNDcsImdyYW50X3R5cGUiOiJhdXRob3JpemF0aW9uX2NvZGUiLCJpYXQiOjE3NjM3MjM5NDcsImlzcyI6IkVIZWFsdGgiLCJqdGkiOiIwYWQ5YWMwZi0zZDVkLTQ3M2QtODE3Ny0zNDJmODFjNDM1NDAiLCJuYmYiOjE3NjM3MjM5NDYsInBlcnNvbl9pZCI6Ijc2YTY2YzhhLTlmZmMtNDA0Ni05YzQ3LTg5NzBmZTFkOTNiMCIsInJlZGlyZWN0X3VyaSI6Imh0dHBzOi8vcGlzX3Rlc3QuY29tL3JlZGlyZWN0IiwicmVmcmVzaF90b2tlbiI6ImJtZHBaMGd3Tlc5aUwybHRSelF3ZFdSM2VGZEtVVDA5Iiwic2NvcGUiOiJwZXJzb25fZG9jdW1lbnRzOndyaXRlX3BpcyBwZXJzb25fdmVyaWZpY2F0aW9uOmRldGFpbHNfcGlzIiwic3ViIjoiN2EzM2UwN2MtYWZiYi00MzcyLWIwNTUtNDYxNjFhZmYyOWNmIiwidHlwIjoiYWNjZXNzX3Rva2VuIn0.bkegExcrVICvIk5CLKvwRbK77gZvPZ_8vqTKs5to_9g-yuZ0khKake51MPKwgTkQFi70Vr3K_NE_XHBIyCi1z9-KL7DXdAe0LpAkob6iEFY8VybEt3nXnW594sxrXR2pWMUNAtm8gDdPb4zliEoiH3cgC37dFbtpi7o4jgs6Avtim2qMrXxzUhUYr7eB69_K3kxgrAC_FdrAarooGYKCm4gePX57Kn2tyiHSlOHsXauVFcB_Fy842TwE6Cb5O7SBFc2FsPCepjm5EI1y01cV1cXpMveXnadfxSkxwuTCdSCNFGPxh8DKmnb2fcmiURifP7SuWDB-IARr3oV1OSPGeg
+  - key: api-key
+    value: "{{client_secret}}"
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "let resp = pm.response.json();\r
+
+      \r
+
+      let person = {\r
+
+      \    first_name: resp.data.first_name,\r
+
+      \    last_name: resp.data.last_name,\r
+
+      \    second_name: resp.data.second_name,\r
+
+      \    birth_date: resp.data.birth_date,\r
+
+      \    birth_country: resp.data.birth_country,\r
+
+      \    birth_settlement: resp.data.birth_settlement,\r
+
+      \    gender: resp.data.gender,\r
+
+      \    email: resp.data.email,\r
+
+      \    no_tax_id: resp.data.no_tax_id,\r
+
+      \    secret: resp.data.secret,\r
+
+      \    documents: resp.data.documents?.map(doc => ({\r
+
+      \        type: doc.type,\r
+
+      \        number: doc.number,\r
+
+      \        issued_by: doc.issued_by,\r
+
+      \        issued_at: doc.issued_at\r
+
+      \    })) || [],\r
+
+      \    addresses: resp.data.addresses?.map(addr => ({\r
+
+      \        area: addr.area,\r
+
+      \        building: addr.building,\r
+
+      \        country: addr.country,\r
+
+      \        region: addr.region,\r
+
+      \        settlement: addr.settlement,\r
+
+      \        settlement_id: addr.settlement_id,\r
+
+      \        settlement_type: addr.settlement_type,\r
+
+      \        street: addr.street,\r
+
+      \        street_type: addr.street_type,\r
+
+      \        type: addr.type,\r
+
+      \        zip: addr.zip\r
+
+      \    })) || [],\r
+
+      \    phones: resp.data.phones?.map(ph => ({\r
+
+      \        type: ph.type,\r
+
+      \        number: ph.number\r
+
+      \    })) || [],\r
+
+      \    emergency_contact: resp.data.emergency_contact ? {\r
+
+      \        first_name: resp.data.emergency_contact.first_name,\r
+
+      \        last_name: resp.data.emergency_contact.last_name,\r
+
+      \        second_name: resp.data.emergency_contact.second_name,\r
+
+      \        phones: resp.data.emergency_contact.phones?.map(ph => ({\r
+
+      \            type: ph.type,\r
+
+      \            number: ph.number\r
+
+      \        })) || []\r
+
+      \    } : null,\r
+
+      \    preferred_way_communication: resp.data.preferred_way_communication ||
+      \"email\"\r
+
+      };\r
+
+      \r
+
+      if (resp.data.tax_id !== null) person.tax_id = resp.data.tax_id;\r
+
+      if (resp.data.unzr !== null) person.unzr = resp.data.unzr;\r
+
+      \r
+
+      let personData = {\r
+
+      \    person: person,\r
+
+      \    patient_signed: false,\r
+
+      \    process_disclosure_data_consent: true\r
+
+      };\r
+
+      \r
+
+      let template = `\r
+
+      <div style=\"font-family: Arial, sans-serif; max-width: 800px; margin:
+      10px auto; padding: 15px; border: 1px solid #ccc; border-radius: 8px;
+      background: #f9f9f9;\">\r
+
+      \    <h2 style=\"text-align:center; color:#333;\">Дані пацієнта</h2>\r
+
+      \    <pre id=\"jsonData\" style=\"background:#eee; padding:10px;
+      border-radius:5px; overflow-x:auto;\">{{json}}</pre>\r
+
+      \    <button id=\"copyBtn\" style=\"\r
+
+      \        margin-top:10px; \r
+
+      \        padding:8px 15px; \r
+
+      \        font-size:14px; \r
+
+      \        border:none; \r
+
+      \        background:#4CAF50; \r
+
+      \        color:white; \r
+
+      \        border-radius:5px; \r
+
+      \        cursor:pointer;\r
+
+      \        transition: all 0.1s ease;\r
+
+      \    \">Copy JSON</button>\r
+
+      </div>\r
+
+      \r
+
+      <script>\r
+
+      const btn = document.getElementById('copyBtn');\r
+
+      \r
+
+      btn.addEventListener('click', function() {\r
+
+      \    // Ефект натискання\r
+
+      \    btn.style.transform = 'scale(0.95)';\r
+
+      \    btn.style.background = '#45a049';\r
+
+      \r
+
+      \    setTimeout(() => {\r
+
+      \        btn.style.transform = 'scale(1)';\r
+
+      \        btn.style.background = '#4CAF50';\r
+
+      \    }, 150);\r
+
+      \r
+
+      \    var text = document.getElementById('jsonData').innerText;\r
+
+      \    var textArea = document.createElement('textarea');\r
+
+      \    textArea.value = text;\r
+
+      \    document.body.appendChild(textArea);\r
+
+      \    textArea.select();\r
+
+      \    try {\r
+
+      \        document.execCommand('copy');\r
+
+      \        alert('JSON скопійовано у буфер обміну!');\r
+
+      \    } catch (err) {\r
+
+      \        alert('Не вдалося скопіювати: ' + err);\r
+
+      \    }\r
+
+      \    document.body.removeChild(textArea);\r
+
+      });\r
+
+      </script>\r
+
+      `;\r
+
+      \r
+
+      pm.visualizer.set(template, {\r
+
+      \    json: JSON.stringify(personData, null, 2)\r
+
+      });\r\n"
+    language: text/javascript
+order: 1000

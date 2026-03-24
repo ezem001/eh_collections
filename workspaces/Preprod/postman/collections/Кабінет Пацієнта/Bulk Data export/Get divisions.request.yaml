@@ -1,0 +1,16 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/api/pis/bulk/divisions
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: dda8f27e3188f973e15b025bad084c04
+queryParams:
+  - key: depth
+    value: "1"
+    disabled: true
+order: 3000

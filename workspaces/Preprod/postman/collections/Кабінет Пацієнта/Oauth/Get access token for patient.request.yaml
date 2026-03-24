@@ -1,0 +1,28 @@
+$kind: http-request
+url: https://api-preprod.ehealth.gov.ua/oauth/tokens/
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+body:
+  type: text
+  content: "{\r
+
+    \   \"token\":{\r
+
+    \      \"grant_type\":\"authorization_code\",\r
+
+    \      \"code\": \"{{user_code}}\",\r
+
+    \      \"client_id\":\"{{user_legal_entity}}\",\r
+
+    \      \"client_secret\": \"{{client_secret}}\",\r
+
+    \      \"redirect_uri\": \"{{user_redirect_uri}}\"\r
+
+    \r
+
+    \   }\r
+
+    }"
+order: 1000

@@ -1,0 +1,64 @@
+$kind: http-request
+url: "{{host}}/api/equipment"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"inventory_number\": \"413655gg\",\r
+
+    \    \"serial_number\": \"S/N234557\",\r
+
+    \    \"names\": [\r
+
+    \        {\r
+
+    \            \"name\": \"Екг-апарат портативний PM10 S61-2047\",\r
+
+    \            \"type\": \"registered\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"status\": \"active\",\r
+
+    \    \"availability_status\": \"available\",\r
+
+    \    \"manufacturer\": \"GlobalMed, Inc\",\r
+
+    \    \"manufacture_date\": \"1999-01-01\",\r
+
+    \    \"model_number\": \"NSPX30\",\r
+
+    \    \"type\": \"30221\",\r
+
+    \    \"properties\": [\r
+
+    \        {\r
+
+    \            \"type\": \"default\",\r
+
+    \            \"value_integer\": 10\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"division_id\": \"{{user_division_id}}\",\r
+
+    \    \"note\": \"Технічний огляд раз на рік\",\r
+
+    \    \"lot_number\": \"RZ12345678\",\r
+
+    \    \"expiration_date\": \"2027-01-01\",\r
+
+    \    \"recorder\": \"{{user_id}}\"\r
+
+    }"
+order: 1000

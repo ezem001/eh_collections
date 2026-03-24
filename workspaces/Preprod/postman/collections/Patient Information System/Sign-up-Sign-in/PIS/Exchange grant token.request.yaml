@@ -1,0 +1,33 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/oauth/tokens/
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+       "token":{
+          "grant_type":"authorization_code",
+          "code": "czJwcTZzdDZ4SnZ1VmN3ektSNzgvQT09",
+          "client_id":"{{client_id}}",
+          "client_secret": "{{client_secret}}",
+          "redirect_uri": "https://pis_test.com/redirect"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data && jsonData.data.value) {
+          var mis_code_grant = jsonData.data.value;
+          postman.setEnvironmentVariable("mis_code_grant", mis_code_grant);
+      } else {
+          postman.setEnvironmentVariable("mis_code_grant", "<<undefined>>");
+      }
+    language: text/javascript
+order: 4000

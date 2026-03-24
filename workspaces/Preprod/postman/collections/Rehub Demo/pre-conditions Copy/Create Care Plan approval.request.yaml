@@ -1,0 +1,53 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/approvals"
+method: POST
+headers:
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+      "resources": [{
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "care_plan"
+                }
+              ]
+            },
+            "value": "78ded1a4-3e1e-4682-8225-1010170797f9"
+          }
+        }],
+      "granted_to": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "employee"
+              }
+            ]
+          },
+          "value": "{{employee_id}}"
+        }
+      },
+      "access_level": "write"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 6000

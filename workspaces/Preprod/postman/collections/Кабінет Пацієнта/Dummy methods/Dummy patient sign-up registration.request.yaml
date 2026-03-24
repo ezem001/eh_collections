@@ -1,0 +1,141 @@
+$kind: http-request
+url: https://ehealth.edenlabllc.com/dummy/pis/register
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"person\": {\r
+
+    \    \"first_name\": \"Петро\",\r
+
+    \    \"last_name\": \"Іванов\",\r
+
+    \    \"second_name\": \"Миколайович\",\r
+
+    \    \"birth_date\": \"2009-07-05\",\r
+
+    \    \"birth_country\": \"Україна\",\r
+
+    \    \"birth_settlement\": \"Вінниця\",\r
+
+    \    \"gender\": \"MALE\",\r
+
+    \    \"email\": \"email@example.com\",\r
+
+    \    \"no_tax_id\": false,\r
+
+    \    \"tax_id\": \"3999869394\",\r
+
+    \    \"secret\": \"secret\",\r
+
+    \    \"documents\": [\r
+
+    \      {\r
+
+    \        \"type\": \"PASSPORT\",\r
+
+    \        \"number\": \"АА120518\",\r
+
+    \        \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської області\",\r
+
+    \        \"issued_at\": \"2017-02-28\",\r
+
+    \        \"expiration_date\": \"2027-02-28\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"addresses\": [\r
+
+    \      {\r
+
+    \        \"type\": \"RESIDENCE\",\r
+
+    \        \"country\": \"UA\",\r
+
+    \        \"area\": \"Житомирська\",\r
+
+    \        \"region\": \"Бердичівський\",\r
+
+    \        \"settlement\": \"Київ\",\r
+
+    \        \"settlement_type\": \"CITY\",\r
+
+    \        \"settlement_id\": \"b075f148-7f93-4fc2-b2ec-2d81b19a9b7b\",\r
+
+    \        \"street_type\": \"STREET\",\r
+
+    \        \"street\": \"вул. Ніжинська\",\r
+
+    \        \"building\": \"15\",\r
+
+    \        \"apartment\": \"23\",\r
+
+    \        \"zip\": \"02090\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"phones\": [\r
+
+    \      {\r
+
+    \        \"type\": \"MOBILE\",\r
+
+    \        \"number\": \"+380503410870\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"authentication_methods\": [\r
+
+    \      {\r
+
+    \        \"type\": \"OTP\",\r
+
+    \        \"phone_number\": \"+380508887700\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"unzr\": \"20090705-00011\",\r
+
+    \    \"emergency_contact\": {\r
+
+    \      \"first_name\": \"Петро\",\r
+
+    \      \"last_name\": \"Іванов\",\r
+
+    \      \"second_name\": \"Миколайович\",\r
+
+    \      \"phones\": [\r
+
+    \        {\r
+
+    \          \"type\": \"MOBILE\",\r
+
+    \          \"number\": \"+380503410870\"\r
+
+    \        }\r
+
+    \      ]\r
+
+    \    },\r
+
+    \    \"preferred_way_communication\": \"email\"\r
+
+    \  },\r
+
+    \  \"patient_signed\": true,\r
+
+    \  \"process_disclosure_data_consent\": true\r
+
+    }"
+order: 3000

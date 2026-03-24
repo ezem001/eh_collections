@@ -1,0 +1,128 @@
+$kind: http-request
+url: "{{host}}/api/merge_requests/{{merge_req_id}}/actions/approve"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+body:
+  type: text
+  content: "{\r
+
+    \  \"verification_code\": 7913\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Merge request approved successful\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      if (pm.response.code === 200) {\r
+
+      \r
+
+      \    function displayResponse(title, data) {\r
+
+      \        const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \        pm.visualizer.set(html);\r
+
+      \    }\r
+
+      \r
+
+      \    // Extract data from the response\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    let dataToSign = responseJson.data[\"data_to_be_signed\"];\r
+
+      \    console.log(dataToSign)\r
+
+      \r
+
+      \r
+
+      \    dataToSign.patient_signed = true;\r
+
+      \r
+
+      \    // Define the URL and the request details for the local server\r
+
+      \    const localServerUrl = 'http://localhost:3000/receive-data'; //
+      Replace with your local server endpoint\r
+
+      \    const requestData = {\r
+
+      \        method: 'POST',\r
+
+      \        url: localServerUrl,\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json'\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify(dataToSign) // Send the entire response
+      or specific fields\r
+
+      \        }\r
+
+      \    };\r
+
+      \r
+
+      \    // Send the request to the local server\r
+
+      \    pm.sendRequest(requestData, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Error sending request to local server:',
+      err);\r
+
+      \        } else {\r
+
+      \            console.log('Response from local server:', res.json());\r
+
+      \            const responseBody = res.json();\r
+
+      \r
+
+      \            // Set global variable in Postman\r
+
+      \            pm.globals.set('merge_req_signed_content',
+      responseBody.signed_content);\r
+
+      \r
+
+      \            displayResponse('Signed merge data', responseBody);\r
+
+      \        }\r
+
+      \    });\r
+
+      \r
+
+      } else {\r
+
+      \    console.log('Initial request failed');\r
+
+      }\r\n"
+    language: text/javascript
+order: 5000

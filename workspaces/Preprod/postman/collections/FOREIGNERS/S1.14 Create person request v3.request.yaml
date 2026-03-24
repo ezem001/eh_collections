@@ -1,0 +1,76 @@
+$kind: http-request
+name: S1.14 Create person request v3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+        "person": {
+            "names": [
+            {
+            "first_name": "",
+            "second_name": "Васильович",
+            "language": "uk",
+            "no_last_name": true
+          }
+        ],
+            "birth_date": "1992-11-18",
+            "birth_country": "Польща",
+            "birth_settlement": "Вроцлав",
+            "gender": "MALE",
+            "no_tax_id": true,
+            "email": "jan@email.com",
+            "secret": "secret12",
+            "unzr": "23775592-92361",
+            "documents": [
+                {
+                    "type": "PERMANENT_RESIDENCE_PERMIT",
+                    "number": "KA518584",
+                    "issued_by": "Poland",
+                    "issued_at": "2018-06-01",
+                    "issuing_country": "UA"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "UA",                
+                    "settlement": "Львів",
+                    "settlement_id": "adaa4abf-f530-461c-bcbf-a0ac210d955b",
+                    "area": "Сихівський",
+                    "region": "Львівська обл",
+                    "street": "Наукова",
+                    "building": "1",
+                    "apartment": "90",
+                    "zip": "14321"
+                }
+            ],
+            "authentication_methods": [
+                {
+                    "type": "OFFLINE"
+                }
+            ],
+            
+            "preferred_way_communication": "phone",
+            "emergency_contact": {
+                "first_name": "Ковальський",
+                "last_name": "Андрій",
+
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+380635683462"
+                    }
+                ]
+            }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true
+    } 
+order: 15000

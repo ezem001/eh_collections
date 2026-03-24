@@ -1,0 +1,42 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/tokens/
+method: POST
+headers:
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+       "token":{
+          "grant_type":"authorization_code",
+          "code": "{{pharm_code_grant}}",
+          "client_id":"595742fe-d5ee-4153-9995-f05928e77018",
+          "client_secret": "NFNWN3pMdXNtdXhhemNxTThXSFhvQT09",
+          "redirect_uri": "https://example2.com",
+          "scope":"division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read medication_dispense:process medication_dispense:write medication_dispense:reject healthcare_service:read employee_role:read license:read medication_request:details_pharm medication_request:reject_pharm medication_dispense:read_pharm party_verification:details party_verification:write device_dispense:write device_dispense:read device_dispense:stop device_request:read device_dispense:complete device_request:complete device_dispense:mark_in_error medication_request:block_pharm medication_request:unblock_pharm"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: >+
+      tests["Status code is 201"] = responseCode.code === 201;
+
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData.data && jsonData.data.value) {
+          var owner_access_token = jsonData.data.value;
+          var owner_refresh_token = jsonData.data.details.refresh_token;
+          postman.setEnvironmentVariable("pharm_access_token", owner_access_token);
+          postman.setEnvironmentVariable("pharm_refresh_token", owner_refresh_token);
+          tests["Access token generated"] = jsonData.data.value;
+      } else {
+          tests["Access token generated"] = false;
+          postman.setEnvironmentVariable("pharm_access_token", "<<undefined>>");
+          postman.setEnvironmentVariable("pharm_refresh_token", "<<undefined>>");
+      }
+
+    language: text/javascript
+order: 3000

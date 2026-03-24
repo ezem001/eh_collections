@@ -1,0 +1,18 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/api/pis/authentication_methods/{{id}}
+method: PATCH
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
+  - key: Authorization
+    value: Bearer c2778f3064753ea70de870a53795f5c9
+body:
+  type: json
+  content: "{\r\n  \"alias\": \"husband\"\r\n}"
+examples: ./.resources/Update authentication method.resources/examples
+order: 5000

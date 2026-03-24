@@ -1,0 +1,22 @@
+$kind: http-request
+name: Terminate declaration
+url: https://pis-demo.ehealth.gov.ua/api/pis/declarations/e6bfde06-2f42-4d33-8c99-561a05dd05b4/actions/terminate
+method: PATCH
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
+  - key: Authorization
+    value: ""
+body:
+  type: json
+  content: "{\r
+
+    \  \"reason_description\": \"Неякісне обслуговування\"\r
+
+    }"
+order: 4000

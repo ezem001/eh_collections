@@ -1,0 +1,117 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/d96867bc-f250-4625-873e-61714c43ff92/device_dispenses
+method: POST
+headers:
+  Authorization: Bearer {{pharm_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{{device_dispense_request}}"
+scripts:
+  - type: beforeRequest
+    code: >-
+      var uuid = require('uuid');
+
+      var device_dispense_id = uuid.v4();
+
+
+      var device_request_id = "20be2b20-b365-4637-872d-4213a03e9149";
+
+      var performer_id = "985ac664-bdb9-4edc-b459-edd495c1eed8";
+
+      var division_id = "ee0f2ad1-62fe-42e7-8d0a-4be25e42d227";
+
+      var device_definition_id = "170a79b8-ac1b-47a2-97bb-311098eef95d"; //
+      assistive 12_03_16
+
+      var status = "completed";
+
+
+
+      var device_dispense_json = {
+          "id": device_dispense_id,
+          "based_on": {
+              "identifier": {
+                  "type": {
+                      "coding": [
+                          {
+                              "system": "eHealth/resources",
+                              "code": "device_request"
+                          }
+                      ]
+                  },
+                  "value": device_request_id
+              }
+          },
+          "performer": {
+              "identifier": {
+                  "type": {
+                      "coding": [
+                          {
+                              "system": "eHealth/resources",
+                              "code": "employee"
+                          }
+                      ]
+                  },
+                  "value": performer_id
+              }
+          },
+          "location": {
+              "identifier": {
+                  "type": {
+                      "coding": [
+                          {
+                              "system": "eHealth/resources",
+                              "code": "division"
+                          }
+                      ]
+                  },
+                  "value": division_id
+              }
+          },
+          "primary_source": true,
+          "details": [
+              {
+                  "device": {
+                      "identifier": {
+                          "type": {
+                              "coding": [
+                                  {
+                                      "system": "eHealth/resources",
+                                      "code": "device_definition"
+                                  }
+                              ]
+                          },
+                          "value": device_definition_id
+                      }
+                  },
+                  "quantity": {
+                      "value": 5,
+                      "system": "device_unit",
+                      "code": "piece"
+                  },
+                  "sell_price": 25.01
+              }
+          ],
+          "when_handed_over": "2024-12-09T08:26:28Z",
+          "status": status
+      };
+
+
+      var device_dispense_request = JSON.stringify(device_dispense_json);
+
+      pm.environment.set("device_dispense_request", device_dispense_request);
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 202", function () {
+          pm.response.to.have.status(202);
+      });
+
+      var jsonData = JSON.parse(responseBody);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 1000

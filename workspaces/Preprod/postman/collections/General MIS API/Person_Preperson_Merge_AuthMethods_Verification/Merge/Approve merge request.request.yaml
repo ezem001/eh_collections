@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/merge_requests/{{merge_req_id}}/actions/approve"
+method: PATCH
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"verification_code\": 6291\r
+
+    }"
+order: 2000

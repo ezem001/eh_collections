@@ -1,0 +1,79 @@
+$kind: http-request
+name: S1.21 Update person request v3
+url: https://api-demo.ehealth.gov.ua/api/v3/person_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+        "person": {
+            "id": "e0a5b30d-75cf-4b67-b765-7351fbf76189",
+            "names": [
+          {
+            "first_name": "Тарас",
+            "last_name": "Шевченко",
+            "language": "uk",
+            "no_last_name": false
+          },
+          {
+            "first_name": "Taras",
+            "last_name": "Shevchenko",
+            "language": "en",
+            "no_last_name": false
+          }
+        ],
+            "birth_date": "1978-02-18",
+            "birth_country": "Україна",
+            "birth_settlement": "Київ",
+            "gender": "MALE",
+            "no_tax_id": true,
+            "email": "taras@email.com",
+            "secret": "secret12",
+            "unzr": "19784376-12311",
+            "documents": [
+                {
+                    "type": "PASSPORT",
+                    "number": "КВ478352",
+                    "issued_by": "Кропивницький РОУ ВМУ МВС в Луганьска області",
+                    "issued_at": "2021-11-11",
+                    "issuing_country": "UA",
+                    "expiration_date": "2030-10-21"
+                }
+            ],
+            "addresses": [
+                {
+                    "type": "RESIDENCE",
+                    "country": "UA",                
+                    "settlement": "Київ",
+                    "area": "Київ",
+                    "settlement_id": "adaa4abf-f530-461c-bcbf-a0ac210d955b",
+                    "region": "Шевченківський",
+                    "street": "Шулявська",
+                    "building": "1",
+                    "apartment": "12",
+                    "zip": "14321"
+                }
+            ],
+            "preferred_way_communication": "phone",
+            "emergency_contact": {
+                "first_name": "Франко",
+                "last_name": "Іван",
+
+                "phones": [
+                    {
+                        "type": "MOBILE",
+                        "number": "+234953332255"
+                    }
+                ]
+            }
+        },
+        "patient_signed": false,
+        "process_disclosure_data_consent": true,
+        "authorize_with": "b7afdfcd-7866-41bf-a2e0-25982ab8a1ca"
+    } 
+order: 24000

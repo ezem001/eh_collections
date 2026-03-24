@@ -1,0 +1,874 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/device_dispenses"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+      "id": "{{dummy_device_dispense_request_id}}",
+      "based_on": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "device_request"
+              }
+            ]
+          },
+          "value": "{{JobDeviceRequestID}}"
+        }
+      },
+      "performer": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "employee"
+              }
+            ]
+          },
+          "value": "{{user_id}}"
+        }
+      },
+      "location": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "division"
+              }
+            ]
+          },
+          "value": "{{user_division_id}}"
+        }
+      },
+      "note": "Some notes",
+      "program": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "medical_program"
+              }
+            ]
+          },
+          "value": "{{program_id_qualify_device_request}}"
+        }
+      },
+      "primary_source": true,
+      "details": [
+        {
+          "device": {
+            "identifier": {
+              "type": {
+                "coding": [
+                  {
+                    "system": "eHealth/resources",
+                    "code": "device_definition"
+                  }
+                ]
+              },
+              "value": "{{device_definition_id_qualify_device_request}}"
+            }
+          },
+          "program_device": {
+            "identifier": {
+              "type": {
+                "coding": [
+                  {
+                    "system": "eHealth/resources",
+                    "code": "program_device"
+                  }
+                ]
+              },
+              "value": "{{program_medication_id_qualify_device_request}}"
+            }
+          },
+          "quantity": {
+            "value": 10,
+            "system": "device_unit",
+            "code": "piece"
+          },
+          "sell_price": {{device_sell_price}},
+          "discount_amount": {{device_discount_amount}}
+        }
+      ],
+      "verification_code": "{{device_req_verification_code}}",
+      "status": "in_progress"
+    }
+scripts:
+  - type: afterResponse
+    code: "// function displayResponse(title, data) {\r
+
+      //     const html = `\r
+
+      //         <h1>${title}</h1>\r
+
+      //         <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      //     pm.visualizer.set(html);\r
+
+      // }\r
+
+      \r
+
+      // // Get the response body from the main request\r
+
+      // const resBody = pm.response.text();\r
+
+      // const resData = JSON.parse(resBody);\r
+
+      \r
+
+      // if (resData && resData.error) {\r
+
+      //     displayResponse('Create Device Dispense Response Error Details',
+      resData.error);\r
+
+      // }\r
+
+      \r
+
+      // const href = resData.data.links[0].href;\r
+
+      // console.log(\"Extracted href:\", href);\r
+
+      \r
+
+      // // Extract the job ID from the href\r
+
+      // const number = href.split('/jobs/')[1];\r
+
+      // console.log(\"Extracted number:\", number);\r
+
+      \r
+
+      // // Initialize retry counter in the environment\r
+
+      // pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      // // Function to check job status\r
+
+      // function checkJobStatus(jobId) {\r
+
+      \r
+
+      //     const url = `${pm.globals.get(\"host\")}/api/jobs/${jobId}`;\r
+
+      //     const maxRetries = 3; // Set the maximum number of retries\r
+
+      \r
+
+      //     pm.sendRequest({\r
+
+      //         method: 'GET',\r
+
+      //         url: url,\r
+
+      //         header: {\r
+
+      //             'Content-Type': 'application/json',\r
+
+      //             'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      //             'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      //             'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      //         }\r
+
+      //     }, function (err, res) {\r
+
+      \r
+
+      //         pm.test(`Job status check response status is 200 or 303`,
+      function () {\r
+
+      //             pm.expect([200, 303]).to.include(res.code);\r
+
+      //         });\r
+
+      \r
+
+      //         if (err) {\r
+
+      //             displayResponse('Request Error', { error: err.message });\r
+
+      //             console.error('Error checking job status:', err);\r
+
+      //         } else {\r
+
+      \r
+
+      //             const responseBody = res.json();\r
+
+      //             console.log('Job Status:', responseBody.data.status);\r
+
+      \r
+
+      //             if (responseBody.data.status === 'processed') {\r
+
+      \r
+
+      //                 pm.test(`Create Device Dispense Job Success. Response
+      status is 303 ${JSON.stringify(res.json(), null, 2)}`, function () {\r
+
+      //                     pm.expect(res.code).to.eql(303);\r
+
+      //                 });\r
+
+      \r
+
+      //                 const links = responseBody.data.links.reduce((acc,
+      link) => {\r
+
+      //                     // Extract the part after \"/api/\"\r
+
+      //                     const href = link.href.replace('/api/', '');\r
+
+      \r
+
+      //                     // Set the link entity to global variables\r
+
+      //                     acc[link.entity] = href;\r
+
+      \r
+
+      //                     if (href.includes('device_dispenses/')) {\r
+
+      //                         const deviceDispenseId = href.split('/')[3]; //
+      Extract the Device Dispense ID\r
+
+      //                         acc['jobDeviceDispense'] = deviceDispenseId;\r
+
+      //                     }\r
+
+      \r
+
+      //                     return acc;\r
+
+      //                 }, {});\r
+
+      \r
+
+      //                 // Iterate over the links object and set globals
+      dynamically\r
+
+      //                 Object.entries(links).forEach(([entity, value]) => {\r
+
+      //                     const globalName =
+      `${entity.charAt(0).toUpperCase() + entity.slice(1)}ID`;\r
+
+      //                     pm.globals.set(globalName, value);\r
+
+      //                 });\r
+
+      \r
+
+      \r
+
+      //                 displayResponse('Create Device Dispense Job Response
+      Details', responseBody.data);\r
+
+      //             } else {\r
+
+      \r
+
+      //                 // Retrieve the current retry count\r
+
+      //                 let retryCount =
+      parseInt(pm.environment.get('retryCount')) || 0;\r
+
+      \r
+
+      //                 if (retryCount < maxRetries) {\r
+
+      //                     // Increment the retry count and set it back to the
+      environment\r
+
+      //                     retryCount++;\r
+
+      //                     pm.environment.set('retryCount', retryCount);\r
+
+      \r
+
+      //                     console.log(`Retrying... Attempt ${retryCount}`);\r
+
+      \r
+
+      //                     setTimeout(() => {\r
+
+      //                         checkJobStatus(jobId);\r
+
+      //                     }, 1000);\r
+
+      \r
+
+      //                     displayResponse('Create Device Dispense Job
+      Response Details2', responseBody.data);\r
+
+      \r
+
+      //                 } else {\r
+
+      //                     console.log('Maximum retry limit reached.');\r
+
+      //                     displayResponse(responseBody.data.error ? 'Create
+      Device Dispense Error Details' : 'Final Job Status Check',
+      responseBody.data);\r
+
+      //                 }\r
+
+      //             }\r
+
+      //         }\r
+
+      //     });\r
+
+      // }\r
+
+      \r
+
+      // // Call the function with the job ID\r
+
+      // checkJobStatus(number);\r
+
+      \r
+
+      \r
+
+      /* =========================\r
+
+      \   Helpers: Visualizer + Restore\r
+
+      ========================= */\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \  const html = `\r
+
+      \    <h1>${title}</h1>\r
+
+      \    <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \  pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      function ensureFlowActive() {\r
+
+      \  return pm.environment.get(\"device_dispense_flow_active\") ===
+      \"true\"\r
+
+      \      && pm.environment.get(\"device_dispense_switched\") === \"true\";\r
+
+      }\r
+
+      \r
+
+      function restoreUserAndStop(reason) {\r
+
+      \  const KEYS = [\"access_token\", \"user_division_id\", \"user_id\"];\r
+
+      \r
+
+      \  KEYS.forEach((k) => {\r
+
+      \    const original = pm.environment.get(`original_${k}`);\r
+
+      \    if (original !== undefined) pm.environment.set(k, original);\r
+
+      \  });\r
+
+      \r
+
+      \  KEYS.forEach((k) => pm.environment.unset(`original_${k}`));\r
+
+      \r
+
+      \  pm.environment.unset(\"device_dispense_switched\");\r
+
+      \  pm.environment.unset(\"device_dispense_flow_active\");\r
+
+      \r
+
+      \  console.log(\"♻ Restored original user. Reason:\", reason ||
+      \"unknown\");\r
+
+      \r
+
+      \  // stop further requests in Runner (щоб флоу не їхав далі у зламаному
+      стані)\r
+
+      \  pm.execution.setNextRequest(null);\r
+
+      }\r
+
+      \r
+
+      /* =========================\r
+
+      \   1) Validate main POST response\r
+
+      ========================= */\r
+
+      \r
+
+      if (ensureFlowActive()) {\r
+
+      \  // Якщо очікуєш інший статус — заміни тут (наприклад 200)\r
+
+      \  pm.test(\"Create Device Dispense - expected 202\", function () {\r
+
+      \    if (pm.response.code !== 202) {\r
+
+      \      // покажемо деталі, якщо вони є\r
+
+      \      try {\r
+
+      \        const bodyTxt = pm.response.text();\r
+
+      \        displayResponse(\"Create Device Dispense - Unexpected status\",
+      {\r
+
+      \          status: pm.response.code,\r
+
+      \          body: bodyTxt,\r
+
+      \        });\r
+
+      \      } catch (e) {}\r
+
+      \r
+
+      \      restoreUserAndStop(`Create Device Dispense failed with
+      ${pm.response.code}`);\r
+
+      \      pm.expect.fail(`Create Device Dispense failed with
+      ${pm.response.code}`);\r
+
+      \    }\r
+
+      \r
+
+      \    pm.response.to.have.status(202);\r
+
+      \  });\r
+
+      }\r
+
+      \r
+
+      /* =========================\r
+
+      \   2) Parse response & extract job id\r
+
+      ========================= */\r
+
+      \r
+
+      let resData;\r
+
+      try {\r
+
+      \  const resBody = pm.response.text();\r
+
+      \  resData = JSON.parse(resBody);\r
+
+      } catch (e) {\r
+
+      \  displayResponse(\"Create Device Dispense - JSON parse error\", {\r
+
+      \    error: e.message,\r
+
+      \    raw: pm.response.text(),\r
+
+      \  });\r
+
+      \r
+
+      \  if (ensureFlowActive()) {\r
+
+      \    restoreUserAndStop(\"Create Device Dispense response is not valid
+      JSON\");\r
+
+      \  }\r
+
+      \r
+
+      \  // Щоб не летіло далі\r
+
+      \  throw new Error(\"Create Device Dispense: response is not valid
+      JSON\");\r
+
+      }\r
+
+      \r
+
+      // Якщо бек віддає error — покажемо\r
+
+      if (resData && resData.error) {\r
+
+      \  displayResponse(\"Create Device Dispense Response Error Details\",
+      resData.error);\r
+
+      }\r
+
+      \r
+
+      // Дістанемо href -> job id\r
+
+      let href, jobId;\r
+
+      try {\r
+
+      \  href = resData?.data?.links?.[0]?.href;\r
+
+      \  if (!href || !href.includes(\"/jobs/\")) throw new Error(\"No /jobs/
+      link in response\");\r
+
+      \  console.log(\"Extracted href:\", href);\r
+
+      \r
+
+      \  jobId = href.split(\"/jobs/\")[1];\r
+
+      \  if (!jobId) throw new Error(\"Job ID extraction failed\");\r
+
+      \  console.log(\"Extracted jobId:\", jobId);\r
+
+      } catch (e) {\r
+
+      \  displayResponse(\"Create Device Dispense - Missing job link\", {\r
+
+      \    error: e.message,\r
+
+      \    data: resData,\r
+
+      \  });\r
+
+      \r
+
+      \  if (ensureFlowActive()) {\r
+
+      \    restoreUserAndStop(\"Create Device Dispense: cannot extract job
+      id\");\r
+
+      \  }\r
+
+      \r
+
+      \  throw new Error(\"Create Device Dispense: cannot extract job id\");\r
+
+      }\r
+
+      \r
+
+      /* =========================\r
+
+      \   3) Poll job status with retries\r
+
+      ========================= */\r
+
+      \r
+
+      // Reset retry counter for this request run\r
+
+      pm.environment.set(\"retryCount\", 0);\r
+
+      \r
+
+      function checkJobStatus(jobId) {\r
+
+      \  const url = `${pm.globals.get(\"host\")}/api/jobs/${jobId}`;\r
+
+      \  const maxRetries = 3;\r
+
+      \r
+
+      \  pm.sendRequest(\r
+
+      \    {\r
+
+      \      method: \"GET\",\r
+
+      \      url,\r
+
+      \      header: {\r
+
+      \        \"Content-Type\": \"application/json\",\r
+
+      \        Authorization: `Bearer
+      ${pm.environment.get(\"access_token\")}`,\r
+
+      \        \"api-key\": `${pm.environment.get(\"mis_client_secret\")}`,\r
+
+      \        \"X-Custom-PSK\": `${pm.globals.get(\"x-custom-psk\")}`,\r
+
+      \      },\r
+
+      \    },\r
+
+      \    function (err, res) {\r
+
+      \      // Якщо сам запит до jobs впав\r
+
+      \      if (err) {\r
+
+      \        displayResponse(\"Job status request error\", { error:
+      err.message });\r
+
+      \r
+
+      \        if (ensureFlowActive()) {\r
+
+      \          restoreUserAndStop(`Job status request error:
+      ${err.message}`);\r
+
+      \        }\r
+
+      \r
+
+      \        pm.test(\"Job status request should not error\", function () {\r
+
+      \          pm.expect.fail(err.message);\r
+
+      \        });\r
+
+      \r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      // Очікуємо 200 або 303 (як у тебе)\r
+
+      \      pm.test(\"Job status check response status is 200 or 303\",
+      function () {\r
+
+      \        pm.expect([200, 303]).to.include(res.code);\r
+
+      \      });\r
+
+      \r
+
+      \      let responseBody;\r
+
+      \      try {\r
+
+      \        responseBody = res.json();\r
+
+      \      } catch (e) {\r
+
+      \        displayResponse(\"Job status JSON parse error\", { error:
+      e.message, raw: res.text() });\r
+
+      \r
+
+      \        if (ensureFlowActive()) {\r
+
+      \          restoreUserAndStop(\"Job status response is not valid
+      JSON\");\r
+
+      \        }\r
+
+      \r
+
+      \        pm.test(\"Job status response should be valid JSON\", function ()
+      {\r
+
+      \          pm.expect.fail(e.message);\r
+
+      \        });\r
+
+      \r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      const status = responseBody?.data?.status;\r
+
+      \      console.log(\"Job Status:\", status);\r
+
+      \r
+
+      \      // processed -> success\r
+
+      \      if (status === \"processed\") {\r
+
+      \        pm.test(\"Create Device Dispense Job Success - response status is
+      303\", function () {\r
+
+      \          pm.expect(res.code).to.eql(303);\r
+
+      \        });\r
+
+      \r
+
+      \        // links -> globals\r
+
+      \        const links = (responseBody?.data?.links || []).reduce((acc,
+      link) => {\r
+
+      \          const href = String(link.href || \"\").replace(\"/api/\",
+      \"\");\r
+
+      \          if (!link.entity || !href) return acc;\r
+
+      \r
+
+      \          acc[link.entity] = href;\r
+
+      \r
+
+      \          if (href.includes(\"device_dispenses/\")) {\r
+
+      \            const parts = href.split(\"/\");\r
+
+      \            // очікувано: device_dispenses/{id} або
+      .../device_dispenses/{id}/...\r
+
+      \            const idx = parts.indexOf(\"device_dispenses\");\r
+
+      \            if (idx !== -1 && parts[idx + 1]) {\r
+
+      \              acc[\"jobDeviceDispense\"] = parts[idx + 1];\r
+
+      \            }\r
+
+      \          }\r
+
+      \r
+
+      \          return acc;\r
+
+      \        }, {});\r
+
+      \r
+
+      \        Object.entries(links).forEach(([entity, value]) => {\r
+
+      \          const globalName = `${entity.charAt(0).toUpperCase() +
+      entity.slice(1)}ID`;\r
+
+      \          pm.globals.set(globalName, value);\r
+
+      \        });\r
+
+      \r
+
+      \        displayResponse(\"Create Device Dispense Job Response Details\",
+      responseBody.data);\r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      // НЕ processed -> retry або fail\r
+
+      \      let retryCount = parseInt(pm.environment.get(\"retryCount\"), 10)
+      || 0;\r
+
+      \r
+
+      \      if (retryCount < maxRetries) {\r
+
+      \        retryCount++;\r
+
+      \        pm.environment.set(\"retryCount\", retryCount);\r
+
+      \r
+
+      \        console.log(`Retrying... Attempt ${retryCount}/${maxRetries}`);\r
+
+      \        displayResponse(\"Create Device Dispense Job Response Details
+      (retry)\", responseBody.data);\r
+
+      \r
+
+      \        setTimeout(() => checkJobStatus(jobId), 1000);\r
+
+      \        return;\r
+
+      \      }\r
+
+      \r
+
+      \      // max retries reached -> fail flow + restore\r
+
+      \      console.log(\"Maximum retry limit reached.\");\r
+
+      \      displayResponse(\r
+
+      \        responseBody?.data?.error ? \"Create Device Dispense Error
+      Details\" : \"Final Job Status Check\",\r
+
+      \        responseBody?.data || responseBody\r
+
+      \      );\r
+
+      \r
+
+      \      if (ensureFlowActive()) {\r
+
+      \        restoreUserAndStop(`Job not processed after ${maxRetries} retries
+      (status: ${status || \"unknown\"})`);\r
+
+      \      }\r
+
+      \r
+
+      \      pm.test(\"Create Device Dispense job must reach processed state\",
+      function () {\r
+
+      \        pm.expect.fail(`Job not processed after ${maxRetries} retries
+      (status: ${status || \"unknown\"})`);\r
+
+      \      });\r
+
+      \    }\r
+
+      \  );\r
+
+      }\r
+
+      \r
+
+      // Start polling\r
+
+      checkJobStatus(jobId);\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const deviceDispenseRequestId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"dummy_device_dispense_request_id\",
+      deviceDispenseRequestId);"
+    language: text/javascript
+order: 52000

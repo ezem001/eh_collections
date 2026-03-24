@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{host}}/api/medication_request_requests/{{medication_request_request_id}\
+  }/actions/sign"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+  msp_drfo: "2698170030"
+body:
+  type: text
+  content: |-
+    {
+        "signed_medication_request_request": "{{mrr_base64}}",
+         "signed_content_encoding": "base64"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: >-
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))};
+
+      mrr = pm.environment.get("mrr");
+
+
+
+      var mrr_base64 = b64EncodeUnicode(JSON.stringify(mrr));
+
+      postman.setEnvironmentVariable("mrr_base64", mrr_base64);
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      var jsonData = JSON.parse(responseBody);
+
+      var medication_request_id=jsonData.data.id;
+      pm.environment.set("medication_request_id", medication_request_id);
+    language: text/javascript
+order: 15000

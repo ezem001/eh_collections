@@ -1,0 +1,73 @@
+$kind: http-request
+name: S9.6 Create Episode
+url: https://api-demo.ehealth.gov.ua/api/patients/87a71a7b-a5b9-4e74-acff-013c03809a39/episodes
+method: POST
+headers:
+  Authorization: ""
+  api-key: 30276e63617461a185ec
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+        "id": "ba59c781-637e-4007-887b-47741066f3a8",
+        "type": {
+            "system": "eHealth/episode_types",
+            "code": "TREATMENT"
+        },
+        "status": "active",
+        "name": "Хвороба",
+        "managing_organization": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "legal_entity"
+                        }
+                    ]
+                },
+                "value": "e5898545-e384-4cd5-b3d7-6272bae35cf4"
+            }
+        },
+        "period": {
+            "start": "2025-11-20T00:00:00.000Z"
+        },
+        "care_manager": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "employee"
+                        }
+                    ]
+                },
+                "value": "325a8751-fe27-4c31-a0e5-e0f3dc0da5a8"
+            }
+        },
+        "part_of": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "episode_of_care"
+                        }
+                    ]
+                },
+                "value": "c5ecf71c-4ff6-4cd6-95ea-2f60c0a2c813"
+            }
+        }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 14000

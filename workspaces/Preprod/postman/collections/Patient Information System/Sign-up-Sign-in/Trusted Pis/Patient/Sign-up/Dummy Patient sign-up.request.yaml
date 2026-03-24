@@ -1,0 +1,152 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"person\": {\r
+
+    \        \"first_name\": \"Олег\",\r
+
+    \        \"last_name\": \"Сьомий\",\r
+
+    \        \"second_name\": \"Володимирович\",\r
+
+    \        \"birth_date\": \"1988-11-25\",\r
+
+    \        \"birth_country\": \"Україна\",\r
+
+    \        \"birth_settlement\": \"Київ\",\r
+
+    \        \"gender\": \"MALE\",\r
+
+    \        \"email\": \"email@example.com\",\r
+
+    \        \"no_tax_id\": false,\r
+
+    \        \"tax_id\": \"3709711107\",\r
+
+    \        \"secret\": \"secret\",\r
+
+    \        \"documents\": [\r
+
+    \            {\r
+
+    \                \"type\": \"NATIONAL_ID\",\r
+
+    \                \"number\": \"098345345\",\r
+
+    \                \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                \"issued_at\": \"2017-02-28\",\r
+
+    \                \"expiration_date\": \"2027-02-28\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"addresses\": [\r
+
+    \            {\r
+
+    \                \"area\": \"ХАРКІВСЬКА\",\r
+
+    \                \"building\": \"15\",\r
+
+    \                \"country\": \"UA\",\r
+
+    \                \"region\": \"ЧУГУЇВСЬКИЙ\",\r
+
+    \                \"settlement\": \"ВЕЛИКА БАБКА\",\r
+
+    \                \"settlement_id\":
+    \"7a438190-5b6f-4341-b25d-0b19f46c320f\",\r
+
+    \                \"settlement_type\": \"VILLAGE\",\r
+
+    \                \"street\": \"Ніжинська\",\r
+
+    \                \"street_type\": \"STREET\",\r
+
+    \                \"type\": \"RESIDENCE\",\r
+
+    \                \"zip\": \"12345\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"phones\": [\r
+
+    \            {\r
+
+    \                \"type\": \"MOBILE\",\r
+
+    \                \"number\": \"+380503410870\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"authentication_methods\": [\r
+
+    \            {\r
+
+    \                \"type\": \"OTP\",\r
+
+    \                \"phone_number\":\"+380502298393\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"unzr\": \"19881125-00024\",\r
+
+    \        \"emergency_contact\": {\r
+
+    \            \"first_name\": \"Ганна\",\r
+
+    \            \"last_name\": \"Сіра\",\r
+
+    \            \"second_name\": \"Іванівна\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"type\": \"MOBILE\",\r
+
+    \                    \"number\": \"+380954445566\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"preferred_way_communication\": \"email\"\r
+
+    \    },\r
+
+    \    \"patient_signed\": true,\r
+
+    \    \"process_disclosure_data_consent\": true,\r
+
+    \    \"jwt\":
+    \"eyJhbGciOiJSUzUxMiIsImtpZCI6IktyWFJrYnpuVUV3MnJMUzdJeXZ1U0dlUkxHSFNlNGlfT\
+    0JRa0JVNUJHcGsiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJ0cnVzdGVkLWNsaWVudCIsImV4cCI6M\
+    TczNDY5NjU5NiwiaWF0IjoxNzM0Njk1Njk2LCJpc3MiOiJFSGVhbHRoIiwianRpIjoiMjg1MGE1\
+    YjEtOTZjMi00OTIzLTlkMDMtYTJhZTQyODM0YWUwIiwibmJmIjoxNzM0Njk1Njk1LCJub25jZSI\
+    6IjJkYzk2NWRhLWUxMTItNGNjYS1iYjU5LWUzY2E5M2U1YjQ1OSIsInN1YiI6IjJkYzk2NWRhLW\
+    UxMTItNGNjYS1iYjU5LWUzY2E5M2U1YjQ1OSIsInR5cCI6ImFjY2VzcyJ9.Bkaj9K5dcSJuCfk6\
+    42v-f3pR30enI05zp5udyEykh6ltIqt44TIgubnRZvKrzF-dp7Zb8bilEFJMbYTRoGf0wCyzIb0\
+    yn3gg3CP2SSsF87ShB4YASi22bvaB9bWFliAEDDPbsMyHbKbzyQX7tRfyfpfYzorgaLQ4qEjeYf\
+    mBvOzVYfujpAXdgWLUA8MJixyGiq18Ovf4n2h3F6byPAVdV4VUaj_jSgo_YVR4CBEbmBbG4T70Z\
+    mtBc9m-b28Sm47rUYrUbymmPy-2_LLn7S9MYk8nQ1Yz_-MGc4SieDhhZ3w4NWxshcQmp9btO2KL\
+    yFKnXQUy378c44Bsc7Y7t5DB8Q\"\r
+
+    }"
+order: 2000

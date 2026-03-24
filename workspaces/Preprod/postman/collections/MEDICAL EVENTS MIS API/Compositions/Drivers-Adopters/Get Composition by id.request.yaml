@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/compositions/{{jobCompo\
+  sitionID}}"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+order: 8000

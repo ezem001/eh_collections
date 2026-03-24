@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{host}}/admin/roles?name=My%20role&page=2&page_size=50"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  name: My%20role
+  page: "2"
+  page_size: "50"
+order: 1000

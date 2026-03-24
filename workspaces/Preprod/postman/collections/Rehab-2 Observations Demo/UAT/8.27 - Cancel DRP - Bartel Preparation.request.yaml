@@ -1,0 +1,50 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/{{patient_id}}/diagnostic_report_package"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: "Bearer {{doctor_token}} "
+  api-key: "{{mis_client_secret_demo}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value_demo}}"
+body:
+  type: text
+  content: |-
+    {
+      "signed_data": "{{diagnostic_report_package_base64}}"	
+    }
+scripts:
+  - type: beforeRequest
+    code: |+
+      //2 observations
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))};
+
+      // var diagnostic_report_package =  pm.environment.get("diagnostic_report");
+      // var diagnostic_report_package_template = '{ "encounter": { "explanatory_letter": "Я, Шевченко Наталія Олександрівна, 20.07.2018 здійснила механічну помилку при внесенні обстеження до системи.", "cancellation_reason": { "coding": [ { "system": "eHealth/cancellation_reasons", "code": "typo" } ] }, '+ diagnostic_report_package.substring(14);
+
+
+      var diagnostic_report_package = JSON.parse(pm.environment.get("diagnostic_report"));
+      diagnostic_report_package.diagnostic_report.explanatory_letter="letter";
+      diagnostic_report_package.diagnostic_report.cancellation_reason={ "coding": [ { "system": "eHealth/cancellation_reasons", "code": "typo" } ] };
+      diagnostic_report_package.diagnostic_report.status="entered_in_error";
+      diagnostic_report_package.observations[0].status="entered_in_error";
+      // diagnostic_report_package.conditions[0].verification_status="entered_in_error";
+
+      var diagnostic_report_package_base64 = b64EncodeUnicode(JSON.stringify(diagnostic_report_package))
+
+      postman.setEnvironmentVariable("diagnostic_report_package_base64", diagnostic_report_package_base64);
+      console.log(JSON.stringify(diagnostic_report_package));
+
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 82000

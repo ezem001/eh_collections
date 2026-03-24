@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/diagnoses_groups/b75669ca-476c-464b-a6ae-12c3defecd43"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 2000

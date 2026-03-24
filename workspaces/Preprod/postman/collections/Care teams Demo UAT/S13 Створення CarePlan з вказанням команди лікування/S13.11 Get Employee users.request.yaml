@@ -1,0 +1,9 @@
+$kind: http-request
+name: S13.11 Get Employee users
+url: https://api-demo.ehealth.gov.ua/api/employees/26f41f4c-8545-4a00-887c-750de948ab55/users
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+order: 26000

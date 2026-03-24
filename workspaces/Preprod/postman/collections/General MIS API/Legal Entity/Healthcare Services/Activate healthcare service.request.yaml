@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/healthcare_services/ac7caabf-cbc4-4054-add5-c2f8ac14a6a2/act\
+  ions/activate"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 5000

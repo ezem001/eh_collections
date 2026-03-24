@@ -1,0 +1,296 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \        \"based_on\": {\r
+
+    \            \"display_value\": null,\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"device_request\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"7d119777-2755-4725-981e-6287c290e2d3\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"details\": [\r
+
+    \            {\r
+
+    \                \"device\": {\r
+
+    \                    \"display_value\": null,\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"code\": \"device_definition\",\r
+
+    \                                    \"system\": \"eHealth/resources\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": null\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"387b3070-3d9c-11ee-be56-0242ac120002\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"discount_amount\": 94.88,\r
+
+    \                \"program_device\": {\r
+
+    \                    \"display_value\": null,\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"code\": \"program_device\",\r
+
+    \                                    \"system\": \"eHealth/resources\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": null\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"a2b02db0-3d9c-11ee-be56-0242ac120002\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"quantity\": {\r
+
+    \                    \"code\": \"piece\",\r
+
+    \                    \"system\": \"device_unit\",\r
+
+    \                    \"unit\": \"шт\",\r
+
+    \                    \"value\": 25\r
+
+    \                },\r
+
+    \                \"reimbursement_amount\": 94.88,\r
+
+    \                \"sell_price\": 203.03\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"id\": \"78641dd9-7d31-4878-9809-e104dd92b82d\",\r
+
+    \        \"inserted_at\": \"2023-09-19T07:17:12.485000Z\",\r
+
+    \        \"location\": {\r
+
+    \            \"display_value\": \"Відділення Доктора Пропера\",\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"division\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"277043dc-b374-4f0d-9e02-92cf5cc94dad\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"note\": \"Some notes\",\r
+
+    \        \"payment_amount\": null,\r
+
+    \        \"payment_id\": null,\r
+
+    \        \"performer\": {\r
+
+    \            \"display_value\": \"Сергій Вікторович Куриленко\",\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"employee\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"d9859a73-9516-4650-99a5-5447660c5996\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"performer_legal_entity\": {\r
+
+    \            \"display_value\": \"\\\"АКАДЕМІЯ СОЦІАЛЬНИХ ІННОВАЦІЙ\\\"\",\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"legal_entity\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"cb82defb-2d35-4b5c-a84f-0c7ea0fb6a71\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"program\": {\r
+
+    \            \"display_value\": \"Медичні вироби для визначення рівня
+    глюкози в крові\",\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"medical_program\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"0cefbce3-6dd2-45bd-b1e6-983fc055d5e0\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"signed_content_links\": [],\r
+
+    \        \"status\": \"unknown\",\r
+
+    \        \"subject\": {\r
+
+    \            \"display_value\": null,\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"patient\",\r
+
+    \                            \"system\": \"eHealth/resources\"\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"text\": null\r
+
+    \                },\r
+
+    \                \"value\": \"6a524088-c3f6-44ef-bcea-12a8e2900431\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"updated_at\": \"2023-09-19T07:28:00.751000Z\",\r
+
+    \        \"when_handed_over\": null\r
+
+    \    }"
+order: 4000

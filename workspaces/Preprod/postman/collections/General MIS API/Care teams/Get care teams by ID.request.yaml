@@ -1,0 +1,10 @@
+$kind: http-request
+description: This method is used to get details of care team.
+url: "{{host}}/api/care_teams/{{care_team_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 5000

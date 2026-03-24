@@ -1,0 +1,31 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/care_teams?legal_entity_id=e5898545-e384-4cd5-b3d7-6272bae35cf4&category=surgical_care_team
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer bmY1UXdPZVJBRE1CMENrVVFKQk4wdz09
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: page
+    value: "1"
+    disabled: true
+  - key: page_size
+    value: "10"
+    disabled: true
+  - key: status
+    value: actives
+    disabled: true
+  - key: legal_entity_id
+    value: e5898545-e384-4cd5-b3d7-6272bae35cf4
+  - key: member_employee_id
+    value: 44268b70-faf1-476f-bfbf-1b945b23109b
+    disabled: true
+  - key: period_end_from
+    value: 2025-07-30
+    disabled: true
+  - key: period_end_to
+    value: 2025-08-30
+    disabled: true
+  - key: category
+    value: surgical_care_team
+order: 2000

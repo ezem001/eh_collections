@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/service_requests?requisition=8051-7715-8979-3102&status=active"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+queryParams:
+  requisition: 8051-7715-8979-3102
+  status: active
+order: 5000

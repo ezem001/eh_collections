@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{host}}/api/device_requests?requisition=2936-6438-5551-6317"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  requisition: 2936-6438-5551-6317
+body:
+  type: text
+  content: ""
+order: 8000

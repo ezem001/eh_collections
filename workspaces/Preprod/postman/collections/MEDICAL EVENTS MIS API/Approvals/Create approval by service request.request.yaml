@@ -1,0 +1,47 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/approvals"
+method: POST
+headers:
+  Authorization: Bearer {{doctor_access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "service_request": {
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "service_request"
+                }
+              ]
+            },
+            "value": "{{service_request_id}}"
+          }
+        },
+      "granted_to": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "employee"
+              }
+            ]
+          },
+          "value": "{{doctor_id}}"
+        }
+      },
+      "access_level": "read"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      var jsonData = JSON.parse(responseBody);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 3000

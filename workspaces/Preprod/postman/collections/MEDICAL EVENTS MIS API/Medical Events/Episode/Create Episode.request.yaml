@@ -1,0 +1,556 @@
+$kind: http-request
+url: "{{host}}/api/patients/072b1fc6-30b5-45af-864e-9ceac609ce8c/episodes"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |2-
+     {
+       "id":"{{episode_id}}",
+       "name":"Епізод QA_28",
+       "status":"active",
+       "type":{
+          "system":"eHealth/episode_types",
+          "code":"TREATMENT"
+       },
+       "period":{
+          "start":"{{episode_start_date}}"
+       },
+       "managing_organization": {
+    	    "identifier": {
+    	      "type": {
+    	        "coding": [
+    	          {
+    	            "system": "eHealth/resources",
+    	            "code": "legal_entity"
+    	          }
+    	        ]
+    	      },
+    	      "value":"{{user_legal_entity}}"
+    	    }
+       },
+       "care_manager": {
+    	    "identifier": {
+    	      "type": {
+    	        "coding": [
+    	          {
+    	            "system": "eHealth/resources",
+    	            "code": "employee"
+    	          }
+    	        ]
+    	      },
+    	      "value":"{{user_id}}"
+    	    }
+       }
+    }
+scripts:
+  - type: beforeRequest
+    code: >-
+      var uuid = require('uuid');
+
+      var id = uuid.v4();
+
+      pm.globals.set("episode_id", id);
+
+
+      const now = new Date();
+
+
+      // Зменшити дату на 2 дні
+
+      const twoDaysAgo = new Date();
+
+      twoDaysAgo.setDate(now.getDate() - 4);
+
+
+      // Форматувати дату у форматі ISO 8601
+
+      const formattedDate = twoDaysAgo.toISOString();
+
+      console.log(formattedDate)
+
+      // Зберегти дату в змінній середовища
+
+      pm.globals.set('episode_start_date', formattedDate);
+
+
+      // Отримуємо тип співробітника та спеціальність із середовища
+
+      const employeeType = pm.environment.get("employee_type");
+
+      const employeeSpecialty = pm.environment.get("employee_specialty");
+
+
+      // Таблиця відповідностей типів епізодів за типом співробітника
+
+      const episodeMap = {
+          "SPECIALIST": ["TREATMENT", "PREVENTION", "PALLIATIVE_CARE", "DG", "REHAB", "CONDITIONING"],
+          "DOCTOR": ["TREATMENT", "PREVENTION", "PALLIATIVE_CARE", "PHC"],
+          "ASSISTANT": ["PREVENTION"],
+          "MED_COORDINATOR": ["TREATMENT", "DG"]
+      };
+
+
+      // --- 🔹 Визначаємо логіку вибору типу епізоду ---
+
+      let selectedEpisodeType;
+
+
+
+      // Якщо є спеціальність, то можна зробити умовну логіку (наприклад, для
+      психіатра — DG)
+
+      if (employeeSpecialty &&
+      employeeSpecialty.toLowerCase().includes("psychiat")) {
+          selectedEpisodeType = "DG";
+      } else {
+          const types = episodeMap[employeeType?.toUpperCase()];
+          if (types && types.length) {
+              // Вибираємо перший або випадковий тип із доступних
+              selectedEpisodeType = types[0]; // або Math.random() варіант нижче
+              // selectedEpisodeType = types[Math.floor(Math.random() * types.length)];
+          } else {
+              // fallback — дефолт
+              selectedEpisodeType = "TREATMENT";
+          }
+      }
+
+
+      // --- 🔹 Зберігаємо значення у змінну середовища ---
+
+      pm.environment.set("episode_type", selectedEpisodeType);
+
+
+      const randomSuffix = Math.floor(Math.random() * 1000);
+
+      pm.environment.set("episode_name",
+      `Епізод_${employeeType}_${randomSuffix}`);
+
+
+      console.log("✅ Визначено тип епізоду:", selectedEpisodeType);
+    language: text/javascript
+  - type: afterResponse
+    code: "function displayResponse(title, data) {\r
+
+      \    console.log(title, data)\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      // Initialize variables to track the number of tests\r
+
+      let allTestsPassed = false;\r
+
+      let passedTestsCount = 0;\r
+
+      let totalTestsCount = 3; // Adjust based on the total number of tests\r
+
+      \r
+
+      // Run your tests\r
+
+      pm.test(\"Check token is not expired\", function () {\r
+
+      \    const result = pm.response.code !== 401;\r
+
+      \    pm.expect(result).to.be.true;\r
+
+      \    if (result) {\r
+
+      \        passedTestsCount++;\r
+
+      \        allTestsPassed = true;\r
+
+      \    }\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Check user has the required scope\", function () {\r
+
+      \    const result = pm.response.code !== 403;\r
+
+      \    pm.expect(result).to.be.true;\r
+
+      \    if (result) {\r
+
+      \        passedTestsCount++;\r
+
+      \        allTestsPassed = true;\r
+
+      \    }\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Check for valid access token\", function () {\r
+
+      \    const result = pm.response.code !== 401;\r
+
+      \    pm.expect(result).to.be.true;\r
+
+      \    if (result) {\r
+
+      \        passedTestsCount++;\r
+
+      \        allTestsPassed = true;\r
+
+      \    }\r
+
+      });\r
+
+      \r
+
+      console.log(`Passed ${passedTestsCount} out of ${totalTestsCount} tests
+      ${passedTestsCount < totalTestsCount}`);\r
+
+      if (passedTestsCount === totalTestsCount) {\r
+
+      \    const jsonData = pm.response.json();\r
+
+      \    console.log('response in episode', jsonData);\r
+
+      \r
+
+      \    pm.test(\"Episode done. Response status is 202\", function () {\r
+
+      \        pm.expect(pm.response.code).to.eql(202);\r
+
+      \    });\r
+
+      \r
+
+      \r
+
+      \r
+
+      \    if (jsonData && jsonData.error) {\r
+
+      \        displayResponse('Episode Response Error Details',
+      jsonData.error);\r
+
+      \    }\r
+
+      \r
+
+      \r
+
+      \    const job_id = jsonData.data.links[0].href.substring(6) || '';\r
+
+      \    console.log(job_id)\r
+
+      \    pm.globals.set(\"job_id\", job_id);\r
+
+      \r
+
+      \    pm.environment.set('retryCount', 0);\r
+
+      \r
+
+      \    // Function to check job status\r
+
+      \    function checkJobStatus(jobId) {\r
+
+      \r
+
+      \        const url = `${pm.globals.get('host')}/api/jobs/${jobId}`;\r
+
+      \        const maxRetries = 3; // Set the maximum number of retries\r
+
+      \r
+
+      \        pm.sendRequest({\r
+
+      \            method: 'GET',\r
+
+      \            url: url,\r
+
+      \            header: {\r
+
+      \                'Content-Type': 'application/json',\r
+
+      \                'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \                'api-key':
+      `${pm.environment.get('mis_client_secret')}`,\r
+
+      \                'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \            }\r
+
+      \        }, function (err, res) {\r
+
+      \r
+
+      \            const responseBody = res.json();\r
+
+      \r
+
+      \            pm.test(\"Check if patient is not active\", function () {\r
+
+      \                if (responseBody.data.status_code === 409) {\r
+
+      \                    pm.expect(responseBody.error.message).to.equal(\"Per\
+      son is not active\");\r
+
+      \                    pm.expect(responseBody.error.type).to.equal(\"reques\
+      t_conflict\");\r
+
+      \                }\r
+
+      \            });\r
+
+      \r
+
+      \            // Валідація ID епізоду\r
+
+      \            pm.test(\"Check episode id is unique\", function () {\r
+
+      \                // Перевірка, чи статус відповіді є 422\r
+
+      \                pm.response.to.not.have.status(422);\r
+
+      \r
+
+      \                // Отримання масиву помилок\r
+
+      \                const errors = responseBody.data?.error?.invalid || [];\r
+
+      \r
+
+      \                // Перевірка на наявність помилки \"Episode with such id
+      already exists\"\r
+
+      \                const isIdDuplicate = errors.some(error =>\r
+
+      \                    error.entry === \"$.id\" &&\r
+
+      \                    Array.isArray(error.rules) &&\r
+
+      \                    error.rules.some(rule => rule.description ===
+      \"Episode with such id already exists\")\r
+
+      \                );\r
+
+      \                // Якщо знайдена помилка, тест не пройде\r
+
+      \                pm.expect(isIdDuplicate).to.be.false;\r
+
+      \            });\r
+
+      \r
+
+      \            pm.test(\"Check if episode period start date is valid\",
+      function () {\r
+
+      \                const errors = responseBody.data.error?.invalid || [];\r
+
+      \                const isPeriodStartError = errors.some(error =>\r
+
+      \                    error.entry === \"$.period.start\" &&\r
+
+      \                    error.rules.some(rule => rule.description === \"Start
+      date must be in past\")\r
+
+      \                );\r
+
+      \                pm.expect(isPeriodStartError).to.be.false;\r
+
+      \            });\r
+
+      \r
+
+      \            if (err) {\r
+
+      \                displayResponse('Request Error', { error: err.message
+      });\r
+
+      \                console.error('Error checking job status:', err);\r
+
+      \            } else {\r
+
+      \r
+
+      \                // const responseBody = res.json();\r
+
+      \                console.log('Job Status:', responseBody.data.status);\r
+
+      \r
+
+      \                if (responseBody.data.status === 'processed') {\r
+
+      \r
+
+      \                    pm.test(`Episode Job Success. Response status is 303
+      ${JSON.stringify(res.json(), null, 2)}`, function () {\r
+
+      \                        // Перевіряємо, чи код відповіді є або 303\r
+
+      \                        pm.expect(res.code).to.eql(303);\r
+
+      \                    });\r
+
+      \r
+
+      \                    // Extract patientID and jobEpisodeID from
+      responseBody\r
+
+      \                    const links = responseBody.data.links.reduce((acc,
+      link) => {\r
+
+      \                        const href = link.href.replace('/api/', '');\r
+
+      \r
+
+      \                        if (href.includes('patients/')) {\r
+
+      \                            // Extract patient ID\r
+
+      \                            const parts = href.split('/');\r
+
+      \                            const patientIDIndex =
+      parts.indexOf('patients') + 1;\r
+
+      \                            if (patientIDIndex > 0 && patientIDIndex <
+      parts.length) {\r
+
+      \                                acc.patientID = parts[patientIDIndex];\r
+
+      \                            }\r
+
+      \                        }\r
+
+      \r
+
+      \                        if (href.includes('episodes/')) {\r
+
+      \                            // Extract episode ID\r
+
+      \                            acc.jobEpisodeID =
+      href.split('episodes/')[1];\r
+
+      \                        }\r
+
+      \r
+
+      \                        return acc;\r
+
+      \                    }, {});\r
+
+      \r
+
+      \                    // Set globals\r
+
+      \                    if (links.patientID) {\r
+
+      \                        pm.globals.set('patient_id_from_episode',
+      links.patientID);\r
+
+      \                    }\r
+
+      \r
+
+      \                    if (links.jobEpisodeID) {\r
+
+      \                        pm.globals.set('jobEpisodeID',
+      links.jobEpisodeID);\r
+
+      \                    }\r
+
+      \r
+
+      \                    // Display response details in visualizer\r
+
+      \                    displayResponse('Episode Job Response Details',
+      responseBody.data);\r
+
+      \r
+
+      \r
+
+      \                } else {\r
+
+      \r
+
+      \                    // Retrieve the current retry count\r
+
+      \                    let retryCount =
+      parseInt(pm.environment.get('retryCount')) || 0;\r
+
+      \r
+
+      \                    if (retryCount < maxRetries) {\r
+
+      \                        // Increment the retry count and set it back to
+      the environment\r
+
+      \                        retryCount++;\r
+
+      \                        pm.environment.set('retryCount', retryCount);\r
+
+      \r
+
+      \                        console.log(`Retrying... Attempt
+      ${retryCount}`);\r
+
+      \r
+
+      \                        setTimeout(() => {\r
+
+      \                            checkJobStatus(jobId);\r
+
+      \                        }, 1000);\r
+
+      \r
+
+      \                    } else {\r
+
+      \                        console.log('Maximum retry limit reached.');\r
+
+      \                        // Display final response details in visualizer\r
+
+      \                        displayResponse('Final Job Status Check',
+      responseBody.data);\r
+
+      \                    }\r
+
+      \                }\r
+
+      \            }\r
+
+      \        });\r
+
+      \    }\r
+
+      \r
+
+      \    // Call the function with the job ID\r
+
+      \    checkJobStatus(job_id);\r
+
+      \r
+
+      } else {\r
+
+      \    console.log('One or more tests failed, skipping job status
+      check.');\r
+
+      }\r\n"
+    language: text/javascript
+order: 2000

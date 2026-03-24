@@ -1,0 +1,12 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/persons/ea38ab9b-e4e1-4b1a-a457-d26a65823a87/verification
+method: GET
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{employee_access_token}}
+  X-Custom-PSK: "{{mis_dev_x_custom_psk}}"
+queryParams:
+  - key: id
+    value: b64b662a-469f-472c-afa8-4df15a581d19
+    disabled: true
+order: 2000

@@ -1,0 +1,148 @@
+$kind: http-request
+url: "{{host}}/api/pharmacy/medication_dispenses/{{medication_dispense_id}}"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Medication dispense details by Pharmacy User before Process
+      - PASS. Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      // Парсимо JSON-відповідь\r
+
+      const res = pm.response.json();\r
+
+      \r
+
+      // Перевіряємо, чи є поле data\r
+
+      if (res && res.data) {\r
+
+      \    const updatedData = { ...res.data };\r
+
+      \r
+
+      \    // Замінюємо payment_amount на 2\r
+
+      \    updatedData.payment_amount = 2;\r
+
+      \r
+
+      \    // Зберігаємо в глобальну змінну\r
+
+      \    pm.globals.set(\"updated_dispense_data\",
+      JSON.stringify(updatedData));\r
+
+      \r
+
+      \    // Виводимо у вкладку Visualize у форматі JSON\r
+
+      \r
+
+      \    pm.visualizer.set(`\r
+
+      \  <style>\r
+
+      \    pre {\r
+
+      \      background-color: #f6f8fa;\r
+
+      \      padding: 16px;\r
+
+      \      border-radius: 5px;\r
+
+      \      font-family: monospace;\r
+
+      \      white-space: pre-wrap;\r
+
+      \      max-height: 500px;\r
+
+      \      overflow: auto;\r
+
+      \    }\r
+
+      \    button {\r
+
+      \      margin-bottom: 10px;\r
+
+      \      padding: 5px 10px;\r
+
+      \      border-radius: 4px;\r
+
+      \      border: 1px solid #ccc;\r
+
+      \      background-color: #e0e0e0;\r
+
+      \      cursor: pointer;\r
+
+      \    }\r
+
+      \    button:hover {\r
+
+      \      background-color: #d0d0d0;\r
+
+      \    }\r
+
+      \  </style>\r
+
+      \  <h3>Згенерований JSON підписний контент для погашення рецепту</h3>\r
+
+      \  <button onclick=\"copyToClipboard()\">Скопіювати JSON</button>\r
+
+      \  <pre id=\"jsonOutput\">{{json}}</pre>\r
+
+      \  <script>\r
+
+      \    function copyToClipboard() {\r
+
+      \      const text = document.getElementById('jsonOutput').innerText;\r
+
+      \      const textArea = document.createElement('textarea');\r
+
+      \      textArea.value = text;\r
+
+      \      document.body.appendChild(textArea);\r
+
+      \      textArea.select();\r
+
+      \      try {\r
+
+      \        document.execCommand('copy');\r
+
+      \        alert('JSON скопійовано!');\r
+
+      \      } catch (err) {\r
+
+      \        alert('Помилка копіювання: ' + err);\r
+
+      \      }\r
+
+      \      document.body.removeChild(textArea);\r
+
+      \    }\r
+
+      \  </script>\r
+
+      `, {\r
+
+      \        json: JSON.stringify(updatedData, null, 2)\r
+
+      \    });\r
+
+      \r
+
+      } else {\r
+
+      \    pm.visualizer.set(`<b style=\"color:red;\">❌ Response does not
+      contain 'data' field</b>`);\r
+
+      }\r\n"
+    language: text/javascript
+order: 42000

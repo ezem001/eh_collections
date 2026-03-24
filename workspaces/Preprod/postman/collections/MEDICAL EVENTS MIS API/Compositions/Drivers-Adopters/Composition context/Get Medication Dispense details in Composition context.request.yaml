@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{host}}/api/persons/1c62122f-b103-49cb-8bdb-5300ccbe1f7e/compositions/bd\
+  d76629-0036-4819-b523-11ef382c64c4/medication_dispenses/beb43bc9-d6cb-4092-8c\
+  c0-c51627a50085"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: ""
+order: 16000

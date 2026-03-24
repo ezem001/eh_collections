@@ -1,0 +1,60 @@
+$kind: http-request
+url: "{{host}}/api/healthcare_services/id"
+method: PATCH
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \  \"comment\": \"Заведено помилково\",\r
+
+    \  \"coverage_area\": [\r
+
+    \    \"2c0110a9-0bea-4b16-af8e-6e2e149a5bfc\"\r
+
+    \  ],\r
+
+    \  \"available_time\": [\r
+
+    \    {\r
+
+    \      \"days_of_week\": [\r
+
+    \        \"mon\"\r
+
+    \      ],\r
+
+    \      \"all_day\": true,\r
+
+    \      \"available_start_time\": \"08:30:00\",\r
+
+    \      \"available_end_time\": \"19:00:00\"\r
+
+    \    }\r
+
+    \  ],\r
+
+    \  \"not_available\": [\r
+
+    \    {\r
+
+    \      \"description\": \"Санітарний день\",\r
+
+    \      \"during\": {\r
+
+    \        \"start\": \"2018-08-02T10:45:16.000Z\",\r
+
+    \        \"end\": \"2018-08-02T11:00:00.000Z\"\r
+
+    \      }\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+order: 3000

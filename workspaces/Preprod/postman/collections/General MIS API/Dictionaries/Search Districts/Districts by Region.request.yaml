@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{host}}/api/uaddresses/regions/290f1ee-6c54-4b01-90e6-d701748f0851/distr\
+  icts?name=%D0%9A%D0%B8%D1%94%D0%B2%D0%BE-%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D1%88\
+  %D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9&koatuu=2625286301&page=2&page_size\
+  =50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  name: "%D0%9A%D0%B8%D1%94%D0%B2%D0%BE-%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D1%88%D0%B\
+    8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9"
+  koatuu: "2625286301"
+  page: "2"
+  page_size: "50"
+order: 2000

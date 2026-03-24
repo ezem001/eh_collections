@@ -1,0 +1,14 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/api/pis/person/authentication_methods
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: Bearer bVNZQnJ0UGV0VEc3K0JVRXoraTA2Zz09
+  - key: api-key
+    value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+order: 2000

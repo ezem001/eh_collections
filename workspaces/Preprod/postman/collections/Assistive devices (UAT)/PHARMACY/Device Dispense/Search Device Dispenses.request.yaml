@@ -1,0 +1,17 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/device_dispenses?based_on=623453dd-8357-4665-8c5f-184f268765f7
+method: GET
+headers:
+  Authorization: Bearer {{pharm_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: based_on
+    value: 96b18d2b-d4b1-444a-91a7-0f8fa9f86b3d
+    disabled: true
+    description: S19.3
+  - key: based_on
+    value: 623453dd-8357-4665-8c5f-184f268765f7
+    description: S19.5
+order: 9000

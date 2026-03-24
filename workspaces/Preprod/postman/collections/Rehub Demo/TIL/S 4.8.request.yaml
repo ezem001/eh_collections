@@ -1,0 +1,82 @@
+$kind: http-request
+url: http://192.168.5.4:31234/min_sp/device_dispenses
+method: POST
+headers:
+  Uxp-Client: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS
+  Uxp-Service: SEVDEIR-TEST/GOV/42032422/50_eHealth_dev_MPIVerificationMVS/get_device_request_data_package
+  Uxp-Transaction-Id: "{{Uxp-Transaction-Id}}"
+  Authorization: Basic YWRtaW46YWRtaW4=
+body:
+  type: json
+  content: |-
+    {
+        "id": "{{device_dispense_id}}",
+        "status": "preparation",
+        "note": "Створено через Трембіта сервіс",
+        "primary_source": true,
+        "based_on": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "device_request"
+                        }
+                    ]
+                },
+                "value": "ee1d4db0-a5a2-4255-bc76-46b3181b089b"
+            }
+        },
+        "subject": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "patient"
+                        }
+                    ]
+                },
+                "value": "{{patient_id}}"
+            }
+        },
+        "external_provider": {
+            "provider_legal_entity_name": "minSoc",
+            "provider_legal_entity_edrpou": "37567866"
+        },
+        "details": [
+            {
+                "device_code": {
+                    "coding": [
+                        {
+                            "code": "18_12_10",
+                            "system": "eHealth/assistive_devices"
+                        }
+                    ]
+                },
+                "quantity": {
+                    "value": 1,
+                    "system": "device_unit",
+                    "code": "piece"
+                }
+            }
+        ]
+    }
+scripts:
+  - type: beforeRequest
+    code: >-
+      pm.environment.set("Uxp-Transaction-Id",
+      pm.variables.replaceIn('{{$guid}}'));
+
+      pm.environment.set("device_dispense_id",
+      pm.variables.replaceIn('{{$guid}}'));
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 23000

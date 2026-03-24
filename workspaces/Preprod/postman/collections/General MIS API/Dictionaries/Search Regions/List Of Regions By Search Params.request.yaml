@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{host}}/api/uaddresses/regions?name=%D0%9A%D0%B8%D1%97%D0%B2&koatuu=2625\
+  286301&page=2&page_size=50"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  name: "%D0%9A%D0%B8%D1%97%D0%B2"
+  koatuu: "2625286301"
+  page: "2"
+  page_size: "50"
+order: 1000

@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{host_demo}}/api/persons/id/confidant_person_relationship_requests/deact\
+  ivate"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r
+
+    \  \"confidant_person_relationship\": {\r
+
+    \    \"id\": \"7b100a9c-daaa-490e-b88d-2a911059b055\",\r
+
+    \    \"documents_relationship\": [\r
+
+    \      {\r
+
+    \        \"type\": \"DEPRIVATION_OF_PARENTAL_RIGHTS\",\r
+
+    \        \"number\": \"АА120518\",\r
+
+    \        \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської області\",\r
+
+    \        \"issued_at\": \"2017-02-28\"\r
+
+    \      }\r
+
+    \    ]\r
+
+    \  },\r
+
+    \  \"authorize_with\": \"cc949559-5dfe-420f-ac05-065e443b2cc6\"\r
+
+    }"
+order: 3000

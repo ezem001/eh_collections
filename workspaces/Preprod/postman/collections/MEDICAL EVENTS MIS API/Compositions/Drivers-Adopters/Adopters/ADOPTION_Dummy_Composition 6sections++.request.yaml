@@ -1,0 +1,1028 @@
+$kind: http-request
+url: http://localhost:3000/create-composition-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{composition_id}}\",\r
+
+    \    \"title\": \"{{composition_stitle}}\",\r
+
+    \    \"status\": \"FINAL\",\r
+
+    \    \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_TYPES\",\r
+
+    \                \"code\": \"ADOPTION\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_CATEGORIES\",\r
+
+    \                \"code\": \"ADOPTER\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"date\": \"2025-01-23T10:40:52.385Z\",\r
+
+    \    \"custodian\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"legal_entity\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_legal_entity}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"0fe9a364-2de7-41fa-86b8-d07863f86f35\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"2e89ac0b-4739-4de3-9aa7-f20747521678\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"attester\": [\r
+
+    \        {\r
+
+    \            \"mode\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_ATTESTER_MODES\",\r
+
+    \                        \"code\": \"LEGAL\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"party\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"string\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"event\": [\r
+
+    \        {\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_EVENTS\",\r
+
+    \                        \"code\": \"ADOPTION_ADOPTER_INELIGIBLE\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"period\": {\r
+
+    \                \"start\": \"2025-01-25T08:40:52.385Z\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"section\": [\r
+
+    \        {\r
+
+    \            \"title\": \"ADOPTION_ADOPTER_FREE_SECTION_1\",\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_SECTION_CODES\",\r
+
+    \                        \"code\": \"ADOPTION_ADOPTER_FREE_SECTION\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"author\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{user_id}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"entry\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"observation\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"0fe9a364-2de7-41fa-86b8-d07863f86f35\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"care_plan\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"ecdbe6a2-c2dc-4369-826e-6a2c0c884f16\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"immunization\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"6fe1a15b-1fc6-4755-b75b-17ae0eea882b\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"medication_request\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"5e7f34ac-cce7-403f-888f-dd3070713557\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"medication_dispense\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"beb43bc9-d6cb-4092-8cc0-c51627a50085\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"title\": \"ADOPTION_ADOPTER_FREE_SECTION_2\",\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_SECTION_CODES\",\r
+
+    \                        \"code\": \"ADOPTION_ADOPTER_FREE_SECTION\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"author\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"21a0e2a7-39de-466e-9d46-f0004985eae0\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"entry\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"episode_of_care\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"b39c203f-80e7-491c-bab8-895f973384b7\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"encounter\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"d0bba813-943f-47fe-9677-383f6fc75d2e\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"activity\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"9b0829de-8b36-4fea-a708-534b89e37aa1\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"service_request\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"f291fae6-952d-4886-88dc-498ccf8d9f72\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"title\": \"ADOPTION_ADOPTER_FREE_SECTION_3\",\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_SECTION_CODES\",\r
+
+    \                        \"code\": \"ADOPTION_ADOPTER_FREE_SECTION\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"author\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"6b042948-affe-459f-a7d0-dc6109330a15\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"entry\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"55972edb-d6bf-47d7-9940-e6d914dabad3\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"clinical_impression\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"0a5860d6-f32c-435f-b78d-4bab978a9716\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        {\r
+
+    \            \"title\": \"ADOPTION_ADOPTER_FREE_SECTION_4\",\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_SECTION_CODES\",\r
+
+    \                        \"code\": \"ADOPTION_ADOPTER_FREE_SECTION\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"author\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"199ddd17-aff2-41ff-ae01-e50f15ece5d6\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"entry\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"diagnostic_report\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"99a730f1-0fbe-44c8-b53b-7012db7ad09f\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"procedure\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"06953f4a-d54e-411d-8e0f-cdb6e71bb033\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"device_request\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"321b4a68-ddce-4ad7-877b-51f97daa2c08\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"device_dispense\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\":
+    \"a3ba9263-22f6-45f2-bbe1-7355ebcde5b8\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      \r
+
+      pm.test(`Composition content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('composition_signed_content',
+      resData.signed_content);\r
+
+      });"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const id = uuid.v4();\r
+
+      pm.environment.set(\"composition_id\", id);\r
+
+      \r
+
+      const COMPOSITION_TYPE = \"ADOPTION\";\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url:
+      `${pm.globals.get('host')}/api/patients/${pm.globals.get('patient_id_from\
+      _episode')}/composition_title?composition_type=${COMPOSITION_TYPE}`,\r
+
+      \    method: \"POST\",\r
+
+      \    header: {\r
+
+      \        \"Content-Type\": \"application/json\",\r
+
+      \        \"Authorization\": `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \        \"api-key\": \"30276e63617461a185ec\",\r
+
+      \        \"X-Custom-PSK\": `${pm.globals.get('x-custom-psk')}`\r
+
+      \    }\r
+
+      }, function (err, res) {\r
+
+      \    if (err) {\r
+
+      \        console.error(\"Помилка запиту:\", err);\r
+
+      \    } else {\r
+
+      \        const resData = res.json();\r
+
+      \        const title = resData.data.title;\r
+
+      \r
+
+      \        pm.globals.set('composition_stitle', title)\r
+
+      \        console.log(resData.data.title) \r
+
+      \        console.log(\"Відповідь сервера:\", res.json());\r
+
+      \    }\r
+
+      });\r
+
+      \r
+
+      // Helper function to extract IDs from URLs\r
+
+      function extractID(url, keyword, variableName) {\r
+
+      \    if (url && url.includes(`${keyword}/`)) {\r
+
+      \        const parts = url.split(`${keyword}/`);\r
+
+      \        if (parts.length > 1) {\r
+
+      \            const extractedID = parts[1];\r
+
+      \            \r
+
+      \            // Log the extracted ID to the console (for debugging
+      purposes)\r
+
+      \            console.log(`Extracted ${variableName}:`, extractedID);\r
+
+      \            \r
+
+      \            // Set the extracted ID as an environment variable\r
+
+      \            pm.globals.set(variableName, extractedID);\r
+
+      \        } else {\r
+
+      \            console.error(`The URL does not contain the expected format
+      for ${keyword}.`);\r
+
+      \        }\r
+
+      \    } else {\r
+
+      \        console.error(`The global variable ${variableName} is not defined
+      or does not contain the expected format.`);\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      // Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      // Extract encounter and observation IDs using the helper function\r
+
+      extractID(url, 'encounters', 'encounter_extracted_id');\r
+
+      extractID(url, 'observations', 'observation_extracted_id');\r
+
+      // extractID(url, 'conditions', 'condition_extracted_id');\r\n"
+    language: text/javascript
+order: 3000

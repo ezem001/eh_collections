@@ -1,0 +1,31 @@
+$kind: http-request
+url: "{{host}}/api/prepersons"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+      "external_id": "3999869394.2799207815.1",
+      "first_name": "Микола",
+      "last_name": "Преперсона",
+      "gender": "MALE",
+      "birth_date": "2026-02-19",
+      "emergency_contact": {
+        "first_name": "Анна",
+        "last_name": "Петренко",
+        "second_name": "Іванівна",
+        "phones": [
+          {
+            "type": "MOBILE",
+            "number": "+380951364444"
+          }
+        ]
+      },
+      "note": "Зареєстрований у тестових цілях"
+    }
+order: 2000

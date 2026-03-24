@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/{{patient_id_from_episode}}/care_plans/{{jobCa\
+  replanID}}/activities"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: author
+    value: 9183a36b-4d45-4244-9339-63d81cd08d9c
+    disabled: true
+  - key: kind
+    value: service_request
+    disabled: true
+  - key: status
+    value: scheduled
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "5"
+    disabled: true
+order: 10000

@@ -1,0 +1,1022 @@
+$kind: http-request
+url: "{{host}}/api/composition_configurations"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: type
+    value: DRIVERS
+    disabled: true
+  - key: category
+    value: DRIVERS_GROUP1
+    disabled: true
+  - key: category
+    value: DRIVERS_GROUP2
+    disabled: true
+  - key: type
+    value: ADOPTION
+    disabled: true
+  - key: category
+    value: ADOPTER
+    disabled: true
+  - key: category
+    value: ADOPTER_RELATIVE
+    disabled: true
+body:
+  type: text
+  content: >-
+    {
+        "COMPOSITION_ENCOUNTER_TYPE": {
+            "check": [
+                "covid",
+                "discharge",
+                "field",
+                "home",
+                "patient_identity",
+                "service_delivery_location"
+            ]
+        },
+        "COMPOSITION_SECTION_NESTING_LEVEL": {
+            "check": 5
+        },
+        "COMPOSITION_EVENT_PERIOD_END_REQUIRED": [
+            {
+                "check": true,
+                "condition": {
+                    "event_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_ELIGIBLE",
+                        "system": "COMPOSITION_EVENTS"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_RESOURCE_CATEGORY": [
+            {
+                "check": [
+                    {
+                        "code": "exam",
+                        "system": "eHealth/observation_categories"
+                    },
+                    {
+                        "code": "imaging",
+                        "system": "eHealth/observation_categories"
+                    },
+                    {
+                        "code": "laboratory",
+                        "system": "eHealth/observation_categories"
+                    },
+                    {
+                        "code": "procedure",
+                        "system": "eHealth/observation_categories"
+                    },
+                    {
+                        "code": "social-history",
+                        "system": "eHealth/observation_categories"
+                    },
+                    {
+                        "code": "survey",
+                        "system": "eHealth/observation_categories"
+                    },
+                    {
+                        "code": "therapy",
+                        "system": "eHealth/observation_categories"
+                    },
+                    {
+                        "code": "vital-signs",
+                        "system": "eHealth/observation_categories"
+                    }
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "observation",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_PERSON_AGE": [
+            {
+                "check": {
+                    "min": {
+                        "units": "years",
+                        "value": 0
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_ATTESTER_VERIFICATION_STATUS": {
+            "check": [
+                "VERIFIED"
+            ]
+        },
+        "COMPOSITION_ATTESTER_SPECIALITY_POSITION": [
+            {
+                "check": [
+                    "P10"
+                ],
+                "condition": {
+                    "speciality": [
+                        "THERAPIST"
+                    ]
+                }
+            },
+            {
+                "check": [
+                    "P7"
+                ],
+                "condition": {
+                    "speciality": [
+                        "FAMILY_DOCTOR"
+                    ]
+                }
+            }
+        ],
+        "COMPOSITION_SECTION_COUNT_LIMIT": {
+            "check": 100
+        },
+        "COMPOSITION_ENCOUNTER_STATUS": {
+            "check": [
+                "Finished"
+            ]
+        },
+        "COMPOSITION_EVENT_CODE": {
+            "check": [
+                [
+                    "ADOPTION_ADOPTER_RELATIVE_ELIGIBLE"
+                ],
+                [
+                    "ADOPTION_ADOPTER_RELATIVE_INELIGIBLE"
+                ]
+            ]
+        },
+        "COMPOSITION_PRINTFORM_ALLOW_CODES": [
+            {
+                "check": [
+                    "MIS",
+                    "NHS ADMIN"
+                ],
+                "condition": {
+                    "printform_type": {
+                        "code": "INFO_CERTIFICATE",
+                        "system": "COMPOSITION_PRINTFORM_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "NHS ADMIN"
+                ],
+                "condition": {
+                    "printform_type": {
+                        "code": "EXTRACT",
+                        "system": "COMPOSITION_PRINTFORM_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_RESOURCE_PERIOD_START": [
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "episode_of_care",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "care_plan",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "medication_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "service_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "device_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_LIMIT": [
+            {
+                "check": 50,
+                "condition": {
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_LEGAL_ENTITY_TYPE": {
+            "check": [
+                "PRIMARY_CARE"
+            ]
+        },
+        "COMPOSITION_SECTION_CONFIG": [
+            {
+                "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                "contains_resources": true,
+                "is_empty": true,
+                "mandatory": false,
+                "section_allowed": true,
+                "sections": [
+                    {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "contains_resources": true,
+                        "is_empty": true,
+                        "mandatory": false,
+                        "section_allowed": true,
+                        "sections": [
+                            {
+                                "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                                "contains_resources": true,
+                                "is_empty": true,
+                                "mandatory": false,
+                                "section_allowed": true,
+                                "sections": [
+                                    {
+                                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                                        "contains_resources": true,
+                                        "is_empty": true,
+                                        "mandatory": false,
+                                        "section_allowed": true,
+                                        "sections": [
+                                            {
+                                                "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                                                "contains_resources": true,
+                                                "is_empty": true,
+                                                "mandatory": false,
+                                                "section_allowed": true,
+                                                "sections": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_RESOURCE_TERM": [
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "action": "created",
+                    "resource_type": {
+                        "code": "medication_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "action": "issued",
+                    "resource_type": {
+                        "code": "observation",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "action": "asserted",
+                    "resource_type": {
+                        "code": "condition",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "action": "dispensed_at",
+                    "resource_type": {
+                        "code": "medication_dispense",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "action": "performed",
+                    "resource_type": {
+                        "code": "procedure",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "action": "effective",
+                    "resource_type": {
+                        "code": "observation",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "action": "occurrence",
+                    "resource_type": {
+                        "code": "service_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_PREPERSON_ALLOW": [
+            {
+                "check": false
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_RESOURCE_CREATED_AT": [
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "diagnostic_report",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_RESOURCE_STATUS": [
+            {
+                "check": [
+                    "active",
+                    "closed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "episode_of_care",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "finished"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "encounter",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "active",
+                    "completed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "care_plan",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "completed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "procedure",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "completed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "immunization",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "active",
+                    "finished",
+                    "recurrence",
+                    "remission",
+                    "resolved"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "condition",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "final"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "diagnostic_report",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "completed",
+                    "active"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "medication_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "completed",
+                    "active"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "service_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "active"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "division",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "valid"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "observation",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "expired",
+                    "processed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "medication_dispense",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "revoked",
+                    "completed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "device_request",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "unknown",
+                    "completed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "device_dispense",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": [
+                    "completed"
+                ],
+                "condition": {
+                    "resource_type": {
+                        "code": "clinical_impression",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_ATTESTER_MAIN_SPECIALITY": {
+            "check": [
+                "THERAPIST",
+                "FAMILY_DOCTOR"
+            ]
+        },
+        "COMPOSITION_SECTION_SECTION_ENTRY_RESOURCE_PERIOD_END": [
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "encounter",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "procedure",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "diagnostic_report",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 30,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "observation",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            },
+            {
+                "check": {
+                    "max": 365,
+                    "min": 0
+                },
+                "condition": {
+                    "resource_type": {
+                        "code": "clinical_impression",
+                        "system": "eHealth/resources"
+                    },
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_IMMUNIZATION_EXPLANATION_REASON_NOT_GIVEN": [
+            {
+                "check": [
+                    "lack_of_medical_indications",
+                    "lack_of_injection_supply",
+                    "lack_of_vaccine",
+                    "permanent_medical_contraindication",
+                    "temporary_medical_contraindication"
+                ],
+                "condition": {
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_ATTESTER_TYPE": {
+            "check": [
+                "DOCTOR",
+                "SPECIALIST"
+            ]
+        },
+        "COMPOSITION_SECTION_SECTION_ENTRY_IMMUNIZATION_REPORT_ORIGIN": [
+            {
+                "check": [
+                    "CDC",
+                    "DCC",
+                    "FVD",
+                    "HCCV",
+                    "ICVP",
+                    "UA063o",
+                    "UAICVP",
+                    "historical_record"
+                ],
+                "condition": {
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_CATEGORY_SIGN_DATE_REPLACE": {
+            "check": {
+                "max": 30,
+                "min": 0
+            }
+        },
+        "COMPOSITION_ENCOUNTER_SIGN_TERM": {
+            "check": {
+                "max": 30,
+                "min": 0
+            }
+        },
+        "COMPOSITION_SECTION_TITLE_MANUAL_FILL": [
+            {
+                "check": true,
+                "condition": {
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_EVENT_PERIOD_DURATION": [
+            {
+                "check": {
+                    "units": "years",
+                    "value": 1
+                },
+                "condition": {
+                    "age": {
+                        "max": {
+                            "units": "years",
+                            "value": 70
+                        },
+                        "min": {
+                            "units": "years",
+                            "value": 3
+                        }
+                    },
+                    "event_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_ELIGIBLE",
+                        "system": "COMPOSITION_EVENTS"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_ATTESTER_POSITION": {
+            "check": [
+                "P7",
+                "P10"
+            ]
+        },
+        "COMPOSITION_AUTHOR_TYPE": {
+            "check": [
+                "АSSISTANT",
+                "DOCTOR",
+                "SPECIALIST"
+            ]
+        },
+        "COMPOSITION_SECTION_ENTRY_LIMIT": {
+            "check": 100
+        },
+        "COMPOSITION_AUTHOR_VERIFICATION_STATUS": {
+            "check": [
+                "VERIFIED"
+            ]
+        },
+        "COMPOSITION_ATTESTER_SPECIALITY": {
+            "check": [
+                "THERAPIST",
+                "FAMILY_DOCTOR"
+            ]
+        },
+        "COMPOSITION_SECTION_SECTION_ENTRY_RESOURCES": [
+            {
+                "check": [
+                    {
+                        "code": "episode_of_care",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "diagnostic_report",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "encounter",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "care_plan",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "activity",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "procedure",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "condition",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "observation",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "immunization",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "medication_request",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "service_request",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "medication_dispense",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "device_request",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "device_dispense",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "clinical_impression",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "division",
+                        "system": "eHealth/resources"
+                    },
+                    {
+                        "code": "employee",
+                        "system": "eHealth/resources"
+                    }
+                ],
+                "condition": {
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_SECTION_SECTION_ENTRY_CONDITION_VERIFICATION_STATUS": [
+            {
+                "check": [
+                    "confirmed",
+                    "differential",
+                    "entered_in_error"
+                ],
+                "condition": {
+                    "section_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_FREE_SECTION",
+                        "system": "COMPOSITION_SECTION_CODES"
+                    }
+                }
+            }
+        ],
+        "COMPOSITION_EVENT_PERIOD_END_EMPTY": [
+            {
+                "check": true,
+                "condition": {
+                    "event_code": {
+                        "code": "ADOPTION_ADOPTER_RELATIVE_INELIGIBLE",
+                        "system": "COMPOSITION_EVENTS"
+                    }
+                }
+            }
+        ]
+    }
+order: 5000

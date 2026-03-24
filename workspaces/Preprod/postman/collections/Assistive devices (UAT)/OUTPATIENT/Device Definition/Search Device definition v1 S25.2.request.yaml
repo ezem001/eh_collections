@@ -1,0 +1,14 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/device_definitions?classification_type=30221&model_number=testUAT&name=test&name_type=patient_reported
+method: GET
+headers:
+  Authorization: Bearer {{physio_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  classification_type: "30221"
+  model_number: testUAT
+  name: test
+  name_type: patient_reported
+order: 2000

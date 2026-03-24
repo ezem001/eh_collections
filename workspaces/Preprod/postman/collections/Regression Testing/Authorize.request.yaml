@@ -1,0 +1,49 @@
+$kind: http-request
+url: "{{auth_host}}/oauth/apps/authorize"
+method: POST
+headers:
+  Authorization: Bearer {{access_token}}
+body:
+  type: json
+  content: "{\r
+
+    \    \"app\": {\r
+
+    \        \"client_id\": \"{{user_legal_entity}}\",\r
+
+    \        \"redirect_uri\": \"{{user_redirect_uri}}\",\r
+
+    \        \"scope\": \"{{user_scopes}}\"\r
+
+    \    }\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Authorize - PASS. Status code is 201\", () => {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      const locationHeader = pm.response.headers.get(\"Location\");\r
+
+      \r
+
+      if (locationHeader) {\r
+
+      \    const userCode = locationHeader.split('=')[1];\r
+
+      \    pm.environment.set(\"user_code\", userCode);\r
+
+      \    console.log(\"User Code:\", userCode);\r
+
+      } else {\r
+
+      \    console.warn(\"Location header not found in response.\");\r
+
+      }\r\n"
+    language: text/javascript
+order: 3000

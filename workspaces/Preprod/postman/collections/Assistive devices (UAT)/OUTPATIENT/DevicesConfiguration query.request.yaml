@@ -1,0 +1,61 @@
+$kind: graphql-request
+name: DevicesConfiguration query
+url: https://admin-demo.ehealth.gov.ua/graphql
+query: >-
+  query DevicesConfigurations($filter: DevicesConfigurationFilter, $orderBy:
+  DevicesConfigurationOrderBy, $first: Int, $last: Int, $before: String, $after:
+  String, $skip: Boolean = false) {
+    devicesConfigurations(first: $first, filter: $filter, orderBy: $orderBy, before: $before, after: $after, last: $last) @skip(if: $skip) {
+      nodes {
+        config {
+          deviceParameterAllowedValues {
+            check
+            condition {
+              code
+              system
+              __typename
+            }
+            __typename
+          }
+          deviceRequiredParameters {
+            check {
+              code
+              system
+              __typename
+            }
+            __typename
+          }
+          __typename
+        }
+        deviceCode
+        deviceCodeSystem
+        __typename
+      }
+      pageInfo {
+        ...PageInfo
+        __typename
+      }
+      __typename
+    }
+  }
+
+
+  fragment PageInfo on PageInfo {
+    endCursor
+    hasNextPage
+    hasPreviousPage
+    startCursor
+    __typename
+  }
+variables: |-
+  {
+          "skip": false,
+          "filter": {
+              "deviceCodeSystem": "eHealth/assistive_devices",
+              "deviceCode": "12_03_16"
+          },
+          "first": 100
+      }
+headers:
+  Authorization: ""
+order: 7000

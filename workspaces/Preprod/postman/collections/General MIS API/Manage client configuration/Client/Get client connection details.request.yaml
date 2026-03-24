@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/clients/a2e2b364-29f6-4412-b80a-cbb33e388833/connections/39b\
+  6b318-1cdf-48d7-9f5f-ce8e34ca2c0e"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  x-custom-psk: "{{x-custom-psk}}"
+order: 4000

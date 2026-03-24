@@ -1,0 +1,336 @@
+$kind: http-request
+url: "{{host}}/api/v2/legal_entities/{{user_legal_entity}}"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  X-Custom-PSK: "{{x-custom-psk}}"
+scripts:
+  - type: afterResponse
+    code: "const data = pm.response.json().data;\r
+
+      \r
+
+      const ownerRaw = pm.environment.get('owner_data');\r
+
+      const owner = ownerRaw ? JSON.parse(ownerRaw) : {};\r
+
+      const party = owner.party || {};\r
+
+      const documents = party.documents || [];\r
+
+      \r
+
+      const noTaxId = party.no_tax_id === true;\r
+
+      const taxId = noTaxId\r
+
+      \    ? (documents.length > 0 ? documents[0].number : data.edrpou)\r
+
+      \    : (party.tax_id || data.edrpou);\r
+
+      console.log(taxId)\r
+
+      \r
+
+      \r
+
+      const finalJson = {\r
+
+      \    edrpou: data.edrpou,\r
+
+      \    type: data.type,\r
+
+      \    residence_address: { ...data.residence_address },\r
+
+      \    phones: data.phones,\r
+
+      \    email: data.email,\r
+
+      \    website: data.website,\r
+
+      \    receiver_funds_code: data.receiver_funds_code,\r
+
+      \    beneficiary: data.beneficiary,\r
+
+      \    owner: {\r
+
+      \        first_name: party.first_name || \"\",\r
+
+      \        last_name: party.last_name || \"\",\r
+
+      \        second_name: party.second_name || \"\",\r
+
+      \        tax_id: taxId,\r
+
+      \        no_tax_id: noTaxId,\r
+
+      \        birth_date: party.birth_date || \"\",\r
+
+      \        gender: party.gender || \"MALE\",\r
+
+      \        email: party.email || data.email,\r
+
+      \        documents: documents,\r
+
+      \        phones: party.phones || data.phones,\r
+
+      \        position: owner.position || \"P1\"\r
+
+      \    },\r
+
+      \    accreditation: {\r
+
+      \        category: data.accreditation?.category || \"\",\r
+
+      \        issued_date: data.accreditation?.issued_date || \"\",\r
+
+      \        expiry_date: data.accreditation?.expiry_date || \"\",\r
+
+      \        order_no: data.accreditation?.order_no || \"\",\r
+
+      \        order_date: data.accreditation?.order_date || \"\"\r
+
+      \    },\r
+
+      \    license: {\r
+
+      \        active_from_date: data.license?.active_from_date || \"\",\r
+
+      \        expiry_date: data.license?.expiry_date || \"\",\r
+
+      \        issued_by: data.license?.issued_by || \"\",\r
+
+      \        issued_date: data.license?.issued_date || \"\",\r
+
+      \        license_number: data.license?.license_number || \"\",\r
+
+      \        order_no: data.license?.order_no || \"\",\r
+
+      \        type: data.license?.type || \"\",\r
+
+      \        what_licensed: data.license?.what_licensed || \"\"\r
+
+      \    },\r
+
+      \    archive: data.archive || [],\r
+
+      \    security: {\r
+
+      \        redirect_uri: data.security?.redirect_uri ||
+      \"https://test89.com\"\r
+
+      \    },\r
+
+      \    public_offer: {\r
+
+      \        consent_text: data.public_offer?.consent_text || \"Consent
+      text\",\r
+
+      \        consent: data.public_offer?.consent ?? true\r
+
+      \    }\r
+
+      };\r
+
+      \r
+
+      pm.visualizer.set(`\r
+
+      \    <style>\r
+
+      \        pre {\r
+
+      \            background-color: #f6f8fa;\r
+
+      \            padding: 16px;\r
+
+      \            border-radius: 5px;\r
+
+      \            font-family: monospace;\r
+
+      \            white-space: pre-wrap;\r
+
+      \        }\r
+
+      \        button {\r
+
+      \            margin-bottom: 10px;\r
+
+      \            padding: 5px 10px;\r
+
+      \            border-radius: 4px;\r
+
+      \            border-color: #fff;\r
+
+      \            cursor: pointer;\r
+
+      \        }\r
+
+      \        button:hover{\r
+
+      \            border-color: #000;\r
+
+      \        }\r
+
+      \    </style>\r
+
+      \    <h3>Згенерований JSON</h3>\r
+
+      \    <button onclick=\"copyToClipboard()\">Скопіювати JSON</button>\r
+
+      \    <pre id=\"jsonOutput\">{{json}}</pre>\r
+
+      \    <script>\r
+
+      \        function copyToClipboard() {\r
+
+      \            const text =
+      document.getElementById('jsonOutput').innerText;\r
+
+      \            const textArea = document.createElement('textarea');\r
+
+      \            textArea.value = text;\r
+
+      \            document.body.appendChild(textArea);\r
+
+      \            textArea.select();\r
+
+      \            try {\r
+
+      \                document.execCommand('copy');\r
+
+      \                alert('JSON скопійовано!');\r
+
+      \            } catch (err) {\r
+
+      \                alert('Помилка копіювання: ' + err);\r
+
+      \            }\r
+
+      \            document.body.removeChild(textArea);\r
+
+      \        }\r
+
+      \    </script>\r
+
+      `, {\r
+
+      \    json: JSON.stringify(finalJson, null, 2)\r
+
+      });\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "// Отримати власника через додатковий запит\r
+
+      pm.sendRequest({\r
+
+      \    url:
+      `${pm.globals.get('host')}/api/employees?page=1&page_size=1000`,\r
+
+      \    method: 'GET',\r
+
+      \    header: {\r
+
+      \        'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \        'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \        'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \    }\r
+
+      }, function (err, response) {\r
+
+      \    if (err) {\r
+
+      \        console.error('Request error:', err);\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const employees = response.json().data;\r
+
+      \    const ownerEmployee = employees.find(emp => emp.employee_type ===
+      'OWNER' && emp.is_active);\r
+
+      \r
+
+      \    if (!ownerEmployee) {\r
+
+      \        console.warn('Owner not found');\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const ownerId = ownerEmployee.id;\r
+
+      \    console.log(ownerId)\r
+
+      \r
+
+      \    // Зберегти ID власника в середовище\r
+
+      \    pm.environment.set('owner_id', ownerId);\r
+
+      \r
+
+      \    // Тепер виконуємо другий запит з отриманим ownerId\r
+
+      \    pm.sendRequest({\r
+
+      \        url: `${pm.globals.get('host')}/api/employees/${ownerId}`,\r
+
+      \        method: 'GET',\r
+
+      \        header: {\r
+
+      \            'api-key': `${pm.environment.get('mis_client_secret')}`,\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get('x-custom-psk')}`\r
+
+      \        }\r
+
+      \    }, function (err2, response2) {\r
+
+      \        if (err2) {\r
+
+      \            console.error('Request 2 error:', err2);\r
+
+      \            return;\r
+
+      \        }\r
+
+      \r
+
+      \        const ownerData = response2.json().data;\r
+
+      \        console.log(ownerData)\r
+
+      \r
+
+      \        // Зберігаємо потрібні поля для подальшого використання у Test
+      Script\r
+
+      \        pm.environment.set('owner_data', JSON.stringify(ownerData));\r
+
+      \    });\r
+
+      })"
+    language: text/javascript
+order: 3000

@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/sms_verifications"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r
+
+    \  \"factor\": \"+380501112233\",\r
+
+    \  \"type\": \"SMS\",\r
+
+    \  \"content_hash\": \"76dea970d89477ed03dc5289f297443c\"\r
+
+    }"
+order: 4000

@@ -1,0 +1,31 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/declarations/8f536f09-b58b-41cf-9af5-83c678b658d7
+method: GET
+headers:
+  Authorization: Bearer {{employee_access_token}}
+  api-key: 30276e63617461a185ec
+  X-Custom-PSK: "{{mis_dev_x_custom_psk}}"
+scripts:
+  - type: afterResponse
+    code: >-
+      tests["Status code is 200"] = responseCode.code === 200;
+
+      var jsonData = JSON.parse(responseBody);
+
+
+      if (jsonData.data){
+          var person_first_name = jsonData.data.person.first_name;
+          var person_last_name = jsonData.data.person.last_name;
+          var person_birth_date = jsonData.data.person.birth_date;
+
+          postman.setEnvironmentVariable("person_first_name", person_first_name);
+          postman.setEnvironmentVariable("person_last_name", person_last_name);
+          postman.setEnvironmentVariable("person_birth_date", person_birth_date);
+      } else {
+          tests["Response contains employees"] = false;
+          postman.setEnvironmentVariable("person_first_name", "<<undefined>>");
+          postman.setEnvironmentVariable("person_last_name", "<<undefined>>");
+          postman.setEnvironmentVariable("person_birth_date", "<<undefined>>");
+      }
+    language: text/javascript
+order: 3000

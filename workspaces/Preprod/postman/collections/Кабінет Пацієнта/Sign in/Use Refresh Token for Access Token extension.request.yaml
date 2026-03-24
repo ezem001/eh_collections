@@ -1,0 +1,25 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/oauth/tokens
+method: POST
+headers:
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: Content-Type
+    value: application/json
+    disabled: true
+  - key: api-key
+    value: ZUE4N0dPc2lJUVoxcXdhTnlkYm1tUT09
+    disabled: true
+body:
+  type: json
+  content: |-
+    {
+      "token": {
+        "client_id": "6e39ce2e-520b-4905-890f-7fc69acfe85c",
+        "client_secret": "83550c00774bb2151a95c1b00d16af1f",
+        "refresh_token": "dnhNcEIrR1VQNGxWL2QrQWV3eHFXUT09",
+        "grant_type": "refresh_token"
+      }
+    }
+order: 8000

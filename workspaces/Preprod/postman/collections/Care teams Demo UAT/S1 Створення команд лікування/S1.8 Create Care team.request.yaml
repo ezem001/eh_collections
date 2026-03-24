@@ -1,0 +1,31 @@
+$kind: http-request
+name: S1.8 Create Care team
+url: https://api-demo.ehealth.gov.ua/api/care_teams
+method: POST
+headers:
+  api-key: 30276e63617461a185ec
+  Authorization: ""
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+        "category": "surgical_care_team",
+        "name": "тестова команда лікування",
+        "email": "test_care_team_123@ukr.net",
+        "phones": [
+            {
+                "type": "MOBILE",
+                "number": "+380976677554"
+            },
+            {
+                "type": "LAND_LINE",
+                "number": "+380448877554"
+            }
+        ],
+        "period_start": "2025-11-01",
+        "status": "draft",
+        "note": "тестова примітка до команди лікування",
+        "author_employee_id": "92929916-5eec-4d80-ac52-2b23ef7e5f4e"
+    }
+order: 14000

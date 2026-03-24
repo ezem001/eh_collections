@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{host}}/api/patients/2c46cd1d-3e28-4f8c-a35c-645019b27c3b/service_reques\
+  ts?episode_id=dc40dfb2-2c33-449e-b25d-d58403f150ba&status=active&care_plan_id\
+  =e87d92b2-1b55-46df-9096-801381e9b638"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+queryParams:
+  - key: episode_id
+    value: dc40dfb2-2c33-449e-b25d-d58403f150ba
+  - key: status
+    value: active
+  - key: requester_legal_entity
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: used_by_legal_entity
+    value: 8075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+  - key: code
+    value: 9075e0e2-6b57-47fd-aff7-324806efa7e6
+    disabled: true
+  - key: care_plan_id
+    value: e87d92b2-1b55-46df-9096-801381e9b638
+  - key: based_on
+    value: ef30f210-5328-4f48-bfe6-c7150d4737a6
+    disabled: true
+  - key: managing_organization_id
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: encounter_id
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+settings:
+  disabledSystemHeaders: []
+order: 1000

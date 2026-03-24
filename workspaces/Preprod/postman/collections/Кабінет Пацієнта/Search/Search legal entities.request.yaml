@@ -1,0 +1,32 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/api/pis/legal_entities?settlement_id=fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494&settlement=ЧУГУЇВ&page=1&page_size=50
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
+    disabled: true
+  - key: Authorization
+    value: Bearer V3RWUW5jVzRnWllHWWw2MkJSWDZ2UT09
+    disabled: true
+queryParams:
+  - key: type
+    value: MSP
+    disabled: true
+  - key: settlement_id
+    value: fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494
+  - key: settlement
+    value: ЧУГУЇВ
+  - key: name
+    value: ""
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+examples: ./.resources/Search legal entities.resources/examples
+order: 1000

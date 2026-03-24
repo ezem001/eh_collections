@@ -1,0 +1,156 @@
+$kind: http-request
+url: "{{host}}/api/divisions/{{user_division_id}}"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Перший підрозділ - ЕЛЕКТРОННЕ ЗДОРОВ'Я\",\r
+
+    \    \"addresses\": [\r
+
+    \        {\r
+
+    \            \"apartment\": \"23\",\r
+
+    \            \"area\": \"ХАРКІВСЬКА\",\r
+
+    \            \"building\": \"15\",\r
+
+    \            \"country\": \"UA\",\r
+
+    \            \"region\": \"ЧУГУЇВСЬКИЙ\",\r
+
+    \            \"settlement\": \"ВЕЛИКА БАБКА\",\r
+
+    \            \"settlement_id\": \"7a438190-5b6f-4341-b25d-0b19f46c320f\",\r
+
+    \            \"settlement_type\": \"VILLAGE\",\r
+
+    \            \"street\": \"вул. Ніжинська\",\r
+
+    \            \"street_type\": \"STREET\",\r
+
+    \            \"type\": \"RESIDENCE\",\r
+
+    \            \"zip\": \"02090\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"phones\": [\r
+
+    \        {\r
+
+    \            \"type\": \"MOBILE\",\r
+
+    \            \"number\": \"+380448888885\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"email\": \"test@email.com\",\r
+
+    \    \"working_hours\": {\r
+
+    \        \"fri\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"15.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"mon\": [\r
+
+    \            [\r
+
+    \                \"08.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ],\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"21.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"thu\": [\r
+
+    \            [\r
+
+    \                \"08.00\",\r
+
+    \                \"19.35\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"tue\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"18.00\"\r
+
+    \            ]\r
+
+    \        ],\r
+
+    \        \"wed\": [\r
+
+    \            [\r
+
+    \                \"09.00\",\r
+
+    \                \"15.00\"\r
+
+    \            ],\r
+
+    \            [\r
+
+    \                \"14.00\",\r
+
+    \                \"22.00\"\r
+
+    \            ]\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"type\": \"CLINIC\",\r
+
+    \    \"legal_entity_id\": \"{{user_legal_entity}}\",\r
+
+    \    \"external_id\": \"3213213\",\r
+
+    \    \"location\": {\r
+
+    \        \"latitude\": 49.3333333,\r
+
+    \        \"longitude\": 36.3333333\r
+
+    \    }\r
+
+    }"
+order: 2000

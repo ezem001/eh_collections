@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/admin/roles/id"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 2000

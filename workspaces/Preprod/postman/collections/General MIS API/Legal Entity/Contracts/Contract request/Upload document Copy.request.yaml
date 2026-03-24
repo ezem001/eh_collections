@@ -1,0 +1,17 @@
+$kind: http-request
+url: https://storage-preprod-01.ehealth.gov.ua/contract-requests/7f/91/41/b8/2f/7faa744e-915c-416d-b848-2f2c1a5a7e24/media/upload_contract_request_statute.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=wnv4Y3pMhwiaF7Eq%2F20250611%2Fs3-preprod%2Fs3%2Faws4_request&X-Amz-Date=20250611T191508Z&X-Amz-Expires=7200&X-Amz-SignedHeaders=host&X-Amz-Signature=cb624fe755b6dd37ba5cd60a762d3b5c728cde0406d7a81cd5f104880347deab
+method: PUT
+headers:
+  Content-Type: image/jpeg
+queryParams:
+  X-Amz-Algorithm: AWS4-HMAC-SHA256
+  X-Amz-Credential: wnv4Y3pMhwiaF7Eq%2F20250611%2Fs3-preprod%2Fs3%2Faws4_request
+  X-Amz-Date: 20250611T191508Z
+  X-Amz-Expires: "7200"
+  X-Amz-SignedHeaders: host
+  X-Amz-Signature: cb624fe755b6dd37ba5cd60a762d3b5c728cde0406d7a81cd5f104880347deab
+body:
+  type: file
+  content:
+    src: postman-cloud:///1ef66c68-3e78-4280-8f60-872c4c3dd8e8
+order: 5000

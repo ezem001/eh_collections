@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/episodes/{{jobEpisodeID\
+  }}/observations"
+method: GET
+headers:
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custum-psk}}"
+queryParams:
+  - key: code
+    value: 10569-2
+    disabled: true
+  - key: issued_from
+    value: 1990-01-01
+    disabled: true
+  - key: issued_to
+    value: 2000-01-01
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 5000

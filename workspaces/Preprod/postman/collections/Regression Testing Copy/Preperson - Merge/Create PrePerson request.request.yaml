@@ -1,0 +1,50 @@
+$kind: http-request
+url: "{{host}}/api/prepersons"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: |-
+    {
+      "external_id": "3999869394.2799207815.1",
+      "first_name": "Преперсона",
+      "last_name": "Регрес",
+      "gender": "FEMALE",
+      "birth_date": "2024-11-20",
+      "emergency_contact": {
+        "first_name": "Ольга",
+        "last_name": "Комо",
+        "second_name": "Іванівнович",
+        "phones": [
+          {
+            "type": "MOBILE",
+            "number": "+380951364443"
+          }
+        ]
+      },
+      "note": "Зареєстрований у тестових цілях"
+    }
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Preperson create successful\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      \r
+
+      \    const jsonData = pm.response.json();\r
+
+      \r
+
+      \    setTimeout(() => { pm.globals.set('preperson_id', jsonData.data.id)
+      }, 90000)\r
+
+      \r
+
+      });\r\n"
+    language: text/javascript
+order: 1000

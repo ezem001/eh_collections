@@ -1,0 +1,64 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/api/pis/divisions?type=CLINIC&healthcare_service_providing_condition=OUTPATIENT&legal_entity_type=MSP&page=1&page_size=50
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
+    disabled: true
+  - key: Authorization
+    value: Bearer V3RWUW5jVzRnWllHWWw2MkJSWDZ2UT09
+    disabled: true
+queryParams:
+  - key: type
+    value: CLINIC
+  - key: name
+    value: "%D0%92%D1%96%D0%B4%D0%B4%D1%96%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F1"
+    disabled: true
+  - key: area
+    value: "%D0%92%D0%BE%D0%BB%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B0"
+    disabled: true
+  - key: region
+    value: "%D0%9B%D1%83%D1%86%D1%8C%D0%BA%D0%B8%D0%B9"
+    disabled: true
+  - key: settlement_id
+    value: b075f148-7f93-4fc2-b2ec-2d81b19a9b7b
+    disabled: true
+  - key: settlement
+    value: "%D0%9B%D1%83%D1%86%D1%8C%D0%BA"
+    disabled: true
+  - key: location_north
+    value: "30.1233"
+    disabled: true
+  - key: location_east
+    value: "50.32423"
+    disabled: true
+  - key: location_south
+    value: "50.32423"
+    disabled: true
+  - key: location_west
+    value: "50.32423"
+    disabled: true
+  - key: healthcare_service_speciality_type
+    value: FAMILY_DOCTOR
+    disabled: true
+  - key: healthcare_service_providing_condition
+    value: OUTPATIENT
+  - key: legal_entity_id
+    value: b075f148-7f93-4fc2-b2ec-2d81b19a9b7b
+    disabled: true
+  - key: legal_entity_name
+    value: "%D0%90%D0%BF%D1%82%D0%B5%D0%BA%D0%B0%20199"
+    disabled: true
+  - key: legal_entity_type
+    value: MSP
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+examples: ./.resources/Search divisions.resources/examples
+order: 3000

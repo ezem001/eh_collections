@@ -1,0 +1,424 @@
+$kind: http-request
+url: "{{host}}/api/merge_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+body:
+  type: text
+  content: "{\r
+
+    \  \"master_person_id\": \"{{patient_for_regress}}\",\r
+
+    \  \"merge_person_id\": \"{{preperson_id}}\",\r
+
+    \  \"authorize_with\": \"{{patient_authentication_methods_in_approval}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: " const jsonData = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      if (jsonData.data.id) {\r
+
+      \    const personReqId = jsonData.data.id\r
+
+      \    console.log(personReqId)\r
+
+      \    pm.globals.set(\"merge_req_id\", personReqId);\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // Function to handle each URL request\r
+
+      function processUrl(url, additionalData) {\r
+
+      \    console.log(url, 'urls loop');\r
+
+      \   \r
+
+      \    pm.sendRequest({\r
+
+      \        url: url,\r
+
+      \        method: 'PUT',\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'image/jpeg'\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify(additionalData) // Include additional
+      data in the body\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Request failed:', err);\r
+
+      \            displayResponse('Request Error', { error: err.message });\r
+
+      \        } else {\r
+
+      \            let responseData;\r
+
+      \r
+
+      \            // Check content type to determine how to parse the
+      response\r
+
+      \            const contentType = res.headers.get('Content-Type');\r
+
+      \            console.log(contentType)\r
+
+      \            if (contentType && contentType.includes('text/plain')) {\r
+
+      \                try {\r
+
+      \                     // Handle TEXT response if needed\r
+
+      \                responseData = res.text(); // Get response as text\r
+
+      \                displayResponse('Document sign successful', { response:
+      responseData });\r
+
+      \                } catch (e) {\r
+
+      \                    console.error('JSON parsing error:', e);\r
+
+      \                    displayResponse('Parsing Error', { error: 'Failed to
+      parse JSON' });\r
+
+      \                    return;\r
+
+      \                }\r
+
+      \                // displayResponse('Document sign successful',
+      responseData);\r
+
+      \            } else {\r
+
+      \                // Handle other response types if needed\r
+
+      \                responseData = res.text(); // Default to text for unknown
+      formats\r
+
+      \                displayResponse('Unknown Response Format', { response:
+      responseData });\r
+
+      \            }\r
+
+      \        }\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      const resData = pm.response.json();\r
+
+      \r
+
+      // Extract URLs from the documents array in the response\r
+
+      const documents = resData.urgent.documents;\r
+
+      const urls = documents.map(doc => doc.url);\r
+
+      \r
+
+      const additionalData = {\r
+
+      \    row: '0JTQvtC60YPQvNC10L3Rgg=='\r
+
+      };\r
+
+      \r
+
+      // Process each URL from the documents array\r
+
+      urls.forEach(url => {\r
+
+      \    processUrl(url, additionalData);\r
+
+      });\r
+
+      \r
+
+      tests[\"Status code is 201\"] = responseCode.code === 201;\r\n"
+    language: text/javascript
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const id = uuid.v4();\r
+
+      \r
+
+      setTimeout(() => {\r
+
+      \    pm.sendRequest({\r
+
+      \r
+
+      \        url:
+      `${pm.globals.get('host')}/api/patients/${pm.globals.get('preperson_id')}\
+      /episodes`,\r
+
+      \        method: \"POST\",\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \            'Authorization': `Bearer ${accessToken}`,\r
+
+      \            'api-key': `${pm.environment.get(\"mis_client_secret\")}`,\r
+
+      \            'X-Custom-PSK': `${pm.globals.get(\"x-custom-psk\")}`\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: \"raw\",\r
+
+      \            raw: JSON.stringify({\r
+
+      \                \"id\": id,\r
+
+      \                \"name\": \"Епізод QA_30\",\r
+
+      \                \"status\": \"active\",\r
+
+      \                \"type\": {\r
+
+      \                    \"system\": \"eHealth/episode_types\",\r
+
+      \                    \"code\": \"TREATMENT\"\r
+
+      \                },\r
+
+      \                \"period\": {\r
+
+      \                    \"start\": \"2025-02-05T09:32:02.308Z\"\r
+
+      \                },\r
+
+      \                \"managing_organization\": {\r
+
+      \                    \"identifier\": {\r
+
+      \                        \"type\": {\r
+
+      \                            \"coding\": [\r
+
+      \                                {\r
+
+      \                                    \"system\": \"eHealth/resources\",\r
+
+      \                                    \"code\": \"legal_entity\"\r
+
+      \                                }\r
+
+      \                            ]\r
+
+      \                        },\r
+
+      \                        \"value\":
+      `${pm.environment.get('user_legal_entity')}`\r
+
+      \                    }\r
+
+      \                },\r
+
+      \                \"care_manager\": {\r
+
+      \                    \"identifier\": {\r
+
+      \                        \"type\": {\r
+
+      \                            \"coding\": [\r
+
+      \                                {\r
+
+      \                                    \"system\": \"eHealth/resources\",\r
+
+      \                                    \"code\": \"employee\"\r
+
+      \                                }\r
+
+      \                            ]\r
+
+      \                        },\r
+
+      \                        \"value\": `${pm.environment.get('user_id')}`\r
+
+      \                    }\r
+
+      \                }\r
+
+      \            })\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \        console.error(err);\r
+
+      \        console.log(res.json());\r
+
+      \    });\r
+
+      \r
+
+      }, 30000); // Затримка 30 секунд\r
+
+      \r
+
+      \r
+
+      \r
+
+      const patientId = pm.globals.get(\"patient_for_regress\");\r
+
+      const url =
+      `${pm.globals.get(\"host\")}/api/persons/${patientId}/authentication_meth\
+      ods`;\r
+
+      const accessToken = pm.environment.get('access_token');\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    console.log(title, data)\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url: url,\r
+
+      \    method: 'GET',\r
+
+      \    header: {\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \        'Authorization': `Bearer ${accessToken}`,\r
+
+      \        'api-key': `${pm.environment.get(\"mis_client_secret\")}`,\r
+
+      \        'X-Custom-PSK': `${pm.globals.get(\"x-custom-psk\")}`\r
+
+      \    }\r
+
+      }, function (err, res) {\r
+
+      \    if (err) {\r
+
+      \        console.error('Error in request:', err);\r
+
+      \    } else {\r
+
+      \        console.log('Response Status:', res.status);\r
+
+      \        console.log('Response Body:', res.text());\r
+
+      \r
+
+      \        // Optional: Process the response data if needed\r
+
+      \        try {\r
+
+      \            const responseData = res.json();\r
+
+      \r
+
+      \            // Extract the ID from the response data\r
+
+      \            if (responseData.data && responseData.data.length > 0) {\r
+
+      \                const id = responseData.data[0].id;\r
+
+      \r
+
+      \                // Set the extracted ID in the Postman globals\r
+
+      \                pm.globals.set('patient_authentication_methods_in_approv\
+      al', id);\r
+
+      \r
+
+      \                displayResponse('Patient authentication methods in
+      approval details', responseData)\r
+
+      \                console.log('Global Variable \"authenticationMethodID\"
+      set to:', id);\r
+
+      \            } else {\r
+
+      \                console.log('No data found in response.');\r
+
+      \            }\r
+
+      \r
+
+      \            console.log('Parsed Response Data:', responseData.data);\r
+
+      \        } catch (parseError) {\r
+
+      \            console.error('Error parsing response JSON:', parseError);\r
+
+      \        }\r
+
+      \    }\r
+
+      });"
+    language: text/javascript
+order: 4000

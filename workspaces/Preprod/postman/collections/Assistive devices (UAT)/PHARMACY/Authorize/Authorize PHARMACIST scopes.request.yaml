@@ -1,0 +1,33 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/oauth/apps/authorize
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: ef7d48ecfc233d6af088
+  Authorization: Bearer {{pharm_session_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: >-
+    {
+       "app":{
+          "client_id":"595742fe-d5ee-4153-9995-f05928e77018",
+          "redirect_uri":"https://example2.com",
+          "scope":"division:read employee:read employee_request:approve employee_request:reject employee_request:read legal_entity:read medication_dispense:process medication_dispense:write medication_dispense:reject healthcare_service:read employee_role:read license:read medication_request:details_pharm medication_request:reject_pharm medication_dispense:read_pharm party_verification:details party_verification:write device_dispense:write device_dispense:read device_dispense:stop device_request:read device_dispense:complete device_request:complete device_dispense:mark_in_error medication_request:block_pharm medication_request:unblock_pharm"
+       }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      tests["Status code is 201"] = responseCode.code === 201;
+
+      var jsonData = JSON.parse(responseBody);
+
+      if (jsonData.data && jsonData.data.value) {
+          var code_grant = jsonData.data.value;
+          postman.setEnvironmentVariable("pharm_code_grant", code_grant);
+      } else {
+          postman.setEnvironmentVariable("pharm_code_grant", "<<undefined>>");
+      }
+    language: text/javascript
+order: 2000

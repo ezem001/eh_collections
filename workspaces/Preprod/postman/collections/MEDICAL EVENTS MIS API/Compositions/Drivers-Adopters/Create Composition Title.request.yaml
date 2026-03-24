@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id_from_episode}}/composition_title?compo\
+  sition_type=DRIVERS"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: 0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b
+queryParams:
+  - key: composition_type
+    value: DRIVERS
+  - key: composition_type
+    value: ADOPTION
+    disabled: true
+  - key: composition_type
+    value: DRIVERS_GROUP1
+    disabled: true
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: >-
+      
+      const resData = pm.response.json();
+
+
+      pm.test(`Composition title. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {
+          pm.expect(pm.response.code).to.eql(200);
+          pm.globals.set('composition_stitle', resData.data.title);
+      });
+    language: text/javascript
+order: 4000

@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{host}}/api/forbidden_groups/67cce94f-16a3-46ec-9ce9-7a6daa262138"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+order: 2000

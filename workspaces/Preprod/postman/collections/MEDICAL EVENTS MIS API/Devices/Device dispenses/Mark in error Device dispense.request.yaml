@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/device_dispenses/device_dispense_id\
+  /actions/mark_in_error"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer Tys5L0dUSzYwUS83ZDVIdzdvdDBJdz09
+  api-key: "{{demo-api-key}}"
+  "{{X-Custom-PSK}}": "{{x-custom_demo}}"
+body:
+  type: text
+  content: "\r
+
+    {\r
+
+    \  \"signed_data\": \"ew0KICAicGVyaW9kIjogew0KIC...\"\r
+
+    }"
+order: 6000

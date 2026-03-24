@@ -1,0 +1,54 @@
+$kind: http-request
+url: "{{host}}/api/v2/persons?first_name=Марія&last_name=Кобилянський&birth_dat\
+  e=2026-02-19&language=uk&document_type=BIRTH_CERTIFICATE&document_number=ЗГ49\
+  9743"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: second_name
+    value: Іванівна
+    disabled: true
+  - key: first_name
+    value: Марія
+  - key: last_name
+    value: Кобилянський
+  - key: tax_id
+    value: "5348639037"
+    disabled: true
+  - key: birth_date
+    value: 2026-02-19
+  - key: language
+    value: uk
+  - key: document_type
+    value: BIRTH_CERTIFICATE
+    description: FOREIGN_PASSPORT
+  - key: document_number
+    value: ЗГ499743
+  - key: phone_number
+    value: "%2B380634390602"
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: >
+      const { makeLogger } =
+      pm.require('@winter-zodiac-949553/login-display-response');
+
+      const { displayResponse } = makeLogger(pm);
+
+
+      // displayResponse можеш не використовувати — просто лог буде
+    language: text/javascript
+    packages:
+      "@winter-zodiac-949553/login-display-response":
+        id: 019a10d5-f9a5-78e7-a9fc-c27f8777bab5
+settings:
+  disabledSystemHeaders:
+    - accept
+    - user-agent
+    - accept-encoding
+    - connection
+order: 4000

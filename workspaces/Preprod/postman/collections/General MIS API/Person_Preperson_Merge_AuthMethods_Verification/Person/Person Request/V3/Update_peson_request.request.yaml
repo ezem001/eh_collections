@@ -1,0 +1,425 @@
+$kind: http-request
+url: "{{host}}/api/v3/person_requests"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: "{\r
+
+    \    \"person\": {\r
+
+    \        \"id\": \"2229d28b-a232-422f-a6db-2200e5eea711\",\r
+
+    \        \"names\": [\r
+
+    \            {\r
+
+    \                \"first_name\": \"Тамара\",\r
+
+    \                \"last_name\": \"Козак\",\r
+
+    \                \"second_name\": \"Святославівна\",\r
+
+    \                \"language\": \"uk\",\r
+
+    \                \"no_last_name\": false\r
+
+    \            },\r
+
+    \            {\r
+
+    \                \"first_name\": \"Kalyna\",\r
+
+    \                \"last_name\": \"Lytvynenko\",\r
+
+    \                \"second_name\": \"Lavrentiivna\",\r
+
+    \                \"language\": \"en\",\r
+
+    \                \"no_last_name\": false\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"birth_date\": \"1988-11-25\",\r
+
+    \        \"birth_country\": \"Україна\",\r
+
+    \        \"birth_settlement\": \"Київ\",\r
+
+    \        \"gender\": \"FEMALE\",\r
+
+    \        \"email\": \"test@mail.com\",\r
+
+    \        \"no_tax_id\": false,\r
+
+    \        \"tax_id\": \"6791432842\",\r
+
+    \        \"secret\": \"secret\",\r
+
+    \        \"documents\": [\r
+
+    \            {\r
+
+    \                \"type\": \"PASSPORT\",\r
+
+    \                \"number\": \"ІУ735121\",\r
+
+    \                \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                \"issued_at\": \"2017-02-28\",\r
+
+    \                \"expiration_date\": \"2027-02-28\",\r
+
+    \                \"issuing_country\": \"UA\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"addresses\": [\r
+
+    \            {\r
+
+    \                \"type\": \"RESIDENCE\",\r
+
+    \                \"apartment\": \"45Б\",\r
+
+    \                \"area\": \"КИЇВСЬКА\",\r
+
+    \                \"region\": \"Києво-Свят0шинський\",\r
+
+    \                \"building\": \"15\",\r
+
+    \                \"country\": \"UA\",\r
+
+    \                \"settlement\": \"ЧУГУЇВ\",\r
+
+    \                \"settlement_id\":
+    \"fb5e6f07-0c2d-4c5c-8bc5-f0b86bb94494\",\r
+
+    \                \"street\": \"Г0голя\",\r
+
+    \                \"street_type\": \"STREET\",\r
+
+    \                \"zip\": \"02115\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"phones\": [\r
+
+    \            {\r
+
+    \                \"type\": \"MOBILE\",\r
+
+    \                \"number\": \"+380634390602\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"unzr\": \"20090705-00011\",\r
+
+    \        \"emergency_contact\": {\r
+
+    \            \"first_name\": \"Петро\",\r
+
+    \            \"last_name\": \"Іванов\",\r
+
+    \            \"second_name\": \"Миколайович\",\r
+
+    \            \"phones\": [\r
+
+    \                {\r
+
+    \                    \"type\": \"MOBILE\",\r
+
+    \                    \"number\": \"+380503410870\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"patient_signed\": false,\r
+
+    \    \"process_disclosure_data_consent\": true,\r
+
+    \    \"authorize_with\": \"82a247a3-3b1b-40e3-9cf4-a1374cf1f4ea\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const resBody = pm.response.json();\r
+
+      \r
+
+      function displayResponse(title, data) {\r
+
+      \    const html = `\r
+
+      \        <h1>${title}</h1>\r
+
+      \        <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      \    pm.visualizer.set(html);\r
+
+      }\r
+
+      \r
+
+      if (resBody.data.id) {\r
+
+      \    const personReqId = resBody.data.id\r
+
+      \    console.log(personReqId)\r
+
+      \    pm.globals.set(\"Person_req_id\", personReqId);\r
+
+      }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // Function to handle each URL request\r
+
+      function processUrl(url, additionalData) {\r
+
+      \    console.log(url, 'urls loop');\r
+
+      \   \r
+
+      \    pm.sendRequest({\r
+
+      \        url: url,\r
+
+      \        method: 'PUT',\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'image/jpeg'\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify(additionalData) // Include additional
+      data in the body\r
+
+      \        }\r
+
+      \    }, function (err, res) {\r
+
+      \        if (err) {\r
+
+      \            console.error('Request failed:', err);\r
+
+      \            displayResponse('Request Error', { error: err.message });\r
+
+      \        } else {\r
+
+      \            let responseData;\r
+
+      \r
+
+      \            // Check content type to determine how to parse the
+      response\r
+
+      \            const contentType = res.headers.get('Content-Type');\r
+
+      \            console.log(contentType)\r
+
+      \            if (contentType && contentType.includes('text/plain')) {\r
+
+      \                try {\r
+
+      \                     // Handle TEXT response if needed\r
+
+      \                responseData = res.text(); // Get response as text\r
+
+      \                displayResponse('Document sign successful', { response:
+      responseData });\r
+
+      \                } catch (e) {\r
+
+      \                    console.error('JSON parsing error:', e);\r
+
+      \                    displayResponse('Parsing Error', { error: 'Failed to
+      parse JSON' });\r
+
+      \                    return;\r
+
+      \                }\r
+
+      \                // displayResponse('Document sign successful',
+      responseData);\r
+
+      \            } else {\r
+
+      \                // Handle other response types if needed\r
+
+      \                responseData = res.text(); // Default to text for unknown
+      formats\r
+
+      \                displayResponse('Unknown Response Format', { response:
+      responseData });\r
+
+      \            }\r
+
+      \        }\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      const resData = pm.response.json();\r
+
+      \r
+
+      // Extract URLs from the documents array in the response\r
+
+      const documents = resData.urgent.documents;\r
+
+      const urls = documents.map(doc => doc.url);\r
+
+      \r
+
+      const additionalData = {\r
+
+      \    row: '0JTQvtC60YPQvNC10L3Rgg=='\r
+
+      };\r
+
+      \r
+
+      // Process each URL from the documents array\r
+
+      urls.forEach(url => {\r
+
+      \    processUrl(url, additionalData);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      pm.test(\"Create peson request v2 Status code is 201\", function () {\r
+
+      \  pm.response.to.have.status(201);\r
+
+      \r
+
+      \r
+
+      if (!resBody?.data?.id) {\r
+
+      \    throw new Error(\"Person Request: id not found\");\r
+
+      }\r
+
+      \r
+
+      // --- Detect create or update ---\r
+
+      let requestBody = {};\r
+
+      try {\r
+
+      \    requestBody = JSON.parse(pm.request.body.raw);\r
+
+      } catch (e) {}\r
+
+      \r
+
+      if (requestBody.person.id) {\r
+
+      \    // UPDATE\r
+
+      \    pm.globals.set(\r
+
+      \        \"UPDATE_PERSON_RESPONSE\",\r
+
+      \        JSON.stringify(resBody.data)\r
+
+      \    );\r
+
+      \    pm.globals.set(\"PERSON_OPERATION\", \"update\");\r
+
+      } else {\r
+
+      \    // CREATE\r
+
+      \    pm.globals.set(\r
+
+      \        \"CREATE_PERSON_RESPONSE\",\r
+
+      \        JSON.stringify(resBody.data)\r
+
+      \    );\r
+
+      \    pm.globals.set(\"PERSON_OPERATION\", \"create\");\r
+
+      }\r
+
+      \r
+
+      // --- Save request id ---\r
+
+      pm.globals.set(\"PERSON_REQUEST_ID\", resBody.data.id);\r
+
+      \r
+
+      \r
+
+      });\r
+
+      \r
+
+      // Логування запиту та відповіді\r
+
+      \r
+
+      // (function () {\r
+
+      //   // не логувати /log щоб уникнути рекурсії\r
+
+      //   if (pm.request.url.toString().includes('/log')) return;\r
+
+      \r
+
+      //   const logger = pm.require('@winter-zodiac-949553/log-utils')\r
+
+      //   const logPayload = logger.createLogPayload(pm);\r
+
+      //   logger.sendLog(logPayload);\r
+
+      // })();"
+    language: text/javascript
+order: 4000

@@ -1,0 +1,303 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/service_requests/prequalify"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  API-key: "{{mis_client_secret}}"
+  x-custom-psk: "{{x-custom-psk}}"
+body:
+  type: text
+  content: "{\r
+
+    \    \"service_request\": {\r
+
+    \        \"status\": \"active\",\r
+
+    \        \"intent\": \"order\",\r
+
+    \        \"priority\": \"routine\",\r
+
+    \        \"category\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\":
+    \"eHealth/SNOMED/service_request_categories\",\r
+
+    \                    \"code\": \"procedure\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"code\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"service\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"40b2dfdf-7623-4fa5-bbfb-58a6b651ff0c\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"context\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"encounter\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{encounter_extracted_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"occurrence_period\": {\r
+
+    \            \"start\": \"{{serviceRequestStartDate}}\",\r
+
+    \            \"end\": \"{{serviceRequestEndDate}}\"\r
+
+    \        },\r
+
+    \        \"requester_employee\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"requester_legal_entity\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"legal_entity\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_legal_entity}}\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"programs\": [\r
+
+    \        {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"medical_program\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"0eb268fa-ab21-4df9-8d58-1bc85e393533\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "// Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      const today = new Date();\r
+
+      \r
+
+      // Встановлюємо serviceRequestStartDate на завтра\r
+
+      const serviceRequestStartDate = new Date(today);\r
+
+      serviceRequestStartDate.setDate(serviceRequestStartDate.getDate() + 1);\r
+
+      \r
+
+      // Встановлюємо serviceRequestEndDate на 10 днів після
+      serviceRequestStartDate\r
+
+      const serviceRequestEndDate = new Date(serviceRequestStartDate);\r
+
+      serviceRequestEndDate.setDate(serviceRequestEndDate.getDate() + 10);\r
+
+      \r
+
+      // Форматуємо дати у формат ISO 8601\r
+
+      const serviceRequestStartDateISO =
+      serviceRequestStartDate.toISOString();\r
+
+      const serviceRequestEndDateISO = serviceRequestEndDate.toISOString();\r
+
+      \r
+
+      // Зберігаємо у глобальні змінні\r
+
+      pm.globals.set('serviceRequestStartDate', serviceRequestStartDateISO);\r
+
+      pm.globals.set('serviceRequestEndDate', serviceRequestEndDateISO);\r
+
+      \r
+
+      console.log(\"Service Request Start Date:\",
+      serviceRequestStartDateISO);\r
+
+      console.log(\"Service Request End Date:\", serviceRequestEndDateISO);\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // Check if the URL is defined and contains the expected format\r
+
+      if (url && url.includes('encounters/')) {\r
+
+      \    // Extract the ID after 'encounters/'\r
+
+      \    const parts = url.split('encounters/');\r
+
+      \    if (parts.length > 1) {\r
+
+      \        const jobEncounterID = parts[1];\r
+
+      \        \r
+
+      \        // Log the extracted ID to the console (for debugging purposes)\r
+
+      \        console.log('Extracted jobEncounterID:', jobEncounterID);\r
+
+      \        \r
+
+      \        // Optionally, set the extracted ID as an environment variable\r
+
+      \        pm.globals.set('encounter_extracted_id', jobEncounterID);\r
+
+      \    } else {\r
+
+      \        console.error('The URL does not contain the expected format.');\r
+
+      \    }\r
+
+      } else {\r
+
+      \    console.error('The global variable jobEncounterID is not defined or
+      does not contain the expected format.');\r
+
+      }\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"PreQualify Service Request Response status code is 200\",
+      function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"PreQualify Service Request status is VALID\", function () {\r
+
+      \    const resData = pm.response.json();\r
+
+      \    console.log(resData.data[0].status)\r
+
+      \    const status = resData.data[0].status;\r
+
+      \    pm.expect(status).to.eql(\"VALID\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 31000

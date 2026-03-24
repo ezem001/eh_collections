@@ -1,0 +1,337 @@
+$kind: http-request
+url: "{{host}}/api/events/?date_to={{event_list_date_to}}&event_type=StatusChan\
+  geEvent&entity_type=Party&attribute_name=mvs_passport_verification_status&new\
+  _value=VERIFICATION_NEEDED&date={{event_list_date}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: date_to
+    value: "{{event_list_date_to}}"
+  - key: event_type
+    value: StatusChangeEvent
+  - key: entity_type
+    value: Party
+  - key: entity_type
+    value: Person
+    disabled: true
+  - key: attribute_name
+    value: mvs_passport_verification_status
+  - key: new_value
+    value: VERIFICATION_NEEDED
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "5000"
+    disabled: true
+  - key: date
+    value: 2025-08-14T01:01:11Z
+    disabled: true
+  - key: date
+    value: "{{event_list_date}}"
+scripts:
+  - type: beforeRequest
+    code: "// Поточна дата\r
+
+      const now = new Date();\r
+
+      \r
+
+      // Створюємо дату сьогодні о 08:00:00 UTC\r
+
+      const dateAt8 = new Date(Date.UTC(\r
+
+      \    now.getUTCFullYear(),\r
+
+      \    now.getUTCMonth(),\r
+
+      \    now.getUTCDate(),\r
+
+      \    8, 0, 0\r
+
+      ));\r
+
+      \r
+
+      // date_to = +3 години\r
+
+      const dateTo = new Date(dateAt8.getTime() + 3 * 60 * 60 * 1000);\r
+
+      \r
+
+      // Форматування у вигляді YYYY-MM-DDTHH:mm:ssZ\r
+
+      function toIsoZ(d) {\r
+
+      \    return d.toISOString().replace(/\\.\\d{3}Z$/, \"Z\");\r
+
+      }\r
+
+      \r
+
+      const eventDate = toIsoZ(dateAt8);\r
+
+      const eventDateTo = toIsoZ(dateTo);\r
+
+      \r
+
+      // Збереження в globals\r
+
+      pm.globals.set(\"event_list_date\", eventDate);\r
+
+      pm.globals.set(\"event_list_date_to\", eventDateTo);\r
+
+      \r
+
+      // Логи\r
+
+      console.log(\"event_list_date:\", eventDate);\r
+
+      console.log(\"event_list_date_to:\", eventDateTo);\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // Масив entity_type\r
+
+      const entityTypes = [\r
+
+      \    \"Party\",\r
+
+      \    \"Approval\",\r
+
+      \    \"CarePlan\",\r
+
+      \    \"CarePlanActivity\",\r
+
+      \    \"Contract\",\r
+
+      \    \"ContractRequest\",\r
+
+      \    \"Declaration\",\r
+
+      \    \"Division\",\r
+
+      \    \"Employee\",\r
+
+      \    \"EmployeeRequest\",\r
+
+      \    \"MedicationDispense\",\r
+
+      \    \"MedicationRequest\",\r
+
+      \    \"LegalEntity\",\r
+
+      \    \"Person\",\r
+
+      \    \"Preperson\",\r
+
+      \    \"ServiceRequest\",\r
+
+      \    \"DeviceRequest\",\r
+
+      \    \"DeviceDispense\"\r
+
+      ];\r
+
+      \r
+
+      // Стартовий індекс\r
+
+      let idx = 0;\r
+
+      \r
+
+      // Функція рекурсивного запуску запитів\r
+
+      function runNext() {\r
+
+      \    if (idx >= entityTypes.length) {\r
+
+      \        console.log(\"✔ All entity_type requests completed\");\r
+
+      \        return;\r
+
+      \    }\r
+
+      \r
+
+      \    const curr = entityTypes[idx];\r
+
+      \    console.log(`▶ Sending request for entity_type: ${curr}`);\r
+
+      \r
+
+      \    // Формуємо URL з параметрами\r
+
+      \    const url = `${pm.globals.get(\"host\")}/api/events/` +\r
+
+      \        `?date=${eventDate}` +\r
+
+      \        `&date_to=${eventDateTo}` +\r
+
+      \        `&event_type=StatusChangeEvent` +\r
+
+      \        `&entity_type=${curr}` +\r
+
+      \        `&page=1&page_size=300`;\r
+
+      \r
+
+      \    pm.sendRequest(\r
+
+      \        {\r
+
+      \            url: url,\r
+
+      \            method: 'GET',\r
+
+      \            header: {\r
+
+      \                'api-key':
+      `${pm.environment.get(\"mis_client_secret\")}`,\r
+
+      \                'Content-Type': 'application/json',\r
+
+      \                'Authorization': `Bearer
+      ${pm.environment.get(\"access_token\")}`,\r
+
+      \                'X-Custom-PSK': `${pm.globals.get(\"x-custom-psk\")}`\r
+
+      \            }\r
+
+      \        },\r
+
+      \        function (err, res) {\r
+
+      \            if (err) {\r
+
+      \                console.error(`❌ Error for ${curr}:`, err);\r
+
+      \            } else {\r
+
+      \                console.log(`⬅ Response for ${curr}:`, res.code, res.json
+      ? res.json() : res.text());\r
+
+      \            }\r
+
+      \            idx++;\r
+
+      \            runNext(); // запускаємо наступний запит\r
+
+      \        }\r
+
+      \    );\r
+
+      }\r
+
+      \r
+
+      // Старт циклу\r
+
+      runNext();\r
+
+      \r
+
+      \r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const jsonData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      \r
+
+      pm.test(\"Get events list, check entity_types - PASS. Status code is
+      200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      \    if (jsonData.data && jsonData.data.length > 0) {\r
+
+      \        const firstId = jsonData.data[0].id;\r
+
+      \        pm.globals.set(\"first_event_id\", firstId);\r
+
+      \        console.log(\"Saved first_event_id:\", firstId);\r
+
+      \    } else {\r
+
+      \        console.log(\"No data found to save first_event_id\");\r
+
+      \    }\r
+
+      \r
+
+      });\r
+
+      \r
+
+      \r
+
+      pm.test(\"Response has data array\", function () {\r
+
+      \    const jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData.data).to.be.an(\"array\");\r
+
+      \    pm.expect(jsonData.data.length).to.be.above(0);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"All data items have required fields and new_value is
+      VERIFICATION_NEEDED\", function () {\r
+
+      \    const jsonData = pm.response.json();\r
+
+      \    jsonData.data.forEach(item => {\r
+
+      \        pm.expect(item).to.have.property(\"changed_by\");\r
+
+      \        pm.expect(item).to.have.property(\"entity_id\");\r
+
+      \        pm.expect(item).to.have.property(\"entity_type\");\r
+
+      \        pm.expect(item).to.have.property(\"event_type\");\r
+
+      \        pm.expect(item).to.have.property(\"id\");\r
+
+      \        pm.expect(item).to.have.property(\"properties\");\r
+
+      \        pm.expect(item.properties).to.have.property(\"mvs_passport_verif\
+      ication_status\");\r
+
+      \        pm.expect(item.properties.mvs_passport_verification_status).to.h\
+      ave.property(\"new_value\", \"VERIFICATION_NEEDED\");\r
+
+      \    });\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Paging info exists and total_entries > 0\", function () {\r
+
+      \    const jsonData = pm.response.json();\r
+
+      \    pm.expect(jsonData).to.have.property(\"paging\");\r
+
+      \    pm.expect(jsonData.paging).to.have.property(\"total_entries\").that.\
+      is.above(0);\r
+
+      });"
+    language: text/javascript
+order: 2000

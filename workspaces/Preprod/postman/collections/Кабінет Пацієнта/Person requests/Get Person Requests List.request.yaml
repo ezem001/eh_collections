@@ -1,0 +1,25 @@
+$kind: http-request
+url: https://pis-demo.ehealth.gov.ua/api/pis/person_requests?page=1&page_size=50
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
+  - key: Authorization
+    value: Bearer cUdFVWJjTVVVNTkzOEUxVXVza1p2dz09
+queryParams:
+  - key: status
+    value: APPROVED
+    disabled: true
+  - key: channel
+    value: PIS
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+order: 3000

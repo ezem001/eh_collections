@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/detected_issues?page=2&page_size=50\
+  &encounter_id=09dc3ed7-2169-45d8-8fa3-d918c6839bf9&episode_id=f48d1b6c-a021-4\
+  d6a-a5a4-aee93e152ecc&recorder=09dc3ed7-2169-45d8-8fa3-d918c6839bf9&recorder_\
+  legal_entity_id=09dc3ed7-2169-45d8-8fa3-d918c6839bf9&status=active&device_id=\
+  09dc3ed7-2169-45d8-8fa3-d918c6839bf9&inserted_at_from=1990-01-01&inserted_at_\
+  to=2000-01-01&identified_date_time_from=2021-01-01T00%3A00%3A00.000Z&identifi\
+  ed_date_time_to=2021-01-01T00%3A00%3A00.000Z"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  page: "2"
+  page_size: "50"
+  encounter_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  episode_id: f48d1b6c-a021-4d6a-a5a4-aee93e152ecc
+  recorder: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  recorder_legal_entity_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  status: active
+  device_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  inserted_at_from: 1990-01-01
+  inserted_at_to: 2000-01-01
+  identified_date_time_from: 2021-01-01T00%3A00%3A00.000Z
+  identified_date_time_to: 2021-01-01T00%3A00%3A00.000Z
+order: 2000

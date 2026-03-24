@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{host}}/api/persons/verifications?employee_id={{user_id}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  employee_id: "{{user_id}}"
+order: 4000

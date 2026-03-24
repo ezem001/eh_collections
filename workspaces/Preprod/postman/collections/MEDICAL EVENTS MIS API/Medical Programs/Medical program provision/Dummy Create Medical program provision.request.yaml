@@ -1,0 +1,19 @@
+$kind: http-request
+url: ntr
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \  \"contract_number\": \"0000-KE7M-M000\",\r
+
+    \  \"medical_program_id\": \"b15d6bfa-66a4-40ba-9965-ef7712f48da9\",\r
+
+    \  \"divisions\": [\r
+
+    \    \"8de56110-c1cc-4fe9-bb45-509a6c17963a\"\r
+
+    \  ]\r
+
+    }"
+order: 1000

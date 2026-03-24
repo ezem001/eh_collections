@@ -1,0 +1,163 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/patients/d96867bc-f250-4625-873e-61714c43ff92/device_dispenses
+method: POST
+headers:
+  Authorization: Bearer {{pharm_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{{device_dispense_request}}"
+scripts:
+  - type: beforeRequest
+    code: |-
+      var uuid = require('uuid');
+      var device_dispense_id = uuid.v4();
+
+      var device_request_id = "96b18d2b-d4b1-444a-91a7-0f8fa9f86b3d";
+      var performer_id = "985ac664-bdb9-4edc-b459-edd495c1eed8";
+      var division_id = "ee0f2ad1-62fe-42e7-8d0a-4be25e42d227";
+      var program_id = 
+      // "d1f8be15-f9db-4c09-abf7-aa78a5a09b24"; // test strips
+      "0e26d6ca-b6c2-49d6-8d16-ca9635ea59ad" // assistive
+      var verification_code = ""
+      var device_definition_id = 
+      // "aefba224-5d25-4e6d-8da6-cd324aef9c9c"; // test strip old
+      // "3e41e5bd-3615-4911-9c70-d232c91728b8"; // test strip new
+       "170a79b8-ac1b-47a2-97bb-311098eef95d"; // assistive 12_03_16
+      //"a196c0c1-e1cb-47f6-8c55-67ba9a65f9de"; // assistive 06_12_19
+      var program_device_id = ""; 
+      var status = 
+      // "in_progress";
+      "completed";
+
+
+      var device_dispense_json = {
+          "id": device_dispense_id,
+          "based_on": {
+              "identifier": {
+                  "type": {
+                      "coding": [
+                          {
+                              "system": "eHealth/resources",
+                              "code": "device_request"
+                          }
+                      ]
+                  },
+                  "value": device_request_id
+              }
+          },
+          "performer": {
+              "identifier": {
+                  "type": {
+                      "coding": [
+                          {
+                              "system": "eHealth/resources",
+                              "code": "employee"
+                          }
+                      ]
+                  },
+                  "value": performer_id
+              }
+          },
+          "location": {
+              "identifier": {
+                  "type": {
+                      "coding": [
+                          {
+                              "system": "eHealth/resources",
+                              "code": "division"
+                          }
+                      ]
+                  },
+                  "value": division_id
+              }
+          },
+          "primary_source": true,
+          // "program": {
+          //     "identifier": {
+          //         "type": {
+          //             "coding": [
+          //                 {
+          //                     "system": "eHealth/resources",
+          //                     "code": "medical_program"
+          //                 }
+          //             ]
+          //         },
+          //         "value": program_id
+          //     }
+          // },
+          "details": [
+              // {
+              //     "device": {
+              //         "identifier": {
+              //             "type": {
+              //                 "coding": [
+              //                     {
+              //                         "system": "eHealth/resources",
+              //                         "code": "device_definition"
+              //                     }
+              //                 ]
+              //             },
+              //             "value": device_definition_id
+              //         }
+              //     },
+              //     // "program_device": {
+              //     //     "identifier": {
+              //     //         "type": {
+              //     //             "coding": [
+              //     //                 {
+              //     //                     "system": "eHealth/resources",
+              //     //                     "code": "program_device"
+              //     //                 }
+              //     //             ]
+              //     //         },
+              //     //         "value": program_device_id
+              //     //     }
+              //     // },
+              //     "quantity": {
+              //         "value": 20,
+              //         "system": "device_unit",
+              //         "code": "piece"
+              //     },
+              //     "sell_price": 25.01,
+              //     // "discount_amount": 4500.0
+              // },
+              {
+                  "device_code": {
+                      "coding": [
+                          {
+                              "code": "12_03_16",
+                              "system": "eHealth/assistive_devices"
+                          }
+                      ]
+                  },
+                  "quantity": {
+                      "value": 5,
+                      "system": "device_unit",
+                      "code": "piece"
+                  },
+                  "sell_price": 25.01,
+                  // "discount_amount": 4500.0
+              }
+          ],
+          // "verification_code": verification_code,
+          "when_handed_over": "2024-12-04T08:26:28Z",
+          "status": status
+      };
+
+      var device_dispense_request = JSON.stringify(device_dispense_json);
+      pm.environment.set("device_dispense_request", device_dispense_request);
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 202", function () {
+          pm.response.to.have.status(202);
+      });
+
+      var jsonData = JSON.parse(responseBody);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 3000

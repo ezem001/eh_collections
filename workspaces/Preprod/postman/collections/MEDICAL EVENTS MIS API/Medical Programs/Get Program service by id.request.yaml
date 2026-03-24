@@ -1,0 +1,13 @@
+$kind: http-request
+description: |-
+  This endpoint returns service program member by id.
+
+  **Scopes required:** `program_service:read`
+url: "{{host_demo}}/api/program_services/id"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  api-key: 30276e63617461a185ec
+order: 5000

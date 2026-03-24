@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host_demo}}/api/patients/patient_id/medication_administrations/?page=2&\
+  page_size=50&encounter_id=09dc3ed7-2169-45d8-8fa3-d918c6839bf9&episode_id=09d\
+  c3ed7-2169-45d8-8fa3-d918c6839bf9"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  page: "2"
+  page_size: "50"
+  encounter_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+  episode_id: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+order: 2000

@@ -1,0 +1,16 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/merge_requests
+method: POST
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{employee_access_token}}
+  X-Custom-PSK: a1aa07c96f3f4d91870f923a53cc9aa8f23bbc01a8238d1c2c26d4299715a7e4
+body:
+  type: text
+  content: |-
+    {
+      "master_person_id": "98876b7d-1789-415a-b6d4-d62e0972cace",
+      "merge_person_id": "cd2fff76-04ef-49ac-8d4a-cf6803e1db33"
+    }
+order: 4000

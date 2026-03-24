@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{host}}/api/rule_engine_rules"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: name
+    value: Some%20name
+    disabled: true
+  - key: system
+    value: eHealth/clinical_impression_patient_categories
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: code
+    value: insulin_2
+    disabled: true
+order: 1000

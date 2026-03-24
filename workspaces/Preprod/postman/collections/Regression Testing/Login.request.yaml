@@ -1,0 +1,403 @@
+$kind: http-request
+url: "{{host}}/auth/login"
+method: POST
+headers:
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"token\": {\r
+
+    \        \"grant_type\": \"password\",\r
+
+    \        \"email\": \"{{user_email}}\",\r
+
+    \        \"password\": \"{{user_password}}\",\r
+
+    \        \"client_id\": \"{{client_id_preprod_demo}}\",\r
+
+    \        \"scope\": \"app:authorize\"\r
+
+    \    }\r
+
+    }\r\n"
+scripts:
+  - type: afterResponse
+    code: "const jsonData = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Login - PASS. Status code is 201\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      \r
+
+      \    if (jsonData.data && jsonData.data.value) {\r
+
+      \        const access_token = jsonData.data.value;\r
+
+      \        const refresh_token = jsonData.data.details.refresh_token;\r
+
+      \        console.log('access_token', access_token);\r
+
+      \        console.log('refresh_token', refresh_token);\r
+
+      \        pm.environment.set(\"access_token\", access_token);\r
+
+      \    }\r
+
+      \r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      // tests[\"Status code is 201\"] = responseCode.code === 201;\r
+
+      \r
+
+      // function displayResponse(title, description, data) {\r
+
+      //     console.log(title, data)\r
+
+      //     const html = `\r
+
+      //         <h1>${title}</h1>\r
+
+      //         <h3>${description}</h3>\r
+
+      //         <pre>${JSON.stringify(data, null, 2)}</pre>`;\r
+
+      //     pm.visualizer.set(html);\r
+
+      // }\r
+
+      \r
+
+      // const jsonData = pm.response.json();\r
+
+      // if (jsonData.error) {\r
+
+      //     displayResponse('Error on step LOGIN', jsonData.error.message,
+      jsonData.error);\r
+
+      // } else {\r
+
+      //     if (jsonData.data && jsonData.data.value) {\r
+
+      //         const access_token = jsonData.data.value;\r
+
+      //         const refresh_token = jsonData.data.details.refresh_token;\r
+
+      //         console.log('access_token', access_token);\r
+
+      //         console.log('refresh_token', refresh_token);\r
+
+      //         pm.environment.set(\"access_token\", access_token);\r
+
+      //     }\r
+
+      \r
+
+      \r
+
+      //     //
+      -----------------------  Authorize  ---------------------------\r
+
+      \r
+
+      \r
+
+      \r
+
+      //     const le = pm.environment.get('user_legal_entity');\r
+
+      //     const redirect = pm.environment.get('user_redirect_uri');\r
+
+      //     const scopes = pm.environment.get('user_scopes');\r
+
+      //     const apiKey = pm.environment.get('mis_client_secret');\r
+
+      //     const XCustomPSK =
+      '0d65b47f51cb527a3262311da2af53e03f6fcff6e4cf655414a43f52e5ad457b';\r
+
+      \r
+
+      \r
+
+      //     pm.sendRequest({\r
+
+      //         url:
+      'https://auth-preprod.ehealth.gov.ua/oauth/apps/authorize', // Replace
+      with your actual URL\r
+
+      //         method: 'POST',\r
+
+      //         header: {\r
+
+      //             'Content-Type': 'application/json',\r
+
+      //             'Authorization': `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      //             'X-Custom-PSK': `${XCustomPSK}`\r
+
+      //         },\r
+
+      //         body: {\r
+
+      //             mode: 'raw',\r
+
+      //             raw: JSON.stringify({\r
+
+      //                 \"app\": {\r
+
+      //                     \"client_id\": `${le}`,\r
+
+      //                     \"redirect_uri\": `${redirect}`,\r
+
+      //                     \"scope\": `${scopes}`\r
+
+      //                 }\r
+
+      //             })\r
+
+      //         }\r
+
+      //     }, function (err, res) {\r
+
+      //         if (err) {\r
+
+      //             console.error('Error in parent request:', err);\r
+
+      //         } else {\r
+
+      //             console.log(res, 'Authorize response log')\r
+
+      //             const locationHeader = res.headers.get('Location');\r
+
+      //             console.log(\"Response Headers:\", locationHeader);\r
+
+      //             if (locationHeader) {\r
+
+      //                 const locationUrl = locationHeader.toString();\r
+
+      //                 console.log(\"Location URL:\", locationUrl);\r
+
+      \r
+
+      //                 const match = locationUrl.match(/[?&]code=([^&]+)/);\r
+
+      \r
+
+      //                 if (match) {\r
+
+      //                     const code = match[1];\r
+
+      //                     console.log(\"Extracted Code:\", code);\r
+
+      \r
+
+      //                     pm.environment.set(\"user_code\", code);\r
+
+      \r
+
+      //                     console.log(\"Environment Variable 'user_code':\",
+      pm.environment.get(\"user_code\"));\r
+
+      //                 } else {\r
+
+      //                     console.log(\"The location URL does not contain a
+      'code' parameter.\");\r
+
+      //                 }\r
+
+      //                 tests[\"Status code is 201\"] = responseCode.code ===
+      201;\r
+
+      //             } else {\r
+
+      //                 console.log(\"Location URL is undefined. Check the
+      response headers.\");\r
+
+      //             }\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      //             // postman.setEnvironmentVariable(\"user_code\",
+      responseHeaders.Location.split('=')[1]);\r
+
+      //             // console.log(responseHeaders)\r
+
+      \r
+
+      //             // Make sure the subrequest runs after setting the
+      variable\r
+
+      //             executeSubrequest();\r
+
+      //         }\r
+
+      //     });\r
+
+      \r
+
+      \r
+
+      \r
+
+      //     // -----------------------Exchange grant
+      token---------------------------\r
+
+      \r
+
+      \r
+
+      //     const userCode = pm.environment.get('user_code');\r
+
+      //     console.log('userCode', userCode)\r
+
+      //     const clientSecret = pm.environment.get('client_secret');\r
+
+      \r
+
+      \r
+
+      //     function executeSubrequest() {\r
+
+      //         pm.sendRequest({\r
+
+      //             url: 'https://api-preprod.ehealth.gov.ua/oauth/tokens/',\r
+
+      //             method: 'POST',\r
+
+      //             header: {\r
+
+      //                 'Content-Type': 'application/json',\r
+
+      //                 'api-key': `${apiKey}`,\r
+
+      //                 'X-Custom-PSK': `${XCustomPSK}`\r
+
+      //             },\r
+
+      //             body: {\r
+
+      //                 mode: 'raw',\r
+
+      //                 raw: JSON.stringify({\r
+
+      //                     \"token\": {\r
+
+      //                         \"grant_type\": \"authorization_code\",\r
+
+      //                         \"code\": `${userCode}`,\r
+
+      //                         \"client_id\": `${le}`,\r
+
+      //                         \"client_secret\": `${clientSecret}`,\r
+
+      //                         \"redirect_uri\": `${redirect}`\r
+
+      \r
+
+      //                     }\r
+
+      //                 })\r
+
+      //             }\r
+
+      //         }, function (err, res) {\r
+
+      //             if (err) {\r
+
+      //                 console.error('Error in subrequest:', err);\r
+
+      //             } else {\r
+
+      //                 console.log('Subrequest Status Code:', res.status);\r
+
+      //                 console.log('Raw Subrequest Response:', res.text());\r
+
+      //                 try {\r
+
+      //                     const subrequestData = res.json();\r
+
+      //                     console.log('Parsed Subrequest Response:',
+      subrequestData.data.value);\r
+
+      \r
+
+      //                     if (subrequestData.data &&
+      subrequestData.data.value) {\r
+
+      //                         const access_token =
+      subrequestData.data.value;\r
+
+      //                         const refresh_token =
+      subrequestData.data.details.refresh_token;\r
+
+      //                         pm.environment.set(\"access_token\",
+      access_token);\r
+
+      //                         pm.environment.set(\"refresh_token\",
+      refresh_token);\r
+
+      //                     } else {\r
+
+      //                         pm.environment.set(\"access_token\",
+      \"<<undefined>>\");\r
+
+      //                         pm.environment.set(\"refresh_token\",
+      \"<<undefined>>\");\r
+
+      //                     }\r
+
+      //                     const employeeSpeciality =
+      pm.environment.get('employee_specialty');\r
+
+      //                     displayResponse('Authorization Successful', `You
+      authorized as a ${employeeSpeciality}`, subrequestData.data);\r
+
+      //                 } catch (parseError) {\r
+
+      //                     console.error('Error parsing subrequest JSON:',
+      parseError);\r
+
+      //                     displayResponse('TRY SEND REQUEST AGAIN PLEASE',
+      'This is required so that the value of the environment is updated',
+      parseError)\r
+
+      \r
+
+      //                 }\r
+
+      //             }\r
+
+      //         });\r
+
+      //     }\r
+
+      // }"
+    language: text/javascript
+order: 2000

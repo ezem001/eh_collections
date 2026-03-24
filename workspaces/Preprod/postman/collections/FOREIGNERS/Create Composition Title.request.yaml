@@ -1,0 +1,28 @@
+$kind: http-request
+name: Create Composition Title
+url: https://api-demo.ehealth.gov.ua/api/patients/8901cb64-c823-49db-9ff5-02e01429efb2/composition_title?composition_type=ADOPTION
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: ""
+  api-key: 30276e63617461a185ec
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+queryParams:
+  - key: composition_type
+    value: DRIVERS
+    disabled: true
+    description: ADOPTION DRIVERS
+  - key: composition_type
+    value: ADOPTION
+body:
+  type: text
+  content: ""
+scripts:
+  - type: afterResponse
+    code: |-
+      
+      var jsonData = JSON.parse(responseBody);
+      var composition_title=jsonData.data.title;
+      pm.environment.set("composition_title", composition_title);
+    language: text/javascript
+order: 34000

@@ -1,0 +1,2090 @@
+$kind: http-request
+url: http://localhost:3000/create-encounter-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"encounter\": {\r
+
+    \        \"id\": \"{{encounter_dummy_id}}\",\r
+
+    \        \"status\": \"finished\",\r
+
+    \        \"period\": {\r
+
+    \            \"start\": \"2026-02-23T10:45:16.000Z\",\r
+
+    \            \"end\": \"2026-02-23T10:45:16.000Z\"\r
+
+    \        },\r
+
+    \        \"visit\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"visit\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{visit_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"action_references\": [\r
+
+    \            {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"service\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"47716290-c519-43ac-a8c8-343a544f24a9\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"division\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"division\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_division_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"episode\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"episode\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{jobEpisodeID}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"class\": {\r
+
+    \            \"system\": \"eHealth/encounter_classes\",\r
+
+    \            \"code\": \"AMB\"\r
+
+    \        },\r
+
+    \        \"type\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_types\",\r
+
+    \                    \"code\": \"service_delivery_location\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"priority\": {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/encounter_priority\",\r
+
+    \                    \"code\": \"urgent\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        },\r
+
+    \        \"performer\": {\r
+
+    \            \"identifier\": {\r
+
+    \                \"type\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/resources\",\r
+
+    \                            \"code\": \"employee\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"value\": \"{{user_id}}\"\r
+
+    \            }\r
+
+    \        },\r
+
+    \        \"reasons\": [\r
+
+    \            {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICPC2/reasons\",\r
+
+    \                        \"code\": \"S17\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"diagnoses\": [\r
+
+    \            {\r
+
+    \                \"condition\": {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"condition\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{encounter_dummy_id}}\"\r
+
+    \                    }\r
+
+    \                },\r
+
+    \                \"role\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/diagnosis_roles\",\r
+
+    \                            \"code\": \"primary\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                \"rank\": 1\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"prescriptions\": \"Дієта №3, Омепразолу 40 мг 1 раз на добу +
+    амоксициліну 500 мг + метронідазолу 400 мг при необхідності 500 мг або
+    тинідазолу 500 мг 3 рази на добу протягом 1 тижня\"\r
+
+    \    },\r
+
+    \    \"conditions\": [\r
+
+    \        {\r
+
+    \            \"id\": \"{{encounter_dummy_id}}\",\r
+
+    \            \"primary_source\": true,\r
+
+    \            \"asserter\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"Якийсь текст\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"encounter\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_dummy_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/ICD10_AM/condition_codes\",\r
+
+    \                        \"code\": \"E10.9\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"clinical_status\": \"active\",\r
+
+    \            \"verification_status\": \"confirmed\",\r
+
+    \            \"severity\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/condition_severities\",\r
+
+    \                        \"code\": \"moderate\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"body_sites\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/body_sites\",\r
+
+    \                            \"code\": \"pelvis\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"onset_date\": \"2025-02-25T09:46:37.694Z\",\r
+
+    \            \"asserted_date\": \"2025-02-25T09:46:37.694Z\",\r
+
+    \            \"stage\": {\r
+
+    \                \"summary\": {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"system\": \"eHealth/condition_stages\",\r
+
+    \                            \"code\": \"default_condition_stage\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"evidences\": [\r
+
+    \                {\r
+
+    \                    \"codes\": [\r
+
+    \                        {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\":
+    \"eHealth/ICPC2/reasons\",\r
+
+    \                                    \"code\": \"T90\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"observations\": [\r
+
+    \        {\r
+
+    \            \"body_site\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"left_hand\",\r
+
+    \                        \"system\": \"eHealth/body_sites\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"categories\": [\r
+
+    \                {\r
+
+    \                    \"coding\": [\r
+
+    \                        {\r
+
+    \                            \"code\": \"survey\",\r
+
+    \                            \"system\":
+    \"eHealth/observation_categories\"\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"WHODAS_2.0\",\r
+
+    \                        \"system\": \"eHealth/custom/observation_codes\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"comment\": \"Some comment\",\r
+
+    \            \"components\": [\r
+
+    \                {\r
+
+    \                    \"code\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\":
+    \"eHealth/custom/observation_components\",\r
+
+    \                                \"code\": \"D1\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"value_quantity\": {\r
+
+    \                        \"value\": 10,\r
+
+    \                        \"code\": \"mg\",\r
+
+    \                        \"unit\": \"mg\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"context\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"encounter\",\r
+
+    \                                \"system\": \"eHealth/resources\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": null\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{encounter_dummy_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"effective_period\": {\r
+
+    \                \"end\": \"2025-01-25T10:50:44Z\",\r
+
+    \                \"start\": \"2025-01-01T10:50:44Z\"\r
+
+    \            },\r
+
+    \            \"id\": \"{{encounter_dummy_id}}\",\r
+
+    \            \"interpretation\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"default_value\",\r
+
+    \                        \"system\":
+    \"eHealth/observation_interpretations\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"низький\"\r
+
+    \            },\r
+
+    \            \"issued\": \"2025-01-01T10:50:44Z\",\r
+
+    \            \"method\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"code\": \"default_value\",\r
+
+    \                        \"system\": \"eHealth/observation_methods\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"метод ABC\"\r
+
+    \            },\r
+
+    \            \"performer\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"employee\",\r
+
+    \                                \"system\": \"eHealth/resources\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": null\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            },\r
+
+    \            \"primary_source\": true,\r
+
+    \            \"reference_ranges\": [\r
+
+    \                {\r
+
+    \                    \"age\": {\r
+
+    \                        \"high\": {\r
+
+    \                            \"code\": null,\r
+
+    \                            \"comparator\": \"<\",\r
+
+    \                            \"system\": null,\r
+
+    \                            \"unit\": \"%\",\r
+
+    \                            \"value\": 35\r
+
+    \                        },\r
+
+    \                        \"low\": {\r
+
+    \                            \"code\": null,\r
+
+    \                            \"comparator\": \">\",\r
+
+    \                            \"system\": null,\r
+
+    \                            \"unit\": \"%\",\r
+
+    \                            \"value\": 18\r
+
+    \                        }\r
+
+    \                    },\r
+
+    \                    \"applies_to\": [\r
+
+    \                        {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"code\":
+    \"default_reference_range_application\",\r
+
+    \                                    \"system\":
+    \"eHealth/reference_range_applications\"\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"high\": {\r
+
+    \                        \"code\": \"%\",\r
+
+    \                        \"comparator\": \"<\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"unit\": \"%\",\r
+
+    \                        \"value\": 27\r
+
+    \                    },\r
+
+    \                    \"low\": {\r
+
+    \                        \"code\": \"%\",\r
+
+    \                        \"comparator\": \">\",\r
+
+    \                        \"system\": \"eHealth/ucum/units\",\r
+
+    \                        \"unit\": \"%\",\r
+
+    \                        \"value\": 13.000001\r
+
+    \                    },\r
+
+    \                    \"text\": \"Some text\",\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"code\": \"default_reference_range\",\r
+
+    \                                \"system\":
+    \"eHealth/reference_range_types\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"нормальний\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"status\": \"valid\",\r
+
+    \            \"value_quantity\": {\r
+
+    \                \"value\": 97,\r
+
+    \                \"code\": \"ScoreOf\",\r
+
+    \                \"unit\": \"ScoreOf\",\r
+
+    \                \"system\": \"eHealth/ucum/units\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "// const uuid = require('uuid');\r
+
+      \r
+
+      // // -------------------------\r
+
+      // // Генеруємо encounter і visit\r
+
+      // // -------------------------\r
+
+      // const encounterId = uuid.v4();\r
+
+      // const visitId = uuid.v4();\r
+
+      // pm.globals.set(\"encounter_id\", encounterId);\r
+
+      // pm.globals.set(\"visit_id\", visitId);\r
+
+      \r
+
+      // // -------------------------\r
+
+      // // Розбираємо body\r
+
+      // // -------------------------\r
+
+      // let parsedBody;\r
+
+      // try {\r
+
+      //     parsedBody = JSON.parse(pm.request.body.raw);\r
+
+      // } catch (e) {\r
+
+      //     throw new Error(\"❌ Body is not valid JSON\");\r
+
+      // }\r
+
+      // if (!parsedBody.observations ||
+      !Array.isArray(parsedBody.observations)) {\r
+
+      //     throw new Error(\"❌ No observations in request body\");\r
+
+      // }\r
+
+      \r
+
+      // // -------------------------\r
+
+      // // Конфігурація\r
+
+      // // -------------------------\r
+
+      // const baseUrl = pm.globals.get(\"host\");\r
+
+      // const headers = {\r
+
+      //     \"X-Custom-PSK\": pm.globals.get(\"x-custom-psk\"),\r
+
+      //     \"api-key\": pm.environment.get(\"mis_client_secret\")\r
+
+      // };\r
+
+      // const getRandomElement = (arr) => arr[Math.floor(Math.random() *
+      arr.length)];\r
+
+      \r
+
+      // // -------------------------\r
+
+      // // Кеш словників\r
+
+      // // -------------------------\r
+
+      // const dictionaryCache = {};\r
+
+      \r
+
+      // // -------------------------\r
+
+      // // Отримання словника з кешем\r
+
+      // // -------------------------\r
+
+      // async function fetchDictionary(dictName) {\r
+
+      //     if (dictionaryCache[dictName]) return dictionaryCache[dictName];\r
+
+      //     return new Promise((resolve, reject) => {\r
+
+      //         pm.sendRequest(\r
+
+      //             { url: `${baseUrl}/api/v2/dictionaries?name=${dictName}`,
+      method: \"GET\", header: headers },\r
+
+      //             (err, res) => {\r
+
+      //                 if (err) return reject(\"❌ Error fetching dictionary:
+      \" + err);\r
+
+      //                 const values = res.json()?.data?.[0]?.values;\r
+
+      //                 if (!values || !values.length) return reject(`❌
+      Dictionary ${dictName} has no values`);\r
+
+      //                 dictionaryCache[dictName] = values[0]; // кешуємо
+      перший елемент\r
+
+      //                 resolve(dictionaryCache[dictName]);\r
+
+      //             }\r
+
+      //         );\r
+
+      //     });\r
+
+      // }\r
+
+      \r
+
+      // // -------------------------\r
+
+      // // Обробка одного OBS\r
+
+      // // -------------------------\r
+
+      // const processObservation = async (obs) => {\r
+
+      //     const obsCode = obs?.code?.coding?.[0]?.code;\r
+
+      //     if (!obsCode) throw new Error(\"❌ Cannot extract observation
+      code\");\r
+
+      \r
+
+      //     // Отримуємо конфігурацію\r
+
+      //     const configRes = await new Promise((resolve, reject) => {\r
+
+      //         pm.sendRequest(\r
+
+      //             { url:
+      `${baseUrl}/api/observation_configurations?code=${obsCode}`, method:
+      \"GET\", header: headers },\r
+
+      //             (err, res) => {\r
+
+      //                 if (err) return reject(\"❌ Error fetching observation
+      config: \" + err);\r
+
+      //                 const settings = res.json()?.data?.[0]?.settings;\r
+
+      //                 if (!settings) return reject(\"❌ No settings in
+      observation configuration\");\r
+
+      //                 resolve(settings);\r
+
+      //             }\r
+
+      //         );\r
+
+      //     });\r
+
+      \r
+
+      //     const {\r
+
+      //         COMPONENTS_REQUIRED: reqs = { check: [] },\r
+
+      //         COMPONENTS_BINDING: bindings = [],\r
+
+      //         COMPONENTS_SCORE: scores = [],\r
+
+      //         COMPONENTS_ALLOWED_EXTENSIONS: allowedExt = [],\r
+
+      //         RESULT_TYPE,\r
+
+      //         RESULT_BINDING,\r
+
+      //         RESULT_QUANTITY_CODES,\r
+
+      //         RESULT_SCORE_CALCULATION\r
+
+      //     } = configRes;\r
+
+      \r
+
+      //     const resultType = RESULT_TYPE?.check; // \"codeable_concept\" |
+      \"quantity\" | інше\r
+
+      \r
+
+      //     // -------------------------\r
+
+      //     //  COMPONENTS (формуємо завжди)\r
+
+      //     // -------------------------\r
+
+      //     let components = [];\r
+
+      \r
+
+      //     for (const req of (reqs.check || [])) {\r
+
+      //         const bind = bindings.find(b =>
+      b?.condition?.component_code?.code === req.code);\r
+
+      \r
+
+      //         // Знайти тип компонента (якщо є)\r
+
+      //         const compTypeObj = (configRes.COMPONENTS_TYPE || []).find(ct
+      => ct?.condition?.component_code?.code === req.code);\r
+
+      //         const compType = compTypeObj?.check || \"codeable_concept\";\r
+
+      \r
+
+      //         // Якщо binding немає — базовий компонент\r
+
+      //         if (!bind) {\r
+
+      //             components.push({\r
+
+      //                 code: { coding: [{ system: req.system, code: req.code
+      }] }\r
+
+      //             });\r
+
+      //             continue;\r
+
+      //         }\r
+
+      \r
+
+      //         const answerSystem = bind.check?.[0];\r
+
+      \r
+
+      //         const scoresForSystem = scores.filter(s =>
+      s?.condition?.answer?.system === answerSystem);\r
+
+      //         const chosenScore = getRandomElement(scoresForSystem);\r
+
+      \r
+
+      //         let answerCode = chosenScore?.condition?.answer?.code ||
+      \"LA12302-8\";\r
+
+      //         const valueDecimal = chosenScore?.check ?? 0;\r
+
+      \r
+
+      //         // Якщо system — eHealth/spine_level_codes → беремо code зі
+      словника\r
+
+      //         if (answerSystem === \"eHealth/spine_level_codes\") {\r
+
+      //             const dictEntry = await
+      fetchDictionary(\"eHealth/spine_level_codes\");\r
+
+      //             answerCode = dictEntry.code;\r
+
+      //         }\r
+
+      \r
+
+      //         // Extensions: беремо рядки з
+      COMPONENTS_ALLOWED_EXTENSIONS[].check[]\r
+
+      //         let extensions;\r
+
+      //         if (Array.isArray(allowedExt) && allowedExt.length > 0) {\r
+
+      //             extensions = allowedExt.flatMap(extObj => {\r
+
+      //                 if (Array.isArray(extObj?.check)) {\r
+
+      //                     return extObj.check.map(codeStr => ({\r
+
+      //                         code: codeStr,\r
+
+      //                         value_decimal: valueDecimal\r
+
+      //                     }));\r
+
+      //                 }\r
+
+      //                 return [];\r
+
+      //             });\r
+
+      //             if (!extensions.length) extensions = undefined;\r
+
+      //         }\r
+
+      \r
+
+      //         // Якщо COMPONENTS_TYPE === codeable_concept → залишаємо як є\r
+
+      //         if (compType === \"codeable_concept\") {\r
+
+      //             components.push({\r
+
+      //                 code: { coding: [{ system: req.system, code: req.code
+      }] },\r
+
+      //                 value_codeable_concept: {\r
+
+      //                     coding: [{\r
+
+      //                         system: answerSystem,\r
+
+      //                         code: answerCode,\r
+
+      //                         ...(extensions ? { extension: extensions } :
+      {})\r
+
+      //                     }]\r
+
+      //                 }\r
+
+      //             });\r
+
+      //             continue;\r
+
+      //         }\r
+
+      \r
+
+      //         // інші типи поки не чіпаємо, щоб не зламати існуюче\r
+
+      //         components.push({\r
+
+      //             code: { coding: [{ system: req.system, code: req.code }]
+      },\r
+
+      //             value_codeable_concept: {\r
+
+      //                 coding: [{\r
+
+      //                     system: answerSystem,\r
+
+      //                     code: answerCode,\r
+
+      //                     ...(extensions ? { extension: extensions } : {})\r
+
+      //                 }]\r
+
+      //             }\r
+
+      //         });\r
+
+      //     }\r
+
+      \r
+
+      //     obs.components = components;\r
+
+      \r
+
+      //     // -------------------------\r
+
+      //     //  RESULT_TYPE: формуємо ТІЛЬКИ ОДНЕ поле на рівні observation\r
+
+      //     // -------------------------\r
+
+      //     if (resultType === \"codeable_concept\") {\r
+
+      //         // гарантуємо, що quantity НЕ буде\r
+
+      //         if (obs.value_quantity !== undefined) delete
+      obs.value_quantity;\r
+
+      \r
+
+      //         // формуємо value_codeable_concept\r
+
+      //         if (RESULT_BINDING?.check?.[0]) {\r
+
+      //             const dictName = RESULT_BINDING.check[0];\r
+
+      //             const dictEntry = await fetchDictionary(dictName);\r
+
+      \r
+
+      //             obs.value_codeable_concept = {\r
+
+      //                 coding: [{ code: dictEntry.code, system: dictName }]\r
+
+      //             };\r
+
+      //         } else {\r
+
+      //             // якщо binding нема — прибираємо, щоб не було сміття\r
+
+      //             if (obs.value_codeable_concept !== undefined) delete
+      obs.value_codeable_concept;\r
+
+      //         }\r
+
+      //     } else if (resultType === \"quantity\") {\r
+
+      //         // гарантуємо, що codeable_concept НЕ буде\r
+
+      //         if (obs.value_codeable_concept !== undefined) delete
+      obs.value_codeable_concept;\r
+
+      \r
+
+      //         // формуємо value_quantity (SUM по extensions якщо
+      RESULT_SCORE_CALCULATION=SUM)\r
+
+      //         const quantityCode = RESULT_QUANTITY_CODES?.[0]?.check?.[0];\r
+
+      //         if (quantityCode) {\r
+
+      //             let value = 0;\r
+
+      \r
+
+      //             if (RESULT_SCORE_CALCULATION?.check === \"SUM\") {\r
+
+      //                 const allExtensions = (obs.components ||
+      []).flatMap(comp =>\r
+
+      //                     (comp?.value_codeable_concept?.coding ||
+      []).flatMap(coding =>\r
+
+      //                         Array.isArray(coding?.extension) ?
+      coding.extension : []\r
+
+      //                     )\r
+
+      //                 );\r
+
+      \r
+
+      //                 value = allExtensions.reduce((sum, ext) => sum +
+      (Number(ext?.value_decimal) || 0), 0);\r
+
+      //             } else {\r
+
+      //                 // якщо не SUM — залишимо 0 (можеш додати інші
+      варіанти)\r
+
+      //                 value = 0;\r
+
+      //             }\r
+
+      \r
+
+      //             obs.value_quantity = {\r
+
+      //                 value,\r
+
+      //                 code: quantityCode.code,\r
+
+      //                 unit: quantityCode.code,\r
+
+      //                 system: quantityCode.system\r
+
+      //             };\r
+
+      //         } else {\r
+
+      //             // нема quantity codes — щоб не було \"порожнього\"
+      value_quantity\r
+
+      //             if (obs.value_quantity !== undefined) delete
+      obs.value_quantity;\r
+
+      //         }\r
+
+      //     } else {\r
+
+      //         // Якщо RESULT_TYPE не один з очікуваних — не формуємо ні те,
+      ні інше\r
+
+      //         if (obs.value_quantity !== undefined) delete
+      obs.value_quantity;\r
+
+      //         if (obs.value_codeable_concept !== undefined) delete
+      obs.value_codeable_concept;\r
+
+      //     }\r
+
+      \r
+
+      //     return obs;\r
+
+      // };\r
+
+      \r
+
+      // // -------------------------\r
+
+      // //  Обробка ВСІХ OBS\r
+
+      // // -------------------------\r
+
+      // (async () => {\r
+
+      //     try {\r
+
+      //         await Promise.all(parsedBody.observations.map(obs =>
+      processObservation(obs)));\r
+
+      \r
+
+      //         pm.request.body.update({\r
+
+      //             mode: \"raw\",\r
+
+      //             raw: JSON.stringify(parsedBody, null, 2),\r
+
+      //             options: { raw: { language: \"json\" } }\r
+
+      //         });\r
+
+      \r
+
+      //         console.log(\"✅ REQUEST BODY UPDATED:\",
+      JSON.stringify(parsedBody));\r
+
+      //     } catch (err) {\r
+
+      //         console.error(err);\r
+
+      //         throw new Error(err);\r
+
+      //     }\r
+
+      // })();\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      //
+      -------------------------------------------------------------------------\
+      -------------------\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      const uuid = require('uuid');\r
+
+      \r
+
+      // -------------------------\r
+
+      // Генеруємо encounter і visit\r
+
+      // -------------------------\r
+
+      const encounterId = uuid.v4();\r
+
+      const visitId = uuid.v4();\r
+
+      pm.globals.set(\"encounter_dummy_id\", encounterId);\r
+
+      pm.globals.set(\"visit_id\", visitId);\r
+
+      \r
+
+      // -------------------------\r
+
+      // Розбираємо body\r
+
+      // -------------------------\r
+
+      let parsedBody;\r
+
+      try {\r
+
+      \    parsedBody = JSON.parse(pm.request.body.raw);\r
+
+      } catch (e) {\r
+
+      \    throw new Error(\"❌ Body is not valid JSON\");\r
+
+      }\r
+
+      if (!parsedBody.observations || !Array.isArray(parsedBody.observations))
+      {\r
+
+      \    throw new Error(\"❌ No observations in request body\");\r
+
+      }\r
+
+      \r
+
+      // -------------------------\r
+
+      // Конфігурація\r
+
+      // -------------------------\r
+
+      const baseUrl = pm.globals.get(\"host\");\r
+
+      const headers = {\r
+
+      \    \"X-Custom-PSK\": pm.globals.get(\"x-custom-psk\"),\r
+
+      \    \"api-key\": pm.environment.get(\"mis_client_secret\")\r
+
+      };\r
+
+      \r
+
+      const getRandomElement = (arr) => arr[Math.floor(Math.random() *
+      arr.length)];\r
+
+      const getRandomInt = (min, max) => {\r
+
+      \    const mn = Number(min ?? 0);\r
+
+      \    const mx = Number(max ?? 0);\r
+
+      \    if (!Number.isFinite(mn) || !Number.isFinite(mx)) return 0;\r
+
+      \    if (mx < mn) return mn;\r
+
+      \    return Math.floor(mn + Math.random() * (mx - mn + 1));\r
+
+      };\r
+
+      \r
+
+      // -------------------------\r
+
+      // Кеш словників\r
+
+      // -------------------------\r
+
+      const dictionaryCache = {};\r
+
+      \r
+
+      // -------------------------\r
+
+      // Отримання словника з кешем\r
+
+      // -------------------------\r
+
+      async function fetchDictionary(dictName) {\r
+
+      \    if (dictionaryCache[dictName]) return dictionaryCache[dictName];\r
+
+      \r
+
+      \    return new Promise((resolve, reject) => {\r
+
+      \        pm.sendRequest(\r
+
+      \            { url:
+      `${baseUrl}/api/v2/dictionaries?name=${encodeURIComponent(dictName)}`,
+      method: \"GET\", header: headers },\r
+
+      \            (err, res) => {\r
+
+      \                if (err) return reject(\"❌ Error fetching dictionary: \"
+      + err);\r
+
+      \r
+
+      \                const values = res.json()?.data?.[0]?.values;\r
+
+      \                if (!values || !values.length) return reject(`❌
+      Dictionary ${dictName} has no values`);\r
+
+      \r
+
+      \                dictionaryCache[dictName] = values[0]; // беремо перший
+      елемент\r
+
+      \                resolve(dictionaryCache[dictName]);\r
+
+      \            }\r
+
+      \        );\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      // -------------------------\r
+
+      // Хелпери для пошуку умовних конфігів\r
+
+      // -------------------------\r
+
+      const findByComponentCode = (arr, code) =>\r
+
+      \    Array.isArray(arr) ? arr.find(x => x?.condition?.component_code?.code
+      === code) : undefined;\r
+
+      \r
+
+      const extractAllowedExtensionCodes = (allowedExt) => {\r
+
+      \    // allowedExt формат:\r
+
+      \    // COMPONENTS_ALLOWED_EXTENSIONS: [ { check: [\"item_weight\"] }, ...
+      ]\r
+
+      \    if (!Array.isArray(allowedExt)) return [];\r
+
+      \    return allowedExt.flatMap(x => Array.isArray(x?.check) ? x.check :
+      []).filter(Boolean);\r
+
+      };\r
+
+      \r
+
+      // -------------------------\r
+
+      // Обробка одного OBS\r
+
+      // -------------------------\r
+
+      const processObservation = async (obs) => {\r
+
+      \    const obsCode = obs?.code?.coding?.[0]?.code;\r
+
+      \    if (!obsCode) throw new Error(\"❌ Cannot extract observation
+      code\");\r
+
+      \r
+
+      \    // Отримуємо конфігурацію\r
+
+      \    const configRes = await new Promise((resolve, reject) => {\r
+
+      \        pm.sendRequest(\r
+
+      \            { url:
+      `${baseUrl}/api/observation_configurations?code=${encodeURIComponent(obsC\
+      ode)}`, method: \"GET\", header: headers },\r
+
+      \            (err, res) => {\r
+
+      \                if (err) return reject(\"❌ Error fetching observation
+      config: \" + err);\r
+
+      \                const settings = res.json()?.data?.[0]?.settings;\r
+
+      \                if (!settings) return reject(\"❌ No settings in
+      observation configuration\");\r
+
+      \                resolve(settings);\r
+
+      \            }\r
+
+      \        );\r
+
+      \    });\r
+
+      \r
+
+      \    const {\r
+
+      \        COMPONENTS_REQUIRED: reqs = { check: [] },\r
+
+      \        COMPONENTS_BINDING: bindings = [],\r
+
+      \        COMPONENTS_SCORE: scores = [],\r
+
+      \        COMPONENTS_ALLOWED_EXTENSIONS: allowedExt = [],\r
+
+      \        COMPONENTS_TYPE = [],\r
+
+      \        COMPONENTS_QUANTITY_CODES = [],\r
+
+      \        COMPONENT_QUANTITY_BOUNDARIES = [],\r
+
+      \        RESULT_TYPE,\r
+
+      \        RESULT_BINDING,\r
+
+      \        RESULT_QUANTITY_CODES,\r
+
+      \        RESULT_BOUNDARIES,\r
+
+      \        RESULT_SCORE_CALCULATION\r
+
+      \    } = configRes;\r
+
+      \r
+
+      \    const resultType = RESULT_TYPE?.check; // \"codeable_concept\" |
+      \"quantity\"\r
+
+      \    const allowedExtensionCodes =
+      extractAllowedExtensionCodes(allowedExt);\r
+
+      \r
+
+      \    // -------------------------\r
+
+      \    //  COMPONENTS\r
+
+      \    // -------------------------\r
+
+      \    let components = [];\r
+
+      \r
+
+      \    for (const req of (reqs.check || [])) {\r
+
+      \        const reqCode = req?.code;\r
+
+      \        const reqSystem = req?.system;\r
+
+      \r
+
+      \        const compTypeObj = findByComponentCode(COMPONENTS_TYPE,
+      reqCode);\r
+
+      \        const compType = compTypeObj?.check || \"codeable_concept\";\r
+
+      \r
+
+      \        // ---------- COMPONENT TYPE: quantity ----------\r
+
+      \        if (compType === \"quantity\") {\r
+
+      \            const qtyCodeObj =
+      findByComponentCode(COMPONENTS_QUANTITY_CODES, reqCode);\r
+
+      \            const qtyCodeInfo = qtyCodeObj?.check?.[0]; // {code,
+      system}\r
+
+      \r
+
+      \            // boundaries саме під компонент + quantity_code\r
+
+      \            const boundaryObj =
+      (Array.isArray(COMPONENT_QUANTITY_BOUNDARIES) ?
+      COMPONENT_QUANTITY_BOUNDARIES : [])\r
+
+      \                .find(b =>\r
+
+      \                    b?.condition?.component_code?.code === reqCode &&\r
+
+      \                    b?.condition?.quantity_code?.code ===
+      qtyCodeInfo?.code &&\r
+
+      \                    b?.condition?.quantity_code?.system ===
+      qtyCodeInfo?.system\r
+
+      \                );\r
+
+      \r
+
+      \            const min = boundaryObj?.check?.min ?? 0;\r
+
+      \            const max = boundaryObj?.check?.max ?? 0;\r
+
+      \            const value = getRandomInt(min, max);\r
+
+      \r
+
+      \            // якщо qtyCodeInfo нема — все одно не ламаємось, але
+      value_quantity не сформуємо коректно\r
+
+      \            if (qtyCodeInfo?.code && qtyCodeInfo?.system) {\r
+
+      \                components.push({\r
+
+      \                    code: { coding: [{ system: reqSystem, code: reqCode
+      }] },\r
+
+      \                    value_quantity: {\r
+
+      \                        value,\r
+
+      \                        code: qtyCodeInfo.code,\r
+
+      \                        unit: qtyCodeInfo.code,\r
+
+      \                        system: qtyCodeInfo.system\r
+
+      \                    }\r
+
+      \                });\r
+
+      \            } else {\r
+
+      \                components.push({\r
+
+      \                    code: { coding: [{ system: reqSystem, code: reqCode
+      }] }\r
+
+      \                });\r
+
+      \            }\r
+
+      \r
+
+      \            continue;\r
+
+      \        }\r
+
+      \r
+
+      \        // ---------- COMPONENT TYPE: codeable_concept (залишаємо як є)
+      ----------\r
+
+      \        const bind = (Array.isArray(bindings) ? bindings : []).find(b =>
+      b?.condition?.component_code?.code === reqCode);\r
+
+      \        if (!bind) {\r
+
+      \            components.push({\r
+
+      \                code: { coding: [{ system: reqSystem, code: reqCode }]
+      }\r
+
+      \            });\r
+
+      \            continue;\r
+
+      \        }\r
+
+      \r
+
+      \        const answerSystem = bind.check?.[0];\r
+
+      \r
+
+      \        const scoresForSystem = (Array.isArray(scores) ? scores :
+      []).filter(s => s?.condition?.answer?.system === answerSystem);\r
+
+      \        const chosenScore = getRandomElement(scoresForSystem);\r
+
+      \r
+
+      \        let answerCode = chosenScore?.condition?.answer?.code ||
+      \"LA12302-8\";\r
+
+      \        const valueDecimal = chosenScore?.check ?? 0;\r
+
+      \r
+
+      \        // spine_level_codes → code зі словника\r
+
+      \        if (answerSystem === \"eHealth/spine_level_codes\") {\r
+
+      \            const dictEntry = await
+      fetchDictionary(\"eHealth/spine_level_codes\");\r
+
+      \            answerCode = dictEntry.code;\r
+
+      \        }\r
+
+      \r
+
+      \        // extensions (якщо allowed extensions є)\r
+
+      \        let extensions;\r
+
+      \        if (allowedExtensionCodes.length > 0) {\r
+
+      \            extensions = allowedExtensionCodes.map(codeStr => ({\r
+
+      \                code: codeStr,\r
+
+      \                value_decimal: valueDecimal\r
+
+      \            }));\r
+
+      \        }\r
+
+      \r
+
+      \        components.push({\r
+
+      \            code: { coding: [{ system: reqSystem, code: reqCode }] },\r
+
+      \            value_codeable_concept: {\r
+
+      \                coding: [{\r
+
+      \                    system: answerSystem,\r
+
+      \                    code: answerCode,\r
+
+      \                    ...(extensions ? { extension: extensions } : {})\r
+
+      \                }]\r
+
+      \            }\r
+
+      \        });\r
+
+      \    }\r
+
+      \r
+
+      \    obs.components = components;\r
+
+      \r
+
+      \    // -------------------------\r
+
+      \    //  RESULT_TYPE: гарантуємо тільки ОДНЕ value_*\r
+
+      \    // -------------------------\r
+
+      \    if (resultType === \"codeable_concept\") {\r
+
+      \        // прибираємо quantity якщо був\r
+
+      \        if (obs.value_quantity !== undefined) delete
+      obs.value_quantity;\r
+
+      \r
+
+      \        // формуємо value_codeable_concept\r
+
+      \        if (RESULT_BINDING?.check?.[0]) {\r
+
+      \            const dictName = RESULT_BINDING.check[0];\r
+
+      \            const dictEntry = await fetchDictionary(dictName);\r
+
+      \r
+
+      \            obs.value_codeable_concept = {\r
+
+      \                coding: [{ code: dictEntry.code, system: dictName }]\r
+
+      \            };\r
+
+      \        } else {\r
+
+      \            if (obs.value_codeable_concept !== undefined) delete
+      obs.value_codeable_concept;\r
+
+      \        }\r
+
+      \r
+
+      \        return obs;\r
+
+      \    }\r
+
+      \r
+
+      \    if (resultType === \"quantity\") {\r
+
+      \        // прибираємо codeable_concept якщо був\r
+
+      \        if (obs.value_codeable_concept !== undefined) delete
+      obs.value_codeable_concept;\r
+
+      \r
+
+      \        const quantityCode = RESULT_QUANTITY_CODES?.[0]?.check?.[0];\r
+
+      \        if (!quantityCode) {\r
+
+      \            if (obs.value_quantity !== undefined) delete
+      obs.value_quantity;\r
+
+      \            return obs;\r
+
+      \        }\r
+
+      \r
+
+      \        let value = 0;\r
+
+      \r
+
+      \        // RESULT_SCORE_CALCULATION = SUM\r
+
+      \        if (RESULT_SCORE_CALCULATION?.check === \"SUM\") {\r
+
+      \            // 1) ПЕРШИЙ ПРІОРИТЕТ: сума components.value_quantity.value
+      (WHODAS)\r
+
+      \            const componentQuantityValues = (obs.components || [])\r
+
+      \                .map(c => Number(c?.value_quantity?.value))\r
+
+      \                .filter(v => Number.isFinite(v));\r
+
+      \r
+
+      \            if (componentQuantityValues.length > 0) {\r
+
+      \                value = componentQuantityValues.reduce((s, v) => s + v,
+      0);\r
+
+      \            } else {\r
+
+      \                // 2) FALLBACK: сума extensions.value_decimal (Barthel та
+      подібне)\r
+
+      \                const allExtensions = (obs.components || []).flatMap(comp
+      =>\r
+
+      \                    (comp?.value_codeable_concept?.coding ||
+      []).flatMap(coding =>\r
+
+      \                        Array.isArray(coding?.extension) ?
+      coding.extension : []\r
+
+      \                    )\r
+
+      \                );\r
+
+      \r
+
+      \                value = allExtensions.reduce((sum, ext) => sum +
+      (Number(ext?.value_decimal) || 0), 0);\r
+
+      \            }\r
+
+      \        } else {\r
+
+      \            // якщо не SUM — можна використати boundaries result (як
+      fallback),\r
+
+      \            // але щоб нічого не ламати, залишимо 0, або clamp по
+      RESULT_BOUNDARIES якщо хочеш.\r
+
+      \            value = 0;\r
+
+      \        }\r
+
+      \r
+
+      \        // За бажанням (не обов'язково): clamp по RESULT_BOUNDARIES для
+      цього quantity_code\r
+
+      \        // (щоб не вийти за max/min загального результату)\r
+
+      \        const rb = Array.isArray(RESULT_BOUNDARIES) ? RESULT_BOUNDARIES :
+      [];\r
+
+      \        const rbMatch = rb.find(x =>\r
+
+      \            x?.condition?.quantity_code?.code === quantityCode.code &&\r
+
+      \            x?.condition?.quantity_code?.system === quantityCode.system\r
+
+      \        );\r
+
+      \        if (rbMatch?.check) {\r
+
+      \            const minR = Number(rbMatch.check.min);\r
+
+      \            const maxR = Number(rbMatch.check.max);\r
+
+      \            if (Number.isFinite(minR)) value = Math.max(value, minR);\r
+
+      \            if (Number.isFinite(maxR)) value = Math.min(value, maxR);\r
+
+      \        }\r
+
+      \r
+
+      \        obs.value_quantity = {\r
+
+      \            value,\r
+
+      \            code: quantityCode.code,\r
+
+      \            unit: quantityCode.code,\r
+
+      \            system: quantityCode.system\r
+
+      \        };\r
+
+      \r
+
+      \        return obs;\r
+
+      \    }\r
+
+      \r
+
+      \    // якщо RESULT_TYPE не очікуваний — прибираємо обидва, щоб не було
+      сміття\r
+
+      \    if (obs.value_quantity !== undefined) delete obs.value_quantity;\r
+
+      \    if (obs.value_codeable_concept !== undefined) delete
+      obs.value_codeable_concept;\r
+
+      \r
+
+      \    return obs;\r
+
+      };\r
+
+      \r
+
+      // -------------------------\r
+
+      //  Обробка ВСІХ OBS\r
+
+      // -------------------------\r
+
+      (async () => {\r
+
+      \    try {\r
+
+      \        await Promise.all(parsedBody.observations.map(obs =>
+      processObservation(obs)));\r
+
+      \r
+
+      \        pm.request.body.update({\r
+
+      \            mode: \"raw\",\r
+
+      \            raw: JSON.stringify(parsedBody, null, 2),\r
+
+      \            options: { raw: { language: \"json\" } }\r
+
+      \        });\r
+
+      \r
+
+      \        console.log(\"✅ REQUEST BODY UPDATED:\",
+      JSON.stringify(parsedBody));\r
+
+      \    } catch (err) {\r
+
+      \        console.error(err);\r
+
+      \        throw new Error(err);\r
+
+      \    }\r
+
+      })();"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      console.log('create encounter sign content', resData)\r
+
+      \r
+
+      pm.test(`Encounter content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('encounter_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      // if (resData.signed_content) {\r
+
+      //     pm.globals.set('encounter_signed_content',
+      resData.signed_content)\r
+
+      // }\r\n"
+    language: text/javascript
+order: 2000

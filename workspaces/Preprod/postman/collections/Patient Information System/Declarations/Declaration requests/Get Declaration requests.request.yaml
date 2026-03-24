@@ -1,0 +1,39 @@
+$kind: http-request
+url: "{{pis_host}}/api/pis/declaration_requests"
+method: GET
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: X-Custom-PSK
+    value: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+    disabled: true
+  - key: api-key
+    value: WDRWK29KcStZUUV6QmQyWVlqbllwdz09
+  - key: Authorization
+    value: Bearer V3RWUW5jVzRnWllHWWw2MkJSWDZ2UT09
+queryParams:
+  - key: status
+    value: active
+    disabled: true
+  - key: start_date_from
+    value: 2022-08-19
+    disabled: true
+  - key: start_date_to
+    value: 2023-08-19
+    disabled: true
+  - key: end_date_from
+    value: 2023-09-19
+    disabled: true
+  - key: end_date_to
+    value: 2023-10-19
+    disabled: true
+  - key: channel
+    value: PIS
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+order: 4000

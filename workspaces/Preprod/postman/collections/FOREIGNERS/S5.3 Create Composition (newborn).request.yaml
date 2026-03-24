@@ -1,0 +1,94 @@
+$kind: http-request
+name: S5.3 Create Composition (newborn)
+url: https://api-demo.ehealth.gov.ua/api/patients/composition
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: ""
+  api-key: 30276e63617461a185ec
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: text
+  content: |-
+    {
+    	"author": {
+    		"type": {
+    			"coding": [{
+    				"code": "employee",
+    				"system": "eHealth/resources"
+    			}]
+    		},
+    		"value": "39e16110-7367-4942-9ea6-062d295cbd59"
+    	},
+    	"category": {
+    		"coding": [{
+    			"code": "LIVE_BIRTH",
+    			"system": "COMPOSITION_CATEGORIES"
+    		}]
+    	},
+    	"encounter": {
+    		"type": {
+    			"coding": [{
+    				"code": "encounter",
+    				"system": "eHealth/resources"
+    			}]
+    		},
+    		"value": "4c3b0d75-5c48-4147-abd8-f99fe340348a"
+    	},
+    	"event": [{
+    		"code": {
+    			"coding": [{
+    				"code": "COMPOSITION_VALIDITY_PERIOD",
+    				"system": "COMPOSITION_EVENTS"
+    			}]
+    		},
+    		"period": {
+    			"start": "2025-12-08T10:55:00Z"
+    		}
+    	}],
+    	"extension": [{
+    		"valueCode": "NEWBORN_SEX",
+    		"valueString": "FEMALE"
+    	}, 
+        {
+    		"valueCode": "NEWBORN_BIRTH_DATE",
+    		"valueDate": "2025-12-08"
+    	}],
+    	"section": {
+    		"focus": {
+    			"type": {
+    				"coding": [{
+    					"code": "person",
+    					"system": "eHealth/resources"
+    				}]
+    			},
+    			"value": "8901cb64-c823-49db-9ff5-02e01429efb2"
+    		}
+    	},
+    	"subject": {
+    		"type": {
+    			"coding": [{
+    				"code": "preperson",
+    				"system": "eHealth/resources"
+    			}]
+    		},
+    		"value": "ee946495-0514-4dbe-b358-e52ad3f270c0"
+    	},
+    	"type": {
+    		"coding": [{
+    			"code": "NEWBORN",
+    			"system": "COMPOSITION_TYPES"
+    		}]
+    	}
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      var jsonData = JSON.parse(responseBody);
+
+
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 37000

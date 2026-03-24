@@ -1,0 +1,30 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/jobs/{{job_id}}
+method: GET
+headers:
+  api-key: ef7d48ecfc233d6af088
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+scripts:
+  - type: afterResponse
+    code: |-
+      
+      pm.test("Job successfully processed", function () { 
+          (pm.expect(pm.response.json().meta.code).to.equal(303)); 
+      });
+
+      pm.test("Job not in 'pending' status", function () { 
+          (pm.expect(pm.response.json().data.status_code).to.not.equal(202)); 
+      });
+
+      pm.test("Validation did not fail", function () { 
+          (pm.expect(pm.response.json().data.status_code).to.not.equal(422)); 
+      });
+
+      pm.test("No internal error", function () { 
+          (pm.expect(pm.response.json().data.status_code).to.not.equal(500)); 
+      });
+      var jsonData = JSON.parse(responseBody);
+      var activity_ref=jsonData.data.links[0].href;
+      pm.environment.set("activity_ref", activity_ref);
+    language: text/javascript
+order: 7000

@@ -1,0 +1,63 @@
+$kind: http-request
+url: "{{host}}/api/persons?first_name={{first_name}}&last_name={{last_name}}&bi\
+  rth_date=2000-12-13"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  x-custom-psk: "{{x-custom-psk}}"
+queryParams:
+  - key: second_name
+    value: Іванівна
+    disabled: true
+  - key: first_name
+    value: "{{first_name}}"
+  - key: last_name
+    value: "{{last_name}}"
+  - key: birth_date
+    value: 2000-12-13
+  - key: null
+    value: ""
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: >+
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+
+      // Перевіряємо, чи відповідь містить JSON
+
+      pm.test("Response has valid JSON", function () {
+          pm.response.to.be.json;
+      });
+
+
+      // Парсимо тіло відповіді
+
+      const jsonData = pm.response.json();
+
+
+      // Перевірка, чи масив "data" порожній
+
+      pm.test("Data array is not empty", function () {
+          pm.expect(jsonData.data).to.be.an('array').that.is.not.empty;
+      });
+
+
+      // Якщо потрібно перевірити, що масив "data" саме порожній:
+
+      pm.test("Data array is not empty", function () {
+          pm.expect(jsonData.data, "Data array is empty").to.be.an('array').that.is.not.empty;
+      });
+
+    language: text/javascript
+settings:
+  disabledSystemHeaders:
+    - accept
+    - user-agent
+    - accept-encoding
+    - connection
+order: 9000

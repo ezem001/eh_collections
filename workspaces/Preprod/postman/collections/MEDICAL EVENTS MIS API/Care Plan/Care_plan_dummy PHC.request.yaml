@@ -1,0 +1,219 @@
+$kind: http-request
+url: http://localhost:3000/create-care-plan-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{care_plan_id}}\",\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"eHealth/care_plan_categories\",\r
+
+    \                \"code\": \"class_4\" //class_4\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"title\": \"План Лікуваня\",\r
+
+    \    \"description\": \"123\",\r
+
+    \    \"period\": {\r
+
+    \        \"start\": \"2026-02-21T08:45:16.000Z\",\r
+
+    \        \"end\": \"2026-03-01T11:00:00.000Z\"\r
+
+    \    },\r
+
+    \    \"note\": \"123\",\r
+
+    \    \"intent\": \"order\",\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{jobEncounterID}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"addresses\": [\r
+
+    \        {\r
+
+    \            \"coding\": [\r
+
+    \                {\r
+
+    \                    \"system\": \"eHealth/ICPC2/condition_codes\",\r
+
+    \                    \"code\": \"T89\"\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"terms_of_service\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"PROVIDING_CONDITION\",\r
+
+    \                \"code\": \"OUTPATIENT\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"status\": \"new\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const carePlanId = uuid.v4();\r
+
+      \r
+
+      pm.globals.set(\"care_plan_id\", carePlanId);\r
+
+      \r
+
+      \r
+
+      // Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      // Check if the URL is defined and contains the expected format\r
+
+      if (url && url.includes('encounters/')) {\r
+
+      \    // Extract the ID after 'encounters/'\r
+
+      \    const parts = url.split('encounters/');\r
+
+      \    if (parts.length > 1) {\r
+
+      \        const jobEncounterID = parts[1];\r
+
+      \        \r
+
+      \        // Log the extracted ID to the console (for debugging purposes)\r
+
+      \        console.log('Extracted jobEncounterID:', jobEncounterID);\r
+
+      \        \r
+
+      \        // Optionally, set the extracted ID as an environment variable\r
+
+      \        pm.globals.set('encounter_extracted_id', jobEncounterID);\r
+
+      \    } else {\r
+
+      \        console.error('The URL does not contain the expected format.');\r
+
+      \    }\r
+
+      } else {\r
+
+      \    console.error('The global variable jobEncounterID is not defined or
+      does not contain the expected format.');\r
+
+      }\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      \r
+
+      pm.test(`Care Plan content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('care_plan_signed_content', resData.signed_content);\r
+
+      });\r
+
+      \r
+
+      \r
+
+      // if(resData.signed_content){\r
+
+      //     pm.globals.set('care_plan_signed_content',
+      resData.signed_content)\r
+
+      // }"
+    language: text/javascript
+order: 4000

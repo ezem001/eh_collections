@@ -1,0 +1,137 @@
+$kind: http-request
+description: This method is used to create care teams for legal entity in the system.
+url: "{{host}}/api/care_teams"
+method: POST
+headers:
+  api-key: "{{mis_client_secret}}"
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"status\": \"draft\",\r
+
+    \  \"category\": \"surgical_care_team\",\r
+
+    \  \"name\": \"Тестова команда entered_in_error\",\r
+
+    \  \"period_start\": \"2026-02-17\",\r
+
+    \  \"email\": \"test_care_team@email.com\",\r
+
+    \  \"phones\": [\r
+
+    \    {\r
+
+    \      \"type\": \"MOBILE\",\r
+
+    \      \"number\": \"+380503410870\"\r
+
+    \    }\r
+
+    \  ],\r
+
+    \  \"note\": \"Додаткова примітка до команди лікування\",\r
+
+    \  \"author_employee_id\": \"{{user_id}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: >
+      // ------------------------------
+
+      //  Parse response
+
+      // ------------------------------
+
+      const response = pm.response.json();
+
+      pm.test("Response is 201", () => {
+          pm.response.to.have.status(201);
+          pm.globals.set("care_team_id", response?.data?.id);
+      });
+
+
+      const { id, legal_entity_id,author_employee_id, name, category, email,
+      phones, note, period_start, period_end, status, status_reason } =
+      response.data;
+
+      console.log(pm.request)
+
+      // ------------------------------
+
+      //  Detect environment
+
+      // ------------------------------
+
+      function detectEnvironment() {
+          const host = pm.request.url.host;
+          if (host.includes("api-demo")) return "demo";
+          if (host.includes("api-preprod")) return "preprod";
+          if (host.includes("api-stage")) return "stage";
+          return "unknown";
+      }
+
+
+      const environment = detectEnvironment();
+
+
+      // ------------------------------
+
+      //  Prepare Mongo payload
+
+      // ------------------------------
+
+      const mongoPayload = {
+          careTeamId: id,
+          legal_entity_id,
+          author_employee_id,
+          name,
+          category,
+          phones,
+          email,
+          note,
+          environment,
+          team_status: status,
+          status_reason,
+          period_start,
+          period_end,
+          createdAt: new Date().toISOString()
+      };
+
+
+      console.info(mongoPayload)
+
+      // ------------------------------
+
+      //  Send to Mongo API
+
+      // ------------------------------
+
+      // ⚠️ Рекомендовано: MongoDB Atlas Data API
+
+      pm.sendRequest({
+          url: "http://localhost:3000/care-teams",
+          method: "POST",
+          header: {
+              "Content-Type": "application/json"
+          },
+          body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                  data: mongoPayload   // 🔥 ВАЖЛИВО: ВСЕ В data
+              })
+          }
+      }, (err, res) => {
+          if (err) {
+              console.error("❌ Mongo error:", err);
+              return;
+          }
+
+          console.log("✅ Saved to Mongo:", mongoPayload);
+      });
+    language: text/javascript
+order: 3000

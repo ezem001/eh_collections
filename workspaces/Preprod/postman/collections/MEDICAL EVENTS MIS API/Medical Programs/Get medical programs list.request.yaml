@@ -1,0 +1,25 @@
+$kind: http-request
+description: >-
+  Method returns list of medical programs filtering by parameters. By default
+  method returns only active medical programs `is_active=true`
+
+
+  **Scopes required:** `medical_program:read`
+url: "{{host_demo}}/api/medical_programs?id=d290f1ee-6c54-4b01-90e6-d701748f085\
+  1&name=%D0%94%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%BD%D1%96%20%D0%BB%D1%96%D0%BA%\
+  D0%B8&is_active=true&mr_blank_type=F-1&page=2&page_size=50&type=MEDICATION"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+  api-key: 30276e63617461a185ec
+queryParams:
+  id: d290f1ee-6c54-4b01-90e6-d701748f0851
+  name: "%D0%94%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%BD%D1%96%20%D0%BB%D1%96%D0%BA%D0%B8"
+  is_active: "true"
+  mr_blank_type: F-1
+  page: "2"
+  page_size: "50"
+  type: MEDICATION
+order: 2000

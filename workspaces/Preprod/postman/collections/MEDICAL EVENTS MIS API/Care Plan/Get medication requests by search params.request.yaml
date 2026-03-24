@@ -1,0 +1,46 @@
+$kind: http-request
+url: "{{host}}/api/persons/6a524088-c3f6-44ef-bcea-12a8e2900431/medication_requ\
+  ests?legal_entity_id=0dccb76f-3ed0-40f4-8f73-e95e2f91ea29&page=1&page_size=50\
+  &care_plan_id=eb487aaa-cfba-4c5a-bbbd-17117d30fe78"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  Authorization: Bearer {{access_token}}
+queryParams:
+  - key: legal_entity_id
+    value: 0dccb76f-3ed0-40f4-8f73-e95e2f91ea29
+  - key: employee_id
+    value: 7124259c-eeb1-4cbb-acac-ada2162675d1
+    disabled: true
+  - key: status
+    value: ACTIVE
+    disabled: true
+  - key: request_number
+    value: 0000-243P-1X53-EH38
+    disabled: true
+  - key: created_from
+    value: 2017-08-17
+    disabled: true
+  - key: created_to
+    value: 2017-08-30
+    disabled: true
+  - key: medication_id
+    value: b075f148-7f93-4fc2-b2ec-2d81b19a9b5b
+    disabled: true
+  - key: intent
+    value: order
+    disabled: true
+  - key: encounter_id
+    value: 7075e0e2-6b57-47fd-aff7-324806efa7e5
+    disabled: true
+  - key: episode_id
+    value: 6f305d0e-1758-4920-9167-d4f97225ad7e
+    disabled: true
+  - key: page
+    value: "1"
+  - key: page_size
+    value: "50"
+  - key: care_plan_id
+    value: eb487aaa-cfba-4c5a-bbbd-17117d30fe78
+order: 7000

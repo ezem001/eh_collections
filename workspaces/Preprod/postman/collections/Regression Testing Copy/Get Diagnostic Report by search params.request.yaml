@@ -1,0 +1,40 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_for_regress}}/diagnostic_reports?code=351\
+  ba946-f6a5-4630-8ec3-07739d142c47"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "50"
+    disabled: true
+  - key: code
+    value: 351ba946-f6a5-4630-8ec3-07739d142c47
+  - key: encounter_id
+    value: 09dc3ed7-2169-45d8-8fa3-d918c6839bf9
+    disabled: true
+  - key: context_episode_id
+    value: "{{jobEpisodeID}}"
+    disabled: true
+  - key: issued_from
+    value: 1990-01-01
+    disabled: true
+  - key: issued_to
+    value: 2000-01-02
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Get Diagnostic Report by search params - PASS. Status code is
+      200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });"
+    language: text/javascript
+order: 62000

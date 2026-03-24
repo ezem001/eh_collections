@@ -1,0 +1,172 @@
+$kind: http-request
+url: ""
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"edrpou\": \"НВ411165\",\r
+
+    \    \"type\": \"PHARMACY\",\r
+
+    \    \"residence_address\": {\r
+
+    \        \"apartment\": \"23\",\r
+
+    \        \"area\": \"ХАРКІВСЬКА\",\r
+
+    \        \"building\": \"15\",\r
+
+    \        \"country\": \"UA\",\r
+
+    \        \"region\": \"ЧУГУЇВСЬКИЙ\",\r
+
+    \        \"settlement\": \"ВЕЛИКА БАБКА\",\r
+
+    \        \"settlement_id\": \"7a438190-5b6f-4341-b25d-0b19f46c320f\",\r
+
+    \        \"settlement_type\": \"VILLAGE\",\r
+
+    \        \"street\": \"вул. Ніжинська\",\r
+
+    \        \"street_type\": \"STREET\",\r
+
+    \        \"type\": \"RESIDENCE\",\r
+
+    \        \"zip\": \"02090\"\r
+
+    \    },\r
+
+    \    \"phones\": [\r
+
+    \        {\r
+
+    \            \"number\": \"+380636947814\",\r
+
+    \            \"type\": \"MOBILE\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"email\": \"pharmacy.test.demo@i.ua\",\r
+
+    \    \"website\": \"https://апостолове.цпмсд.укр\",\r
+
+    \    \"receiver_funds_code\": \"12345\",\r
+
+    \    \"beneficiary\": \"Беніфіціар Іван Ехелсович\",\r
+
+    \    \"owner\": {\r
+
+    \        \"first_name\": \"Андрій\",\r
+
+    \        \"last_name\": \"Бісовецький\",\r
+
+    \        \"second_name\": \"Вадимович\",\r
+
+    \        \"tax_id\": \"НВ411165\",\r
+
+    \        \"no_tax_id\": true,\r
+
+    \        \"birth_date\": \"1988-11-25\",\r
+
+    \        \"gender\": \"MALE\",\r
+
+    \        \"email\": \"pharmacy.test.demo@i.ua\",\r
+
+    \        \"documents\": [\r
+
+    \            {\r
+
+    \                \"issued_at\": \"2015-11-25\",\r
+
+    \                \"issued_by\": \"Рокитнянським РВ ГУ МВС Київської
+    області\",\r
+
+    \                \"number\": \"НВ411165\",\r
+
+    \                \"type\": \"PASSPORT\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"phones\": [\r
+
+    \            {\r
+
+    \                \"number\": \"+380993742885\",\r
+
+    \                \"type\": \"MOBILE\"\r
+
+    \            }\r
+
+    \        ],\r
+
+    \        \"position\": \"P1\"\r
+
+    \    },\r
+
+    \    \"accreditation\": {\r
+
+    \        \"category\": \"SECOND\",\r
+
+    \        \"issued_date\": \"2017-02-28\",\r
+
+    \        \"expiry_date\": \"2017-02-28\",\r
+
+    \        \"order_no\": \"fd123443\",\r
+
+    \        \"order_date\": \"2017-02-28\"\r
+
+    \    },\r
+
+    \    \"license\": {\r
+
+    \        \"active_from_date\": \"2017-02-28\",\r
+
+    \        \"expiry_date\": \"2032-12-31\",\r
+
+    \        \"issued_by\": \"Кваліфікацйна комісія\",\r
+
+    \        \"issued_date\": \"2017-02-28\",\r
+
+    \        \"license_number\": \"КО1234432\",\r
+
+    \        \"order_no\": \"ВА432345\",\r
+
+    \        \"type\": \"PHARMACY\",\r
+
+    \        \"what_licensed\": \"Аптека\"\r
+
+    \    },\r
+
+    \    \"archive\": [\r
+
+    \        {\r
+
+    \            \"date\": \"2022-02-28\",\r
+
+    \            \"place\": \"вул. Грушевського 15\"\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"security\": {\r
+
+    \        \"redirect_uri\": \"https://test89.com\"\r
+
+    \    },\r
+
+    \    \"public_offer\": {\r
+
+    \        \"consent_text\": \"Consent text\",\r
+
+    \        \"consent\": true\r
+
+    \    }\r
+
+    }"
+order: 1000

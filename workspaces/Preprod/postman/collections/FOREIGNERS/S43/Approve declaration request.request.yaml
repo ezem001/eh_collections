@@ -1,0 +1,20 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/v3/declaration_requests/194e3f9a-80a4-4dc8-bd86-ab15a13ffb55/actions/approve
+method: PATCH
+headers:
+  Authorization: Bearer {{employee_access_token}}
+  Content-Type: application/json
+  api-key: 30276e63617461a185ec
+  X-Custom-PSK: a1aa07c96f3f4d91870f923a53cc9aa8f23bbc01a8238d1c2c26d4299715a7e4
+body:
+  type: text
+  content: |-
+    {
+        "verification_code": 2721
+    }
+scripts:
+  - type: afterResponse
+    code: |
+      tests["Status code is 200"] = responseCode.code === 200;
+    language: text/javascript
+order: 3000

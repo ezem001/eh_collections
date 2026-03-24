@@ -1,0 +1,3688 @@
+$kind: http-request
+url: http://localhost:3000/create-composition-signed-content
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": \"{{composition_id}}\",\r
+
+    \    \"title\": \"{{composition_stitle}}\",\r
+
+    \    \"status\": \"FINAL\",\r
+
+    \    \"type\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_TYPES\",\r
+
+    \                \"code\": \"DRIVERS\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"category\": {\r
+
+    \        \"coding\": [\r
+
+    \            {\r
+
+    \                \"system\": \"COMPOSITION_CATEGORIES\",\r
+
+    \                \"code\": \"DRIVERS_GROUP1\"\r
+
+    \            }\r
+
+    \        ]\r
+
+    \    },\r
+
+    \    \"date\": \"2024-11-04T10:45:16.000Z\",\r
+
+    \    \"custodian\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"legal_entity\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_legal_entity}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"encounter\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"encounter\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{encounter_extracted_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"author\": {\r
+
+    \        \"identifier\": {\r
+
+    \            \"type\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"eHealth/resources\",\r
+
+    \                        \"code\": \"employee\"\r
+
+    \                    }\r
+
+    \                ],\r
+
+    \                \"text\": \"string\"\r
+
+    \            },\r
+
+    \            \"value\": \"{{user_id}}\"\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"attester\": [\r
+
+    \        {\r
+
+    \            \"mode\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_ATTESTER_MODES\",\r
+
+    \                        \"code\": \"LEGAL\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"party\": {\r
+
+    \                \"identifier\": {\r
+
+    \                    \"type\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\": \"eHealth/resources\",\r
+
+    \                                \"code\": \"employee\"\r
+
+    \                            }\r
+
+    \                        ],\r
+
+    \                        \"text\": \"string\"\r
+
+    \                    },\r
+
+    \                    \"value\": \"{{user_id}}\"\r
+
+    \                }\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"event\": [\r
+
+    \        {\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_EVENTS\",\r
+
+    \                        \"code\": \"DRIVERS_GROUP1_ADMIT\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"period\": {\r
+
+    \                \"start\": \"2024-11-04T10:45:16.000Z\",\r
+
+    \                \"end\":\"2024-11-29T10:45:16.000Z\"\r
+
+    \            }\r
+
+    \        }\r
+
+    \    ],\r
+
+    \    \"section\": [\r
+
+    \        {\r
+
+    \            \"title\": \"Результат огляду\",\r
+
+    \            \"code\": {\r
+
+    \                \"coding\": [\r
+
+    \                    {\r
+
+    \                        \"system\": \"COMPOSITION_SECTION_CODES\",\r
+
+    \                        \"code\": \"DRIVERS_GROUP1_MAIN_SECTION\"\r
+
+    \                    }\r
+
+    \                ]\r
+
+    \            },\r
+
+    \            \"author\": [\r
+
+    \                {\r
+
+    \                    \"identifier\": {\r
+
+    \                        \"type\": {\r
+
+    \                            \"coding\": [\r
+
+    \                                {\r
+
+    \                                    \"system\": \"eHealth/resources\",\r
+
+    \                                    \"code\": \"employee\"\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"text\": \"string\"\r
+
+    \                        },\r
+
+    \                        \"value\": \"{{user_id}}\"\r
+
+    \                    }\r
+
+    \                }\r
+
+    \            ],\r
+
+    \            \"section\": [\r
+
+    \                {\r
+
+    \                    \"title\": \"Результат огляду лікаря ПМД\",\r
+
+    \                    \"code\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"author\": [\r
+
+    \                        {\r
+
+    \                            \"identifier\": {\r
+
+    \                                \"type\": {\r
+
+    \                                    \"coding\": [\r
+
+    \                                        {\r
+
+    \                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                            \"code\": \"employee\"\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"text\": \"string\"\r
+
+    \                                },\r
+
+    \                                \"value\": \"{{user_id}}\"\r
+
+    \                            }\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"section\": [\r
+
+    \                        {\r
+
+    \                            \"title\": \"Органи зору\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Спостереження\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_OBSERVATION\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"Гострота зору, без
+    корекції\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_OBSERVATION_VISUAL_ACUITY\
+    _UNCORRECTED\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        },\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"Гострота зору, з
+    корекцією\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_OBSERVATION_VISUAL_ACUITY\
+    _CORRECTED\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        },\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"Гострота
+    монокулярна\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_OBSERVATION_MONOCULAR_ACU\
+    ITY\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        },\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"Поле зору\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_OBSERVATION_VISUAL_FIELD\"\
+    \r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        },\r
+
+    \                                        {\r
+
+    \                                            \"title\":
+    \"Кольоровідчуття\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_OBSERVATION_COLOR_VISION\"\
+    \r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                },\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_CONTRAINDICATIONS\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_VISION_CONTRAINDICATIONS_EHR\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Органи слуху\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_HEARING\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Спостереження\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_HEARING_OBSERVATION\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"Гострота
+    слуху\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_HEARING_OBSERVATION_HEARING_ACUI\
+    TY\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                },\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_HEARING_CONTRAINDICATIONS\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_HEARING_CONTRAINDICATIONS_EHR\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Опорно-руховий апарат\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_MUSCULOSKELETAL\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_MUSCULOSKELETAL_CONTRAINDICATIONS\
+    \"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_MUSCULOSKELETAL_CONTRAINDICATION\
+    S_EHR\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Серцево-судинна система\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CARDIOVASCULAR\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Спостереження\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CARDIOVASCULAR_OBSERVATION\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"Систолічний
+    тиск\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CARDIOVASCULAR_OBSERVATION_SYSTO\
+    LIC_PRESSURE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        },\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"Діастолічний
+    тиск\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CARDIOVASCULAR_OBSERVATION_DIAST\
+    OLIC_PRESSURE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        },\r
+
+    \                                        {\r
+
+    \                                            \"title\":
+    \"Електрокардіограма\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CARDIOVASCULAR_OBSERVATION_ECG\"\
+    \r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                },\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CARDIOVASCULAR_CONTRAINDICATIONS\
+    \"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CARDIOVASCULAR_CONTRAINDICATIONS\
+    _EHR\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Ендокринна система\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_ENDOCRINE\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_ENDOCRINE_CONTRAINDICATIONS\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_ENDOCRINE_CONTRAINDICATIONS_EHR\"\
+    \r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Центральна нервова система\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CNS\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Спостереження\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CNS_OBSERVATION\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\":
+    \"Електроенцефалографія\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CNS_OBSERVATION_EEG\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                },\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CNS_CONTRAINDICATIONS\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_CNS_CONTRAINDICATIONS_EHR\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Дихальна система\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_RESPIRATORY\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_RESPIRATORY_CONTRAINDICATIONS\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_RESPIRATORY_CONTRAINDICATIONS_EHR\
+    \"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Сечостатева система\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_GENITOURINARY\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Протипокази\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_GENITOURINARY_CONTRAINDICATIONS\"\
+    \r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"section\": [\r
+
+    \                                        {\r
+
+    \                                            \"title\": \"ЕМЗ\",\r
+
+    \                                            \"code\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_GENITOURINARY_CONTRAINDICATIONS_\
+    EHR\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            },\r
+
+    \                                            \"author\": [\r
+
+    \                                                {\r
+
+    \                                                    \"identifier\": {\r
+
+    \                                                        \"type\": {\r
+
+    \                                                            \"coding\": [\r
+
+    \                                                                {\r
+
+    \                                                                    \"syst\
+    em\": \"eHealth/resources\",\r
+
+    \                                                                    \"code\
+    \": \"employee\"\r
+
+    \                                                                }\r
+
+    \                                                            ],\r
+
+    \                                                            \"text\":
+    \"string\"\r
+
+    \                                                        },\r
+
+    \                                                        \"value\":
+    \"{{user_id}}\"\r
+
+    \                                                    }\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"empty_reason\": {\r
+
+    \                                                \"coding\": [\r
+
+    \                                                    {\r
+
+    \                                                        \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                        \"code\":
+    \"UNAVAILABLE\"\r
+
+    \                                                    }\r
+
+    \                                                ]\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        },\r
+
+    \                        {\r
+
+    \                            \"title\": \"Лабораторні дослідження\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_LAB_TESTS\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Загальний аналіз
+    крові\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_LAB_TESTS_CBC\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"empty_reason\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                \"code\": \"UNAVAILABLE\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    }\r
+
+    \                                },\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Загальний аналіз сечі\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_LAB_TESTS_UA\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"empty_reason\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                \"code\": \"UNAVAILABLE\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    }\r
+
+    \                                },\r
+
+    \                                {\r
+
+    \                                    \"title\": \"Глюкоза крові\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_THERAPIST_SECTION_LAB_TESTS_BLOOD_GLUCOSE\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"empty_reason\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_EMPTY_REASON\",\r
+
+    \                                                \"code\": \"UNAVAILABLE\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                },\r
+
+    \                {\r
+
+    \                    \"title\": \"Результат огляду лікаря Психіатра\",\r
+
+    \                    \"code\": {\r
+
+    \                        \"coding\": [\r
+
+    \                            {\r
+
+    \                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_PSYCHIATRIST_EXAM\"\r
+
+    \                            }\r
+
+    \                        ]\r
+
+    \                    },\r
+
+    \                    \"author\": [\r
+
+    \                        {\r
+
+    \                            \"identifier\": {\r
+
+    \                                \"type\": {\r
+
+    \                                    \"coding\": [\r
+
+    \                                        {\r
+
+    \                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                            \"code\": \"employee\"\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"text\": \"string\"\r
+
+    \                                },\r
+
+    \                                \"value\": \"{{user_id}}\"\r
+
+    \                            }\r
+
+    \                        }\r
+
+    \                    ],\r
+
+    \                    \"section\": [\r
+
+    \                        {\r
+
+    \                            \"title\": \"Протипокази\",\r
+
+    \                            \"code\": {\r
+
+    \                                \"coding\": [\r
+
+    \                                    {\r
+
+    \                                        \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                        \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_PSYCHIATRIST_EXAM_CONTRAINDICATIONS\"\r
+
+    \                                    }\r
+
+    \                                ]\r
+
+    \                            },\r
+
+    \                            \"author\": [\r
+
+    \                                {\r
+
+    \                                    \"identifier\": {\r
+
+    \                                        \"type\": {\r
+
+    \                                            \"coding\": [\r
+
+    \                                                {\r
+
+    \                                                    \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                    \"code\":
+    \"employee\"\r
+
+    \                                                }\r
+
+    \                                            ],\r
+
+    \                                            \"text\": \"string\"\r
+
+    \                                        },\r
+
+    \                                        \"value\": \"{{user_id}}\"\r
+
+    \                                    }\r
+
+    \                                }\r
+
+    \                            ],\r
+
+    \                            \"section\": [\r
+
+    \                                {\r
+
+    \                                    \"title\": \"ЕМЗ\",\r
+
+    \                                    \"code\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_CODES\",\r
+
+    \                                                \"code\":
+    \"DRIVERS_DRIVERS_GROUP1_PSYCHIATRIST_EXAM_CONTRAINDICATIONS_EHR\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"ordered_by\": {\r
+
+    \                                        \"coding\": [\r
+
+    \                                            {\r
+
+    \                                                \"system\":
+    \"COMPOSITION_SECTION_ORDERBY\",\r
+
+    \                                                \"code\": \"ALPHABETIC\"\r
+
+    \                                            }\r
+
+    \                                        ]\r
+
+    \                                    },\r
+
+    \                                    \"author\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"employee\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"{{user_id}}\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ],\r
+
+    \                                    \"entry\": [\r
+
+    \                                        {\r
+
+    \                                            \"identifier\": {\r
+
+    \                                                \"type\": {\r
+
+    \                                                    \"coding\": [\r
+
+    \                                                        {\r
+
+    \                                                            \"system\":
+    \"eHealth/resources\",\r
+
+    \                                                            \"code\":
+    \"condition\"\r
+
+    \                                                        }\r
+
+    \                                                    ],\r
+
+    \                                                    \"text\": \"string\"\r
+
+    \                                                },\r
+
+    \                                                \"value\":
+    \"2790b02c-7bea-4ac3-b8bc-6c233500407d\"\r
+
+    \                                            }\r
+
+    \                                        }\r
+
+    \                                    ]\r
+
+    \                                }\r
+
+    \                            ]\r
+
+    \                        }\r
+
+    \                    ]\r
+
+    \                }\r
+
+    \            ]\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "const uuid = require('uuid');\r
+
+      const id = uuid.v4();\r
+
+      pm.environment.set(\"composition_id\", id);\r
+
+      \r
+
+      \r
+
+      const COMPOSITION_TYPE = \"DRIVERS\";\r
+
+      \r
+
+      pm.sendRequest({\r
+
+      \    url:
+      `${pm.globals.get('host')}/api/patients/${pm.globals.get('patient_id_from\
+      _episode')}/composition_title?composition_type=${COMPOSITION_TYPE}`,\r
+
+      \    method: \"POST\",\r
+
+      \    header: {\r
+
+      \        \"Content-Type\": \"application/json\",\r
+
+      \        \"Authorization\": `Bearer
+      ${pm.environment.get('access_token')}`,\r
+
+      \        \"api-key\": \"30276e63617461a185ec\",\r
+
+      \        \"X-Custom-PSK\": `${pm.globals.get('x-custom-psk')}`\r
+
+      \    }\r
+
+      }, function (err, res) {\r
+
+      \    if (err) {\r
+
+      \        console.error(\"Помилка запиту:\", err);\r
+
+      \    } else {\r
+
+      \        const resData = res.json();\r
+
+      \        const title = resData.data.title;\r
+
+      \r
+
+      \        pm.globals.set('composition_stitle', title)\r
+
+      \        console.log(resData.data.title) \r
+
+      \        console.log(\"Відповідь сервера:\", res.json());\r
+
+      \    }\r
+
+      });\r
+
+      \r
+
+      \r
+
+      \r
+
+      // Helper function to extract IDs from URLs\r
+
+      function extractID(url, keyword, variableName) {\r
+
+      \    if (url && url.includes(`${keyword}/`)) {\r
+
+      \        const parts = url.split(`${keyword}/`);\r
+
+      \        if (parts.length > 1) {\r
+
+      \            const extractedID = parts[1];\r
+
+      \            \r
+
+      \            // Log the extracted ID to the console (for debugging
+      purposes)\r
+
+      \            console.log(`Extracted ${variableName}:`, extractedID);\r
+
+      \            \r
+
+      \            // Set the extracted ID as an environment variable\r
+
+      \            pm.globals.set(variableName, extractedID);\r
+
+      \        } else {\r
+
+      \            console.error(`The URL does not contain the expected format
+      for ${keyword}.`);\r
+
+      \        }\r
+
+      \    } else {\r
+
+      \        console.error(`The global variable ${variableName} is not defined
+      or does not contain the expected format.`);\r
+
+      \    }\r
+
+      }\r
+
+      \r
+
+      // Retrieve the URL from the global variable\r
+
+      const url = pm.globals.get('jobEncounterID');\r
+
+      \r
+
+      // Extract encounter and observation IDs using the helper function\r
+
+      extractID(url, 'encounters', 'encounter_extracted_id');\r
+
+      extractID(url, 'observations', 'observation_extracted_id');\r
+
+      // extractID(url, 'conditions', 'condition_extracted_id');\r\n"
+    language: text/javascript
+  - type: afterResponse
+    code: "const resData = pm.response.json();\r
+
+      \r
+
+      pm.test(`Composition content sign success. Response status is 200
+      ${JSON.stringify(resData, null, 2)}`, function () {\r
+
+      \    pm.expect(pm.response.code).to.eql(200);\r
+
+      \    pm.expect(resData).to.have.property('signed_content');\r
+
+      \    pm.globals.set('composition_signed_content',
+      resData.signed_content);\r
+
+      });"
+    language: text/javascript
+order: 1000

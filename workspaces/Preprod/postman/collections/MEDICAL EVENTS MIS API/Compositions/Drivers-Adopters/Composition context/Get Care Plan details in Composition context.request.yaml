@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{host}}/api/patients/1c62122f-b103-49cb-8bdb-5300ccbe1f7e/compositions/5\
+  1ae12cd-56c8-40b8-8bc1-def9dc21e693/care_plans/1db487d5-09ab-40e9-ac2c-957859\
+  5cbc42"
+method: GET
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+body:
+  type: text
+  content: ""
+order: 5000

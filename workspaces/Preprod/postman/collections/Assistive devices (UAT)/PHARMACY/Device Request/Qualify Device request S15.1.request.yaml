@@ -1,0 +1,42 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/device_requests/05c7ea57-44ae-4d2e-8bc4-922b93e0f640/actions/qualify
+method: POST
+headers:
+  Authorization: Bearer {{pharm_access_token}}
+  api-key: ef7d48ecfc233d6af088
+  Content-Type: application/json
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: |-
+    {
+      "location": {
+        "identifier": {
+          "type": {
+            "coding": [
+              {
+                "system": "eHealth/resources",
+                "code": "division"
+              }
+            ]
+          },
+          "value": "ee0f2ad1-62fe-42e7-8d0a-4be25e42d227"
+        }
+      },
+      "programs": [
+        {
+          "identifier": {
+            "type": {
+              "coding": [
+                {
+                  "system": "eHealth/resources",
+                  "code": "medical_program"
+                }
+              ]
+            },
+            "value": "d1f8be15-f9db-4c09-abf7-aa78a5a09b24"
+          }
+        }
+      ]
+    }
+order: 1000

@@ -1,0 +1,41 @@
+$kind: http-request
+url: "{{host}}/api/patients/b9d31a4f-6424-4aa2-a9cb-3701adb16b01/episodes/1d22d\
+  407-3ab1-49ba-a154-455984b9fcdc/actions/close"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: 30276e63617461a185ec
+body:
+  type: text
+  content: "{\r
+
+    \  \"period\": {\r
+
+    \    \"end\": \"2022-11-28T10:45:16.000Z\"\r
+
+    \  },\r
+
+    \  \"closing_summary\": \"Пацієнт одужав, епізод може бути закрито\",\r
+
+    \  \"status_reason\": {\r
+
+    \    \"coding\": [\r
+
+    \      {\r
+
+    \        \"system\": \"eHealth/episode_closing_reasons\",\r
+
+    \        \"code\": \"resolved\"\r
+
+    \      }\r
+
+    \    ],\r
+
+    \    \"text\": \"Стан пацієнта поліпшився, в подальшому лікуванні немає
+    потреби\"\r
+
+    \  }\r
+
+    }"
+order: 8000

@@ -1,0 +1,824 @@
+$kind: http-request
+url: "{{host}}/api/v3/person_requests/{{Person_req_id}}/actions/approve"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{access_token}}
+  api-key: "{{mis_client_secret}}"
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: Content-Type
+    value: application/json
+    disabled: true
+  - key: Authorization
+    value: Bearer {{access_token}}
+    disabled: true
+  - key: api-key
+    value: "{{mis_client_secret}}"
+    disabled: true
+body:
+  type: text
+  content: "{\r
+
+    \    \"verification_code\": 6727\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "// -----------------------------\r
+
+      // ---- Config ----\r
+
+      // -----------------------------\r
+
+      const MASK_SENSITIVE = true;\r
+
+      const SENSITIVE_HEADERS = new Set([\r
+
+      \  'authorization', 'api-key', 'x-custom-psk', 'cookie'\r
+
+      ]);\r
+
+      \r
+
+      const DROP_REQUEST_HEADERS = new Set([\r
+
+      \  'accept',\r
+
+      \  'accept-encoding',\r
+
+      \  'connection',\r
+
+      \  'content-type',\r
+
+      \  'postman-token',\r
+
+      \  'user-agent',\r
+
+      \  'content-length',\r
+
+      \  'host'\r
+
+      ]);\r
+
+      \r
+
+      // -----------------------------\r
+
+      // ---- Helpers (log + render) ----\r
+
+      // -----------------------------\r
+
+      function esc(s) {\r
+
+      \  return String(s ?? '')\r
+
+      \    .replaceAll('&', '&amp;')\r
+
+      \    .replaceAll('<', '&lt;')\r
+
+      \    .replaceAll('>', '&gt;');\r
+
+      }\r
+
+      \r
+
+      function safeJsonParse(text) {\r
+
+      \  try { return JSON.parse(text); } catch { return null; }\r
+
+      }\r
+
+      \r
+
+      function normalizeHeaders(headersObjOrArr) {\r
+
+      \  if (!headersObjOrArr) return {};\r
+
+      \  if (typeof headersObjOrArr?.toObject === 'function') return
+      headersObjOrArr.toObject();\r
+
+      \r
+
+      \  const out = {};\r
+
+      \  if (Array.isArray(headersObjOrArr)) {\r
+
+      \    headersObjOrArr.forEach(h => {\r
+
+      \      if (!h) return;\r
+
+      \      const k = (h.key || h.name || '').toString();\r
+
+      \      const v = (h.value ?? '').toString();\r
+
+      \      if (k) out[k] = v;\r
+
+      \    });\r
+
+      \    return out;\r
+
+      \  }\r
+
+      \r
+
+      \  if (typeof headersObjOrArr === 'object') {\r
+
+      \    Object.keys(headersObjOrArr).forEach(k => out[k] =
+      String(headersObjOrArr[k]));\r
+
+      \  }\r
+
+      \  return out;\r
+
+      }\r
+
+      \r
+
+      function shouldDropHeader(k) {\r
+
+      \  const key = String(k || '').toLowerCase().trim();\r
+
+      \  if (!key) return true;\r
+
+      \  return DROP_REQUEST_HEADERS.has(key);\r
+
+      }\r
+
+      \r
+
+      function maskHeaderValue(key, value) {\r
+
+      \  if (!MASK_SENSITIVE) return value;\r
+
+      \r
+
+      \  const k = String(key || '').toLowerCase().trim();\r
+
+      \  if (!SENSITIVE_HEADERS.has(k)) return value;\r
+
+      \r
+
+      \  if (k === 'authorization') return 'Bearer ***';\r
+
+      \  if (!value) return '***';\r
+
+      \r
+
+      \  const tail = value.length > 6 ? value.slice(-6) : value;\r
+
+      \  return `***…${tail}`;\r
+
+      }\r
+
+      \r
+
+      function formatRequestHeaders(headers) {\r
+
+      \  const obj = normalizeHeaders(headers);\r
+
+      \  const keys = Object.keys(obj)\r
+
+      \    .filter(k => !shouldDropHeader(k))\r
+
+      \    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));\r
+
+      \r
+
+      \  if (!keys.length) return '';\r
+
+      \  return keys.map(k => `${k}: ${maskHeaderValue(k,
+      obj[k])}`).join('\\n');\r
+
+      }\r
+
+      \r
+
+      function getHost(url) {\r
+
+      \  if (!url) return '';\r
+
+      \  if (typeof url === 'string') {\r
+
+      \    try { return new URL(url).host; } catch { return ''; }\r
+
+      \  }\r
+
+      \  if (url.host) {\r
+
+      \    if (Array.isArray(url.host)) return url.host.join('.');\r
+
+      \    return String(url.host);\r
+
+      \  }\r
+
+      \  if (url.toString) {\r
+
+      \    try { return new URL(url.toString()).host; } catch { return ''; }\r
+
+      \  }\r
+
+      \  return '';\r
+
+      }\r
+
+      \r
+
+      function getPathWithQuery(url) {\r
+
+      \  if (!url) return '/';\r
+
+      \r
+
+      \  if (typeof url === 'string') {\r
+
+      \    try {\r
+
+      \      const u = new URL(url);\r
+
+      \      return u.pathname + (u.search || '');\r
+
+      \    } catch {\r
+
+      \      return url;\r
+
+      \    }\r
+
+      \  }\r
+
+      \r
+
+      \  const path = Array.isArray(url.path) ? '/' + url.path.join('/') :
+      (url.pathname || '/');\r
+
+      \r
+
+      \  if (Array.isArray(url.query) && url.query.length) {\r
+
+      \    const qs = url.query\r
+
+      \      .filter(q => q && q.key)\r
+
+      \      .map(q =>
+      `${encodeURIComponent(q.key)}=${encodeURIComponent(q.value ?? '')}`)\r
+
+      \      .join('&');\r
+
+      \    return `${path}?${qs}`;\r
+
+      \  }\r
+
+      \r
+
+      \  return path || '/';\r
+
+      }\r
+
+      \r
+
+      function getPmRequestBody(pmReq) {\r
+
+      \  try {\r
+
+      \    const body = pmReq?.body;\r
+
+      \    if (!body) return '';\r
+
+      \    if (body.mode === 'raw') return body.raw || '';\r
+
+      \    return '';\r
+
+      \  } catch {\r
+
+      \    return '';\r
+
+      \  }\r
+
+      }\r
+
+      \r
+
+      function stringifyMaybeJson(text) {\r
+
+      \  if (!text) return '';\r
+
+      \  const j = safeJsonParse(text);\r
+
+      \  return j ? JSON.stringify(j, null, 2) : text;\r
+
+      }\r
+
+      \r
+
+      function responseDataMetaOnly(text) {\r
+
+      \  const j = safeJsonParse(text);\r
+
+      \  if (!j) return text;\r
+
+      \r
+
+      \  const out = {\r
+
+      \    data: Object.prototype.hasOwnProperty.call(j, 'data') ? j.data :
+      undefined,\r
+
+      \    error: Object.prototype.hasOwnProperty.call(j, 'error') ? j.error :
+      undefined,\r
+
+      \    meta: Object.prototype.hasOwnProperty.call(j, 'meta') ? j.meta :
+      undefined\r
+
+      \  };\r
+
+      \  Object.keys(out).forEach(k => out[k] === undefined && delete out[k]);\r
+
+      \r
+
+      \  return JSON.stringify(out, null, 2);\r
+
+      }\r
+
+      \r
+
+      function buildRawRequest({ method, url, headers, body }) {\r
+
+      \  const host = getHost(url);\r
+
+      \  const path = getPathWithQuery(url);\r
+
+      \r
+
+      \  const headerText = formatRequestHeaders(headers);\r
+
+      \  const bodyText = body ? stringifyMaybeJson(body) : '';\r
+
+      \r
+
+      \  return [\r
+
+      \    `${(method || 'GET').toUpperCase()} ${path || '/'} HTTP/1.1`,\r
+
+      \    host ? `Host: ${host}` : null,\r
+
+      \    headerText || null,\r
+
+      \    bodyText ? `\\n${bodyText}` : null\r
+
+      \  ].filter(Boolean).join('\\n');\r
+
+      }\r
+
+      \r
+
+      function buildResponseBodyOnly({ bodyText }) {\r
+
+      \  return responseDataMetaOnly(bodyText || '');\r
+
+      }\r
+
+      \r
+
+      function buildLogText() {\r
+
+      \  const title = pm.info.requestName || 'Main request';\r
+
+      \r
+
+      \  const reqRaw = buildRawRequest({\r
+
+      \    method: pm.request.method,\r
+
+      \    url: pm.request.url,\r
+
+      \    headers: pm.request.headers,\r
+
+      \    body: getPmRequestBody(pm.request)\r
+
+      \  });\r
+
+      \r
+
+      \  const resRaw = buildResponseBodyOnly({\r
+
+      \    bodyText: pm.response.text()\r
+
+      \  });\r
+
+      \r
+
+      \  return [\r
+
+      \    `${title}\\n`,\r
+
+      \    `[Request]\\n\\n${reqRaw}\\n`,\r
+
+      \    `\\n[Response]\\n\\n${resRaw}\\n`\r
+
+      \  ].join('\\n');\r
+
+      }\r
+
+      \r
+
+      // --- Print-form helpers ---\r
+
+      function escapeAttr(s) {\r
+
+      \  // For iframe srcdoc=\"...\"\r
+
+      \  return String(s ?? '')\r
+
+      \    .replace(/&/g, \"&amp;\")\r
+
+      \    .replace(/\"/g, \"&quot;\");\r
+
+      }\r
+
+      \r
+
+      function extractHtmlFromResponse() {\r
+
+      \  const raw = pm.response.text();\r
+
+      \  const j = safeJsonParse(raw);\r
+
+      \  if (!j) return null;\r
+
+      \r
+
+      \  // Supports multiple API formats:\r
+
+      \  // 1) data.printout_form\r
+
+      \  // 2) data.printout_content\r
+
+      \  // 3) content\r
+
+      \  // 4) data.content\r
+
+      \  return (\r
+
+      \    (j.data && typeof j.data.printout_form === 'string' &&
+      j.data.printout_form) ||\r
+
+      \    (j.data && typeof j.data.printout_content === 'string' &&
+      j.data.printout_content) ||\r
+
+      \    (typeof j.content === 'string' && j.content) ||\r
+
+      \    (j.data && typeof j.data.content === 'string' && j.data.content) ||\r
+
+      \    null\r
+
+      \  );\r
+
+      }\r
+
+      \r
+
+      // -----------------------------\r
+
+      // ---- Render BOTH: Print + Log ----\r
+
+      // -----------------------------\r
+
+      (function renderAll() {\r
+
+      \  const allText = buildLogText();\r
+
+      \r
+
+      \  const htmlDoc = extractHtmlFromResponse();\r
+
+      \  const hasPrint = typeof htmlDoc === 'string' &&
+      htmlDoc.trim().startsWith('<');\r
+
+      \r
+
+      \  const printPanel = hasPrint\r
+
+      \    ? `\r
+
+      \      <div style=\"display:flex; gap:10px; align-items:center;
+      margin-bottom:10px; flex-wrap:wrap;\">\r
+
+      \        <button id=\"printBtn\" style=\"padding:6px 10px; border:1px
+      solid #d0d7de; background:#fff; border-radius:8px; cursor:pointer;\">\r
+
+      \          Друк\r
+
+      \        </button>\r
+
+      \        <span style=\"color:#6b7280; font-size:12px;\">Visualizer:
+      <b>Print form</b> + Logs</span>\r
+
+      \      </div>\r
+
+      \r
+
+      \      <iframe\r
+
+      \        id=\"printFrame\"\r
+
+      \        style=\"width:100%; height:78vh; border:1px solid #d0d7de;
+      border-radius:10px; background:white;\"\r
+
+      \        srcdoc=\"${escapeAttr(htmlDoc)}\"\r
+
+      \      ></iframe>\r
+
+      \    `\r
+
+      \    : `\r
+
+      \      <div style=\"padding:12px; border:1px solid #e5e7eb;
+      border-radius:10px; background:#fff7ed;\">\r
+
+      \        <div style=\"font-weight:700; margin-bottom:6px;\">Print form not
+      found in response</div>\r
+
+      \        <div style=\"color:#6b7280; font-size:12px;\">\r
+
+      \          Expected one of: <code>data.printout_form</code>,
+      <code>data.printout_content</code>, <code>content</code>,
+      <code>data.content</code>.\r
+
+      \        </div>\r
+
+      \      </div>\r
+
+      \    `;\r
+
+      \r
+
+      \  const html = `\r
+
+      <style>\r
+
+      \  .wrap { display:flex; gap:12px; height: calc(100vh - 30px); }\r
+
+      \  .col { flex:1; min-width: 0; }\r
+
+      \  .card { border:1px solid #d0d7de; border-radius:12px; background:#fff;
+      padding:10px; }\r
+
+      \  .title { font-weight:700; margin:0 0 10px; font-family: system-ui,
+      -apple-system, Segoe UI, Roboto, Arial; }\r
+
+      \  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
+      Consolas, monospace; }\r
+
+      \  button { font-family: system-ui, -apple-system, Segoe UI, Roboto,
+      Arial; }\r
+
+      </style>\r
+
+      \r
+
+      <div class=\"wrap\">\r
+
+      \  <!-- LEFT: Print form -->\r
+
+      \  <div class=\"col\">\r
+
+      \    <div class=\"card\">\r
+
+      \      <div class=\"title\">Print form</div>\r
+
+      \      ${printPanel}\r
+
+      \    </div>\r
+
+      \  </div>\r
+
+      \r
+
+      \  <!-- RIGHT: Logs -->\r
+
+      \  <div class=\"col\">\r
+
+      \    <div class=\"card\">\r
+
+      \      <div class=\"title\">Request/Response log</div>\r
+
+      \r
+
+      \      <div style=\"display:flex; gap:8px; align-items:center;
+      margin-bottom:8px;\">\r
+
+      \        <button id=\"copyAllBtn\">Copy all</button>\r
+
+      \        <span id=\"copyMsg\" class=\"mono\"
+      style=\"font-size:12px;\"></span>\r
+
+      \      </div>\r
+
+      \r
+
+      \      <textarea id=\"allLogText\" style=\"position:absolute;
+      left:-9999px; top:-9999px;\">${esc(allText)}</textarea>\r
+
+      \r
+
+      \      <pre class=\"mono\" style=\"margin:0; white-space:pre;
+      font-size:12px; line-height:1.35; max-height: 78vh;
+      overflow:auto;\">${esc(allText)}</pre>\r
+
+      \    </div>\r
+
+      \  </div>\r
+
+      </div>\r
+
+      \r
+
+      <script>\r
+
+      \  (function() {\r
+
+      \    const copyBtn = document.getElementById('copyAllBtn');\r
+
+      \    const msg = document.getElementById('copyMsg');\r
+
+      \    const ta  = document.getElementById('allLogText');\r
+
+      \r
+
+      \    function setMsg(t) {\r
+
+      \      msg.textContent = t || '';\r
+
+      \      if (t) setTimeout(() => { msg.textContent = ''; }, 1200);\r
+
+      \    }\r
+
+      \r
+
+      \    copyBtn.addEventListener('click', async () => {\r
+
+      \      try {\r
+
+      \        const text = ta.value || '';\r
+
+      \        if (navigator.clipboard && navigator.clipboard.writeText) {\r
+
+      \          await navigator.clipboard.writeText(text);\r
+
+      \          setMsg('Copied ✅');\r
+
+      \          return;\r
+
+      \        }\r
+
+      \        ta.focus(); ta.select();\r
+
+      \        const ok = document.execCommand('copy');\r
+
+      \        setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \      } catch (e) {\r
+
+      \        try {\r
+
+      \          ta.focus(); ta.select();\r
+
+      \          const ok = document.execCommand('copy');\r
+
+      \          setMsg(ok ? 'Copied ✅' : 'Copy failed ❌');\r
+
+      \        } catch {\r
+
+      \          setMsg('Copy failed ❌');\r
+
+      \        }\r
+
+      \      }\r
+
+      \    });\r
+
+      \r
+
+      \    const printBtn = document.getElementById('printBtn');\r
+
+      \    const iframe = document.getElementById('printFrame');\r
+
+      \    if (printBtn && iframe) {\r
+
+      \      printBtn.addEventListener('click', () => {\r
+
+      \        if (!iframe.contentWindow) return;\r
+
+      \        iframe.contentWindow.focus();\r
+
+      \        iframe.contentWindow.print();\r
+
+      \      });\r
+
+      \    }\r
+
+      \  })();\r
+
+      </script>\r
+
+      `;\r
+
+      \r
+
+      \  pm.visualizer.set(html);\r
+
+      })();\r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      \r
+
+      if (pm.response.code === 200) {\r
+
+      \r
+
+      \  // -----------------------------\r
+
+      \  // Your signing logic (unchanged)\r
+
+      \  // -----------------------------\r
+
+      \  const responseJson = pm.response.json();\r
+
+      \  let dataToSign = responseJson.data;\r
+
+      \r
+
+      \  console.log(dataToSign);\r
+
+      \r
+
+      \  if (dataToSign && typeof dataToSign === 'object') {\r
+
+      \    dataToSign.patient_signed = true;\r
+
+      \  }\r
+
+      \r
+
+      \  const localServerUrl = 'http://localhost:3000/receive-data';\r
+
+      \  const requestData = {\r
+
+      \    method: 'POST',\r
+
+      \    url: localServerUrl,\r
+
+      \    header: { 'Content-Type': 'application/json' },\r
+
+      \    body: { mode: 'raw', raw: JSON.stringify(dataToSign) }\r
+
+      \  };\r
+
+      \r
+
+      \  pm.sendRequest(requestData, function (err, res) {\r
+
+      \    if (err) {\r
+
+      \      console.error('Error sending request to local server:', err);\r
+
+      \    } else {\r
+
+      \      console.log('Response from local server:', res.json());\r
+
+      \      const responseBody = res.json();\r
+
+      \      pm.globals.set('signed_content', responseBody.signed_content);\r
+
+      \      // no visualizer here — visualizer rendered below in one place\r
+
+      \    }\r
+
+      \  });\r
+
+      \r
+
+      } else {\r
+
+      \  console.log('Initial request failed');\r
+
+      }\r
+
+      \r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \  pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 5000

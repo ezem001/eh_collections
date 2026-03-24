@@ -1,0 +1,57 @@
+$kind: http-request
+url: "{{host}}/api/patients/searchComposition?subject={{patient_id_from_episode}}"
+method: GET
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: limit
+    value: "100"
+    disabled: true
+  - key: type
+    value: TEMP_DISABILITY
+    disabled: true
+  - key: focus
+    value: ed1b5e9a-1dbf-47f4-9760-74318e3eb054
+    disabled: true
+  - key: offset
+    value: "135"
+    disabled: true
+  - key: episodeOfCare
+    value: c1ac2f2e-3e88-450e-9269-9ca79be4d6bd
+    disabled: true
+  - key: encounter
+    value: 4ae3faa1-9ca4-4507-b968-40750c2eba5d
+    disabled: true
+  - key: status
+    value: FINAL
+    disabled: true
+  - key: subject
+    value: "{{patient_id_from_episode}}"
+  - key: focus
+    value: 1fb2c3ab-e3a7-4250-af18-fc38b77acfba
+    disabled: true
+scripts:
+  - type: afterResponse
+    code: >
+      //var jsonData = JSON.parse(responseBody);
+
+
+      //if (jsonData.data && jsonData.data.value) {
+
+      //   var My_composition_id = jsonData.identifier.value;
+
+      //  var My_encounter_id = jsonData.encounter.value;
+
+      //  var My_episode_id = jsonData.episodeOfCare.value;
+
+
+      //    postman.setEnvironmentVariable("mcomposition_id",
+      My_composition_id);
+
+      //    postman.setEnvironmentVariable("mencounter_id", My_encounter_id);
+
+      //    postman.setEnvironmentVariable("mepisode_id", My_episode_id);
+    language: text/javascript
+order: 9000

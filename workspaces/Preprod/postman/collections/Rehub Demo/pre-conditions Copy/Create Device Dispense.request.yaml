@@ -1,0 +1,135 @@
+$kind: http-request
+url: "{{host}}/api/patients/{{patient_id}}/device_dispenses"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{mis_access_token}}
+  api-key: "{{mis_client_secret}}"
+  "{{X-Custom-PSK}}": "{{X-Custom-value}}"
+body:
+  type: text
+  content: |-
+    {
+        "id": "{{device_dispense_id}}",
+        "status": "in_progress",
+        "program": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "medical_program"
+                        }
+                    ]
+                },
+                "value": "d6ec77b3-4a88-4c27-9366-551841b6fafd"
+            }
+        },
+        "performer": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "employee"
+                        }
+                    ]
+                },
+                "value": "{{employee_id}}"
+            }
+        },
+        "location": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "division"
+                        }
+                    ]
+                },
+                "value": "{{division_id}}"
+            }
+        },
+        "note": "Some notes",
+        "details": [
+            {
+                "quantity": {
+                    "value": 10,
+                    "system": "device_unit",
+                    "code": "piece"
+                },
+                "sell_price": 18.65,
+                "discount_amount": 150,
+                "device_code": {
+                    "coding": [
+                        {
+                            "system": "device_definition_classification_type",
+                            "code": "30221"
+                        }
+                    ]
+                }
+            }
+        ],
+        "based_on": {
+            "identifier": {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "eHealth/resources",
+                            "code": "device_request"
+                        }
+                    ]
+                },
+                "value": "{{device_request_id}}"
+            }
+        },
+        "verification_code": "3400",
+        "when_handed_over": "2018-08-02T10:45:16.000Z"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: beforeRequest
+    code: >+
+      var b64EncodeUnicode = function (str) {
+          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+              return String.fromCharCode(parseInt(p1, 16))
+          }))
+      };
+
+
+      var current_date = new Date();
+
+      pm.environment.set("current_date", current_date);
+
+
+      var period_start = new Date();
+
+      period_start.setHours(period_start.getHours() + 1);
+
+
+
+
+      pm.environment.set("device_dispense_id",
+      pm.variables.replaceIn('{{$guid}}'));
+
+
+
+
+
+
+
+
+
+
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      tests["Job created"] = responseCode.code === 202;
+      var jsonData = JSON.parse(responseBody);
+      //pm.environment.set("job_id", jsonData.data.id);
+      var job_id=jsonData.data.links[0].href.substring(6);
+      pm.environment.set("job_id", job_id);
+    language: text/javascript
+order: 32000

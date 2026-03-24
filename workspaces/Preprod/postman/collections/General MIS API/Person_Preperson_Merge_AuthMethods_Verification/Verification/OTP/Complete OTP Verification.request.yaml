@@ -1,0 +1,11 @@
+$kind: http-request
+url: https://api-demo.ehealth.gov.ua/api/verifications/+380508887700/actions/complete
+method: PATCH
+headers:
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: a2ffb0888561e50d5a868faf56ea5708619b7ecc03b5bd21ff1a50f37a3f430e
+body:
+  type: json
+  content: "{\r\n  \"code\": 3782\r\n}"
+order: 2000

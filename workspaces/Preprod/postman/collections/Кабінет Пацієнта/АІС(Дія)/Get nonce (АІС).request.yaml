@@ -1,0 +1,13 @@
+$kind: http-request
+url: https://pis-preprod.ehealth.gov.ua/oauth/nonce
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "client_id": "23471eeb-5f8a-4a5a-9808-20802e3548a5",
+        "client_secret": "996f102c0598733f7b9f4c3ea31b0ae6"
+    }
+order: 2000

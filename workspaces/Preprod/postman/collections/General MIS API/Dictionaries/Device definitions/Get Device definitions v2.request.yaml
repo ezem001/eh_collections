@@ -1,0 +1,48 @@
+$kind: http-request
+url: "{{host}}/api/v2/device_definitions?page_size=300"
+method: GET
+headers:
+  Content-Type: application/json
+  api-key: "{{mis_client_secret}}"
+  Authorization: Bearer {{access_token}}
+  X-Custom-PSK: "{{x-custom-psk}}"
+queryParams:
+  - key: classification_type
+    value: W0101060101
+    disabled: true
+  - key: model_number
+    value: H00P53
+    disabled: true
+  - key: name
+    value: Some%20name
+    disabled: true
+  - key: name_type
+    value: registered
+    disabled: true
+  - key: is_active
+    value: "true"
+    disabled: true
+  - key: page
+    value: "2"
+    disabled: true
+  - key: page_size
+    value: "300"
+  - key: medical_program_id
+    value: e3bf342d-0020-4943-ac1a-e7be158b3a2a
+    disabled: true
+  - key: medical_program_id
+    value: 3e56c84a-808c-46a9-94d1-df4a439a50d2
+    disabled: true
+  - key: medical_program_id
+    value: 0cefbce3-6dd2-45bd-b1e6-983fc055d5e0
+    disabled: true
+  - key: medical_program_id
+    value: af8ba0d3-1520-4a01-8156-22065e96fd9a
+    disabled: true
+  - key: medical_program_id
+    value: e6587093-6c70-4f59-99a3-5cc8e907d478
+    disabled: true
+  - key: medical_program_id
+    value: 85953838-1834-4ed6-8bf4-3f83057380ec
+    disabled: true
+order: 1000
