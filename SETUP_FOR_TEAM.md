@@ -220,10 +220,18 @@ Inside Postman:
 3. If Postman asks to set up the local codebase, choose the option that means opening or connecting an existing local copy.
 4. Select the cloned repository root on your machine.
 
-Example:
+Examples:
+
+macOS:
 
 ```text
 /Users/<your-user>/.../eh_collections
+```
+
+Windows:
+
+```text
+C:\Users\<your-user>\Projects\eh_collections
 ```
 
 5. When Postman asks for the path inside the repository, choose:
@@ -649,10 +657,18 @@ Repository URL:
 
 - [https://github.com/ezem001/eh_collections](https://github.com/ezem001/eh_collections)
 
-Expected local clone example:
+Expected local clone examples:
+
+macOS:
 
 ```text
 /Users/<your-user>/Projects/eh_collections
+```
+
+Windows:
+
+```text
+C:\Users\<your-user>\Projects\eh_collections
 ```
 
 Workspace paths inside the repository:
