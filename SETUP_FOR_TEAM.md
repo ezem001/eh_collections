@@ -1,32 +1,32 @@
-# Team Setup Guide For Postman Native Git
+# Інструкція Для Команди По Postman Native Git
 
-## Purpose
+## Призначення
 
-This repository is the shared local and GitHub-backed storage for our Postman workspaces.
+Цей репозиторій є спільним локальним та GitHub-сховищем для наших Postman workspace-ів.
 
-We use:
+Ми використовуємо:
 
-- one GitHub repository for the whole team: [eh_collections](https://github.com/ezem001/eh_collections)
-- one local Git repository cloned from that GitHub repository
-- three separate Postman workspace roots inside the repository:
+- один GitHub-репозиторій для всієї команди: [eh_collections](https://github.com/ezem001/eh_collections)
+- один локальний Git-репозиторій, який кожен колега клонує собі на комп'ютер
+- три окремі корені Postman workspace-ів усередині репозиторію:
   - `workspaces/Demo`
   - `workspaces/Preprod`
   - `workspaces/Stage`
 
-This layout is intentional. It prevents conflicts when different Postman workspaces contain collections with the same names. For example, `Demo` and `Preprod` can both have a collection named `General MIS API`, but because each workspace is stored in a different folder, the files do not overwrite each other.
+Така структура обрана навмисно. Вона прибирає конфлікти, коли в різних Postman workspace-ах є колекції з однаковими назвами. Наприклад, `Demo` і `Preprod` можуть одночасно мати колекцію `General MIS API`, але через те, що кожен workspace лежить у своїй окремій папці, файли не перезаписують один одного.
 
-## Why We Use This Structure
+## Чому Ми Використовуємо Саме Таку Структуру
 
-We do not use one flat `postman/collections` directory for everything, because:
+Ми не використовуємо одну спільну пласку папку `postman/collections` для всього, тому що:
 
-- different workspaces often contain collections with identical names
-- Postman Native Git becomes confusing when unrelated workspaces are mixed into the same local folder
-- it becomes hard to understand what should be committed and pushed
-- teammates can accidentally commit changes from the wrong workspace
+- у різних workspace-ах часто є колекції з однаковими назвами
+- Postman Native Git стає заплутаним, якщо змішувати різні workspace-и в одній локальній папці
+- складно зрозуміти, що саме треба комітити й пушити
+- колеги можуть випадково закомітити зміни з не того workspace-а
 
-Instead, we use one shared repository with separate folders per Postman workspace.
+Замість цього ми використовуємо один спільний репозиторій з окремими папками для кожного Postman workspace-а.
 
-The current structure is:
+Поточна структура така:
 
 ```text
 eh_collections/
@@ -42,48 +42,48 @@ eh_collections/
       postman/
 ```
 
-Each folder under `workspaces/` is connected to one Postman workspace only.
+Кожна папка всередині `workspaces/` підключається тільки до одного Postman workspace-а.
 
-## What Each Person Needs Before Starting
+## Що Потрібно Кожному Колезі Перед Початком
 
-Each teammate must have:
+Кожен учасник команди повинен мати:
 
-1. Access to the GitHub repository [eh_collections](https://github.com/ezem001/eh_collections) with write permissions.
-2. Access to the Postman team and to these Postman workspaces:
+1. Доступ до GitHub-репозиторію [eh_collections](https://github.com/ezem001/eh_collections) з правами запису.
+2. Доступ до Postman team і до таких Postman workspace-ів:
    - `Demo`
    - `Preprod`
    - `Stage`
-3. Postman Desktop App installed.
-4. Git installed locally.
-5. Basic ability to run terminal commands.
+3. Встановлений Postman Desktop App.
+4. Встановлений Git.
+5. Базову можливість працювати з терміналом.
 
-Optional but recommended:
+Необов'язково, але бажано:
 
-- GitHub Desktop, if a teammate prefers GUI for Git
-- a GitHub authentication method already configured locally
+- GitHub Desktop, якщо колезі зручніше працювати з Git через інтерфейс
+- уже налаштована GitHub-авторизація локально
 
-## Important Rules Before Anyone Starts
+## Важливі Правила Перед Початком Роботи
 
-Please follow these rules exactly:
+Будь ласка, дотримуйтесь цих правил без винятків:
 
-1. Never run `git init` inside `workspaces/Demo`, `workspaces/Preprod`, or `workspaces/Stage`.
-2. Never create a separate repository inside any workspace folder.
-3. Always work from the single repository root.
-4. Always connect Postman to the existing cloned repository, not to a random new folder.
-5. Always keep each Postman workspace mapped to its own folder:
+1. Ніколи не запускайте `git init` всередині `workspaces/Demo`, `workspaces/Preprod` або `workspaces/Stage`.
+2. Ніколи не створюйте окремий репозиторій усередині папки конкретного workspace-а.
+3. Завжди працюйте з одного кореня репозиторію.
+4. Завжди підключайте Postman до вже існуючого локального clone, а не до випадково створеної нової папки.
+5. Завжди дотримуйтесь такої відповідності:
    - `Demo` -> `workspaces/Demo`
    - `Preprod` -> `workspaces/Preprod`
    - `Stage` -> `workspaces/Stage`
-6. Do not store secrets in committed files.
-7. Each teammate must create and always use their own personal branch.
-8. The personal branch name must match the teammate's name in the agreed format.
-9. Do not work directly in `main`.
+6. Не зберігайте секрети в закомічених файлах.
+7. Кожен колега повинен створити й постійно використовувати свою персональну гілку.
+8. Назва персональної гілки повинна відповідати імені колеги в погодженому форматі.
+9. Не працюйте напряму в `main`.
 
-## Personal Branch Naming Convention
+## Формат Імен Персональних Гілок
 
-Each teammate first creates one permanent personal branch and keeps using it for all future work.
+Кожен колега один раз створює собі постійну персональну гілку й далі використовує тільки її.
 
-Examples:
+Приклади:
 
 - `Roman_Katamai`
 - `Kate_Hubko`
@@ -91,16 +91,16 @@ Examples:
 - `Katya_Aloshyna`
 - `Anastasiia_Afrosimova`
 
-Important:
+Важливо:
 
-- this is not a temporary feature branch per task
-- this is a long-lived personal branch
-- the teammate keeps reusing the same branch every day
-- pull requests go from the personal branch into `main`
+- це не тимчасова feature-branch на одну задачу
+- це постійна персональна гілка
+- колега щодня продовжує працювати саме в ній
+- pull request-и створюються з персональної гілки в `main`
 
-## Step 1: Clone The Repository
+## Крок 1: Склонувати Репозиторій
 
-Choose a local folder for the project, then run:
+Оберіть локальну папку для проєкту й виконайте:
 
 ```bash
 git clone https://github.com/ezem001/eh_collections.git
@@ -109,39 +109,39 @@ git checkout main
 git pull origin main
 ```
 
-After that, verify that the expected structure exists:
+Після цього перевірте, що структура правильна:
 
 ```bash
 find workspaces -maxdepth 2 | sort
 ```
 
-You should see folders for:
+Ви повинні побачити папки:
 
 - `workspaces/Demo`
 - `workspaces/Preprod`
 - `workspaces/Stage`
 
-## Step 2: Verify Git Access
+## Крок 2: Перевірити Доступ До Git
 
-Before connecting Postman, check that Git works:
+Перед підключенням Postman переконайтеся, що Git працює:
 
 ```bash
 git remote -v
 git status
 ```
 
-Expected result:
+Очікуваний результат:
 
-- `origin` should point to `https://github.com/ezem001/eh_collections.git`
-- `git status` should not show repository errors
+- `origin` має вказувати на `https://github.com/ezem001/eh_collections.git`
+- `git status` не повинен показувати помилок репозиторію
 
-If push access is not configured yet, fix that before continuing. Otherwise Postman changes may be created locally but later fail during team synchronization.
+Якщо доступ на push ще не налаштований, виправте це до початку роботи. Інакше Postman зможе створити локальні зміни, але далі команда не зможе нормально їх синхронізувати.
 
-## Step 3: Create Your Personal Branch
+## Крок 3: Створити Свою Персональну Гілку
 
-Before opening Postman for real work, each teammate must create their own personal branch.
+Перед реальною роботою в Postman кожен колега повинен один раз створити власну персональну гілку.
 
-Example for Roman:
+Приклад для Roman:
 
 ```bash
 cd /path/to/eh_collections
@@ -151,7 +151,7 @@ git checkout -b Roman_Katamai
 git push -u origin Roman_Katamai
 ```
 
-Example for Kate:
+Приклад для Kate:
 
 ```bash
 cd /path/to/eh_collections
@@ -161,7 +161,7 @@ git checkout -b Kate_Hubko
 git push -u origin Kate_Hubko
 ```
 
-Example for Lilia:
+Приклад для Lilia:
 
 ```bash
 cd /path/to/eh_collections
@@ -171,7 +171,7 @@ git checkout -b Lilia_Besednikova
 git push -u origin Lilia_Besednikova
 ```
 
-Example for Katya:
+Приклад для Katya:
 
 ```bash
 cd /path/to/eh_collections
@@ -181,7 +181,7 @@ git checkout -b Katya_Aloshyna
 git push -u origin Katya_Aloshyna
 ```
 
-Example for Anastasiia:
+Приклад для Anastasiia:
 
 ```bash
 cd /path/to/eh_collections
@@ -191,36 +191,36 @@ git checkout -b Anastasiia_Afrosimova
 git push -u origin Anastasiia_Afrosimova
 ```
 
-Do this only once per teammate.
+Це робиться лише один раз.
 
-After the personal branch is created, the teammate keeps using that same branch.
+Після створення персональної гілки колега надалі працює тільки в ній.
 
-## Step 4: Open The Correct Postman Workspace
+## Крок 4: Відкрити Правильний Postman Workspace
 
-Open Postman Desktop App and choose the correct workspace:
+Відкрийте Postman Desktop App і виберіть правильний workspace:
 
-- `Demo` if you want to work with `workspaces/Demo`
-- `Preprod` if you want to work with `workspaces/Preprod`
-- `Stage` if you want to work with `workspaces/Stage`
+- `Demo`, якщо хочете працювати з `workspaces/Demo`
+- `Preprod`, якщо хочете працювати з `workspaces/Preprod`
+- `Stage`, якщо хочете працювати з `workspaces/Stage`
 
-Do not connect the wrong local folder to the wrong Postman workspace.
+Не підключайте неправильну локальну папку до неправильного Postman workspace-а.
 
-Correct mapping:
+Правильна відповідність:
 
-- Postman workspace `Demo` -> local folder `workspaces/Demo`
-- Postman workspace `Preprod` -> local folder `workspaces/Preprod`
-- Postman workspace `Stage` -> local folder `workspaces/Stage`
+- Postman workspace `Demo` -> локальна папка `workspaces/Demo`
+- Postman workspace `Preprod` -> локальна папка `workspaces/Preprod`
+- Postman workspace `Stage` -> локальна папка `workspaces/Stage`
 
-## Step 5: Connect Postman To The Existing Local Repository
+## Крок 5: Підключити Postman До Існуючого Локального Репозиторію
 
-Inside Postman:
+У Postman:
 
-1. Open the target workspace, for example `Demo`.
-2. In the left sidebar, open `Files`.
-3. If Postman asks to set up the local codebase, choose the option that means opening or connecting an existing local copy.
-4. Select the cloned repository root on your machine.
+1. Відкрийте потрібний workspace, наприклад `Demo`.
+2. У лівій панелі відкрийте `Files`.
+3. Якщо Postman просить налаштувати локальну кодову базу, оберіть варіант, який означає відкриття або підключення вже існуючої локальної копії.
+4. Виберіть корінь репозиторію, який ви склонували собі на комп'ютер.
 
-Examples:
+Приклади:
 
 macOS:
 
@@ -234,61 +234,61 @@ Windows:
 C:\Users\<your-user>\Projects\eh_collections
 ```
 
-5. When Postman asks for the path inside the repository, choose:
+5. Коли Postman попросить вказати шлях усередині репозиторію, оберіть:
 
-- `/workspaces/Demo` for the `Demo` workspace
-- `/workspaces/Preprod` for the `Preprod` workspace
-- `/workspaces/Stage` for the `Stage` workspace
+- `/workspaces/Demo` для workspace `Demo`
+- `/workspaces/Preprod` для workspace `Preprod`
+- `/workspaces/Stage` для workspace `Stage`
 
-6. Confirm the connection.
+6. Підтвердьте підключення.
 
-Important:
+Важливо:
 
-- The repository root is the cloned `eh_collections` folder.
-- The workspace path is one of the subfolders inside `workspaces/`.
-- Do not point Postman to a separate nested Git repository.
-- Do not create a second clone just for one workspace.
+- корінь репозиторію це саме склонована папка `eh_collections`
+- шлях workspace-а це одна з підпапок усередині `workspaces/`
+- не підключайте Postman до окремого вкладеного Git-репозиторію
+- не робіть окремий clone тільки для одного workspace-а
 
-## Step 6: Confirm That Postman Is Writing To The Correct Folder
+## Крок 6: Переконатися, Що Postman Пише В Правильну Папку
 
-After connecting, Postman should create or update files in the matching workspace folder.
+Після підключення Postman повинен створювати або оновлювати файли тільки у відповідній папці workspace-а.
 
-Examples:
+Приклади:
 
-- `Demo` should write under `workspaces/Demo/...`
-- `Preprod` should write under `workspaces/Preprod/...`
-- `Stage` should write under `workspaces/Stage/...`
+- `Demo` повинен писати у `workspaces/Demo/...`
+- `Preprod` повинен писати у `workspaces/Preprod/...`
+- `Stage` повинен писати у `workspaces/Stage/...`
 
-You can verify from terminal:
+Перевірити можна через термінал:
 
 ```bash
 git status
 ```
 
-If you changed something in `Demo`, you should only see file changes inside `workspaces/Demo`.
+Якщо ви змінювали щось у `Demo`, то зміни мають бути тільки в `workspaces/Demo`.
 
-If you suddenly see `Demo` changes under `workspaces/Preprod` or the other way around, stop and disconnect/reconnect the folder mapping in Postman before continuing.
+Якщо раптом `Demo` починає писати зміни в `workspaces/Preprod` або навпаки, зупиніться й перепідключіть правильну папку в Postman, перш ніж продовжувати.
 
-## Step 7: Understand Local View And Cloud View
+## Крок 7: Зрозуміти Різницю Між Local View І Cloud View
 
-Postman Native Git typically uses:
+Postman Native Git зазвичай використовує:
 
-- `Local View` for file-backed local work
-- `Cloud View` for the synchronized cloud state
+- `Local View` для роботи з файлами локально
+- `Cloud View` для хмарного стану в Postman
 
-Practical rule:
+Практичне правило:
 
-- work on files in `Local View`
-- use `Pull from Postman Cloud` when you need to bring cloud changes into local files
-- use `Push to Postman Cloud` when you intentionally want local file changes reflected back in Postman Cloud
+- працюйте з файлами в `Local View`
+- використовуйте `Pull from Postman Cloud`, коли треба підтягнути зміни з хмари в локальні файли
+- використовуйте `Push to Postman Cloud`, коли хочете явно відправити локальні зміни назад у Postman Cloud
 
-Do not assume Git push automatically updates Postman Cloud.
-Do not assume Postman Cloud automatically commits to Git.
-These are related workflows, but they are not the same action.
+Не потрібно думати, що Git push автоматично оновлює Postman Cloud.
+Так само не потрібно думати, що Postman Cloud автоматично створює Git commit.
+Це пов'язані, але різні процеси.
 
-## Step 8: Daily Start-Of-Day Workflow
+## Крок 8: Щоденний Старт Роботи
 
-Every day, before making changes, do this:
+Щоранку або перед початком роботи робіть так:
 
 ```bash
 cd /path/to/eh_collections
@@ -298,51 +298,51 @@ git checkout Roman_Katamai
 git merge main
 ```
 
-Replace `Roman_Katamai` with the teammate's own branch name.
+Замість `Roman_Katamai` потрібно підставити власну персональну гілку.
 
-Examples:
+Приклади:
 
-- Roman runs `git checkout Roman_Katamai`
-- Kate runs `git checkout Kate_Hubko`
-- Lilia runs `git checkout Lilia_Besednikova`
-- Katya runs `git checkout Katya_Aloshyna`
-- Anastasiia runs `git checkout Anastasiia_Afrosimova`
+- Roman виконує `git checkout Roman_Katamai`
+- Kate виконує `git checkout Kate_Hubko`
+- Lilia виконує `git checkout Lilia_Besednikova`
+- Katya виконує `git checkout Katya_Aloshyna`
+- Anastasiia виконує `git checkout Anastasiia_Afrosimova`
 
-Why this matters:
+Чому це важливо:
 
-- everyone starts from the latest team state
-- each person stays in their own branch
-- changes stay isolated by person
-- pull requests into `main` stay predictable
-- conflicts are easier to resolve
+- усі починають роботу з актуального стану команди
+- кожен залишається у своїй персональній гілці
+- зміни ізольовані по людях
+- pull request-и в `main` стають передбачуваними
+- конфлікти вирішувати простіше
 
-Do not do regular work directly in `main`.
+Не працюйте регулярно прямо в `main`.
 
-## Step 9: Make Changes In Only The Intended Workspace
+## Крок 9: Змінювати Лише Той Workspace, Який Потрібен
 
-When working in Postman:
+Під час роботи в Postman:
 
-- open only the workspace you intend to change
-- keep an eye on which workspace is active
-- verify that the files appearing in Git belong to the correct folder
+- відкривайте тільки той workspace, який збираєтесь міняти
+- уважно дивіться, який workspace зараз активний
+- перевіряйте, що Git-помітні зміни з'являються саме в правильній папці
 
-Examples:
+Приклади:
 
-- if you work in `Demo`, Git changes should appear under `workspaces/Demo`
-- if you work in `Preprod`, Git changes should appear under `workspaces/Preprod`
-- if you work in `Stage`, Git changes should appear under `workspaces/Stage`
+- якщо ви працюєте в `Demo`, Git-зміни мають бути в `workspaces/Demo`
+- якщо ви працюєте в `Preprod`, Git-зміни мають бути в `workspaces/Preprod`
+- якщо ви працюєте в `Stage`, Git-зміни мають бути в `workspaces/Stage`
 
-This is the simplest safety rule for avoiding accidental cross-workspace commits.
+Це найпростіше правило, яке захищає від випадкових крос-workspace комітів.
 
-## Step 10: Review Your Git Changes Before Committing
+## Крок 10: Перед Комітом Перевірити Git-Зміни
 
-Always review the status:
+Завжди перед комітом подивіться статус:
 
 ```bash
 git status
 ```
 
-If you want more detail:
+Якщо потрібна деталізація:
 
 ```bash
 git diff -- workspaces/Demo
@@ -350,17 +350,17 @@ git diff -- workspaces/Preprod
 git diff -- workspaces/Stage
 ```
 
-Review before committing because Postman may update:
+Робіть цю перевірку, тому що Postman може змінювати:
 
-- collection definitions
+- визначення колекцій
 - `.postman/resources.yaml`
-- request files
-- folder metadata
-- supporting files in the workspace structure
+- request-файли
+- metadata папок
+- допоміжні файли всередині структури workspace-а
 
-## Step 11: Commit Only The Workspace You Changed
+## Крок 11: Комітити Тільки Той Workspace, Який Ви Змінювали
 
-### If you changed only `Demo`
+### Якщо ви змінювали тільки `Demo`
 
 ```bash
 git add workspaces/Demo
@@ -369,7 +369,7 @@ git commit -m "Update Demo workspace"
 git push -u origin Roman_Katamai
 ```
 
-### If you changed only `Preprod`
+### Якщо ви змінювали тільки `Preprod`
 
 ```bash
 git add workspaces/Preprod
@@ -378,7 +378,7 @@ git commit -m "Update Preprod workspace"
 git push -u origin Roman_Katamai
 ```
 
-### If you changed only `Stage`
+### Якщо ви змінювали тільки `Stage`
 
 ```bash
 git add workspaces/Stage
@@ -387,9 +387,9 @@ git commit -m "Update Stage workspace"
 git push -u origin Roman_Katamai
 ```
 
-Replace `Roman_Katamai` with the teammate's personal branch name.
+Замість `Roman_Katamai` потрібно підставити персональну гілку конкретного колеги.
 
-### If you intentionally changed multiple workspaces
+### Якщо ви свідомо змінювали кілька workspace-ів
 
 ```bash
 git add workspaces/Demo workspaces/Preprod workspaces/Stage
@@ -398,27 +398,27 @@ git commit -m "Update Postman workspaces"
 git push -u origin Roman_Katamai
 ```
 
-Again, replace `Roman_Katamai` with the teammate's personal branch name.
+Знову ж таки, `Roman_Katamai` треба замінити на персональну гілку колеги.
 
-Important:
+Важливо:
 
-- prefer adding the specific workspace folder you changed
-- avoid `git add .` unless you are absolutely sure everything should be committed
+- краще додавати тільки конкретну папку workspace-а, яку ви міняли
+- не використовуйте `git add .`, якщо не впевнені на 100%, що треба комітити все
 
-## Step 12: Create A Pull Request
+## Крок 12: Створити Pull Request
 
-After pushing your personal branch:
+Після push у вашу персональну гілку:
 
-1. Open GitHub.
-2. Create a pull request into `main`.
-3. Ask for review if your team uses reviews.
-4. Merge after approval.
+1. Відкрийте GitHub.
+2. Створіть pull request у `main`.
+3. Якщо у вас є процес review, попросіть рев'ю.
+4. Після погодження змерджіть зміни.
 
-This is the safest collaboration flow because everyone sees exactly what changed in each Postman workspace folder.
+Це найбезпечніший командний workflow, тому що всі бачать, що саме змінилося в конкретних папках Postman workspace-ів.
 
-## Step 13: After Merge
+## Крок 13: Що Робити Після Merge
 
-After the pull request is merged:
+Після того як pull request змерджений:
 
 ```bash
 git checkout main
@@ -427,16 +427,16 @@ git checkout Roman_Katamai
 git merge main
 ```
 
-Replace `Roman_Katamai` with the teammate's own branch name.
+Замість `Roman_Katamai` підставте власну гілку.
 
-Important:
+Важливо:
 
-- do not delete the personal branch after merge
-- each teammate keeps their own branch and reuses it for future work
+- не видаляйте персональну гілку після merge
+- кожен колега використовує свою персональну гілку повторно й надалі
 
-## Common Commands By Workspace
+## Готові Команди По Workspace-ах
 
-### Demo only
+### Тільки `Demo`
 
 ```bash
 cd /path/to/eh_collections
@@ -449,7 +449,7 @@ git commit -m "Update Demo workspace"
 git push -u origin Roman_Katamai
 ```
 
-### Preprod only
+### Тільки `Preprod`
 
 ```bash
 cd /path/to/eh_collections
@@ -462,7 +462,7 @@ git commit -m "Update Preprod workspace"
 git push -u origin Roman_Katamai
 ```
 
-### Stage only
+### Тільки `Stage`
 
 ```bash
 cd /path/to/eh_collections
@@ -475,11 +475,11 @@ git commit -m "Update Stage workspace"
 git push -u origin Roman_Katamai
 ```
 
-Replace `Roman_Katamai` in the examples above with the teammate's personal branch name.
+У всіх прикладах вище замініть `Roman_Katamai` на власну персональну гілку.
 
-## How To Pull Latest Team Changes Safely
+## Як Безпечно Підтягувати Останні Командні Зміни
 
-Recommended flow for every teammate:
+Рекомендований сценарій для кожного колеги:
 
 ```bash
 git checkout main
@@ -488,73 +488,73 @@ git checkout Roman_Katamai
 git merge main
 ```
 
-Replace `Roman_Katamai` with the teammate's personal branch name.
+Замініть `Roman_Katamai` на свою персональну гілку.
 
-If conflicts appear, resolve them carefully and verify the affected Postman workspace folder before continuing.
+Якщо з'явилися конфлікти, вирішіть їх уважно й перевірте відповідну папку Postman workspace-а перед продовженням.
 
-## How To Recover If Postman Connects To The Wrong Folder
+## Як Відновитися, Якщо Postman Підключився Не До Тієї Папки
 
-Symptoms:
+Ознаки проблеми:
 
-- files appear in the wrong workspace folder
-- `Demo` changes show up under `Preprod`
-- Postman asks to initialize a new repository in a subfolder
-- Postman points to an unexpected repository or path
+- файли з'являються в неправильній папці workspace-а
+- зміни з `Demo` опиняються в `Preprod`
+- Postman просить ініціалізувати новий репозиторій у вкладеній папці
+- Postman показує не той repository або не той path
 
-Recovery steps:
+Що робити:
 
-1. Stop making changes.
-2. Do not run `git init`.
-3. In Postman, disconnect the current local folder connection.
-4. Reconnect to the existing cloned repository root.
-5. Choose the correct workspace path:
+1. Зупинити внесення змін.
+2. Не запускати `git init`.
+3. У Postman відключити поточне локальне підключення папки.
+4. Підключити заново існуючий локальний clone репозиторію.
+5. Обрати правильний шлях workspace-а:
    - `/workspaces/Demo`
    - `/workspaces/Preprod`
    - `/workspaces/Stage`
-6. Run `git status` and verify new changes now appear in the correct folder only.
+6. Запустити `git status` і перевірити, що нові зміни тепер з'являються тільки в правильній папці.
 
-## How To Recover If Git Says You Do Not Have Permission To Push
+## Як Відновитися, Якщо Git Каже, Що Немає Прав На Push
 
-Check the remote:
+Перевірте remote:
 
 ```bash
 git remote -v
 ```
 
-Expected:
+Очікувано має бути:
 
 ```text
 origin  https://github.com/ezem001/eh_collections.git (fetch)
 origin  https://github.com/ezem001/eh_collections.git (push)
 ```
 
-If push fails:
+Якщо push не працює:
 
-1. Confirm your GitHub account has write access to the repository.
-2. Confirm your local Git authentication is using the correct GitHub account.
-3. Retry from your personal branch:
+1. Переконайтеся, що ваш GitHub-акаунт має write-доступ до репозиторію.
+2. Переконайтеся, що локальна Git-авторизація використовує правильний GitHub-акаунт.
+3. Повторіть push зі своєї персональної гілки:
 
 ```bash
 git push -u origin Roman_Katamai
 ```
 
-Replace `Roman_Katamai` with the teammate's personal branch name.
+Замініть `Roman_Katamai` на власну гілку.
 
-## How To Recover If Postman Pulls Too Many Collections
+## Як Відновитися, Якщо Postman Підтягнув Зайві Колекції
 
-If you suddenly see collections that belong to another environment:
+Якщо раптом з'явилися колекції, що належать до іншого середовища:
 
-1. Check which Postman workspace is currently open.
-2. Check which local folder path is connected.
-3. Confirm the folder path matches the workspace name.
-4. If wrong, disconnect and reconnect correctly.
-5. Recheck `workspaces/<workspace-name>/.postman/resources.yaml`.
+1. Перевірте, який Postman workspace зараз відкритий.
+2. Перевірте, який локальний folder path зараз підключений.
+3. Переконайтеся, що folder path відповідає назві workspace-а.
+4. Якщо ні, перепідключіть правильно.
+5. Перевірте файл `workspaces/<workspace-name>/.postman/resources.yaml`.
 
-This file is often a useful clue, because it maps the local workspace files to Postman Cloud resources for that specific workspace.
+Цей файл часто є головною підказкою, тому що саме він мапить локальні файли workspace-а до Postman Cloud ресурсів для конкретного workspace-а.
 
-## How To Inspect What Changed
+## Як Подивитися, Що Саме Змінилося
 
-Useful commands:
+Корисні команди:
 
 ```bash
 git status
@@ -563,101 +563,101 @@ git diff -- workspaces/Preprod
 git diff -- workspaces/Stage
 ```
 
-To inspect only filenames:
+Щоб побачити тільки імена файлів:
 
 ```bash
 git diff --name-only
 ```
 
-To inspect staged changes:
+Щоб подивитися вже staged-зміни:
 
 ```bash
 git diff --cached
 ```
 
-## Team Conventions We Recommend
+## Рекомендовані Командні Правила
 
-Use these team conventions to avoid confusion:
+Ми рекомендуємо такі правила для команди:
 
-1. One permanent personal branch per teammate.
-2. One workspace per commit when possible.
-3. Clear commit messages:
+1. Один постійний персональний branch на одного колегу.
+2. Один workspace на один commit, коли це можливо.
+3. Зрозумілі commit message-і:
    - `Update Demo workspace`
    - `Add Preprod regression collections`
    - `Fix Stage environment requests`
-4. Always review `git status` before commit.
-5. Never commit changes from a workspace you did not intentionally edit.
-6. Prefer pull requests from the personal branch into `main`.
+4. Завжди перевіряти `git status` перед комітом.
+5. Ніколи не комітити зміни з workspace-а, який ви не планували змінювати.
+6. Робити pull request-и з персональної гілки в `main`.
 
-## Frequently Asked Questions
+## Часті Питання
 
-### Do we need a separate GitHub repository for each Postman workspace?
+### Чи потрібен окремий GitHub-репозиторій для кожного Postman workspace-а?
 
-No.
+Ні.
 
-We intentionally use one GitHub repository for the team and separate folders inside it:
+Ми спеціально використовуємо один GitHub-репозиторій для команди й окремі папки всередині нього:
 
 - `workspaces/Demo`
 - `workspaces/Preprod`
 - `workspaces/Stage`
 
-### Do we need a separate local clone for each workspace?
+### Чи потрібен окремий локальний clone для кожного workspace-а?
 
-No.
+Ні.
 
-Use one local clone of the repository, then connect each Postman workspace to its own path inside the same clone.
+Потрібен один локальний clone репозиторію, а кожен Postman workspace підключається до свого шляху всередині цього clone.
 
-### Should we run `git init` inside a workspace folder?
+### Чи треба запускати `git init` всередині папки workspace-а?
 
-No.
+Ні.
 
-Never do that. It creates nested repositories and breaks the shared setup.
+Ніколи цього не робіть. Це створює вкладені репозиторії й ламає спільну схему роботи.
 
-### Should we use `git add .`?
+### Чи варто використовувати `git add .`?
 
-Usually no.
+Зазвичай ні.
 
-Prefer:
+Краще використовувати:
 
 - `git add workspaces/Demo`
 - `git add workspaces/Preprod`
 - `git add workspaces/Stage`
 
-This reduces accidental commits.
+Так значно менший ризик випадкового коміту зайвих змін.
 
-### Does Git push update Postman Cloud automatically?
+### Чи Git push автоматично оновлює Postman Cloud?
 
-No.
+Ні.
 
-Git and Postman Cloud are related but separate flows. Use Postman actions when you need synchronization with Postman Cloud itself.
+Git і Postman Cloud пов'язані, але це різні процеси. Для синхронізації саме з Postman Cloud потрібно використовувати відповідні дії всередині Postman.
 
-### Does Pull from Postman Cloud create Git commits automatically?
+### Чи Pull from Postman Cloud автоматично створює Git commit?
 
-No.
+Ні.
 
-After Postman changes local files, you still need to commit and push with Git.
+Після того як Postman оновив локальні файли, ви все одно повинні окремо зробити Git commit і Git push.
 
-## Quick Checklist For New Teammates
+## Короткий Checklist Для Нового Колеги
 
-1. Clone the repository.
-2. Verify GitHub write access works.
-3. Create your personal branch, for example `Roman_Katamai`.
-4. Open Postman Desktop App.
-5. Connect `Demo` to `/workspaces/Demo`.
-6. Connect `Preprod` to `/workspaces/Preprod`.
-7. Connect `Stage` to `/workspaces/Stage`.
-8. Work in `Local View`.
-9. Before each work session, update `main`, switch to your personal branch, and merge `main` into it.
-10. Commit only the workspace folder you changed.
-11. Push your personal branch and create a pull request into `main`.
+1. Склонувати репозиторій.
+2. Перевірити, що GitHub write-доступ працює.
+3. Створити свою персональну гілку, наприклад `Roman_Katamai`.
+4. Відкрити Postman Desktop App.
+5. Підключити `Demo` до `/workspaces/Demo`.
+6. Підключити `Preprod` до `/workspaces/Preprod`.
+7. Підключити `Stage` до `/workspaces/Stage`.
+8. Працювати в `Local View`.
+9. Перед кожною сесією оновлювати `main`, переходити у свою гілку й вливати в неї `main`.
+10. Комітити тільки ту папку workspace-а, яку реально змінювали.
+11. Пушити свою персональну гілку й створювати pull request у `main`.
 
-## Repository Location Reminder
+## Нагадування Про Розташування Репозиторію
 
-Repository URL:
+URL репозиторію:
 
 - [https://github.com/ezem001/eh_collections](https://github.com/ezem001/eh_collections)
 
-Expected local clone examples:
+Приклади локального clone path:
 
 macOS:
 
@@ -671,7 +671,7 @@ Windows:
 C:\Users\<your-user>\Projects\eh_collections
 ```
 
-Workspace paths inside the repository:
+Шляхи workspace-ів усередині репозиторію:
 
 - `/workspaces/Demo`
 - `/workspaces/Preprod`
